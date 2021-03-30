@@ -12,6 +12,6 @@
 </h1>
 
 <P>  The time on the server is ${serverTime}. </P>
-<a href="infoFind.jsp">아이디/비밀번호 찾기</a>
+<a href="infoFind.do">아이디/비밀번호 찾기</a>
 </body>
 </html>

@@ -35,5 +35,9 @@ public class HomeController {
 		
 		return "home";
 	}
+	@RequestMapping(value="/infoFind.do")
+	public String infoFindpage() {
+		return "infoFind";
+	}
 	
 }
