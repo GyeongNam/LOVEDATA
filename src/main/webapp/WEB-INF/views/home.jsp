@@ -8,10 +8,11 @@
 </head>
 <body>
 <h1>
-	Hello world!  
+	Hello world!
 </h1>
 
 <P>  The time on the server is ${serverTime}. </P>
 <a href="infoFind.do">아이디/비밀번호 찾기</a>
+<a href="signup.do">회원가입</a>
 </body>
 </html>
