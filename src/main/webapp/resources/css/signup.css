@@ -5,7 +5,7 @@
     line-height: 1.5;
     border: 1px solid #ccc;
     margin: 20px 10px;
-
+    width: auto;
   }
   table.signup thead {
     border-right: 1px solid #ccc;
@@ -13,6 +13,7 @@
     background: #e7708d;
   }
   table.signup thead tr {
+    width: auto;
     padding: 10px;
     font-weight: bold;
     vertical-align : middle;
@@ -27,17 +28,14 @@
     background: #fcf1f4;
   }
   table.signup td {
-    width: auto;
+
     padding: 10px;
     vertical-align : middle;
     border-bottom: 1px solid #ccc;
   }
-  .label {
-    font-size: 15px;
-  }
   .spen {
     vertical-align : middle;
-    font-size: 8px;
+    font-size: 50%;
   }
   .logo {
  	  padding-left: 10px;
@@ -48,7 +46,6 @@
   .checkbox1 {
     vertical-align : middle;
   }
-
 
   .modal{
     display:none;
@@ -69,3 +66,17 @@
     background:#fff;
     padding: 10px;
 	}
+  .thead{
+    font-size: auto;
+    width: 25%;
+  }
+  .content{
+  	margin: 0 auto;
+  	width:50%;
+  }
+  #str_email01, #str_email02, #selectEmail{
+    width: 20%;
+  }
+   #str_phone02, #str_phone03 {
+    width: 10%;
+  }
