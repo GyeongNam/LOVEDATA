@@ -1,2 +1,4 @@
+com/project/love_data/DataSourceTests.java
+ com.project.love_data.DataSourceTests
 com/project/love_data/LoveDataApplicationTests.java
  com.project.love_data.LoveDataApplicationTests
