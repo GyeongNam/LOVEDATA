@@ -1,0 +1,5 @@
+server:  port: 8080
+spring:
+  mvc:
+    view:      prefix: /WEB-INF/jsp/
+      suffix: .jsp  datasource:    driver-class-name: com.mysql.cj.jdbc.Driver    url: jdbc:mysql://localhost:3306/lovedata?serverTimezone=UTC&characterEncoding=UTF-8    username: lovedatauser    password: love    session:    timeout: 600    store-type: jdbc    jdbc:      initialize-schema: always      table-name: SPRING_SESSION  
