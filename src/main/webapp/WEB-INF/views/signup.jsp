@@ -10,13 +10,12 @@
 <title>회원가입ㅣLOVEDATA</title>
 </head>
 <body>
-  <div class="content">
    <div class="logo">
      <h1>LOVEDATA</h1>
    </div>
    <table class="signup">
      <tr>
-       <td class="thead">
+       <td>
          <label class = "label"><strong>이메일(아이디) *</strong></label>
        </td>
        <td>
@@ -41,22 +40,19 @@
            </select>
            <input class="checkbox1" type="checkbox" name="assent" value="1"/>  <spen class = "spen"> 이메일 수신에 동의합니다.</spen>
          </div>
-         <div>
-           <span class = "spen"></span>
-         </div>
        </td>
       </tr>
        <tr>
-         <td class="thead">
+         <td>
          <label class = "label"><strong>비밀번호 *</strong> </label>
         </td>
         <td>
            <input type="password" name="userPwd" id="pwd1" onKeyup="chkpw()" class="form-control" required>
-          <spen class="spen" id=pwd_rule>영문 대소문자/숫자/특수문자 중 2가지 이상 조합, 10자~16자.</spen>
+          <spen class="spen" id=pwd_rule>영문, 숫자, 특수문자를 포함한 8자리 이상 입력하세요.</spen>
         </td>
        </tr>
        <tr>
-         <td class="thead">
+         <td>
          <label class = "label"><strong>비밀번호 확인 *</strong></label>
         </td>
         <td>
@@ -65,7 +61,7 @@
          </td>
        </tr>
        <tr>
-         <td class="thead">
+         <td>
          <label class = "label"><strong>닉네임 *</strong></label>
          </td>
           <td>
@@ -74,7 +70,7 @@
             </td>
        </tr>
        <tr>
-         <td class="thead">
+         <td>
           <label class = "label"><strong>이름 *</strong></label>
           </td>
           <td>
@@ -82,7 +78,7 @@
             </td>
         </tr>
         <tr>
-          <td class="thead">
+          <td>
           <label class = "label"><strong>휴대폰번호 *</strong></label>
           </td>
           <td>
@@ -92,14 +88,14 @@
               <option value="011" >011</option>
               <option value="017">017</option>
             </select> -
-            <input type="text" class= "phone_nums"  onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"minlength='3' maxlength='4' name="str_phone02" id="str_phone02" required="required"> -
-            <input type="text" class= "phone_nums" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" minlength='4' maxlength='4' name="str_phone03" id="str_phone03" required="required">
+            <input type="text" name="str_phone02" id="str_phone02" required="required"> -
+            <input type="text" name="str_phone03" id="str_phone03" required="required">
             <button type="button" id="modal_opne_btn" name="button">휴대폰 인증</button>
           </div>
           </td>
         </tr>
         <tr>
-          <td class="thead">
+          <td>
           <label class = "label"><strong>생년월일</strong></label>
           </td>
           <td>
@@ -109,7 +105,7 @@
           </td>
         </tr>
         <tr>
-          <td class="thead">
+          <td>
           <label class = "label"><strong>성별</strong></label>
           </td>
           <td>
@@ -138,7 +134,6 @@
       <button type="button" id="modal_close_btn">닫기</button>
     </div>
   </div>
-</div>
 </body>
 </html>
 
