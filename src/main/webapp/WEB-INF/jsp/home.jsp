@@ -18,6 +18,7 @@
 <a href="/infoFind">아이디/비밀번호 찾기</a>
 <a href="/signup">회원가입</a>
 <a href="/login">로그인</a>
+<a href="/find-info">회원정보 찾기</a>
 <a href="test_jsp">테스트_jsp</a>
 <p>
 	<a href="https://velog.io/@ghd64845/Spring-boot-MyBatis%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%98%EC%97%AC-MySQL-%EC%97%B0%EB%8F%99%ED%95%98%EA%B8%B0#7-sql-mapper-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0">참고 URL</a>

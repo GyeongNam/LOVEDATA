@@ -27,6 +27,11 @@ public class HomeController {
 		return "user/login";
 	}
 
+	@RequestMapping(value="/find-info", method = RequestMethod.GET)
+	public String findinfo(){
+		return "user/find-info";
+	}
+	
 	@RequestMapping(value="/test_jsp", method = RequestMethod.GET)
 	public String test_jsp(){
 		return "temp/test_jsp";

@@ -1,5 +1,10 @@
 @charset "UTF-8";
 
+body{
+	margin: 0px;
+	padding: 0px;
+}
+
 .header {
 	background-color:#ffc2d6;
 	    padding: 10px;

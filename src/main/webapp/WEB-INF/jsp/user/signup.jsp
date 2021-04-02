@@ -11,6 +11,7 @@
 </head>
 
 <body>
+<%@ include file="../layout/header.jsp" %>
   <div class="content">
    <div class="logo">
      <h1>LOVEDATA</h1>
@@ -140,6 +141,7 @@
     </div>
   </div>
 </div>
+<%@ include file="../layout/footer.jsp" %>
 </body>
 </html>
 
