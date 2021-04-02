@@ -3,7 +3,6 @@ package com.project.love_data;
 import com.project.love_data.wrapper.TestRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,22 +25,8 @@ public class TestRepositoryTests {
 //            com.project.love_data.model.Test test = com.project.love_data.model.Test.builder().name("Sample..." + i).country("kr").build();
             com.project.love_data.model.Test test = new com.project.love_data.model.Test(i, "Sample.."+i, "kr");
             testRepository.save(test);
+//            testRepository.insertValue(new String("Sample..." + i), new String("kr"));
         });
-//        IntStream.rangeClosed(1, 10).forEach(i -> {
-//            if (i % 3 == 0) {
-//                com.project.love_data.model.Test test = com.project.love_data.model.Test.builder().name("Sample..."+i).country("kr").build();
-//                testRepository.save(test);
-//            } else if (i % 2 == 0) {
-//                com.project.love_data.model.Test test = com.project.love_data.model.Test.builder().name("Sample..."+i).country("us").build();
-//                testRepository.save(test);
-//            } else if (i % 5 == 0) {
-//                com.project.love_data.model.Test test = com.project.love_data.model.Test.builder().name("Sample..."+i).country("jp").build();
-//                testRepository.save(test);
-//            } else {
-//                com.project.love_data.model.Test test = com.project.love_data.model.Test.builder().name("Sample..."+i).country("uk").build();
-//                testRepository.save(test);
-//            }
-//        });
     }
 
     @Test
@@ -84,6 +69,7 @@ public class TestRepositoryTests {
     }
 
     @Test
+    @Transactional
     public void testUpdate(){
         int seq = 9;
         String name = "Sam";
@@ -91,14 +77,14 @@ public class TestRepositoryTests {
 //        com.project.love_data.model.Test test = com.project.love_data.model.Test.builder().seq(9).name("Sam").country("CN").build();
 //        com.project.love_data.model.Test test = new com.project.love_data.model.Test(9, "Sam", "cn");
 //        System.out.println(testRepository.save(test));
-        com.project.love_data.model.Test test = testRepository.updateSEQ(seq, name, country);
-        System.out.println(test);
+        testRepository.updateSEQ(seq, name, country);
     }
 
     @Test
     public void testDelete(){
         Integer seq = 6;
 
-        testRepository.deleteById(seq);
+//        testRepository.deleteById(seq);
+        testRepository.deleteSEQ(seq);
     }
 }

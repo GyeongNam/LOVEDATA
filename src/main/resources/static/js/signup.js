@@ -12,7 +12,7 @@ $("#modal_opne_btn").click(function(){
     $("#modal").fadeOut();
     $(".modal_content").fadeOut();
 });
-﻿// 비밀번호 유효성
+// 비밀번호 유효성
 function chkpw(){
   var pw = $("#pwd1").val();
   var num = pw.search(/[0-9]/g);
