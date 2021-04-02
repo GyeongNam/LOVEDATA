@@ -23,82 +23,43 @@ public class TestRepositoryTests {
     @Test
     public void testInsertDummies() {
         IntStream.rangeClosed(1, 10).forEach(i -> {
-//            com.project.love_data.model.Test test = com.project.love_data.model.Test.builder().name("Sample..." + i).country("kr").build();
             com.project.love_data.model.Test test = new com.project.love_data.model.Test(i, "Sample.."+i, "kr");
             testRepository.save(test);
         });
-//        IntStream.rangeClosed(1, 10).forEach(i -> {
-//            if (i % 3 == 0) {
-//                com.project.love_data.model.Test test = com.project.love_data.model.Test.builder().name("Sample..."+i).country("kr").build();
-//                testRepository.save(test);
-//            } else if (i % 2 == 0) {
-//                com.project.love_data.model.Test test = com.project.love_data.model.Test.builder().name("Sample..."+i).country("us").build();
-//                testRepository.save(test);
-//            } else if (i % 5 == 0) {
-//                com.project.love_data.model.Test test = com.project.love_data.model.Test.builder().name("Sample..."+i).country("jp").build();
-//                testRepository.save(test);
-//            } else {
-//                com.project.love_data.model.Test test = com.project.love_data.model.Test.builder().name("Sample..."+i).country("uk").build();
-//                testRepository.save(test);
-//            }
-//        });
-    }
-
-    @Test
-    public void testSelectMultiSeq(){
-        // �뜲�씠�꽣踰좎씠�뒪�뿉 議댁옱�븯�뒗 seq
-        Integer seq = 1;
-
-//        Optional<com.project.love_data.model.Test> result = testRepository.findById(seq);
-//
-//        System.out.println("====================================");
-//
-//        if (result.isPresent()){
-//            com.project.love_data.model.Test test = result.get();
-//            System.out.println(test);
-//        }
-
-        // selectID
-        // 오직 하나의 값만 찾아서 리턴하는 SQL
-        // SELECT * FROM test WHERE test.seq = seq;
-        Optional<com.project.love_data.model.Test> result = Optional.ofNullable(testRepository.selectSEQ(seq));
-
-        if (result.isPresent()){
-            com.project.love_data.model.Test test = result.get();
-            System.out.println(test);
-            System.out.println("#### Complete ####");
-        }
     }
 
     @Transactional
     @Test
     public void TestSelect2() {
-//        �뜲�씠�꽣踰좎씠�뒪�뿉 議댁옱�븯�뒗 seq
         Integer seq = 5;
-
         com.project.love_data.model.Test test = testRepository.getOne(seq);
-
         System.out.println("========================================");
-
         System.out.println(test);
     }
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    @Test
+    public void testSelectAll() {
+    	System.out.println(testRepository.selectallSEQ());
+    }
+    @Test
+    public void testInsert() {
+        String name = "111";
+        String country = "12";
+    	testRepository.insertSEQ(name,country);
+    }
+    
     @Test
     public void testUpdate(){
-        int seq = 9;
-        String name = "Sam";
-        String country = "CN";
-//        com.project.love_data.model.Test test = com.project.love_data.model.Test.builder().seq(9).name("Sam").country("CN").build();
-//        com.project.love_data.model.Test test = new com.project.love_data.model.Test(9, "Sam", "cn");
-//        System.out.println(testRepository.save(test));
-        com.project.love_data.model.Test test = testRepository.updateSEQ(seq, name, country);
-        System.out.println(test);
+        int seq = 5;
+        String name = "525";
+        String country = "52";
+        testRepository.updateSEQ(seq,name,country);
     }
-
+    
     @Test
     public void testDelete(){
-        Integer seq = 6;
-
-        testRepository.deleteById(seq);
+        Integer seq = 5;
+        testRepository.deleteSEQ(seq);
     }
 }

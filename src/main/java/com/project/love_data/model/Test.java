@@ -5,12 +5,10 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name="test")
+@Table(name="Test")
 @ToString
-//@Builder
+@Setter
 @Getter
-//@AllArgsConstructor
-//@NoArgsConstructor
 public class Test {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +17,7 @@ public class Test {
     @Column(length = 10, nullable = false)
     private String name;
 
-    @Column(length = 2, nullable = false)
+    @Column(length = 10, nullable = false)
     private String country;
 
     public Test() {
