@@ -83,17 +83,17 @@ public class TestRepositoryTests {
         System.out.println(test);
     }
 
-    @Test
-    public void testUpdate(){
-        int seq = 9;
-        String name = "Sam";
-        String country = "CN";
-//        com.project.love_data.model.Test test = com.project.love_data.model.Test.builder().seq(9).name("Sam").country("CN").build();
-//        com.project.love_data.model.Test test = new com.project.love_data.model.Test(9, "Sam", "cn");
-//        System.out.println(testRepository.save(test));
-        com.project.love_data.model.Test test = testRepository.updateSEQ(seq, name, country);
-        System.out.println(test);
-    }
+//    @Test
+//    public void testUpdate(){
+//        int seq = 9;
+//        String name = "Sam";
+//        String country = "CN";
+////        com.project.love_data.model.Test test = com.project.love_data.model.Test.builder().seq(9).name("Sam").country("CN").build();
+////        com.project.love_data.model.Test test = new com.project.love_data.model.Test(9, "Sam", "cn");
+////        System.out.println(testRepository.save(test));
+//        com.project.love_data.model.Test test = testRepository.updateSEQ(seq, name, country);
+//        System.out.println(test);
+//    }
 
     @Test
     public void testDelete(){

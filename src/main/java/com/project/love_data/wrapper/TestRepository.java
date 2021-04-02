@@ -11,6 +11,6 @@ public interface TestRepository extends JpaRepository<Test, Integer> {
     @Query("select t from Test t where t.seq=?1")
     Test selectSEQ(int seq);
 
-    @Query("UPDATE Test t SET t.country=#{country},t.name=#{name} WHERE t.seq=#{seq}")
-    Test updateSEQ(@Param("seq") int seq,@Param("country") String country,@Param("name") String name);
+//    @Query("UPDATE Test t SET t.country=#{country},t.name=#{name} WHERE t.seq=#{seq}")
+//    Test updateSEQ(@Param("seq") int seq,@Param("country") String country,@Param("name") String name);
 }
