@@ -7,9 +7,9 @@ import javax.persistence.*;
 @Entity
 @Table(name="test")
 @ToString
-@Builder
+//@Builder
 @Getter
-@AllArgsConstructor
+//@AllArgsConstructor
 @NoArgsConstructor
 public class Test {
     @Id
@@ -21,4 +21,10 @@ public class Test {
 
     @Column(length = 2, nullable = false)
     private String country;
+
+    public Test(int seq, String name, String country) {
+        this.seq = seq;
+        this.name = name;
+        this.country = country;
+    }
 }

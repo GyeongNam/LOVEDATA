@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import lombok.*;
 
 import java.util.*;
 import java.util.stream.IntStream;
@@ -23,7 +24,8 @@ public class TestRepositoryTests {
     @Test
     public void testInsertDummies() {
         IntStream.rangeClosed(1, 10).forEach(i -> {
-            com.project.love_data.model.Test test = com.project.love_data.model.Test.builder().name("Sample..." + i).country("kr").build();
+//            com.project.love_data.model.Test test = com.project.love_data.model.Test.builder().name("Sample..." + i).country("kr").build();
+            com.project.love_data.model.Test test = new com.project.love_data.model.Test(i, "Sample.."+i, "kr");
             testRepository.save(test);
         });
 //        IntStream.rangeClosed(1, 10).forEach(i -> {
@@ -45,7 +47,7 @@ public class TestRepositoryTests {
 
     @Test
     public void testSelect(){
-        // 데이터베이스에 존재하는 seq
+        // �뜲�씠�꽣踰좎씠�뒪�뿉 議댁옱�븯�뒗 seq
         Integer seq = 100;
 
         Optional<com.project.love_data.model.Test> result = testRepository.findById(seq);
@@ -61,7 +63,7 @@ public class TestRepositoryTests {
     @Transactional
     @Test
     public void TestSelect2() {
-//        데이터베이스에 존재하는 seq
+//        �뜲�씠�꽣踰좎씠�뒪�뿉 議댁옱�븯�뒗 seq
         Integer seq = 5;
 
         com.project.love_data.model.Test test = testRepository.getOne(seq);
@@ -73,8 +75,8 @@ public class TestRepositoryTests {
 
     @Test
     public void testUpdate(){
-        com.project.love_data.model.Test test = com.project.love_data.model.Test.builder().seq(9).name("Sam").country("CN").build();
-
+//        com.project.love_data.model.Test test = com.project.love_data.model.Test.builder().seq(9).name("Sam").country("CN").build();
+        com.project.love_data.model.Test test = new com.project.love_data.model.Test(9, "Sam", "cn");
         System.out.println(testRepository.save(test));
     }
 
