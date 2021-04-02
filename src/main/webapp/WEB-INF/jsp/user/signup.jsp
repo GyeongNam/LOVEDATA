@@ -9,6 +9,7 @@
 <head>
 <title>회원가입ㅣLOVEDATA</title>
 </head>
+
 <body>
   <div class="content">
    <div class="logo">
@@ -142,4 +143,4 @@
 </body>
 </html>
 
-<script src="resources/js/signup.js"></script>
+<script src="/js/signup.js"></script>
