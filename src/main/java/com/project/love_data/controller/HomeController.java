@@ -22,13 +22,18 @@ public class HomeController {
 		return "user/signup";
 	}
 
-	@RequestMapping(value="/test_jsp", method = RequestMethod.GET)
-	public String test_jsp(){
-		return "test_jsp";
+	@RequestMapping(value="/login", method = RequestMethod.GET)
+	public String login(){
+		return "user/login";
 	}
 
-	@RequestMapping(value="/test_html", method = RequestMethod.GET)
-	public String test_html(){
-		return "test_html";
+	@RequestMapping(value="/test_jsp", method = RequestMethod.GET)
+	public String test_jsp(){
+		return "temp/test_jsp";
+	}
+
+	@RequestMapping(value="db_test", method = RequestMethod.GET)
+	public String db_test(){
+		return "temp/db_test";
 	}
 }
