@@ -35,3 +35,4 @@
 
 ### VS Code ###
 .vscode/
+src/main/java/com/project/love_data/config/MyBatisConfig.java

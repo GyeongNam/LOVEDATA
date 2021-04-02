@@ -31,9 +31,4 @@ public class HomeController {
 	public String test_jsp(){
 		return "temp/test_jsp";
 	}
-
-	@RequestMapping(value="db_test", method = RequestMethod.GET)
-	public String db_test(){
-		return "temp/db_test";
-	}
 }
