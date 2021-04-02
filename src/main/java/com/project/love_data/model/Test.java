@@ -10,7 +10,7 @@ import javax.persistence.*;
 //@Builder
 @Getter
 //@AllArgsConstructor
-@NoArgsConstructor
+//@NoArgsConstructor
 public class Test {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +21,12 @@ public class Test {
 
     @Column(length = 2, nullable = false)
     private String country;
+
+    public Test() {
+        this.seq=0;
+        this.name=null;
+        this.country=null;
+    }
 
     public Test(int seq, String name, String country) {
         this.seq = seq;
