@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import lombok.*;
 
 import java.util.*;
 import java.util.stream.IntStream;
@@ -46,17 +45,28 @@ public class TestRepositoryTests {
     }
 
     @Test
-    public void testSelect(){
+    public void testSelectMultiSeq(){
         // �뜲�씠�꽣踰좎씠�뒪�뿉 議댁옱�븯�뒗 seq
-        Integer seq = 100;
+        Integer seq = 1;
 
-        Optional<com.project.love_data.model.Test> result = testRepository.findById(seq);
+//        Optional<com.project.love_data.model.Test> result = testRepository.findById(seq);
+//
+//        System.out.println("====================================");
+//
+//        if (result.isPresent()){
+//            com.project.love_data.model.Test test = result.get();
+//            System.out.println(test);
+//        }
 
-        System.out.println("====================================");
+        // selectID
+        // 오직 하나의 값만 찾아서 리턴하는 SQL
+        // SELECT * FROM test WHERE test.seq = seq;
+        Optional<com.project.love_data.model.Test> result = Optional.ofNullable(testRepository.selectSEQ(seq));
 
         if (result.isPresent()){
             com.project.love_data.model.Test test = result.get();
             System.out.println(test);
+            System.out.println("#### Complete ####");
         }
     }
 
@@ -75,9 +85,14 @@ public class TestRepositoryTests {
 
     @Test
     public void testUpdate(){
+        int seq = 9;
+        String name = "Sam";
+        String country = "CN";
 //        com.project.love_data.model.Test test = com.project.love_data.model.Test.builder().seq(9).name("Sam").country("CN").build();
-        com.project.love_data.model.Test test = new com.project.love_data.model.Test(9, "Sam", "cn");
-        System.out.println(testRepository.save(test));
+//        com.project.love_data.model.Test test = new com.project.love_data.model.Test(9, "Sam", "cn");
+//        System.out.println(testRepository.save(test));
+        com.project.love_data.model.Test test = testRepository.updateSEQ(seq, name, country);
+        System.out.println(test);
     }
 
     @Test

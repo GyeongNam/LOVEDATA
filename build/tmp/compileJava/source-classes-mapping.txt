@@ -2,10 +2,9 @@ com/project/love_data/LoveDataApplication.java
  com.project.love_data.LoveDataApplication
 com/project/love_data/controller/HomeController.java
  com.project.love_data.controller.HomeController
-com/project/love_data/wrapper/TestRepository.java
- com.project.love_data.wrapper.TestRepository
 com/project/love_data/ServletInitializer.java
  com.project.love_data.ServletInitializer
 com/project/love_data/model/Test.java
  com.project.love_data.model.Test
- com.project.love_data.model.Test$TestBuilder
+com/project/love_data/wrapper/TestRepository.java
+ com.project.love_data.wrapper.TestRepository
