@@ -1,0 +1,67 @@
+@charset "UTF-8";
+
+/*footer*/
+footer a{
+  color: #333;
+  text-decoration: none;
+}
+footer a:hover {
+  color: #333
+}
+footer li{
+  list-style: none;
+}
+footer ul{
+
+  padding-left: 0;
+}
+footer{
+  margin: 0;
+}
+
+.tang-footer {
+  color: #333;
+  font-size: 18px;
+  background-color: #e4d1f0;
+  padding: 10px;
+}
+.footbox{
+  display: block;
+  width: 70%;
+  height: auto;
+  margin: auto;
+}
+.pootlist{
+  display: block;
+  margin-top: 1rem;
+}
+.pootcopyandgogak{
+  display: flex;
+  margin-top: 3rem;
+}
+
+.sponcl{
+  display: flex;
+  height: 3rem;
+  width:70%;
+  margin: 5px 0px;
+  text-align: center;
+  align-items: center;
+}
+.ftn{
+  margin-right: 3rem;
+  padding-left: 1rem;
+  border-left: 1px solid #bdbdbd;
+  color: #333;
+}
+.foothadan{
+  display: block;
+  width: 50%;
+  background-color: #ffffff;
+  padding-top: 12px;
+  padding-bottom: 9px;
+
+}
+.fottwo{
+  padding: 0 29px 0 30px;
+}

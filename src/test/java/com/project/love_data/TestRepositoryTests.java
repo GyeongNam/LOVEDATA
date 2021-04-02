@@ -37,18 +37,12 @@ public class TestRepositoryTests {
         System.out.println(test);
     }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
+
     @Test
     public void testSelectAll() {
     	System.out.println(testRepository.selectallSEQ());
     }
-    @Test
-    public void testInsert() {
-        String name = "111";
-        String country = "12";
-    	testRepository.insertSEQ(name,country);
-    }
-    
+
     @Test
     public void testUpdate(){
         int seq = 5;
@@ -56,7 +50,7 @@ public class TestRepositoryTests {
         String country = "52";
         testRepository.updateSEQ(seq,name,country);
     }
-    
+
     @Test
     public void testDelete(){
         Integer seq = 5;
