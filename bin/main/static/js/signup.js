@@ -12,7 +12,7 @@ $("#modal_opne_btn").click(function(){
     $("#modal").fadeOut();
     $(".modal_content").fadeOut();
 });
-﻿// 비밀번호 유효성
+// 비밀번호 유효성
 function chkpw(){
   var pw = $("#pwd1").val();
   var num = pw.search(/[0-9]/g);
@@ -74,10 +74,16 @@ $('#selectEmail').change(function(){
     }
   });
 });
-//
-
-
+// 핸드폰 숫자만 입력가능
   $(".phone_nums").keydown( function(){
       $(this).val( $(this).val().replace(/[^0-9]/gi,"")
     );
   });
+// 체크박스 체크
+ $(".checkbox11").change(function(){
+   if($(".checkbox11").is(":checked")){
+     $(".checkbox12").val("yes");
+   } else {
+     $(".checkbox12").val("no");
+   }
+ });

@@ -1,4 +1,4 @@
-package com.project.love_data.wrapper;
+package com.project.love_data.Repository;
 
 import com.project.love_data.model.Test;
 
