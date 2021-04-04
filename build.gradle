@@ -53,6 +53,9 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
 	implementation 'javax.servlet:jstl'
+
+	// https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
 }
 
 test {

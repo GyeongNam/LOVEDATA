@@ -21,13 +21,11 @@ public class Test {
     private String country;
 
     public Test() {
-        this.seq=0;
         this.name=null;
         this.country=null;
     }
 
-    public Test(int seq, String name, String country) {
-        this.seq = seq;
+    public Test( String name, String country) {
         this.name = name;
         this.country = country;
     }

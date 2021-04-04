@@ -74,10 +74,71 @@ $('#selectEmail').change(function(){
     }
   });
 });
-//
-
-
+// 핸드폰 숫자만 입력가능
   $(".phone_nums").keydown( function(){
       $(this).val( $(this).val().replace(/[^0-9]/gi,"")
     );
   });
+// 이메일 수신동의 체크박스 체크
+ $(".checkbox11").change(function(){
+   if($(".checkbox11").is(":checked")){
+     $(".checkbox12").val("yes");
+   } else {
+     $(".checkbox12").val("no");
+   }
+ });
+// email 중복확인
+function email_check(){
+  var mail1 = $('#str_email01').val();
+  var mail2 = $('#str_email02').val();
+  var mail = mail1+"@"+mail2;
+  var s_relult = $('#email_check').val();
+
+  $.ajax({
+    // headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+    url: " /email_check",
+    dataType: 'json',
+    data: {mail:mail},
+    type: "POST",
+    success:function(data){
+      var datas = data.data;
+      console.log(datas);
+      if(datas==1){
+        s_relult.css("color", "red")
+        s_relult.text("사용 중인 이메일입니다!");
+      }
+      else {
+        s_relult.css("color", "green")
+        s_relult.text("사용 가능한 아이디입니다.");
+      }
+    },
+    error : function(){
+      console.log(datas);
+    }
+  });
+
+// 닉네임 중복확인
+// function nick_check(){
+//   var userid = $('#new_id').val();
+//   var id_result = $('#id_result').val();
+//
+//   $.ajax({
+//     url: " /nick_check",
+//     dataType: 'json',
+//     data: {id:userid},
+//     type: "POST",
+//     success:function(data){
+//       var datas = data.data;
+//       console.log(datas);
+//       if(datas==1){
+//         $("#id_result").text("사용중인 아이디입니다!");
+//       }
+//       else {
+//         $("#id_result").text("사용 가능한 아이디입니다.");
+//       }
+//     },
+//     error : function(){
+//       console.log(datas);
+//     }
+//   });
+}

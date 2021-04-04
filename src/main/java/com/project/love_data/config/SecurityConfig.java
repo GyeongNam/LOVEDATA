@@ -1,4 +1,4 @@
-package com.project.love_data;
+package com.project.love_data.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,15 +11,23 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
-	  
+
   @Override
-  protected void configure(HttpSecurity httpSecurity) throws Exception {
-	  // ·Î±×ÀÎ È­¸é ºñÈ°¼ºÈ­
-	  httpSecurity
-		  .httpBasic().disable();  
+  protected void configure(HttpSecurity http) throws Exception {
+//	  http.formLogin().loginPage("/login");
+
+      http.authorizeRequests()
+              .antMatchers("/sample/member").hasRole("USER")
+              .antMatchers("/sample/all").permitAll();
+      // csrf í† í° ë¹„í™œì„±í™”
+//        http.csrf().disable()''
+//      super.configure(http);
+      //ë¡œê·¸ì¸ í™”ë©´ ë¹„í™œì„±í™”
+      http.httpBasic().disable();
+      http.formLogin();
   }
-  
-  // ÆĞ½º¿öµå ¾ÏÈ£È­¸¦ À§ÇÑ ÇÔ¼ö
+
+  // íŒ¨ìŠ¤ì›Œë“œ ì•”í˜¸í™”ë¥¼ ìœ„í•œ í•¨ìˆ˜
   @Bean
   public PasswordEncoder passwordEncoder(){
       return new BCryptPasswordEncoder();
