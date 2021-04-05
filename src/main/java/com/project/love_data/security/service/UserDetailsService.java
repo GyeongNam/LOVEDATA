@@ -23,7 +23,6 @@ public class UserDetailsService implements org.springframework.security.core.use
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         log.info("UserDetailsService loadUserByUsername " + username);
 
-//        Optional<User> result = userRepository.findUserByEmail_Social(username, false);
         Optional<User> result = userRepository.findUserByEmail_Privilege(username);
 
         // DB에 저장된 유저 정보가 없을 때
@@ -33,15 +32,9 @@ public class UserDetailsService implements org.springframework.security.core.use
 
         User user = result.get();
 
-//        log.info("UserDetailsService user info : " + user.toString());
-//        log.info("UserDetailsService userRole(SET) : " + user.getRoleSet());
-//        og.info("UserDetailsService userRole : " + user.getRoleSet().stream().map(role -> new SimpleGrantedAuthority(role)).collect(Collectors.toSet()));
         log.debug("UserDetailsService user info : " + user.toString());
         log.debug("UserDetailsService userRole(SET) : " + user.getRoleSet());
         log.debug("UserDetailsService userRole : " + user.getRoleSet().stream().map(role -> new SimpleGrantedAuthority(role)).collect(Collectors.toSet()));
-
-        // ToDo : 2021-04-05 02:17
-        // SimpleGrantedAuthority 구현해서 ROLE 구분하기
 
          AuthUserModel authUserModel = new AuthUserModel(
                 user.getUser_email(),

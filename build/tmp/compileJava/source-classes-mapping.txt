@@ -2,9 +2,8 @@ com/project/love_data/repository/UserRepository.java
  com.project.love_data.repository.UserRepository
 com/project/love_data/controller/HomeController.java
  com.project.love_data.controller.HomeController
-com/project/love_data/model/User.java
- com.project.love_data.model.User
- com.project.love_data.model.User$UserBuilder
+com/project/love_data/config/SecurityConfig.java
+ com.project.love_data.config.SecurityConfig
 com/project/love_data/controller/UserController.java
  com.project.love_data.controller.UserController
 com/project/love_data/security/converter/UserRoleConverter.java
@@ -17,8 +16,9 @@ com/project/love_data/security/model/UserRole.java
  com.project.love_data.security.model.UserRole
 com/project/love_data/LoveDataApplication.java
  com.project.love_data.LoveDataApplication
-com/project/love_data/security/service/UserDetailsService.java
- com.project.love_data.security.service.UserDetailsService
+com/project/love_data/model/User.java
+ com.project.love_data.model.User
+ com.project.love_data.model.User$UserBuilder
 com/project/love_data/controller/SampleController.java
  com.project.love_data.controller.SampleController
 com/project/love_data/model/Test.java
@@ -27,5 +27,5 @@ com/project/love_data/ServletInitializer.java
  com.project.love_data.ServletInitializer
 com/project/love_data/config/ConverterConfig.java
  com.project.love_data.config.ConverterConfig
-com/project/love_data/config/SecurityConfig.java
- com.project.love_data.config.SecurityConfig
+com/project/love_data/security/service/UserDetailsService.java
+ com.project.love_data.security.service.UserDetailsService
