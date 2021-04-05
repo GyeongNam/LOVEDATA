@@ -98,7 +98,7 @@ function email_check(){
   var mail1 = $('#str_email01').val();
   var mail2 = $('#str_email02').val();
   var mail = mail1+"@"+mail2;
-  var s_relult = $('#email_check').val();
+  var s_relult = $('#email_check');
   var token = $("meta[name='_csrf']").attr("content");
   var header = $("meta[name='_csrf_header']").attr("content");
   $(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
@@ -114,7 +114,7 @@ function email_check(){
     success:function(data){
       var datas = data;
       console.log(datas.msg);
-      if(datas==1){
+      if(datas.msg =="0"){
         s_relult.css("color", "red")
         s_relult.text("사용 중인 이메일입니다!");
       }

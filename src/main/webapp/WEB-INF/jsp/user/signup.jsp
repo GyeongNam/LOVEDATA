@@ -36,7 +36,7 @@
 							<input type="text" name="str_email01" id="str_email01"
 								required="required" onblur="email_check()"> @ <input type="text"
 								name="str_email02" id="str_email02" onblur="email_check()" required placeholder="">
-							<select name="str_email03" id="selectEmail" required="required">
+							<select name="str_email03" id="selectEmail" onblur="email_check()"  required="required">
 								<option value="1">직접입력</option>
 								<option value="naver.com">naver.com</option>
 								<option value="hanmail.net">hanmail.net</option>
