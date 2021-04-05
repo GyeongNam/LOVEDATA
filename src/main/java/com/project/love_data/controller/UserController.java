@@ -1,7 +1,7 @@
 package com.project.love_data.controller;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.project.love_data.Repository.UserRepository;
+import com.project.love_data.repository.UserRepository;
 import com.project.love_data.model.User;
 
 @Controller
@@ -37,18 +37,32 @@ public class UserController {
 				@RequestParam(value = "str_phone03")String phone03,
 				@RequestParam(value = "birthday")String birthday,
 				@RequestParam(value = "gender")String gender,
-				@RequestParam(value = "assent")String assent
+				@RequestParam(value = "recv_email")String recv_email
     		) {
-    	User user = new User(
-    			email1 + "@" + email2,
-    			passwordEncoder.encode(pwd),
-    			nickname,
-    			userName,
-    			phone01 + phone02 + phone03,
-    			birthday,
-    			gender,
-					assent
-        		);
+//    	User user = new User(
+//    			email1 + "@" + email2,
+//    			passwordEncoder.encode(pwd),
+//    			nickname,
+//    			userName,
+//    			phone01 + phone02 + phone03,
+//    			birthday,
+//    			gender,
+//					assent
+//        		);
+
+		User user = User.builder()
+				.user_email(email1 + "@" + email2)
+				.user_pw(passwordEncoder.encode(pwd))
+				.user_nic(nickname)
+				.user_name(userName)
+				.user_phone(phone01 + phone02 + phone03)
+				.user_birth(birthday)
+				.user_gen(gender)
+				.user_emil_re(recv_email)
+				.user_time(LocalDateTime.now())
+				.user_social(false).build();
+//		user.setUser_userRole(UserRole.USER);
+
     	userRepository.save(user);
 
     	return "home";
@@ -60,7 +74,7 @@ public class UserController {
     	
       	System.out.println(data.get("mail"));
       	Map<String, String> map = new HashMap<String, String>();
-      	map.put("msg","¼º°ø");
+      	map.put("msg","ì„±ê³µ");
       	return map;
 
     }

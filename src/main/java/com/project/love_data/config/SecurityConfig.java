@@ -20,11 +20,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
               .antMatchers("/sample/member").hasRole("USER")
               .antMatchers("/sample/all").permitAll();
       // csrf 토큰 비활성화
-//        http.csrf().disable()''
+//        http.csrf().disable();
 //      super.configure(http);
       //로그인 화면 비활성화
       http.httpBasic().disable();
-      http.formLogin();
   }
 
   // 패스워드 암호화를 위한 함수

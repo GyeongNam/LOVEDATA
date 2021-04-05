@@ -11,6 +11,7 @@
     <title>Member</title>
 </head>
 <body>
+<input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
     <h1>Member test....</h1>
 </body>
 </html>

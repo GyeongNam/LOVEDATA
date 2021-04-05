@@ -11,6 +11,7 @@
     <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>
 </head>
 <body>
+<input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
 <div class="container">
     <form class="form-signin" method="post" action="/login">
         <h2 class="form-signin-heading">로그인 해주세요</h2>
@@ -22,7 +23,6 @@
             <label for="password" class="sr-only">Password</label>
             <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
         </p>
-        <input name="_csrf" type="hidden" value="9221c198-bc0b-42d1-9220-5118bb736cc5" />
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
     </form>
 </div>

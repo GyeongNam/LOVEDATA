@@ -51,8 +51,8 @@
 								<option value="gmail.com">gmail.com</option>
 								<option value="hanmir.com">hanmir.com</option>
 								<option value="paran.com">paran.com</option>
-							</select> <input class="checkbox11" type="checkbox" name="assents" /> <input
-								class="checkbox12" type="hidden" name="assent" />
+							</select> <input class="checkbox11" type="checkbox" name="recv_email" /> <input
+								class="checkbox12" type="hidden" name="recv_email" />
 							<spen class="spen"> 이메일 수신에 동의합니다.</spen>
 						</div>
 						<div>

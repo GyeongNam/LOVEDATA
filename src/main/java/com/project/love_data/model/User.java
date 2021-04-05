@@ -1,11 +1,11 @@
 package com.project.love_data.model;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import com.project.love_data.security.model.UserRole;
+import lombok.*;
 import org.hibernate.annotations.Type;
 
 import java.time.LocalDateTime;
+import java.util.*;
 
 import javax.persistence.*;
 
@@ -14,7 +14,10 @@ import javax.persistence.*;
 @ToString
 @Setter
 @Getter
-public class User {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class User{
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long user_no;
@@ -57,36 +60,44 @@ public class User {
     @Column(length = 50, nullable = false)
     private LocalDateTime user_time;
 
-    public User(){
-        String user_email = null;
-        String user_pw = null;
-        String user_nic = null;
-        String user_name = null;
-        String user_phone = null;
-        String user_bir = null;
-        String user_gen = null;
-        String user_emil_re = null;
+    @ElementCollection(fetch = FetchType.LAZY)
+    @Builder.Default
+    private Set<String> roleSet = new HashSet<>();
+
+    public void addUserRole(UserRole role) {
+        roleSet.add(role.name());
     }
 
-    public User(
-    		String user_email, 
-    		String user_pw, 
-    		String user_nic, 
-    		String user_name, 
-    		String user_phone,
-    		String user_birth,
-    		String user_gen,
-    		String user_emil_re
-    		) {
-        this.user_email = user_email;
-        this.user_pw = user_pw;
-        this.user_nic = user_nic;
-        this.user_name = user_name;
-        this.user_phone = user_phone;
-        this.user_birth = user_birth;
-        this.user_gen=user_gen;
-        this.user_emil_re = user_emil_re;
-        this.user_Activation = "1";
-        this.user_time = LocalDateTime.now();
-    }
+//    public User(){
+//        String user_email = null;
+//        String user_pw = null;
+//        String user_nic = null;
+//        String user_name = null;
+//        String user_phone = null;
+//        String user_bir = null;
+//        String user_gen = null;
+//        String user_emil_re = null;
+//    }
+//
+//    public User(
+//    		String user_email,
+//    		String user_pw,
+//    		String user_nic,
+//    		String user_name,
+//    		String user_phone,
+//    		String user_birth,
+//    		String user_gen,
+//    		String user_emil_re
+//    		) {
+//        this.user_email = user_email;
+//        this.user_pw = user_pw;
+//        this.user_nic = user_nic;
+//        this.user_name = user_name;
+//        this.user_phone = user_phone;
+//        this.user_birth = user_birth;
+//        this.user_gen=user_gen;
+//        this.user_emil_re = user_emil_re;
+//        this.user_Activation = "1";
+//        this.user_time = LocalDateTime.now();
+//    }
 }

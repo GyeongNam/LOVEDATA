@@ -1,12 +1,12 @@
 package com.project.love_data;
 
-import com.project.love_data.Repository.UserRepository;
+import com.project.love_data.repository.UserRepository;
 import com.project.love_data.model.User;
+import com.project.love_data.security.model.UserRole;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -25,7 +25,7 @@ public class UserTest {
         IntStream.rangeClosed(1, 100).forEach(i -> {
             User user = new User();
             user.setUser_email("User" + StringUtils.leftPad(Integer.toString(i), 4, '0') + "@lovedata.com");
-            user.setUser_pw("0000");
+            user.setUser_pw(passwordEncoder.encode("0000"));
             user.setUser_nic("User" + StringUtils.leftPad(Integer.toString(i), 4, '0'));
             user.setUser_name("User" + StringUtils.leftPad(Integer.toString(i), 4, '0'));
             user.setUser_phone("010-0000-0000");
@@ -34,13 +34,15 @@ public class UserTest {
             user.setUser_time(LocalDateTime.now());
             user.setUser_Activation("1");
             user.setUser_social(false);
+//            user.setUser_userRole(UserRole.USER);
+            user.addUserRole(UserRole.USER);
 
             repository.save(user);
         });
 
         User user = new User();
         user.setUser_email("User" + StringUtils.leftPad(Integer.toString(101), 4, '0') + "@lovedata.com");
-        user.setUser_pw("0000");
+        user.setUser_pw(passwordEncoder.encode("0000"));
         user.setUser_nic("User" + StringUtils.leftPad(Integer.toString(101), 4, '0'));
         user.setUser_name("User" + StringUtils.leftPad(Integer.toString(101), 4, '0'));
         user.setUser_phone("010-0000-0000");
@@ -49,6 +51,9 @@ public class UserTest {
         user.setUser_time(LocalDateTime.now());
         user.setUser_Activation("1");
         user.setUser_social(true);
+//        user.setUser_userRole(UserRole.ADMIN);
+        user.addUserRole(UserRole.ADMIN);
+        user.addUserRole(UserRole.USER);
 
         repository.save(user);
     }
@@ -80,6 +85,16 @@ public class UserTest {
             System.out.println("Complete");
             System.out.println("########################################");
         }
+    }
+
+    @Test
+    public void testUserRole_Read(){
+        Optional<User> result = repository.findUserByEmail_Privilege("User0101@lovedata.com");
+
+        User temp = result.get();
+
+//        System.out.println(temp);
+        System.out.println(temp.getRoleSet());
     }
 
     @Test

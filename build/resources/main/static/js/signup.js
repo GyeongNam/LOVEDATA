@@ -88,21 +88,32 @@ $('#selectEmail').change(function(){
    }
  });
 // email 중복확인
+
+var mail1_ck1 = 0;
+var mail1_ck2 = 0;
+
+
+
 function email_check(){
   var mail1 = $('#str_email01').val();
   var mail2 = $('#str_email02').val();
   var mail = mail1+"@"+mail2;
   var s_relult = $('#email_check').val();
+  var token = $("meta[name='_csrf']").attr("content");
+  var header = $("meta[name='_csrf_header']").attr("content");
+  $(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
+
+  var postdata = {"mail" : mail }
 
   $.ajax({
-    // headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
     url: " /email_check",
     dataType: 'json',
-    data: {mail:mail},
+    contentType: "application/json; charset=UTF-8",
+    data: JSON.stringify(postdata),
     type: "POST",
     success:function(data){
-      var datas = data.data;
-      console.log(datas);
+      var datas = data;
+      console.log(datas.msg);
       if(datas==1){
         s_relult.css("color", "red")
         s_relult.text("사용 중인 이메일입니다!");
@@ -113,10 +124,10 @@ function email_check(){
       }
     },
     error : function(){
-      console.log(datas);
+      console.log(data);
     }
   });
-
+}
 // 닉네임 중복확인
 // function nick_check(){
 //   var userid = $('#new_id').val();
@@ -141,4 +152,4 @@ function email_check(){
 //       console.log(datas);
 //     }
 //   });
-}
+// }
