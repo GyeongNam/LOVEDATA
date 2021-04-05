@@ -55,7 +55,22 @@ public class UserTest {
         user.addUserRole(UserRole.ADMIN);
         user.addUserRole(UserRole.USER);
 
+        User user1 = new User();
+        user1.setUser_email("mon0mon@naver.com");
+        user1.setUser_pw(passwordEncoder.encode("1111"));
+        user1.setUser_nic("mon0mon");
+        user1.setUser_name("이민기");
+        user1.setUser_phone("010-0000-0000");
+        user1.setUser_birth("");
+        user1.setUser_gen("");
+        user1.setUser_time(LocalDateTime.now());
+        user1.setUser_Activation("1");
+        user1.setUser_social(true);
+        user1.addUserRole(UserRole.ADMIN);
+        user1.addUserRole(UserRole.USER);
+
         repository.save(user);
+        repository.save(user1);
     }
 
     @Test

@@ -33,8 +33,12 @@ public class UserDetailsService implements org.springframework.security.core.use
 
         User user = result.get();
 
-        log.info("-----------------------");
-        log.info(user);
+//        log.info("UserDetailsService user info : " + user.toString());
+//        log.info("UserDetailsService userRole(SET) : " + user.getRoleSet());
+//        og.info("UserDetailsService userRole : " + user.getRoleSet().stream().map(role -> new SimpleGrantedAuthority(role)).collect(Collectors.toSet()));
+        log.debug("UserDetailsService user info : " + user.toString());
+        log.debug("UserDetailsService userRole(SET) : " + user.getRoleSet());
+        log.debug("UserDetailsService userRole : " + user.getRoleSet().stream().map(role -> new SimpleGrantedAuthority(role)).collect(Collectors.toSet()));
 
         // ToDo : 2021-04-05 02:17
         // SimpleGrantedAuthority 구현해서 ROLE 구분하기
@@ -43,10 +47,8 @@ public class UserDetailsService implements org.springframework.security.core.use
                 user.getUser_email(),
                 user.getUser_pw(),
                 user.isUser_social(),
-                user.getRoleSet().stream().map(role -> new SimpleGrantedAuthority(role)).collect(Collectors.toSet())
+                user.getRoleSet().stream().map(role -> new SimpleGrantedAuthority("ROLE_"+role)).collect(Collectors.toSet())
         );
-
-         log.info("User get Role : " + user.getRoleSet().stream().map(role -> new SimpleGrantedAuthority(role)).collect(Collectors.toSet()));
 
          authUserModel.setUser_name(user.getUser_name());
          authUserModel.setUser_social(user.isUser_social());

@@ -13,7 +13,7 @@
 <body>
 <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
 <div class="container">
-    <form class="form-signin" method="post" action="/login">
+    <form class="form-signin" method="post" action="/login_check">
         <h2 class="form-signin-heading">로그인 해주세요</h2>
         <p>
             <label for="useremail" class="sr-only">User_Email</label>
@@ -27,3 +27,5 @@
     </form>
 </div>
 </body></html>
+
+<script src="/js/login.js"></script>

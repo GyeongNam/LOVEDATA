@@ -25,6 +25,12 @@ public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+//    @RequestMapping(value = "/login_check", method = RequestMethod.POST)
+//	public String login(
+//			@RequestParam(value = "user_mail")String email,
+//			@RequestParam(value = "password")String pwd){
+//	}
+
     @RequestMapping(value="/signup_add",method = RequestMethod.POST)
     public String signup(
 	    		@RequestParam(value = "str_email01")String email1,
