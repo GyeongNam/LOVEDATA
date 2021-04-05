@@ -63,7 +63,7 @@ public class User {
         String user_nic = null;
         String user_name = null;
         String user_phone = null;
-        String user_bir = null;
+        String user_birth = null;
         String user_gen = null;
         String user_emil_re = null;
     }

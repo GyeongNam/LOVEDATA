@@ -143,7 +143,7 @@ function nick_check(){
     success:function(data){
       var datas = data.msg;
       console.log(datas);
-      if(datas=="1"){
+      if(datas=="0"){
         s_relult.css("color", "red")
         s_relult.text("사용 중인 닉네임입니다!");
       }
