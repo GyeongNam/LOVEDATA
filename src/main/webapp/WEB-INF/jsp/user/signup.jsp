@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page session="false"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
@@ -10,17 +11,18 @@
 
 <html>
 <meta charset="UTF-8">
-<meta id="_csrf" name="_csrf" content="${_csrf.token}" />
-<meta id="_csrf_header" name="_csrf_header"
-	content="${_csrf.headerName}">
+<%-- <meta id="_csrf" name="_csrf" content="${_csrf.token}" />
+<meta id="_csrf_header" name="_csrf_header" content="${_csrf.headerName}"> --%>
+
 <head>
+<meta name="_csrf" content="${_csrf.token}">
+<meta name="_csrf_header" content="${_csrf.headerName}">
 <title>회원가입ㅣLOVEDATA</title>
 </head>
 <body>
 	<form class="signupform" action="/signup_add" method="post">
-		<input type="hidden" name="${_csrf.parameterName }"
-			value="${_csrf.token}">
-
+		<%-- <input type="hidden" name="${_csrf.parameterName }"value="${_csrf.token}"> --%>
+		<input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
 		<div class="content">
 			<div class="logo">
 				<h1>LOVEDATA</h1>
@@ -32,8 +34,8 @@
 					<td>
 						<div class="emailcontent">
 							<input type="text" name="str_email01" id="str_email01"
-								required="required"> @ <input type="text"
-								name="str_email02" id="str_email02" required placeholder="">
+								required="required" onblur="email_check()"> @ <input type="text"
+								name="str_email02" id="str_email02" onblur="email_check()" required placeholder="">
 							<select name="str_email03" id="selectEmail" required="required">
 								<option value="1">직접입력</option>
 								<option value="naver.com">naver.com</option>

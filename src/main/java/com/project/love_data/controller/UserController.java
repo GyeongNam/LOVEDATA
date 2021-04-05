@@ -1,5 +1,7 @@
 package com.project.love_data.controller;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.project.love_data.Repository.UserRepository;
 import com.project.love_data.model.User;
@@ -50,15 +53,15 @@ public class UserController {
 
     	return "home";
     }
+    
+    @ResponseBody
     @RequestMapping(value="/email_check",method = RequestMethod.POST)
-    public String email_check(@RequestBody Map<String, String> data) {
+    public Map<String,String> email_check(@RequestBody HashMap<String, String> data){
     	
-    	if(userRepository.email_check(data.get("mail"))) {
-    		return "1";
-    	}
-    	else {
-    		return "0";
-    	}
-    	
+      	System.out.println(data.get("mail"));
+      	Map<String, String> map = new HashMap<String, String>();
+      	map.put("msg","¼º°ø");
+      	return map;
+
     }
 }

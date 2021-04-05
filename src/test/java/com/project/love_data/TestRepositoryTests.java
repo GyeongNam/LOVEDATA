@@ -81,7 +81,7 @@ public class TestRepositoryTests {
             System.out.println("# item " + index++);
             System.out.println("item seq : " + item.getSeq());
             System.out.println("item country : " + item.getCountry());
-            System.out.println("item name : " + item.getName());
+            System.out.println("item name : " + item.getName());     
         }
         System.out.println("Result Size : " + tempList.size());
     }
