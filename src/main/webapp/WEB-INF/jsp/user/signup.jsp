@@ -78,7 +78,7 @@
 				<tr>
 					<td class="thead"><label class="label"><strong>닉네임
 								*</strong></label></td>
-					<td><input type="text" class="nickname" name="nickname"
+					<td><input type="text" onblur="nick_check()" class="nickname" name="nickname"
 						id="nickname" minlength=3 required> <spen class="spen"
 							id="nickname_check"></spen></td>
 				</tr>

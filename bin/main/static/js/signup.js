@@ -92,16 +92,15 @@ $('#selectEmail').change(function(){
 var mail1_ck1 = 0;
 var mail1_ck2 = 0;
 
-
+var token = $("meta[name='_csrf']").attr("content");
+var header = $("meta[name='_csrf_header']").attr("content");
+$(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
 
 function email_check(){
   var mail1 = $('#str_email01').val();
   var mail2 = $('#str_email02').val();
   var mail = mail1+"@"+mail2;
   var s_relult = $('#email_check');
-  var token = $("meta[name='_csrf']").attr("content");
-  var header = $("meta[name='_csrf_header']").attr("content");
-  $(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
 
   var postdata = {"mail" : mail }
 
@@ -129,27 +128,32 @@ function email_check(){
   });
 }
 // 닉네임 중복확인
-// function nick_check(){
-//   var userid = $('#new_id').val();
-//   var id_result = $('#id_result').val();
-//
-//   $.ajax({
-//     url: " /nick_check",
-//     dataType: 'json',
-//     data: {id:userid},
-//     type: "POST",
-//     success:function(data){
-//       var datas = data.data;
-//       console.log(datas);
-//       if(datas==1){
-//         $("#id_result").text("사용중인 아이디입니다!");
-//       }
-//       else {
-//         $("#id_result").text("사용 가능한 아이디입니다.");
-//       }
-//     },
-//     error : function(){
-//       console.log(datas);
-//     }
-//   });
-// }
+function nick_check(){
+  var nickname = $('#nickname');
+  var s_relult = $('#nickname_check');
+
+  var postdata = {"nickname" : nickname.val() }
+
+  $.ajax({
+    url: " /nick_check",
+    dataType: 'json',
+    contentType: "application/json; charset=UTF-8",
+    data: JSON.stringify(postdata),
+    type: "POST",
+    success:function(data){
+      var datas = data.msg;
+      console.log(datas);
+      if(datas=="1"){
+        s_relult.css("color", "red")
+        s_relult.text("사용 중인 닉네임입니다!");
+      }
+      else {
+        s_relult.css("color", "green")
+        s_relult.text("사용 가능한 닉네임입니다.");
+      }
+    },
+    error : function(){
+      console.log(datas);
+    }
+  });
+}
