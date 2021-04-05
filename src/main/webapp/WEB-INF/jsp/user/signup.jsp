@@ -36,7 +36,7 @@
 							<input type="text" name="str_email01" id="str_email01"
 								required="required" onblur="email_check()"> @ <input type="text"
 								name="str_email02" id="str_email02" onblur="email_check()" required placeholder="">
-							<select name="str_email03" id="selectEmail" required="required">
+							<select name="str_email03" id="selectEmail" onblur="email_check()"  required="required">
 								<option value="1">직접입력</option>
 								<option value="naver.com">naver.com</option>
 								<option value="hanmail.net">hanmail.net</option>
@@ -78,7 +78,7 @@
 				<tr>
 					<td class="thead"><label class="label"><strong>닉네임
 								*</strong></label></td>
-					<td><input type="text" class="nickname" name="nickname"
+					<td><input type="text" onblur="nick_check()" class="nickname" name="nickname"
 						id="nickname" minlength=3 required> <spen class="spen"
 							id="nickname_check"></spen></td>
 				</tr>

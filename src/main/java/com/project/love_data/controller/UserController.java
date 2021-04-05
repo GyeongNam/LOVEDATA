@@ -3,6 +3,7 @@ package com.project.love_data.controller;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -73,15 +74,36 @@ public class UserController {
 
     	return "home";
     }
-    
+
     @ResponseBody
     @RequestMapping(value="/email_check",method = RequestMethod.POST)
     public Map<String,String> email_check(@RequestBody HashMap<String, String> data){
-    	
-      	System.out.println(data.get("mail"));
-      	Map<String, String> map = new HashMap<String, String>();
-      	map.put("msg","성공");
-      	return map;
 
+    	Map<String, String> map = new HashMap<String, String>();
+    	String a = userRepository.email_check(data.get("mail"));
+
+      	if(a == null || a.length() == 0) {
+      		map.put("msg","1");
+      	}
+      	else {
+      		map.put("msg","0");
+      	}
+      	return map;
+    }
+
+	@ResponseBody
+    @RequestMapping(value="/nick_check",method = RequestMethod.POST)
+    public Map<String,String> nick_check(@RequestBody HashMap<String, String> data){
+
+    	Map<String, String> map = new HashMap<String, String>();
+    	String a = userRepository.nick_check(data.get("nickname"));
+
+      	if(a == null || a.length() == 0) {
+      		map.put("msg","1");
+      	}
+      	else {
+      		map.put("msg","0");
+      	}
+      	return map;
     }
 }

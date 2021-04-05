@@ -1,2 +1,6 @@
 eclipse.preferences.version=1
+encoding//src/main/java/com/project/love_data/controller/HomeController.java=UTF-8
+encoding//src/main/java/com/project/love_data/controller/SampleController.java=UTF-8
+encoding//src/main/java/com/project/love_data/controller/UserController.java=UTF-8
+encoding//src/main/resources/static/js/signup.js=UTF-8
 encoding//src/test/java/com/project/love_data/TestRepositoryTests.java=UTF-8
