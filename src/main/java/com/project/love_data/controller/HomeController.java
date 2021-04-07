@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 //@RestController
 public class HomeController {	
-	@RequestMapping(value="/", method = RequestMethod.GET)
-	public String homepage() {
-		return "home";
-	}
-	
+//	@RequestMapping(value="/", method = RequestMethod.GET)
+//	public String homepage() {
+//		return "home";
+//	}
+//
 	@RequestMapping(value="/infoFind", method = RequestMethod.GET)
 	public String infoFindpage() {
 		return "user/infoFind";
@@ -26,13 +26,8 @@ public class HomeController {
 		return "user/signup";
 	}
 
-	@RequestMapping(value="/login", method = RequestMethod.GET)
-	public String login(){
-		return "user/login";
-	}
-
-	@RequestMapping(value="/test_jsp", method = RequestMethod.GET)
-	public String test_jsp(){
-		return "temp/test_jsp";
-	}
+//	@RequestMapping(value="/login", method = RequestMethod.GET)
+//	public String login(){
+//		return "user/login";
+//	}
 }

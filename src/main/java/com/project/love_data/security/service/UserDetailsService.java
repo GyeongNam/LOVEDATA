@@ -43,8 +43,19 @@ public class UserDetailsService implements org.springframework.security.core.use
                 user.getRoleSet().stream().map(role -> new SimpleGrantedAuthority("ROLE_"+role)).collect(Collectors.toSet())
         );
 
-         authUserModel.setUser_name(user.getUser_name());
-         authUserModel.setUser_social(user.isUser_social());
+         // 유저 패스워드 설정시 로그에 출력됨
+         authUserModel.setUser_pw(user.getUser_pw());
+        authUserModel.setUser_name(user.getUser_name());
+        authUserModel.setUser_birth(user.getUser_birth());
+        authUserModel.setUser_no(user.getUser_no());
+        authUserModel.setUser_Activation(user.getUser_Activation());
+        authUserModel.setUser_gen(user.getUser_gen());
+        authUserModel.setUser_nic(user.getUser_nic());
+        authUserModel.setUser_time(user.getUser_time());
+        authUserModel.setUser_emil_re(user.getUser_emil_re());
+        authUserModel.setUser_phone(user.getUser_phone());
+
+        log.info("UserDetailService_authUserModel : " + authUserModel);
 
         return authUserModel;
     }
