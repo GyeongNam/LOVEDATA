@@ -32,8 +32,8 @@ public class HomeController {
 		return "user/find-info";
 	}
 	
-	@RequestMapping(value="/test_jsp", method = RequestMethod.GET)
+	@RequestMapping(value="/find-info-new", method = RequestMethod.GET)
 	public String test_jsp(){
-		return "temp/test_jsp";
+		return "temp/find-info-new";
 	}
 }
