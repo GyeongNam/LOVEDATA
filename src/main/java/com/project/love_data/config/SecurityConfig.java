@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -16,8 +17,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
   @Override
   protected void configure(HttpSecurity http) throws Exception {
       http.authorizeRequests()
-              .antMatchers("/sample/member").hasRole("USER")
-              .antMatchers("/sample/all").permitAll();
+              .antMatchers("/member").hasRole("USER")
+              .antMatchers("/all").permitAll();
       // csrf 토큰 비활성화
 //        http.csrf().disable();
 //      super.configure(http);
@@ -25,9 +26,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
       //로그인 화면 비활성화
       http.httpBasic().disable();
       // 기본 로그인 화면
-      http.formLogin();
-      // TODO 기본 로그인 화면에서 커스텀 로그인 화면으로 바꾸기
-      //	  http.formLogin().loginPage("/login");
+//      http.formLogin();
+      	  http.formLogin().loginPage("/login");
+      	  http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/");
   }
 
 //    @Override

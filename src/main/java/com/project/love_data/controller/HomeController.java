@@ -2,9 +2,6 @@ package com.project.love_data.controller;
 
 import org.springframework.stereotype.Controller;
 
-import java.util.Map;
-
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -28,7 +25,7 @@ public class HomeController {
 
 	@RequestMapping(value="/login", method = RequestMethod.GET)
 	public String login(){
-		return "user/login";
+		return "user/loginPage";
 	}
 
 	@RequestMapping(value="/find-info", method = RequestMethod.GET)
