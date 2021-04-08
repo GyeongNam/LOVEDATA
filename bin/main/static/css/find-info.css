@@ -1,0 +1,14 @@
+@charset "EUC-KR";
+html{
+	margin: 0px;
+}
+
+body{
+	padding: 0px;
+	margin: 0px;
+}
+
+.find-content{
+	width: 100vw;
+        height: 100vh;
+}

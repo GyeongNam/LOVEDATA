@@ -15,48 +15,108 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<div id="main">
-      <footer class="tang-footer">
-        <div class="footbox">
-          <div class="footspon">
-            <div class="sponcl">
-              <div class="footqna ftn">
-                <a href="/Servicecenter">Q&A</a>
-              </div>
-              <div class="sangdam ftn">
-                <a href="#">1:1 상담</a>
-              </div>
-              <div class="sellpage ftn">
-                <a href="/manager_login">관리자</a>
-              </div>
-              <div class="sellpage ftn">
-                <a href="">이용약관</a>
-              </div>
-              <div class="sellpage ftn">
-                <a href="">개인정보처리방침</a>
-              </div>
-              <div class="sellpage ftn">
-                <a href="">위치기반서비스 이용약관</a>
-              </div>
-            </div>
-          </div>
-          <div class="pootlist">
-            <div class="pooterneau">
-              대표이사 : 조경남 <br>
-              개인정보 보호 담당자 : 이민기 <br>사업자등록정보 : 112-45-11468 <br>통신판매업신고 : 2020-경기도덕양구-1147 <br>주소 : 경기도 고양시 덕양구 동헌로 305 세종관 5층 542호 TEL/FAX 031-939-2142<br>
-            </div>
-            <div class="pootcopyandgogak">
-              <div class="pootcopyright">
-                Copyrightⓒjunggotangtang Inc.All rights reserved.
-              </div>
-              <div class="centernum">
-                고객센터 010-0000-0000  제휴문의 272518@naver.com
-              </div>
-            </div>
-        </div>
-        </div>
-      </footer>
+<!-- footer -->
+<footer id="footer" class="container">
+	<div class="guardrail">
+		<ul class="sitemap">
+			<li>
+				<dl>
+					<dt>Services</dt>
+					<dd>
+						<a href="">서버호스팅</a>
+					</dd>
+					<dd>
+						<a href="">매니지드 클라우드</a>
+					</dd>
+					<dd>
+						<a href="">코로케이션</a>
+					</dd>
+					<dd>
+						<a href="">부가서비스</a>
+					</dd>
+				</dl>
+			</li>
+			<li>
+				<dl>
+					<dt>Support</dt>
+					<dd>
+						<a href="">Notice</a>
+					</dd>
+					<dd>
+						<a href="">Tip & Tech</a>
+					</dd>
+					<dd>
+						<a href="">FAQ</a>
+					</dd>
+					<dd>
+						<a href="">Inquiry</a>
+					</dd>
+				</dl>
+			</li>
+			<li>
+				<dl>
+					<dt>Legal</dt>
+					<dd>
+						<a href="">Privacy policy</a>
+					</dd>
+					<dd>
+						<a href="">Site terms</a>
+					</dd>
+					<dd>
+						<a href="">Terms of hosting serv.</a>
+					</dd>
+					<dd>
+						<a href="">Terms of cloud serv.</a>
+					</dd>
+				</dl>
+			</li>
+			<li>
+				<dl>
+					<!-- 20210405 -->
+					<dt>Company</dt>
+					<dd>
+						<p>(주)LOVEDATA | 대표&nbsp;&nbsp;&nbsp; 조경남, 이민기</p>
+					</dd>
+					<dd>
+						<p>사업자등록번호&nbsp;&nbsp;&nbsp;777-98-031576</p>
+					</dd>
+					<dd>
+						<p>
+							통신판매업신고&nbsp;&nbsp;&nbsp;제2021-경기고양-1417호 [<a
+								href=""
+								target="_blank">사업자정보확인</a>]
+						</p>
+					</dd>
+					<dd>
+						<p>경기 고양시 덕양구 동헌로 36 중부대학교 고양캠퍼스 세종관</p>
+					</dd>
+					<dd>
+						<p>Office&nbsp;&nbsp;&nbsp;1500.9716</p>
+					</dd>
+					<dd>
+						<p>Fax&nbsp;&nbsp;&nbsp;070.0707.1818</p>
+					</dd>
+					<dd>
+						<p>Email&nbsp;&nbsp;&nbsp;272518@naver.com</p>
+					</dd>
+					<dd>
+						<p>호스팅서비스 제공&nbsp;&nbsp;&nbsp;(주)LOVEDATA</p>
+					</dd>
+				</dl>
+			</li>
+		</ul>
 	</div>
+	<div class="copyright">
+		<div class="guardrail">
+			<span class="">&copy; Dorumamu Co. Inc.</span> <a
+				href="http://filamt.com/" class="btn-filament" target="_blank"
+				title="Filament Company"><i
+				class="vt-icon icon-filament icon-24"></i></a> <a
+				href="mailto:80000v@filamt.com" class="btn-mailto" title="Mail to"><i
+				class="material-icons">mail</i></a>
+		</div>
+	</div>
+</footer>
 </body>
 </html>
 <script src="/js/footer.js"></script>

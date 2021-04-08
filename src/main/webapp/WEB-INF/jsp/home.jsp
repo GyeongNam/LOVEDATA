@@ -10,6 +10,7 @@
 </head>
 <body>
 <%@ include file="layout/header.jsp" %>
+	<div class="container">
 <h1>
 	Hello world!
 </h1>
@@ -18,9 +19,15 @@
 <a href="/infoFind">아이디/비밀번호 찾기</a>
 <a href="/signup">회원가입</a>
 <a href="/login">로그인</a>
+<<<<<<< HEAD
+=======
+<a href="/find-info">회원정보 찾기</a>
+<a href="test_jsp">테스트_jsp</a>
+>>>>>>> origin/dorumamu
 <p>
 
 </p>
+</div>
 <%@ include file="layout/footer.jsp" %>
 </body>
 </html>
