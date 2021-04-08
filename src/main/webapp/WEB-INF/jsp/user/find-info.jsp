@@ -15,12 +15,7 @@
 </head>
 <body>
 <%@ include file="../layout/header.jsp" %>
-<div class="find-content">
-	<div class="find-info">
-		<div class="id-find"><input type="button" value="id찾기" onclick="find_id_popup()"></div>
-		<div class="pw-find"><Button>비밀번호 찾기</Button></div>
-	</div>
-</div>
+
 <%@ include file="../layout/footer.jsp" %>
 </body>
 </html>

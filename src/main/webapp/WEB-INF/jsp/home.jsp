@@ -10,6 +10,7 @@
 </head>
 <body>
 <%@ include file="layout/header.jsp" %>
+	<div class="container">
 <h1>
 	Hello world!
 </h1>
@@ -26,6 +27,7 @@
 	<a href="/users">db_테스트(DB의 값 불러오는 지)</a>
 	<a href="/users?country=냥국">db_테스트(DB에서 select가 되는 지)</a>
 </p>
+</div>
 <%@ include file="layout/footer.jsp" %>
 </body>
 </html>

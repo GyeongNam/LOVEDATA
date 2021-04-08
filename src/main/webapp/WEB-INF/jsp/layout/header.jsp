@@ -15,8 +15,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<div id="main">
-	  <div class="header">
+<div class="header" class="fixed-top">
 			<div id="hd-logo">
 				<a id="hd-name">LOVEDATA</a>
 			</div>
@@ -44,7 +43,6 @@
 				<button id="hd-btn" href="#">코스 만들기</button>
 			</div>
 		</div>
-	</div>
 </body>
 </html>
 <script src="/js/header.js"></script>

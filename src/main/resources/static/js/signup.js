@@ -70,7 +70,6 @@ $('#selectEmail').change(function(){
     else{    //직접입력이 아닐경우
       $("#str_email02").attr("readonly",true); //비활성화
       $("#str_email02").val($(this).text()); //선택값 입력
-
     }
   });
 });
