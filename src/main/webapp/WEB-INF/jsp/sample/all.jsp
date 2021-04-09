@@ -9,11 +9,9 @@
 <html>
 <head>
     <title>All</title>
-    <meta name="_csrf" content="${_csrf.token}">
-    <meta name="_csrf_header" content="${_csrf.headerName}">
 </head>
 <body>
-<input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
     <h1>All test....</h1>
+    <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
 </body>
 </html>

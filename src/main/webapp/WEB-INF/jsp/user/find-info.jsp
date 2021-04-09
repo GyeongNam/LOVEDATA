@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-﻿<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <meta charset="UTF-8">
 <!-- CSS -->
 <link href="/css/find-info.css" rel="stylesheet">

@@ -1,5 +1,7 @@
 package com.project.love_data.config;
 
+import com.project.love_data.security.service.UserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -13,6 +15,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
+    @Autowired
+    private UserDetailsService userDetailsService;
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
@@ -27,8 +31,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
       http.httpBasic().disable();
       // 기본 로그인 화면
 //      http.formLogin();
-      	  http.formLogin().loginPage("/login");
-      	  http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/");
+      http.rememberMe().tokenValiditySeconds(60 * 60 * 24 * 7).userDetailsService(userDetailsService);
+      http.formLogin().loginPage("/login");
+      http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/");
   }
 
 //    @Override
