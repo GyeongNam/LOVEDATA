@@ -7,6 +7,7 @@
     <meta lang="kr">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<%--    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">--%>
     <meta name="description" content="">
     <meta name="author" content="">
     <title>로그인 | LOVEDATA</title>
@@ -28,9 +29,19 @@
             <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
         </p>
         <p><input type='checkbox' name='remember-me'/> Remember me on this computer.</p>
-        <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
+        <sec:csrfInput />
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
     </form>
+    <center>
+        <form method="get" action="/login_kakao">
+            <sec:csrfInput />
+            <button type="submit" class="btn"><img class="img-fluid" src="/image/kakao_login/ko/kakao_login_large_narrow.png" width="366" height="90"></button><br>
+        </form>
+        <form method="get" action="alert('naver Login')">
+            <sec:csrfInput />
+            <button type="submit" class="btn"><img class="img-fluid" src="/image/naver_login/ko/NAVER_Official_Green.PNG" width="366" height="90"></button><br>
+        </form>
+    </center>
 </div>
 </body></html>
 
