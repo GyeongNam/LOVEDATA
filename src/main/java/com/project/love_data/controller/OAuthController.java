@@ -1,14 +1,14 @@
 package com.project.love_data.controller;
 
 import com.google.gson.Gson;
-import com.project.love_data.model.Auth;
+import com.project.love_data.model.KakaoAuthToken;
+import com.project.love_data.service.AcessCodeRequestKaKao;
 import com.project.love_data.util.URISetter;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -104,13 +104,13 @@ public class OAuthController {
     }
 
     @RequestMapping(value = "login_kakao/process", produces = "application/json")
-    public String kakao_login_process (
+    public String kakaoLogin_Process(
             @RequestParam(value = "code") String code,
             HttpServletRequest request
             ){
         httpClient = HttpClients.createDefault();
-        httpPost = new HttpPost();
         uri = URISetter.getKaKao_Token(code);
+        httpPost = new HttpPost(uri);
 
         // uri 예외 체크
         if (uri == null) {
@@ -121,10 +121,10 @@ public class OAuthController {
         // Todo 로그 지우기
         try {
             decodedURL = URLDecoder.decode(uri.toASCIIString(), "ASCII");
+            log.info("kakao token url : " +  decodedURL);
         } catch (UnsupportedEncodingException e) {
             log.info(e.getStackTrace());
         }
-        log.info("kakao token url : " +  decodedURL);
 
         try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
             httpPost.setURI(uri);
@@ -136,9 +136,9 @@ public class OAuthController {
             log.info(entity.getContent());
 
             String text = IOUtils.toString(entity.getContent(), StandardCharsets.UTF_8.name());
-            Auth auth = new Gson().fromJson(text, Auth.class);
+            KakaoAuthToken auth = new Gson().fromJson(text, KakaoAuthToken.class);
 
-            log.info(auth);
+            log.info("Kakao Token : " + auth);
 
             httpClient.close();
         } catch (ClientProtocolException e) {
