@@ -33,7 +33,6 @@ public class TokenRequestKakao implements TokenRequest{
         String code = request.getParameter("code");
         String error = request.getParameter("error");
         String error_desc = request.getParameter("error_description");
-        String decodedURL = null;
         CloseableHttpClient httpClient = null;
         HttpPost httpPost = null;
         OAuthToken token = new KakaoAuthToken();

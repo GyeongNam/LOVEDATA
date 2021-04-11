@@ -3,7 +3,6 @@ package com.project.love_data.controller;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.project.love_data.repository.UserRepository;
-import com.project.love_data.model.User;
+import com.project.love_data.model.user.User;
 
 @Controller
 public class UserController {

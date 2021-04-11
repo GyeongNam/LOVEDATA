@@ -22,24 +22,24 @@
         <h2 class="form-signin-heading">로그인 해주세요</h2>
         <p>
             <label for="username" class="sr-only">Username</label>
-            <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
+            <input type="text" id="username" name="username" class="form-control" placeholder="이메일" required autofocus>
         </p>
         <p>
             <label for="password" class="sr-only">Password</label>
-            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+            <input type="password" id="password" name="password" class="form-control" placeholder="비밀번호" required>
         </p>
-        <p><input type='checkbox' name='remember-me'/> Remember me on this computer.</p>
+        <p><input type='checkbox' name='remember-me' onclick="alert('개인 PC에서만 사용해주세요')"/>자동 로그인</p>
         <sec:csrfInput />
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">로그인</button>
     </form>
     <center>
         <form method="get" action="/login_kakao">
             <sec:csrfInput />
             <button type="submit" class="btn"><img class="img-fluid" src="/image/kakao_login/ko/kakao_login_large_narrow.png" width="366" height="90"></button><br>
         </form>
-        <form method="get" action="alert('naver Login')">
+        <form method="get" action="/">
             <sec:csrfInput />
-            <button type="submit" class="btn"><img class="img-fluid" src="/image/naver_login/ko/NAVER_Official_Green.PNG" width="366" height="90"></button><br>
+            <button type="submit" class="btn" onclick="alert('naver Login')"><img class="img-fluid" src="/image/naver_login/ko/NAVER_Official_Green.PNG" width="366" height="90"></button><br>
         </form>
     </center>
 </div>

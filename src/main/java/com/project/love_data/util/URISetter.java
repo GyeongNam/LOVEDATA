@@ -53,4 +53,23 @@ public class URISetter {
             return null;
         }
     }
+
+    // https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#req-user-info
+    public static URI getKakao_UserInfo() {
+        try {
+            URI uri = new URIBuilder()
+                    .setScheme("https")
+                    .setHost("kapi.kakao.com")
+                    .setPath("/v2/user/me")
+                    .setParameter("target_id_type", "")
+                    .setParameter("target_id", "")
+                    .setParameter("secure_resource", "true")
+                    .build();
+            return uri;
+        } catch (Exception e) {
+            log.info("getKakao_UserInfo URI 생성 과정 중 예외 발생");
+            log.info(e.getStackTrace());
+            return null;
+        }
+    }
 }

@@ -1,7 +1,7 @@
 package com.project.love_data.security.service;
 
 import com.project.love_data.repository.UserRepository;
-import com.project.love_data.model.User;
+import com.project.love_data.model.user.User;
 import com.project.love_data.security.model.AuthUserModel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
