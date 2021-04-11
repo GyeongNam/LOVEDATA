@@ -1,9 +1,9 @@
 com/project/love_data/repository/UserRepository.java
  com.project.love_data.repository.UserRepository
-com/project/love_data/model/OAuthCode.java
- com.project.love_data.model.OAuthCode
-com/project/love_data/util/URISetter.java
- com.project.love_data.util.URISetter
+com/project/love_data/service/AcessCodeRequest.java
+ com.project.love_data.service.AcessCodeRequest
+com/project/love_data/service/RequestLoginAPI.java
+ com.project.love_data.service.RequestLoginAPI
 com/project/love_data/controller/HomeController.java
  com.project.love_data.controller.HomeController
 com/project/love_data/config/SecurityConfig.java
@@ -14,8 +14,8 @@ com/project/love_data/model/KakaoAuthToken.java
  com.project.love_data.model.KakaoAuthToken
 com/project/love_data/controller/UserController.java
  com.project.love_data.controller.UserController
-com/project/love_data/service/AcessCodeRequestKaKao.java
- com.project.love_data.service.AcessCodeRequestKaKao
+com/project/love_data/config/ConverterConfig.java
+ com.project.love_data.config.ConverterConfig
 com/project/love_data/service/HttpClient.java
  com.project.love_data.service.HttpClient
 com/project/love_data/security/converter/UserRoleConverter.java
@@ -34,14 +34,18 @@ com/project/love_data/model/Test.java
  com.project.love_data.model.Test
 com/project/love_data/ServletInitializer.java
  com.project.love_data.ServletInitializer
-com/project/love_data/controller/OAuthController.java
- com.project.love_data.controller.OAuthController
-com/project/love_data/model/OAuthToken.java
- com.project.love_data.model.OAuthToken
-com/project/love_data/config/ConverterConfig.java
- com.project.love_data.config.ConverterConfig
 com/project/love_data/model/User.java
  com.project.love_data.model.User
  com.project.love_data.model.User$UserBuilder
-com/project/love_data/service/AcessCodeRequest.java
- com.project.love_data.service.AcessCodeRequest
+com/project/love_data/model/OAuthToken.java
+ com.project.love_data.model.OAuthToken
+com/project/love_data/controller/OAuthController.java
+ com.project.love_data.controller.OAuthController
+com/project/love_data/service/TokenRequest.java
+ com.project.love_data.service.TokenRequest
+com/project/love_data/service/AcessCodeRequestKakao.java
+ com.project.love_data.service.AcessCodeRequestKakao
+com/project/love_data/util/URISetter.java
+ com.project.love_data.util.URISetter
+com/project/love_data/service/TokenRequestKakao.java
+ com.project.love_data.service.TokenRequestKakao

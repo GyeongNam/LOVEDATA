@@ -6,6 +6,5 @@ import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 
 public interface AcessCodeRequest {
-    public void setURI(String csrf);
-    public void excute(HttpServletRequest request, HttpSessionCsrfTokenRepository csrfTokenRepository);
+    public String excute(HttpServletRequest request, HttpSessionCsrfTokenRepository csrfTokenRepository);
 }
