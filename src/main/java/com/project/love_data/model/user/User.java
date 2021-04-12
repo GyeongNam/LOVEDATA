@@ -43,19 +43,22 @@ public class User{
     private String user_birth;
 
     // 성별
-    @Column(length = 50, nullable = false)
-    private String user_gen;
+    @Column(length = 1, nullable = true, columnDefinition = "TINYINT(1)")
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    private boolean user_sex;
 
     @Column(length = 1, nullable = true, columnDefinition = "TINYINT(1)")
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean user_social;
-    
-    @Column(length = 50, nullable = true)
-    private String user_emil_re;
+
+    @Column(length = 1, nullable = true, columnDefinition = "TINYINT(1)")
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    private boolean user_emil_re;
 
     // 유저 활동 관련 변수 (활동정지 및 등등)
-    @Column(length = 50, nullable = false)
-    private String user_Activation;
+    @Column(length = 1, nullable = true, columnDefinition = "TINYINT(1)")
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    private boolean user_Activation;
     
     @Column(length = 50, nullable = false)
     private LocalDateTime user_time;

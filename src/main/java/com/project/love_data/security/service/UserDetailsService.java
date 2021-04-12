@@ -44,19 +44,17 @@ public class UserDetailsService implements org.springframework.security.core.use
         );
 
          // 유저 패스워드 설정시 로그에 출력됨
-         authUserModel.setUser_pw(user.getUser_pw());
+        authUserModel.setUser_pw(user.getUser_pw());
         authUserModel.setUser_name(user.getUser_name());
         authUserModel.setUser_birth(user.getUser_birth());
         authUserModel.setUser_no(user.getUser_no());
-        authUserModel.setUser_Activation(user.getUser_Activation());
-        authUserModel.setUser_gen(user.getUser_gen());
+        authUserModel.setUser_Activation(user.isUser_Activation());
+        authUserModel.setUser_sex(user.isUser_sex());
         authUserModel.setUser_nic(user.getUser_nic());
         authUserModel.setUser_time(user.getUser_time());
-        authUserModel.setUser_emil_re(user.getUser_emil_re());
+        authUserModel.setUser_emil_re(user.isUser_emil_re());
         authUserModel.setUser_phone(user.getUser_phone());
-
         log.info("UserDetailService_authUserModel : " + authUserModel);
-
         return authUserModel;
     }
 }

@@ -1,7 +1,7 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ page session="false"%>
+         pageEncoding="UTF-8" %>
+<%@ page session="false" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -36,8 +36,10 @@
                     <div class="emailcontent">
                         <input type="text" name="str_email01" id="str_email01"
                                required="required" onblur="email_check()"> @ <input type="text"
-                                                                                    name="str_email02" id="str_email02" onblur="email_check()" required placeholder="">
-                        <select name="str_email03" id="selectEmail" onblur="email_check()"  required="required">
+                                                                                    name="str_email02" id="str_email02"
+                                                                                    onblur="email_check()" required
+                                                                                    placeholder="">
+                        <select name="str_email03" id="selectEmail" onblur="email_check()" required="required">
                             <option value="1">직접입력</option>
                             <option value="naver.com">naver.com</option>
                             <option value="hanmail.net">hanmail.net</option>
@@ -52,8 +54,8 @@
                             <option value="gmail.com">gmail.com</option>
                             <option value="hanmir.com">hanmir.com</option>
                             <option value="paran.com">paran.com</option>
-                        </select> <input class="checkbox11" type="checkbox" name="recv_email" /> <input
-                            class="checkbox12" type="hidden" name="recv_email" />
+                        </select> <input class="checkbox11" type="checkbox" name="recv_email"/> <input
+                            class="checkbox12" type="hidden" name="recv_email"/>
                         <spen class="spen"> 이메일 수신에 동의합니다.</spen>
                     </div>
                     <div>
@@ -65,23 +67,30 @@
                 <td class="thead"><label class="label"><strong>비밀번호
                     *</strong> </label></td>
                 <td><input type="password" name="userPwd" id="pwd1"
-                           onKeyup="chkpw()" class="form-control" required> <spen
-                        class="spen" id=pwd_rule>영문 대소문자/숫자/특수문자 중 2가지 이상 조합,
-                    10자~16자.</spen></td>
+                           onKeyup="chkpw()" class="form-control" required>
+                    <spen
+                            class="spen" id=pwd_rule>영문 대소문자/숫자/특수문자 중 2가지 이상 조합,
+                        10자~16자.
+                    </spen>
+                </td>
             </tr>
             <tr>
                 <td class="thead"><label class="label"><strong>비밀번호
                     확인 *</strong></label></td>
                 <td><input type="password" name="reuserPwd" id="pwd2"
-                           onKeyup="passwordcheck()" class="form-control" required> <spen
-                        class="spen" id="pwd_check"></spen></td>
+                           onKeyup="passwordcheck()" class="form-control" required>
+                    <spen
+                            class="spen" id="pwd_check"></spen>
+                </td>
             </tr>
             <tr>
                 <td class="thead"><label class="label"><strong>닉네임
                     *</strong></label></td>
                 <td><input type="text" onblur="nick_check()" class="nickname" name="nickname"
-                           id="nickname" minlength=3 required> <spen class="spen"
-                                                                     id="nickname_check"></spen></td>
+                           id="nickname" minlength=3 required>
+                    <spen class="spen"
+                          id="nickname_check"></spen>
+                </td>
             </tr>
             <tr>
                 <td class="thead"><label class="label"><strong>이름
@@ -104,14 +113,17 @@
                                            required="required"> - <input type="text"
                                                                          class="phone_nums"
                                                                          onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"
-                                                                         minlength='4' maxlength='4' name="str_phone03" id="str_phone03"
+                                                                         minlength='4' maxlength='4' name="str_phone03"
+                                                                         id="str_phone03"
                                                                          required="required">
                         <button type="button" id="modal_opne_btn" name="button">휴대폰
-                            인증</button>
+                            인증
+                        </button>
                         <br>
                     </div>
                     <spen
-                            class="spen" id="phone_check">인증번호로 인증하세요</spen>
+                            class="spen" id="phone_check">인증번호로 인증하세요
+                    </spen>
                 </td>
             </tr>
             <tr>
@@ -125,8 +137,8 @@
                 <td class="thead"><label class="label"><strong>성별</strong></label>
                 </td>
                 <td><select name="gender" id="gender" required="required">
-                    <option value="m">남자</option>
-                    <option value="w">여자</option>
+                    <option value=true>남자</option>
+                    <option value=false>여자</option>
                 </select></td>
             </tr>
         </table>

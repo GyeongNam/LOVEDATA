@@ -43,8 +43,8 @@ public class UserController {
 				@RequestParam(value = "str_phone02")String phone02,
 				@RequestParam(value = "str_phone03")String phone03,
 				@RequestParam(value = "birthday")String birthday,
-				@RequestParam(value = "gender")String gender,
-				@RequestParam(value = "recv_email")String recv_email
+				@RequestParam(value = "gender")boolean gender,
+				@RequestParam(value = "recv_email")boolean recv_email
     		) {
 
 		User user = User.builder()
@@ -54,11 +54,12 @@ public class UserController {
 				.user_name(userName)
 				.user_phone(phone01 + phone02 + phone03)
 				.user_birth(birthday)
-				.user_gen(gender)
+				.user_sex(gender)
 				.user_emil_re(recv_email)
 				.user_time(LocalDateTime.now())
 				.user_social(false)
-				.user_Activation("1").build();
+				.user_Activation(true)
+				.build();
 		user.addUserRole(UserRole.USER);
 
     	userRepository.save(user);
