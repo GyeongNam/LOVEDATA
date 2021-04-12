@@ -40,7 +40,7 @@
 									<ul class="full-list">
 										<li class="pd-v-5">
 										<select class="selectbox" name="select-box" onChange="selectEmail(this)">
-												<option value="" selected>선택하세요</option>
+												<option value="empty" selected>선택하세요</option>
 												<option value="naver.com">010</option>
 												<option value="gmail.com">011</option>
 												<option value="hanmail.com">018</option>
