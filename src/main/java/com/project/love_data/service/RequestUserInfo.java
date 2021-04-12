@@ -1,6 +1,6 @@
 package com.project.love_data.service;
 
-import com.project.love_data.model.OAuthToken;
+import com.project.love_data.model.oauth.OAuthToken;
 import com.project.love_data.model.user.User;
 
 import javax.servlet.http.HttpServletRequest;

@@ -1,8 +1,8 @@
 package com.project.love_data.service;
 
 import com.google.gson.Gson;
-import com.project.love_data.model.KakaoAuthToken;
-import com.project.love_data.model.OAuthToken;
+import com.project.love_data.model.oauth.KakaoAuthToken;
+import com.project.love_data.model.oauth.OAuthToken;
 import com.project.love_data.util.URISetter;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.io.IOUtils;

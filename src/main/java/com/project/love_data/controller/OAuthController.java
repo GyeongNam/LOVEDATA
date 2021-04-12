@@ -1,7 +1,8 @@
 package com.project.love_data.controller;
 
-import com.project.love_data.model.KakaoAuthToken;
-import com.project.love_data.model.OAuthToken;
+import com.project.love_data.model.oauth.KakaoAuthToken;
+import com.project.love_data.model.oauth.NaverAuthToken;
+import com.project.love_data.model.oauth.OAuthToken;
 import com.project.love_data.service.*;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
@@ -40,7 +41,7 @@ public class OAuthController {
     }
 
     @RequestMapping("/login_kakao/process")
-    public String kakaoLogin_Code(
+    public String kakaoLogin_Process(
             HttpServletRequest request
     ){
         token = new KakaoAuthToken();
@@ -63,5 +64,52 @@ public class OAuthController {
         userInfo.excute(request, token);
 
         return "redirect:"+decodedURL;
+    }
+
+    @GetMapping(value = "/login_naver")
+    public String naverLogin(
+            HttpServletRequest request,
+            HttpSessionCsrfTokenRepository csrfTokenRepository
+    ){
+        decodedURL = null;
+        acessCodeRequest = new AcessCodeRequestNaver();
+
+        log.info("## kakaoLogin Called!!");
+
+        decodedURL = acessCodeRequest.excute(request, csrfTokenRepository);
+
+        if (decodedURL == null) {
+            log.info("AcessCodeRequestNaver Failed");
+            return "redirect:/";
+        }
+
+        return "redirect:" + decodedURL;
+    }
+
+    @RequestMapping("/login_naver/process")
+    public String naverLogin_Process(
+            HttpServletRequest request,
+            HttpSessionCsrfTokenRepository csrfTokenRepository
+    ){
+        token = new NaverAuthToken();
+//        tokenRequest = new TokenRequestNaver();
+        TokenRequestNaver tokenRequest = new TokenRequestNaver();
+        userInfo = new RequestUserInfoNaver();
+
+        // kakao REST API Documentation
+        // https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#request-token
+        log.info("## naverLogin_Process Called!!");
+
+        token = tokenRequest.excute(request);
+
+        if (token == null) {
+            return "redirect:/";
+        }
+
+        log.info("token : " + token);
+
+        userInfo.excute(request, token);
+
+        return "redirect:/";
     }
 }

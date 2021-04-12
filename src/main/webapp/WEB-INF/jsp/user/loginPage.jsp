@@ -37,9 +37,9 @@
             <sec:csrfInput />
             <button type="submit" class="btn"><img class="img-fluid" src="/image/kakao_login/ko/kakao_login_large_narrow.png" width="366" height="90"></button><br>
         </form>
-        <form method="get" action="/">
+        <form method="get" action="/login_naver">
             <sec:csrfInput />
-            <button type="submit" class="btn" onclick="alert('naver Login')"><img class="img-fluid" src="/image/naver_login/ko/NAVER_Official_Green.PNG" width="366" height="90"></button><br>
+            <button type="submit" class="btn"><img class="img-fluid" src="/image/naver_login/ko/NAVER_Official_Green.PNG" width="366" height="90"></button><br>
         </form>
     </center>
 </div>

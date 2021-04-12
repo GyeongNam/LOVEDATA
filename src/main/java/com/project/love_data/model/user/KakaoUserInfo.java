@@ -1,31 +1,39 @@
 package com.project.love_data.model.user;
 
+import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.time.LocalTime;
-import java.util.Map;
 
 @Getter
 @Setter
 @ToString
 public class KakaoUserInfo {
+    @SerializedName("id")
     private String id;
     // db에서 user_time과 매핑
-    private String connected_at;
-    private KakaoAccount kakao_account;
 
-//    // db에서 user_nic과 매핑
-//    private String nickname;
-//    private String profile_image;
-//    private String thumbnail_image;
-////     db에서 user_email과 매핑
-//    private String email;
-//    private String age_range;
-////     db에서 user_birth와 매핑
-//    private String birthday;
-////     db에서 user_gen과 매핑
-//    private String gender;
-//    private String phone;
+    @SerializedName("connected_at")
+    private String connected_at;
+
+    @SerializedName("nickname")
+    private String nickname;
+
+    @SerializedName("nickname")
+    private String thumbnail_image_url;
+
+    @SerializedName("nickname")
+    private String profile_image_url;
+
+    @SerializedName("has_email")
+    private Boolean has_email;
+
+    @SerializedName("is_email_valid")
+    private Boolean is_email_valid;
+
+    @SerializedName("is_email_verified")
+    private Boolean is_email_verified;
+
+    @SerializedName("email")
+    private String email;
 }
