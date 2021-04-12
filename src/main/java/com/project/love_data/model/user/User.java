@@ -53,7 +53,7 @@ public class User{
 
     @Column(length = 1, nullable = true, columnDefinition = "TINYINT(1)")
     @Type(type = "org.hibernate.type.NumericBooleanType")
-    private boolean user_emil_re;
+    private boolean user_email_re;
 
     // 유저 활동 관련 변수 (활동정지 및 등등)
     @Column(length = 1, nullable = true, columnDefinition = "TINYINT(1)")
@@ -71,36 +71,22 @@ public class User{
         roleSet.add(role.name());
     }
 
-//    public User(){
-//        String user_email = null;
-//        String user_pw = null;
-//        String user_nic = null;
-//        String user_name = null;
-//        String user_phone = null;
-//        String user_bir = null;
-//        String user_gen = null;
-//        String user_emil_re = null;
-//    }
-//
-//    public User(
-//    		String user_email,
-//    		String user_pw,
-//    		String user_nic,
-//    		String user_name,
-//    		String user_phone,
-//    		String user_birth,
-//    		String user_gen,
-//    		String user_emil_re
-//    		) {
-//        this.user_email = user_email;
-//        this.user_pw = user_pw;
-//        this.user_nic = user_nic;
-//        this.user_name = user_name;
-//        this.user_phone = user_phone;
-//        this.user_birth = user_birth;
-//        this.user_gen=user_gen;
-//        this.user_emil_re = user_emil_re;
-//        this.user_Activation = "1";
-//        this.user_time = LocalDateTime.now();
-//    }
+    public String getUserSexString(){
+        if (this.isUser_sex()) {
+            return "Male";
+        } else {
+            return "Female";
+        }
+    }
+
+    public void setUserSexString(String sex) {
+        switch (sex.toUpperCase()) {
+            case "MALE" :
+                this.setUser_sex(true);
+                break;
+            default :
+                this.setUser_sex(false);
+                break;
+        }
+    }
 }

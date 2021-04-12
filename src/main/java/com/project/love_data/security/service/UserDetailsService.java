@@ -23,6 +23,7 @@ public class UserDetailsService implements org.springframework.security.core.use
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         log.info("UserDetailsService loadUserByUsername " + username);
 
+        // non uniqe 리턴 예외 가능
         Optional<User> result = userRepository.findUserByEmail_Privilege(username);
 
         // DB에 저장된 유저 정보가 없을 때
@@ -52,7 +53,7 @@ public class UserDetailsService implements org.springframework.security.core.use
         authUserModel.setUser_sex(user.isUser_sex());
         authUserModel.setUser_nic(user.getUser_nic());
         authUserModel.setUser_time(user.getUser_time());
-        authUserModel.setUser_emil_re(user.isUser_emil_re());
+        authUserModel.setUser_emil_re(user.isUser_email_re());
         authUserModel.setUser_phone(user.getUser_phone());
         log.info("UserDetailService_authUserModel : " + authUserModel);
         return authUserModel;

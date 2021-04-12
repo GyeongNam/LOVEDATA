@@ -55,7 +55,7 @@ public class UserController {
 				.user_phone(phone01 + phone02 + phone03)
 				.user_birth(birthday)
 				.user_sex(gender)
-				.user_emil_re(recv_email)
+				.user_email_re(recv_email)
 				.user_time(LocalDateTime.now())
 				.user_social(false)
 				.user_Activation(true)

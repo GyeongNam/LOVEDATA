@@ -40,7 +40,7 @@ function chkpw(){
     s_relult1.text("사용가능한 비밀번호 입니다.");
   }
 }
-// 비밀번호 확//
+// 비밀번호 확인
 function passwordcheck(){
   var password1 = $('#pwd1').val();
   var password2 = $('#pwd2').val();
@@ -81,9 +81,9 @@ $('#selectEmail').change(function(){
 // 이메일 수신동의 체크박스 체크
  $(".checkbox11").change(function(){
    if($(".checkbox11").is(":checked")){
-     $(".checkbox12").val("yes");
+     $(".checkbox12").val(true);
    } else {
-     $(".checkbox12").val("no");
+     $(".checkbox12").val(false);
    }
  });
 // email 중복확인
