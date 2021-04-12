@@ -20,14 +20,16 @@ $('.selectbox').change(function() {
 	});
 });
 
-function email_send_btn(){
-	if(){
+$('#mobilenumberauthbutton').click(function(){
+	if('.phone-first.value =="empty"'){
+		alert("휴대폰 앞 번호를 선택하세요.");
+		return false;
 	}
 	else{
 		alert("입력한 이메일로 인증번호를 전송하였습니다.");
 	}
 	
-}
+});
 
 function sendFindId() {
 	alert("입력한 휴대폰 번호로 인증번호를 전송하였습니다.");

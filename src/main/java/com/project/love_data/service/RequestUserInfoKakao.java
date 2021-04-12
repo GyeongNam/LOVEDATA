@@ -31,8 +31,6 @@ public class RequestUserInfoKakao implements RequestUserInfo{
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost(uri);
         KakaoUserInfo userInfo = new KakaoUserInfo();
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        Gson gson = null;
 
         httpPost.setHeader("Authorization", "Bearer " + token.getAccess_token());
         httpPost.setHeader("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -42,7 +40,6 @@ public class RequestUserInfoKakao implements RequestUserInfo{
             HttpEntity entity = response.getEntity();
             String text = IOUtils.toString(entity.getContent(), StandardCharsets.UTF_8.name());
             userInfo = new Gson().fromJson(text, KakaoUserInfo.class);
-//            gsonBuilder.registerTypeAdapter()
             log.info(text);
         } catch (ClientProtocolException e) {
             log.info(e.getStackTrace());
@@ -52,11 +49,6 @@ public class RequestUserInfoKakao implements RequestUserInfo{
 
         log.info(userInfo.getKakao_account().getProfile());
         log.info(userInfo.getKakao_account());
-//        log.info(userInfo);
-//        log.info("id : " + userInfo.getId());
-//        log.info("connected time : " + userInfo.getConnected_at());
-//        log.info("nickname : " + userInfo.getKakao_account().getProfile().getNickname());
-//        log.info("email : " + userInfo.getKakao_account().getProfile().getEmail());
 
         return null;
     }

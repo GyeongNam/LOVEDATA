@@ -2,8 +2,6 @@ package com.project.love_data.service;
 
 import com.project.love_data.util.URISetter;
 import lombok.extern.log4j.Log4j2;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.stereotype.Service;
 
