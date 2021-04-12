@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.project.love_data.security.model.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -45,16 +46,6 @@ public class UserController {
 				@RequestParam(value = "gender")String gender,
 				@RequestParam(value = "recv_email")String recv_email
     		) {
-//    	User user = new User(
-//    			email1 + "@" + email2,
-//    			passwordEncoder.encode(pwd),
-//    			nickname,
-//    			userName,
-//    			phone01 + phone02 + phone03,
-//    			birthday,
-//    			gender,
-//					assent
-//        		);
 
 		User user = User.builder()
 				.user_email(email1 + "@" + email2)
@@ -66,8 +57,9 @@ public class UserController {
 				.user_gen(gender)
 				.user_emil_re(recv_email)
 				.user_time(LocalDateTime.now())
-				.user_social(false).build();
-//		user.setUser_userRole(UserRole.USER);
+				.user_social(false)
+				.user_Activation("1").build();
+		user.addUserRole(UserRole.USER);
 
     	userRepository.save(user);
 
