@@ -44,7 +44,6 @@
 												<option value="naver.com">010</option>
 												<option value="gmail.com">011</option>
 												<option value="hanmail.com">018</option>
-												<option value="1">직접입력</option>
 										</select>
 										<input name="email1" type="text">
 										<input name="email2" type="text">
