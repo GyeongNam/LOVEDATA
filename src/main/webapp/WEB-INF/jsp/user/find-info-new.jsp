@@ -5,7 +5,7 @@
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <html>
 <head>
-<link href="/static/css/CSSTEST.css" rel="stylesheet">
+<link href="/css/CSSTEST.css" rel="stylesheet">
 <title>회원정보 찾기 | LOVE DATA</title>
 </head>
 
@@ -47,7 +47,7 @@
 										</select>
 										<input name="email1" type="text">
 										<input name="email2" type="text">
-											<button type="button" id="mobilenumberauthbutton"
+											<button type="button" id=""
 												class="btn btn-grass" onclick="sendFindId()">
 												<span class="caption">인증번호전송</span>
 												<div class="ripple"></div>
@@ -55,7 +55,7 @@
 											<li class="pd-v-5">
 										<input type="number" id="authnumber" name="authnumber"
 													placeholder="인증번호">
-											<button type="button" id="mobilenumberauthbutton"
+											<button type="button" id=""
 													class="btn btn-grass" >
 													<span class="caption">인증번호 확인</span>
 													<div class="ripple"></div>
@@ -77,12 +77,11 @@
 								<div class="card no-shadow tab-cont">
 									<ul class="full-list">
 										<li class="pd-v-5">
-											<input type="text" name="email1"
-												   class="email1" required="required"> @
+											<input type="text" id="email1" required="required"> @
 											<input type="text" name="email2"
-												   class="email2" placeholder="">
+												   id="email2" placeholder="">
 											<select name="select_email" class="selectbox"
-											required="required">
+											required>
 												<option value="" selected>선택하세요</option>
 												<option value="naver.com">naver.com</option>
 												<option value="hanmail.net">hanmail.net</option>
@@ -99,7 +98,7 @@
 												<option value="paran.com">paran.com</option>
 												<option value="1">직접입력</option>
 										</select>
-											<button type="button" id="mobilenumberauthbutton" class="sendMail btn btn-grass" onclick="sendEmail()">
+											<button type="button" id="sendMail" class="btn btn-grass">
 												<span class="caption">인증번호전송</span>
 												<div class="ripple"></div>
 											</button></li>
@@ -134,4 +133,4 @@
 </div>
 </body>
 </html>
-<script src="/static/js/find-info.js"></script>
+<script src="/js/find-info.js"></script>

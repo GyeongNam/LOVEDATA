@@ -5,6 +5,7 @@
       <map>
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/home.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/test.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/user/find-info-new.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/user" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/user/signup.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/user" />
       </map>
     </option>

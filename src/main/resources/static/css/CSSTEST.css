@@ -2009,7 +2009,7 @@ pre .code-copy-btn:hover { background: rgba(255,255,255,0.8) !important; }
 	height: auto;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	word-break: none;
+	word-break: normal;
 	white-space: nowrap;
 }
 
@@ -2033,7 +2033,7 @@ pre .code-copy-btn:hover { background: rgba(255,255,255,0.8) !important; }
 	height: auto;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	word-break: none;
+	word-break: normal;
 	white-space: nowrap;
 }
 
@@ -4372,7 +4372,7 @@ textarea:-ms-input-placeholder { color: #aaa !important; font-weight: 400; }
 	text-overflow: ellipsis;
 	text-decoration: none;
 	white-space: nowrap;
-	word-break: none;
+	word-break: normal;
 	font-size: 16px;
 }
 

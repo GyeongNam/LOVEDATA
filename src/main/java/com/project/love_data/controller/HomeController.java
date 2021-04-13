@@ -33,7 +33,7 @@ public class HomeController {
 		return "user/find-info";
 	}
 	
-	@RequestMapping(value="/find-info-new", method = RequestMethod.GET)
-	public String find_info_new(){ return "user/find-info-new";
+	@RequestMapping(value="/find_id", method = RequestMethod.GET)
+	public String find_id(){ return "user/find-info-new";
 	}
 }
