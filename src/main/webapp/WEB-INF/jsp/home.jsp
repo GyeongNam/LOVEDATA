@@ -38,7 +38,7 @@
 		<div class="class1">
 			<%--<a href="/login">로그인</a>--%>
 			<a href="/find-info">회원정보 찾기</a>
-			<a href="test_jsp">테스트_jsp</a>
+			<a href="find_info_new">회원정보 찾기 수정</a>
 		</div>
 	</div>
 

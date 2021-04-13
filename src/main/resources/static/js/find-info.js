@@ -20,6 +20,15 @@ $('.selectbox').change(function() {
 	});
 });
 
+function sendEmail(){
+	var str = document.getElementsByClassName('email1');
+
+	if( str.value == '' || str.value == null ){
+		alert( '값을 입력해주세요' );
+		return false;
+	}
+}
+
 $('#mobilenumberauthbutton').click(function(){
 	if('.phone-first.value =="empty"'){
 		alert("휴대폰 앞 번호를 선택하세요.");
@@ -30,7 +39,3 @@ $('#mobilenumberauthbutton').click(function(){
 	}
 	
 });
-
-function sendFindId() {
-	alert("입력한 휴대폰 번호로 인증번호를 전송하였습니다.");
-}

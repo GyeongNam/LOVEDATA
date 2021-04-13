@@ -5,7 +5,7 @@
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <html>
 <head>
-<link href="/css/CSSTEST.css" rel="stylesheet">
+<link href="/static/css/CSSTEST.css" rel="stylesheet">
 <title>회원정보 찾기 | LOVE DATA</title>
 </head>
 
@@ -76,9 +76,11 @@
 								<!-- 비밀번호 찾기 콘텐츠 -->
 								<div class="card no-shadow tab-cont">
 									<ul class="full-list">
-										<li class="pd-v-5"><input type="text" name="email1"
-											class="email1" required="required"> @ <input
-											type="text" name="email2" class="email2" placeholder="">
+										<li class="pd-v-5">
+											<input type="text" name="email1"
+												   class="email1" required="required"> @
+											<input type="text" name="email2"
+												   class="email2" placeholder="">
 											<select name="select_email" class="selectbox"
 											required="required">
 												<option value="" selected>선택하세요</option>
@@ -97,7 +99,7 @@
 												<option value="paran.com">paran.com</option>
 												<option value="1">직접입력</option>
 										</select>
-											<button type="button" id="mobilenumberauthbutton" class="btn btn-grass" onclick="javascript:email_send_btn()">
+											<button type="button" id="mobilenumberauthbutton" class="sendMail btn btn-grass" onclick="sendEmail()">
 												<span class="caption">인증번호전송</span>
 												<div class="ripple"></div>
 											</button></li>
@@ -132,4 +134,4 @@
 </div>
 </body>
 </html>
-<script src="/js/find-info.js"></script>
+<script src="/static/js/find-info.js"></script>

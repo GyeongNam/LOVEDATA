@@ -34,7 +34,6 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="/find-info-new", method = RequestMethod.GET)
-	public String test_jsp(){
-		return "temp/find-info-new";
+	public String find_info_new(){ return "user/find-info-new";
 	}
 }
