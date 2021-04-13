@@ -1,16 +1,16 @@
 // 모달 열기
 $("#modal_opne_btn").click(function(){
- 	var phone_f = $("#selectphone").val();
-	var phone_s = $("#str_phone02").val();
-	var phone_l = $("#str_phone03").val();
-    $("#phone_num").text(phone_f + "-" + phone_s + "-" + phone_l);
-    $("#modal").fadeIn();
-    $(".modal_content").fadeIn();
+  var phone_f = $("#selectphone").val();
+  var phone_s = $("#str_phone02").val();
+  var phone_l = $("#str_phone03").val();
+  $("#phone_num").text(phone_f + "-" + phone_s + "-" + phone_l);
+  $("#modal").fadeIn();
+  $(".modal_content").fadeIn();
 });
 // 모달 닫기
- $("#modal_close_btn").click(function(){
-    $("#modal").fadeOut();
-    $(".modal_content").fadeOut();
+$("#modal_close_btn").click(function(){
+  $("#modal").fadeOut();
+  $(".modal_content").fadeOut();
 });
 // 비밀번호 유효성
 function chkpw(){
@@ -74,18 +74,19 @@ $('#selectEmail').change(function(){
   });
 });
 // 핸드폰 숫자만 입력가능
-  $(".phone_nums").keydown( function(){
-      $(this).val( $(this).val().replace(/[^0-9]/gi,"")
-    );
-  });
+$(".phone_nums").keydown( function(){
+  $(this).val( $(this).val().replace(/[^0-9]/gi,"")
+  );
+});
 // 이메일 수신동의 체크박스 체크
- $(".checkbox11").change(function(){
-   if($(".checkbox11").is(":checked")){
-     $(".checkbox12").val(true);
-   } else {
-     $(".checkbox12").val(false);
-   }
- });
+$(".checkbox12").val(false);
+$(".checkbox11").change(function(){
+  if($(".checkbox11").is(":checked")){
+    $(".checkbox12").val(true);
+  } else {
+    $(".checkbox12").val(false);
+  }
+});
 // email 중복확인
 
 var mail1_ck1 = 0;

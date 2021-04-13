@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.project.love_data.security.model.UserRole;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.project.love_data.repository.UserRepository;
 import com.project.love_data.model.user.User;
 
+@Log4j2
 @Controller
 public class UserController {
 
@@ -65,6 +67,7 @@ public class UserController {
     @RequestMapping(value="/email_check",method = RequestMethod.POST)
     public Map<String,String> email_check(@RequestBody HashMap<String, String> data){
 
+    	log.info("email ajax : " + data.get("mail"));
     	Map<String, String> map = new HashMap<String, String>();
     	String a = userRepository.email_check(data.get("mail"));
 
