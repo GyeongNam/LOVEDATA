@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="643a1aaf-6d28-435c-920b-55e348dcd3b4" name="LoveData">
+        <fileTransfer accessType="SFTP" host="210.114.22.227" port="22" sshConfigId="601966da-e671-4df4-a2f9-6d8da5f91173" sshConfig="LoveData">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+      <webServer id="e1685be6-f369-4029-9d42-98a7faa652da" name="Test">
+        <fileTransfer accessType="SFTP" host="210.114.22.227" port="22" sshConfigId="365b3f52-492f-4601-b284-58537a567ba8" sshConfig="Test">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

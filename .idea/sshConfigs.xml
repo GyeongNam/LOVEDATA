@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig authType="PASSWORD" host="210.114.22.227" id="601966da-e671-4df4-a2f9-6d8da5f91173" port="22" customName="LoveData" nameFormat="CUSTOM" username="root">
+        <option name="customName" value="LoveData" />
+      </sshConfig>
+      <sshConfig authType="PASSWORD" host="210.114.22.227" id="365b3f52-492f-4601-b284-58537a567ba8" port="22" customName="Test" nameFormat="CUSTOM" username="root">
+        <option name="customName" value="Test" />
+      </sshConfig>
+    </configs>
+  </component>
+</project>
