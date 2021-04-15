@@ -23,10 +23,9 @@ import java.nio.charset.StandardCharsets;
 
 @Log4j2
 @Service
-public class RequestUserInfoKakao implements RequestUserInfo{
+public class RequestUserInfoKakao{
 
-    @Override
-    public User excute(HttpServletRequest request, OAuthToken token) {
+    public KakaoUserInfo excute(HttpServletRequest request, OAuthToken token) {
         URI uri = URISetter.getKakao_UserInfo();
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost(uri);
@@ -61,6 +60,6 @@ public class RequestUserInfoKakao implements RequestUserInfo{
             log.info(e.getStackTrace());
         }
 
-        return null;
+        return userInfo;
     }
 }
