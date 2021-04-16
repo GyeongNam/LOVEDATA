@@ -116,7 +116,7 @@
                                                                          minlength='4' maxlength='4' name="str_phone03"
                                                                          id="str_phone03"
                                                                          required="required">
-                        <button type="button" id="modal_opne_btn" name="button">휴대폰
+                        <button type="button" id="modal_opne_btn" onclick="sendSMS()" name="button">휴대폰
                             인증
                         </button>
                         <br>

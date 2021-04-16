@@ -157,3 +157,20 @@ function nick_check(){
     }
   });
 }
+// SMS인증번호 보내기
+function sendSMS(){
+  var postdata = {"phone" : "010-5668-3241" };
+  $.ajax({
+    url: " /sendSMS",
+    dataType: 'json',
+    contentType: "application/json; charset=UTF-8",
+    data: JSON.stringify(postdata),
+    type: "POST",
+    success:function(data){
+      console.log(data);
+    },
+    error : function(){
+      console.log(data);
+    }
+  });
+}
