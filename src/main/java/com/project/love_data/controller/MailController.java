@@ -5,10 +5,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @Controller
 @AllArgsConstructor
 public class MailController {
@@ -27,12 +27,17 @@ public class MailController {
         return "mail";
     }
 
-    @PostMapping("/mail")
+    @RequestMapping(value ="/mail" ,method = RequestMethod.POST)
     public void execMail(
             @RequestParam(value = "address")String address,
             @RequestParam(value = "domain")String domain
              ) {
-        String mail = userRepository.email_check(address+"@"+domain);
+        log.info("mail C");
+        log.info("addess="+address);
+        log.info("addess="+domain);
+
+        String mail = userRepository.email_send(address+"@"+domain);
+        log.info("mail="+mail);
         mailService.mailSend(mail);
     }
 }
