@@ -40,7 +40,8 @@ public class UserController {
 				@RequestParam(value = "str_phone03")String phone03,
 				@RequestParam(value = "birthday")String birthday,
 				@RequestParam(value = "gender")boolean gender,
-				@RequestParam(value = "recv_email")boolean recv_email
+				@RequestParam(value = "recv_email")boolean recv_email,
+				@RequestParam(value = "social") boolean social
     		) {
 
 		User user = User.builder()
@@ -53,7 +54,7 @@ public class UserController {
 				.user_sex(gender)
 				.user_email_re(recv_email)
 				.user_time(LocalDateTime.now())
-				.user_social(false)
+				.user_social(social)
 				.user_Activation(true)
 				.build();
 		user.addUserRole(UserRole.USER);

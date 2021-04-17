@@ -35,10 +35,11 @@
                 <td>
                     <div class="emailcontent">
                         <input type="text" name="str_email01" id="str_email01"
-                               required="required" onblur="email_check()"> @ <input type="text"
+                               required="required" onblur="email_check()"
+                               value="<%= request.getAttribute("str_email01") == null ? "" : request.getAttribute("str_email01") %>"> @ <input type="text"
                                                                                     name="str_email02" id="str_email02"
                                                                                     onblur="email_check()" required
-                                                                                    placeholder="">
+                                                                                    placeholder="" value="<%= request.getAttribute("str_email02") == null ? "" : request.getAttribute("str_email02") %>">
                         <select name="str_email03" id="selectEmail" onblur="email_check()" required="required">
                             <option value="1">직접입력</option>
                             <option value="naver.com">naver.com</option>
@@ -67,7 +68,7 @@
                 <td class="thead"><label class="label"><strong>비밀번호
                     *</strong> </label></td>
                 <td><input type="password" name="userPwd" id="pwd1"
-                           onKeyup="chkpw()" class="form-control" required>
+                           onKeyup="chkpw()" value="<%= request.getAttribute("pwd")  == null ? "" :  request.getAttribute("pwd")%>" class="form-control"  required>
                     <spen
                             class="spen" id=pwd_rule>영문 대소문자/숫자/특수문자 중 2가지 이상 조합,
                         10자~16자.
@@ -78,7 +79,7 @@
                 <td class="thead"><label class="label"><strong>비밀번호
                     확인 *</strong></label></td>
                 <td><input type="password" name="reuserPwd" id="pwd2"
-                           onKeyup="passwordcheck()" class="form-control" required>
+                           onKeyup="passwordcheck()" value="<%= request.getAttribute("pwd")  == null ? "" :  request.getAttribute("pwd")%>" class="form-control" required>
                     <spen
                             class="spen" id="pwd_check"></spen>
                 </td>
@@ -87,7 +88,7 @@
                 <td class="thead"><label class="label"><strong>닉네임
                     *</strong></label></td>
                 <td><input type="text" onblur="nick_check()" class="nickname" name="nickname"
-                           id="nickname" minlength=3 required>
+                           id="nickname" value="<%= request.getAttribute("nickname")  == null ? "" :  request.getAttribute("nickname")%>" minlength=3 required>
                     <spen class="spen"
                           id="nickname_check"></spen>
                 </td>
@@ -142,6 +143,7 @@
                 </select></td>
             </tr>
         </table>
+        <input type="hidden" name="social" value="<%= request.getAttribute("social")  == null ? false : request.getAttribute("social")%>">
         <div class="sand_back">
             <button class="submit" type="submit" id="sub"
                     onclick="return to_submit();">
