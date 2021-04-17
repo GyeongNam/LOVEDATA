@@ -74,11 +74,14 @@
 								</div>
 
 								<!-- 비밀번호 찾기 콘텐츠 -->
+
 								<div class="card no-shadow tab-cont">
+
 									<ul class="full-list">
 										<li class="pd-v-5">
-											<input type="text" id="email1" required="required"> @
-											<input type="text" name="email2"
+											<from action="/mail" method="post">
+											<input type="text" name="address" id="email1" required="required"> @
+											<input type="text" name="domain"
 												   id="email2" placeholder="">
 											<select name="select_email" class="selectbox"
 											required>
@@ -101,7 +104,9 @@
 											<button type="button" id="sendMail" class="btn btn-grass">
 												<span class="caption">인증번호전송</span>
 												<div class="ripple"></div>
-											</button></li>
+											</button>
+											</from>
+										</li>
 										<li class="pd-v-5">
 										<input type="number" id="authnumber" name="authnumber"
 													placeholder="인증번호">
