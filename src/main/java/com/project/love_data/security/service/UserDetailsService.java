@@ -5,6 +5,7 @@ import com.project.love_data.model.user.User;
 import com.project.love_data.security.model.AuthUserModel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,7 +21,7 @@ public class UserDetailsService implements org.springframework.security.core.use
     private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws BadCredentialsException {
         log.info("UserDetailsService loadUserByUsername " + username);
 
         // non uniqe 리턴 예외 가능
@@ -28,7 +29,8 @@ public class UserDetailsService implements org.springframework.security.core.use
 
         // DB에 저장된 유저 정보가 없을 때
         if (!result.isPresent()) {
-            throw new UsernameNotFoundException("Check Email");
+//            throw new UsernameNotFoundException("Check Email");
+            throw new BadCredentialsException("Check Email");
         }
 
         User user = result.get();

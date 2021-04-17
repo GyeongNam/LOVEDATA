@@ -23,10 +23,9 @@ import java.nio.charset.StandardCharsets;
 
 @Log4j2
 @Service
-public class RequestUserInfoNaver implements RequestUserInfo {
+public class RequestUserInfoNaver{
 
-    @Override
-    public User excute(HttpServletRequest request, OAuthToken token) {
+    public NaverUserInfo excute(HttpServletRequest request, OAuthToken token) {
         URI uri = URISetter.getNaver_UserInfo();
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost(uri);
@@ -61,6 +60,6 @@ public class RequestUserInfoNaver implements RequestUserInfo {
 
         log.info(userInfo);
 
-        return null;
+        return userInfo;
     }
 }
