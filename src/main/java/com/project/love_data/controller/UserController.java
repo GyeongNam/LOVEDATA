@@ -1,22 +1,18 @@
 package com.project.love_data.controller;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.project.love_data.model.user.User;
+import com.project.love_data.repository.UserRepository;
 import com.project.love_data.security.model.UserRole;
+import com.project.love_data.service.SmsService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-import com.project.love_data.repository.UserRepository;
-import com.project.love_data.model.user.User;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 @Log4j2
 @Controller
@@ -27,6 +23,9 @@ public class UserController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private SmsService smsService;
 
     @RequestMapping(value="/signup_add",method = RequestMethod.POST)
     public String signup(
@@ -96,4 +95,12 @@ public class UserController {
       	}
       	return map;
     }
+
+	@ResponseBody
+	@RequestMapping(value="/sendsms",method = RequestMethod.POST)
+	public String sendsms(@RequestBody HashMap<String, String> data){
+		log.info("phone:"+data.get("phones"));
+		smsService.sendSMS(data.get("phones"));
+		return "성공";
+	}
 }

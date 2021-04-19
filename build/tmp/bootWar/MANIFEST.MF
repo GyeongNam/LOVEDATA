@@ -1,7 +1,0 @@
-Manifest-Version: 1.0
-Start-Class: com.project.love_data.LoveDataApplication
-Spring-Boot-Classes: WEB-INF/classes/
-Spring-Boot-Lib: WEB-INF/lib/
-Spring-Boot-Version: 2.4.4
-Main-Class: org.springframework.boot.loader.WarLauncher
-
