@@ -10,10 +10,12 @@ import java.net.URLEncoder;
 @Log4j2
 public class URISetter {
     private static final String kakao_REST = "0b7965078037392ee3569b5979ad1d16";
-    private static final String kakao_Redirect = "http://localhost:8080/login_kakao/process";
+    private static final String kakao_Redirect = "http://lovedata.kr/login_kakao/process";
+    private static final String kakao_Redirect_local = "http://localhost:8080/login_kakao/process";
     private static final String naver_ClientID = "GsitFCDRzSFJYx73nqfz";
     private static final String naver_ClientSecret= "piOPrC_WRe";
-    private static final String naver_Redirect = "http://localhost:8080/login_naver/process";
+    private static final String naver_Redirect = "http://lovedata.kr/login_naver/process";
+    private static final String naver_Redirect_local = "http://localhost:8080/login_naver/process";
 
     // https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#request-code
     public static URI getKaKao_Code(String csrf){
@@ -24,6 +26,7 @@ public class URISetter {
                     .setPath("oauth/authorize")
                     .setParameter("client_id", kakao_REST)
                     .setParameter("redirect_uri", kakao_Redirect)
+//                    .setParameter("redirect_uri", kakao_Redirect_local)
                     .setParameter("response_type", "code")
                     .setParameter("state", csrf)
                     .build();
@@ -45,6 +48,7 @@ public class URISetter {
                     .setParameter("grant_type", "authorization_code")
                     .setParameter("client_id", kakao_REST)
                     .setParameter("redirect_uri", kakao_Redirect)
+//                    .setParameter("redirect_uri", kakao_Redirect_local)
                     .setParameter("code", code)
                     .build();
             return uri;
@@ -84,6 +88,7 @@ public class URISetter {
                     .setParameter("response_type", "code")
                     .setParameter("client_id", naver_ClientID)
                     .setParameter("redirect_uri", naver_Redirect)
+//                    .setParameter("redirect_uri", naver_Redirect_local)
                     .setParameter("state", csrf)
                     .build();
             return uri;
