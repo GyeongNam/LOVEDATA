@@ -157,3 +157,25 @@ function nick_check(){
     }
   });
 }
+// 인증번호 보내기
+function SMSsned(){
+  var phone1 = $('#selectphone').val();
+  var phone2 = $('#str_phone02').val();
+  var phone3 = $('#str_phone03').val();
+  var postdata = { "phones" : phone1 + "-" + phone2 + "-" + phone3 };
+
+  $.ajax({
+    url: "/sendsms",
+    dataType: 'json',
+    contentType: "application/json; charset=UTF-8",
+    data: JSON.stringify(postdata),
+    type: "POST",
+    success:function(data){
+      console.log(data);
+
+    },
+    error : function(){
+      console.log(data);
+    }
+  });
+}

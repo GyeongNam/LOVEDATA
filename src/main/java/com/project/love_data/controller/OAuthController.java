@@ -7,11 +7,11 @@ import com.project.love_data.model.user.KakaoUserInfo;
 import com.project.love_data.model.user.NaverUserInfo;
 import com.project.love_data.security.model.AuthUserModel;
 import com.project.love_data.security.service.UserDetailsService;
-import com.project.love_data.service.*;
+import com.project.love_data.service.oauth.logic.*;
+import com.project.love_data.util.EmailParser;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -20,9 +20,11 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.*;
 
 @Log4j2
 @Controller
@@ -56,7 +58,7 @@ public class OAuthController {
         return "redirect:" + decodedURL;
     }
 
-    @RequestMapping("/login_kakao/process")
+    @RequestMapping(value = "/login_kakao/process")
     public String kakaoLogin_Process(
             HttpServletRequest request,
             HttpSession session
@@ -66,7 +68,7 @@ public class OAuthController {
         tokenRequest = new TokenRequestKakao();
         RequestUserInfoKakao infoKakao = new RequestUserInfoKakao();
         KakaoUserInfo kakaoUserInfo = null;
-
+        List<String> email = null;
 
         // kakao REST API Documentation
         // https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#request-token
@@ -95,9 +97,26 @@ public class OAuthController {
 
             log.info("UserInfo Not in the Table");
             log.info("Passing to signIn");
-            // Todo 회원가입시 html에 요소에 값 넣는 것 마저 구현하기
-//            request.setAttribute("str_email01", );
-            return "redirect:"+"/signup";
+
+            //            // 한글퐅느
+            email = new EmailParser().emailParser(kakaoUserInfo.getEmail());
+
+            if (!email.isEmpty()) {
+                request.setAttribute("str_email01", email.get(0));
+                request.setAttribute("str_email02", email.get(1));
+            }
+
+            if (kakaoUserInfo.getId() != null) {
+                request.setAttribute("pwd", kakaoUserInfo.getId());
+            }
+
+            if (kakaoUserInfo.getNickname() != null) {
+                request.setAttribute("nickname", kakaoUserInfo.getNickname());
+            }
+
+            request.setAttribute("social", true);
+
+            return "/user/signup";
         }
 
         return "redirect:"+decodedURL;
@@ -126,13 +145,13 @@ public class OAuthController {
     @RequestMapping("/login_naver/process")
     public String naverLogin_Process(
             HttpServletRequest request,
-            HttpSessionCsrfTokenRepository csrfTokenRepository
+            HttpSession session
     ){
         token = new NaverAuthToken();
-//        tokenRequest = new TokenRequestNaver();
         TokenRequestNaver tokenRequest = new TokenRequestNaver();
         RequestUserInfoNaver infoNaver = new RequestUserInfoNaver();
         NaverUserInfo naverUserInfo = null;
+        List<String> email = null;
 
         // kakao REST API Documentation
         // https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#request-token
@@ -146,7 +165,41 @@ public class OAuthController {
 
         log.info("token : " + token);
 
-        naverUserInfo = infoNaver.excute(request, token);
+        try {
+            naverUserInfo = infoNaver.excute(request, token);
+            // https://cusonar.tistory.com/17
+            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+                    naverUserInfo.getEmail(), naverUserInfo.getId());
+            Authentication authentication = authenticationManager.authenticate(token);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
+                    SecurityContextHolder.getContext());
+            AuthUserModel authUserModel = (AuthUserModel) userDetailsService.loadUserByUsername(naverUserInfo.getEmail());
+        } catch (AuthenticationException e) {
+            log.info(e.getMessage());
+
+            log.info("UserInfo Not in the Table");
+            log.info("Passing to signIn");
+
+            email = new EmailParser().emailParser(naverUserInfo.getEmail());
+
+            if (!email.isEmpty()) {
+                request.setAttribute("str_email01", email.get(0));
+                request.setAttribute("str_email02", email.get(1));
+            }
+
+            if (naverUserInfo.getId() != null) {
+                request.setAttribute("pwd", naverUserInfo.getId());
+            }
+
+            if (naverUserInfo.getNickname() != null) {
+                request.setAttribute("nickname", naverUserInfo.getNickname());
+            }
+
+            request.setAttribute("social", true);
+
+            return "/user/signup";
+        }
 
         return "redirect:/";
     }
