@@ -20,26 +20,26 @@ $('.selectbox').change(function() {
 	});
 });
 
-// $('#sendMail').click(function (){
-// 	//input 값
-// 	var email1 = $("#email1").val();
-// 	console.log($("#email1").val());
-// 	var email2 = $("#email2").val();
-// 	console.log($("#email2").val());
-// 	// if(!email1){
-// 	if(!email1){
-// 		alert("값을 입력해주세요");
-// 		return false;
-// 	}
-// 	if(!email2){
-// 		alert("도메인을 입력해주세요");
-// 		return false;
-// 	}else{
-// 		alert("이메일이 전송되었습니다.");
-// 		return true;
-// 	}
-//
-// });
+$('#sendMail').click(function (){
+	//input 값
+	var email1 = $("#email1").val();
+	console.log($("#email1").val());
+	var email2 = $("#email2").val();
+	console.log($("#email2").val());
+	// if(!email1){
+	if(!email1){
+		alert("값을 입력해주세요");
+		return false;
+	}
+	if(!email2){
+		alert("도메인을 입력해주세요");
+		return false;
+	}else{
+		alert("이메일이 전송되었습니다.");
+		return true;
+	}
+
+});
 
 $('#mobilenumberauthbutton').click(function(){
 	if('.phone-first.value =="empty"'){

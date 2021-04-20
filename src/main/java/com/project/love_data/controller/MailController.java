@@ -28,7 +28,7 @@ public class MailController {
     }
 
     @RequestMapping(value ="/mail" ,method = RequestMethod.POST)
-    public void execMail(
+    public String execMail(
             @RequestParam(value = "address")String address,
             @RequestParam(value = "domain")String domain
              ) {
@@ -39,5 +39,7 @@ public class MailController {
         String mail = userRepository.email_send(address+"@"+domain);
         log.info("mail="+mail);
         mailService.mailSend(mail);
+
+        return "redirect:/";
     }
 }
