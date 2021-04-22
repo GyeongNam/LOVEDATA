@@ -12,8 +12,12 @@ import java.net.URLDecoder;
 @Log4j2
 public class AcessCodeRequestNaver implements AcessCodeRequest{
 
-    private URI setURI(String csrf) {
-        return  URISetter.getNaver_Code(csrf);
+    private URI setURI(String csrf, HttpServletRequest request) {
+        if ("localhost".equals(request.getServerName())){
+            return  URISetter.getNaver_Code_Local(csrf);
+        } else{
+            return  URISetter.getNaver_Code(csrf);
+        }
     }
 
     @Override
@@ -21,7 +25,7 @@ public class AcessCodeRequestNaver implements AcessCodeRequest{
         log.info("AcessCodeRequestNaver Called....");
 
         // https://developers.naver.com/docs/login/api/api.md
-        URI NaverCodeURI = setURI(csrfTokenRepository.loadToken(request).getToken());
+        URI NaverCodeURI = setURI(csrfTokenRepository.loadToken(request).getToken(), request);
 
         try {
             log.info("NaverCodeURI : " + URLDecoder.decode(NaverCodeURI.toASCIIString(), "ASCII"));

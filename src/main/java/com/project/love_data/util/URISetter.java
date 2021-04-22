@@ -38,6 +38,26 @@ public class URISetter {
         }
     }
 
+    // https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#request-code
+    public static URI getKaKao_Code_Local(String csrf){
+        try {
+            URI uri = new URIBuilder()
+                    .setScheme("https")
+                    .setHost("kauth.kakao.com")
+                    .setPath("oauth/authorize")
+                    .setParameter("client_id", kakao_REST)
+                    .setParameter("redirect_uri", kakao_Redirect_local)
+                    .setParameter("response_type", "code")
+                    .setParameter("state", csrf)
+                    .build();
+            return uri;
+        } catch (Exception e) {
+            log.info("getKaKao_Code URI 생성 과정 중 예외 발생");
+            log.info(e.getStackTrace());
+            return null;
+        }
+    }
+
     // https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#request-token
     public static URI getKaKao_Token(String code){
         try {
@@ -49,6 +69,27 @@ public class URISetter {
                     .setParameter("client_id", kakao_REST)
                     .setParameter("redirect_uri", kakao_Redirect)
 //                    .setParameter("redirect_uri", kakao_Redirect_local)
+                    .setParameter("code", code)
+                    .build();
+            return uri;
+        } catch (Exception e) {
+            log.info("getKaKao_Token URI 생성 과정 중 예외 발생");
+            log.info(e.getStackTrace());
+            return null;
+        }
+    }
+
+    // https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#request-token
+    public static URI getKaKao_Token_Local(String code){
+        try {
+            URI uri = new URIBuilder()
+                    .setScheme("https")
+                    .setHost("kauth.kakao.com")
+                    .setPath("oauth/token")
+                    .setParameter("grant_type", "authorization_code")
+                    .setParameter("client_id", kakao_REST)
+//                    .setParameter("redirect_uri", kakao_Redirect)
+                    .setParameter("redirect_uri", kakao_Redirect_local)
                     .setParameter("code", code)
                     .build();
             return uri;
@@ -89,6 +130,26 @@ public class URISetter {
                     .setParameter("client_id", naver_ClientID)
                     .setParameter("redirect_uri", naver_Redirect)
 //                    .setParameter("redirect_uri", naver_Redirect_local)
+                    .setParameter("state", csrf)
+                    .build();
+            return uri;
+        } catch (Exception e) {
+            log.info("getNaver_Code URI 생성 과정 중 예외 발생");
+            log.info(e.getStackTrace());
+            return null;
+        }
+    }
+
+    //    https://developers.naver.com/docs/login/api/api.md
+    public static URI getNaver_Code_Local(String csrf) {
+        try {
+            URI uri = new URIBuilder()
+                    .setScheme("https")
+                    .setHost("nid.naver.com")
+                    .setPath("oauth2.0/authorize")
+                    .setParameter("response_type", "code")
+                    .setParameter("client_id", naver_ClientID)
+                    .setParameter("redirect_uri", naver_Redirect_local)
                     .setParameter("state", csrf)
                     .build();
             return uri;

@@ -58,6 +58,7 @@ public class TokenRequestNaver implements TokenRequest{
             return null;
         }
 
+
         uri = URISetter.getNaver_Token(code, state);
 
         log.info(uri);

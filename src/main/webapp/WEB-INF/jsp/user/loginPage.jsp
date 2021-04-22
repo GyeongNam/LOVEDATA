@@ -8,8 +8,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <%--    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">--%>
-    <meta name="description" content="">
-    <meta name="author" content="">
     <title>로그인 | LOVEDATA</title>
 <%--    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">--%>
 <%--    <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>--%>
@@ -20,6 +18,13 @@
 <div class="container">
     <form class="form-signin" method="post" action="/login">
         <h2 class="form-signin-heading">로그인 해주세요</h2>
+        <div class="visually-hidden" id="login_alert">
+            <%--@Todo 로그인 실패시 id login_alert의 클래스를 visually-hidden으로 변경--%>
+            <div class="alert alert-danger" role="alert">이메일과 비밀번호를 확인해주세요</div>
+        </div>
+        <div>
+            <h3>${requestScope.errormsg}</h3>
+        </div>
         <p>
             <label for="username" class="sr-only">Username</label>
             <input type="text" id="username" name="username" class="form-control" placeholder="이메일" required autofocus>

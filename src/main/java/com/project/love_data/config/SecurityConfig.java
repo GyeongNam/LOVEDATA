@@ -1,5 +1,6 @@
 package com.project.love_data.config;
 
+import com.project.love_data.security.service.AuthenticationFailure;
 import com.project.love_data.security.service.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.firewall.DefaultHttpFirewall;
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -21,8 +23,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Autowired
     private UserDetailsService userDetailsService;
+    private AuthenticationFailureHandler AuthenticationFailure;
 
-  @Override
+    @Override
   protected void configure(HttpSecurity http) throws Exception {
       http.authorizeRequests()
               .antMatchers("/member").hasRole("USER")
@@ -39,6 +42,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
       http.rememberMe().tokenValiditySeconds(60 * 60 * 24 * 7).userDetailsService(userDetailsService);
       http.formLogin().loginPage("/login");
       http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/");
+      http.formLogin().failureHandler(AuthenticationFailure);
+      http.formLogin().failureUrl("/login");
   }
 
     //    @Override
