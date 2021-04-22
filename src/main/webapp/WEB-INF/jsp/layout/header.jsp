@@ -17,7 +17,7 @@
 <body>
 <div class="header" class="fixed-top">
 			<div id="hd-logo">
-				<a id="hd-name">LOVEDATA</a>
+				<a id="hd-name" href="/">LOVEDATA</a>
 			</div>
 			<div id="hd-btn-box">
 				<button id="hd-btn" href="#">로그인</button>

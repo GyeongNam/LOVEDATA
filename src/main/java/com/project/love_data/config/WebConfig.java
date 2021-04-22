@@ -8,16 +8,26 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
+        // home
+        registry.addViewController("/").setViewName("/home");
+
+        // user
         registry.addViewController("/login_test").setViewName("loginPage");
+        registry.addViewController("/find_id").setViewName("user/find-info-new");
+        registry.addViewController("/find-info").setViewName("user/find-info");
+        registry.addViewController("/infoFind").setViewName("user/infoFind");
+        registry.addViewController("/user/deleteAccount").setViewName("user/deleteAccount");
+        registry.addViewController("/login").setViewName("user/loginPage");
+
+
+        // sample
         registry.addViewController("/member").setViewName("/sample/member");
         registry.addViewController("/all").setViewName("/sample/all");
         registry.addViewController("/admin").setViewName("/sample/admin");
-        registry.addViewController("/test_jsp").setViewName("user/find-info-new");
-        registry.addViewController("/").setViewName("/home");
 
+
+        // bootstarp test
         registry.addViewController("/bootstrap").setViewName("/sample/index");
         registry.addViewController("/bootstrap_start").setViewName("/sample/BootStrapTest");
-//        registry.addViewController("/infoFind").setViewName("/user/infoFind");
-//        registry.addViewController("/user/signup").setViewName("/user/signup");
     }
 }

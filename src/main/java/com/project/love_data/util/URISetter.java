@@ -38,7 +38,6 @@ public class URISetter {
         }
     }
 
-    // https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#request-code
     public static URI getKaKao_Code_Local(String csrf){
         try {
             URI uri = new URIBuilder()
@@ -79,7 +78,6 @@ public class URISetter {
         }
     }
 
-    // https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#request-token
     public static URI getKaKao_Token_Local(String code){
         try {
             URI uri = new URIBuilder()
@@ -140,7 +138,6 @@ public class URISetter {
         }
     }
 
-    //    https://developers.naver.com/docs/login/api/api.md
     public static URI getNaver_Code_Local(String csrf) {
         try {
             URI uri = new URIBuilder()

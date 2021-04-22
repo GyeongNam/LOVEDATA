@@ -4,10 +4,12 @@ import java.util.*;
 
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.project.love_data.model.user.User;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface UserRepository extends JpaRepository<User, Long>{
 
@@ -29,4 +31,14 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	@EntityGraph(attributePaths = {"roleSet"}, type = EntityGraph.EntityGraphType.LOAD)
 	@Query(value = "SELECT u FROM User u where u.user_email = :email")
 	Optional<User> findUserByEmail_Privilege(@Param("email") String email);
+
+//	@Modifying
+//	@Transactional
+//	@Query(value = "DELETE  FROM User_role_set r WHERE r.user_user_no = :user_no", nativeQuery = true)
+//	void deleteUserRoleByEmail(@Param("user_no") Long user_no);
+
+	@Modifying
+	@Query(value = "DELETE  FROM User u WHERE u.user_email = :email", nativeQuery = true)
+	@Transactional
+	void deleteUserByEmail(@Param("email") String email);
 }
