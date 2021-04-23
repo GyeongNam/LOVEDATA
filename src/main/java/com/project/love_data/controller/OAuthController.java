@@ -97,10 +97,10 @@ public class OAuthController {
         } catch (AuthenticationException e) {
             log.info(e.getMessage());
 
-            log.info("UserInfo Not in the Table");
-            log.info("Passing to signIn");
+            log.info("UserInfo Not in the DB");
+            log.info("Redirect to signUp page");
 
-            //            // 한글퐅느
+            
             email = new EmailParser().emailParser(kakaoUserInfo.getEmail());
 
             if (!email.isEmpty()) {
@@ -135,7 +135,7 @@ public class OAuthController {
         decodedURL = null;
         acessCodeRequest = new AcessCodeRequestNaver();
 
-        log.info("## kakaoLogin Called!!");
+        log.info("## naverLogin Called!!");
 
         decodedURL = acessCodeRequest.excute(request, csrfTokenRepository);
 
@@ -150,7 +150,8 @@ public class OAuthController {
     @RequestMapping("/login_naver/process")
     public String naverLogin_Process(
             HttpServletRequest request,
-            HttpSession session
+            HttpSession session,
+            RedirectAttributes redirectAttributes
     ){
         token = new NaverAuthToken();
         TokenRequestNaver tokenRequest = new TokenRequestNaver();
@@ -158,8 +159,8 @@ public class OAuthController {
         NaverUserInfo naverUserInfo = null;
         List<String> email = null;
 
-        // kakao REST API Documentation
-        // https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#request-token
+        // naver REST API Documentation
+        // https://developers.naver.com/docs/login/api/api.md
         log.info("## naverLogin_Process Called!!");
 
         token = tokenRequest.excute(request);
@@ -183,25 +184,31 @@ public class OAuthController {
         } catch (AuthenticationException e) {
             log.info(e.getMessage());
 
-            log.info("UserInfo Not in the Table");
-            log.info("Passing to signIn");
+            log.info("UserInfo Not in the DB");
+            log.info("Redirect to signUp page");
 
             email = new EmailParser().emailParser(naverUserInfo.getEmail());
 
             if (!email.isEmpty()) {
-                request.setAttribute("str_email01", email.get(0));
-                request.setAttribute("str_email02", email.get(1));
+                redirectAttributes.addFlashAttribute("str_email01", email.get(0));
+                redirectAttributes.addFlashAttribute("str_email02", email.get(1));
+
+//                request.setAttribute("str_email01", email.get(0));
+//                request.setAttribute("str_email02", email.get(1));
             }
 
             if (naverUserInfo.getId() != null) {
-                request.setAttribute("pwd", naverUserInfo.getId());
+//                request.setAttribute("pwd", naverUserInfo.getId());
+                redirectAttributes.addFlashAttribute("pwd", naverUserInfo.getId());
             }
 
             if (naverUserInfo.getNickname() != null) {
-                request.setAttribute("nickname", naverUserInfo.getNickname());
+//                request.setAttribute("nickname", naverUserInfo.getNickname());
+                redirectAttributes.addFlashAttribute("nickname", naverUserInfo.getNickname());
             }
 
             request.setAttribute("social", true);
+            redirectAttributes.addFlashAttribute("social", true);
 
             return "redirect:/signup";
         }
