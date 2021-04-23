@@ -2,6 +2,10 @@ package com.project.love_data.repository;
 
 import java.util.*;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -38,7 +42,7 @@ public interface UserRepository extends JpaRepository<User, Long>{
 //	void deleteUserRoleByEmail(@Param("user_no") Long user_no);
 
 	@Modifying
-	@Query(value = "DELETE  FROM User u WHERE u.user_email = :email", nativeQuery = true)
+	@Query(value = "DELETE  FROM User  WHERE user_email = :email", nativeQuery = true)
 	@Transactional
 	void deleteUserByEmail(@Param("email") String email);
 }

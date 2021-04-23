@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.*;
 
@@ -61,6 +62,7 @@ public class OAuthController {
     @RequestMapping(value = "/login_kakao/process")
     public String kakaoLogin_Process(
             HttpServletRequest request,
+            RedirectAttributes redirectAttributes,
             HttpSession session
     ){
         token = new KakaoAuthToken();
@@ -102,21 +104,24 @@ public class OAuthController {
             email = new EmailParser().emailParser(kakaoUserInfo.getEmail());
 
             if (!email.isEmpty()) {
-                request.setAttribute("str_email01", email.get(0));
-                request.setAttribute("str_email02", email.get(1));
+                redirectAttributes.addFlashAttribute("str_email01", email.get(0));
+                redirectAttributes.addFlashAttribute("str_email02", email.get(1));
             }
 
             if (kakaoUserInfo.getId() != null) {
-                request.setAttribute("pwd", kakaoUserInfo.getId());
+//                request.setAttribute("pwd", kakaoUserInfo.getId());
+                redirectAttributes.addFlashAttribute("pwd", kakaoUserInfo.getId());
             }
 
             if (kakaoUserInfo.getNickname() != null) {
-                request.setAttribute("nickname", kakaoUserInfo.getNickname());
+//                request.setAttribute("nickname", kakaoUserInfo.getNickname());
+                redirectAttributes.addFlashAttribute("nickname", kakaoUserInfo.getNickname());
             }
 
-            request.setAttribute("social", true);
+//            request.setAttribute("social", true);
+            redirectAttributes.addFlashAttribute("social", true);
 
-            return "/user/signup";
+            return "redirect:/signup";
         }
 
         return "redirect:"+decodedURL;
@@ -198,7 +203,7 @@ public class OAuthController {
 
             request.setAttribute("social", true);
 
-            return "/user/signup";
+            return "redirect:/signup";
         }
 
         return "redirect:/";

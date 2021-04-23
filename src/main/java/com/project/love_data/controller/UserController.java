@@ -7,6 +7,8 @@ import com.project.love_data.service.SmsService;
 import com.project.love_data.service.account.UserAccountDelete;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -22,15 +24,14 @@ import java.util.Map;
 @Log4j2
 @Controller
 public class UserController {
-
 	@Autowired
     private UserRepository userRepository;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
-
 	@Autowired
 	private SmsService smsService;
+	@Autowired
+	private UserAccountDelete accountDelete;
 
     @RequestMapping(value="/signup_add",method = RequestMethod.POST)
     public String signup(
@@ -65,7 +66,7 @@ public class UserController {
 
     	userRepository.save(user);
 
-    	return "home";
+    	return "redirect:/";
     }
 
     @ResponseBody
@@ -121,26 +122,21 @@ public class UserController {
 			HttpServletRequest request
 	) {
 
-		log.info("str_email01 : " + str_email01);
-		log.info("str_email02 : " + str_email02);
-		log.info("pwd1 : " + pwd1);
-		log.info("pwd2 : " + pwd2);
-		log.info("nickname : " + nickname);
+//		log.info("str_email01 : " + str_email01);
+//		log.info("str_email02 : " + str_email02);
+//		log.info("pwd1 : " + pwd1);
+//		log.info("pwd2 : " + pwd2);
+//		log.info("nickname : " + nickname);
 
 		return "user/signup";
 	}
 
 	@PostMapping(value = "/user/deleteAccount/process")
 	public String deleteAccount(HttpServletRequest request,
-								HttpServletResponse response,
-								HttpSession session,
-								Principal principal) {
-//    	log.info("/user/deleteAccount/process called");
-		UserAccountDelete accountDelete = new UserAccountDelete();
+			Principal principal) {
 		String redirectURL = "redirect:/";
 
-		//@Todo 회원 탈퇴 비즈니스 로직 작성하기
-		redirectURL = accountDelete.execute(request, response, session,  principal, userRepository);
+		redirectURL = accountDelete.execute(request,  principal, userRepository);
 		return redirectURL;
 	}
 }

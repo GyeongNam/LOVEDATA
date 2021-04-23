@@ -41,7 +41,7 @@ public class RequestUserInfoKakao{
 
             JsonElement properties = JsonParser.parseString(text).getAsJsonObject().get("properties");
             JsonElement kakao_account = JsonParser.parseString(text).getAsJsonObject().get("kakao_account");
-            JsonElement profile = kakao_account.getAsJsonObject().get("profile");
+//            JsonElement profile = kakao_account.getAsJsonObject().get("profile");
 
             userInfo.setId(JsonParser.parseString(text).getAsJsonObject().get("id").getAsString());
             userInfo.setConnected_at(JsonParser.parseString(text).getAsJsonObject().get("connected_at").getAsString());

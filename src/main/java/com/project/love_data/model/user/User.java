@@ -2,6 +2,9 @@ package com.project.love_data.model.user;
 
 import com.project.love_data.security.model.UserRole;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.Type;
 
 import java.time.LocalDateTime;
@@ -20,6 +23,8 @@ import javax.persistence.*;
 public class User{
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
     private Long user_no;
 
     @Column(length = 100, nullable = false)
@@ -64,6 +69,9 @@ public class User{
     private LocalDateTime user_time;
 
     @ElementCollection(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_user_no")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
     @Builder.Default
     private Set<String> roleSet = new HashSet<>();
 
