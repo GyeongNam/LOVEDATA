@@ -50,6 +50,8 @@ public class UserAccountDelete {
             return "redirect:/";
         }
 
+        userRepository.delete(user.get());
+
         return "redirect:/";
     }
 }

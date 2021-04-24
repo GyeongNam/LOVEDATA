@@ -5,10 +5,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<!--------JS-------->
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script type="text/javascript"
-	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
 <!--------CSS-------->
 <link href="/css/footer.css" rel="stylesheet">
 <meta charset="UTF-8">
@@ -119,4 +115,8 @@
 </footer>
 </body>
 </html>
-<script src="/js/footer.js"></script>
+<!--------JS-------->
+<script defer src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+<%--@Todo js폴더에 footer.js가 없음--%>
+<script defer src="/js/footer.js"></script>

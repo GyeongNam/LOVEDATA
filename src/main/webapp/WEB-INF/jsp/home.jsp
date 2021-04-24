@@ -50,6 +50,6 @@
 <%@ include file="layout/footer.jsp" %>
 </body>
 <!--  부트스트랩 js 사용 -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script type="text/javascript" src="/resource/js/bootstrap.js"></script>
+<script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script defer type="text/javascript" src="/resource/js/bootstrap.js"></script>
 </html>

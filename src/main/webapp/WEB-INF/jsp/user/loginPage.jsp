@@ -50,4 +50,4 @@
 </div>
 </body></html>
 
-<script src="/js/login.js"></script>
+<script defer src="/js/login.js"></script>

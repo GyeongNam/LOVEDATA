@@ -4,7 +4,6 @@
 <%@ page session="false" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <link href="/css/signup.css" rel="stylesheet">
 
 <html>
@@ -170,4 +169,5 @@
 </body>
 </html>
 
-<script src="/js/signup.js"></script>
+<script defer src="/js/signup.js"></script>
+<script defer src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
