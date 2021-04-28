@@ -7,15 +7,11 @@ import com.project.love_data.service.SmsService;
 import com.project.love_data.service.account.UserAccountDelete;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -104,10 +100,12 @@ public class UserController {
 
 	@ResponseBody
 	@RequestMapping(value="/sendsms",method = RequestMethod.POST)
-	public String sendsms(@RequestBody HashMap<String, String> data){
+	public Map<String,String> sendsms(@RequestBody HashMap<String, String> data){
+		Map<String, String> map = new HashMap<String, String>();
 		log.info("phone:"+data.get("phones"));
+		map.put("msg","성공");
 		smsService.sendSMS(data.get("phones"));
-		return "성공";
+		return map;
 	}
 
 	//	@RequestMapping(value="/signup",method = RequestMethod.GET)

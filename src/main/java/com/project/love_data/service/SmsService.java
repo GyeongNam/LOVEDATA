@@ -34,8 +34,7 @@ public class SmsService {
 
             String postParams = "user_id="+base64Encode("silentsns97")
                     +"&secure="+base64Encode("1d1e0e0bdf80e01761871ec94d8f8d62")
-                    +"&title ="+base64Encode("[Lovedata 인증번호]")
-                    +"&msg="+base64Encode("메세지내용")
+                    +"&msg="+base64Encode("[Lovedata]\n인증번호는 ''입니다.")
                     +"&sphone1="+base64Encode("010")
                     +"&sphone2="+base64Encode("3014")
                     +"&sphone3="+base64Encode("1437")

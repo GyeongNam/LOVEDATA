@@ -3,14 +3,10 @@
          pageEncoding="UTF-8" %>
 <%@ page session="false" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-
+<script defer src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <link href="/css/signup.css" rel="stylesheet">
 
 <html>
-<meta charset="UTF-8">
-<%-- <meta id="_csrf" name="_csrf" content="${_csrf.token}" />
-<meta id="_csrf_header" name="_csrf_header" content="${_csrf.headerName}"> --%>
-
 <head>
     <meta name="_csrf" content="${_csrf.token}">
     <meta name="_csrf_header" content="${_csrf.headerName}">
@@ -19,7 +15,6 @@
 <body>
 <%@ include file="../layout/header.jsp" %>
 <form class="signupform" action="/signup_add" method="post">
-    <%-- <input type="hidden" name="${_csrf.parameterName }"value="${_csrf.token}"> --%>
     <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
     <div class="content">
         <div class="logo">
@@ -170,4 +165,3 @@
 </html>
 
 <script defer src="/js/signup.js"></script>
-<script defer src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
