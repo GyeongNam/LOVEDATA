@@ -4,9 +4,6 @@
 <%@ page session="false" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-
-
 <link href="/css/signup.css" rel="stylesheet">
 
 <html>
@@ -36,6 +33,8 @@
                     <div class="emailcontent">
                         <input type="text" name="str_email01" id="str_email01"
                                required="required" onblur="email_check()"
+<%--                               @Todo request대신 redirectAttribute를 어떻게 꺼내고, 만일  null 값일 경우 ""으로 처리할 수 있도록 하기--%>
+<%--                                자바스크립트를 새로 만들어서 처리하는 방안 고민 중--%>
                                value="<%= request.getAttribute("str_email01") == null ? "" : request.getAttribute("str_email01") %>"> @ <input type="text"
                                                                                     name="str_email02" id="str_email02"
                                                                                     onblur="email_check()" required
@@ -170,4 +169,5 @@
 </body>
 </html>
 
-<script src="/js/signup.js"></script>
+<script defer src="/js/signup.js"></script>
+<script defer src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

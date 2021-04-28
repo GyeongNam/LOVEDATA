@@ -4,12 +4,19 @@ import com.project.love_data.model.user.User;
 import com.project.love_data.repository.UserRepository;
 import com.project.love_data.security.model.UserRole;
 import com.project.love_data.service.SmsService;
+import com.project.love_data.service.account.UserAccountDelete;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,15 +24,14 @@ import java.util.Map;
 @Log4j2
 @Controller
 public class UserController {
-
 	@Autowired
     private UserRepository userRepository;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
-
 	@Autowired
 	private SmsService smsService;
+	@Autowired
+	private UserAccountDelete accountDelete;
 
     @RequestMapping(value="/signup_add",method = RequestMethod.POST)
     public String signup(
@@ -60,7 +66,7 @@ public class UserController {
 
     	userRepository.save(user);
 
-    	return "home";
+    	return "redirect:/";
     }
 
     @ResponseBody
@@ -102,5 +108,35 @@ public class UserController {
 		log.info("phone:"+data.get("phones"));
 		smsService.sendSMS(data.get("phones"));
 		return "성공";
+	}
+
+	//	@RequestMapping(value="/signup",method = RequestMethod.GET)
+	@GetMapping("/signup")
+	@PostMapping("/signup")
+	public String signup(
+			String str_email01,
+			String str_email02,
+			String pwd1,
+			String pwd2,
+			String nickname,
+			HttpServletRequest request
+	) {
+
+//		log.info("str_email01 : " + str_email01);
+//		log.info("str_email02 : " + str_email02);
+//		log.info("pwd1 : " + pwd1);
+//		log.info("pwd2 : " + pwd2);
+//		log.info("nickname : " + nickname);
+
+		return "user/signup";
+	}
+
+	@PostMapping(value = "/user/deleteAccount/process")
+	public String deleteAccount(HttpServletRequest request,
+			Principal principal) {
+		String redirectURL = "redirect:/";
+
+		redirectURL = accountDelete.execute(request,  principal, userRepository);
+		return redirectURL;
 	}
 }

@@ -55,7 +55,12 @@ public class TokenRequestKakao implements TokenRequest{
             return null;
         }
 
-        uri = URISetter.getKaKao_Token(code);
+        // 서버를 로컬로 돌리는 경우와 서버에서 돌리는 경우 분리
+        if ("localhost".equals(request.getServerName())) {
+            uri = URISetter.getKaKao_Token_Local(code);
+        } else {
+            uri = URISetter.getKaKao_Token(code);
+        }
 
         if (uri == null) {
             log.info("URI NULL");

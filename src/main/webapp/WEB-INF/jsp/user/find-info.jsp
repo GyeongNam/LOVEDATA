@@ -19,4 +19,5 @@
 <%@ include file="../layout/footer.jsp" %>
 </body>
 </html>
+<%--@Todo 이거 수정좀 부탁해--%>
 <link href="/js/find-info.js" rel="stylesheet">

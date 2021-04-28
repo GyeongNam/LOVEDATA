@@ -1269,6 +1269,7 @@ ATTRIBUTE_NAME</ColNames>
       <ColNames>user_user_no</ColNames>
       <RefTableName>user</RefTableName>
       <RefColNames>user_no</RefColNames>
+      <OnDelete>cascade</OnDelete>
     </foreign-key>
   </database-model>
 </dataSource>

@@ -40,12 +40,19 @@
 			<%--<a href="/login">로그인</a>--%>
 			<a href="/find-info">회원정보 찾기</a>
 			<a href="/find_id">회원정보 찾기 수정</a>
+			<a href="/user/deleteAccount">회원탈퇴</a>
 		</div>
 	</div>
 </div>
 </body>
 <%@ include file="layout/footer.jsp" %>
 <!--  부트스트랩 js 사용 -->
+<<<<<<< HEAD
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript" src="/resource/js/bootstrap.js"></script>
 </html>
+=======
+<script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script defer type="text/javascript" src="/resource/js/bootstrap.js"></script>
+</html>
+>>>>>>> 65dbe03f99dc3e7b5abf4ed82a774966c78c79b4

@@ -138,4 +138,4 @@
 </div>
 </body>
 </html>
-<script src="/js/find-info.js"></script>
+<script defer src="/js/find-info.js"></script>

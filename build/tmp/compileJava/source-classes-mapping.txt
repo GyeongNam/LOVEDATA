@@ -1,3 +1,5 @@
+com/project/love_data/repository/UserRepository.java
+ com.project.love_data.repository.UserRepository
 com/project/love_data/model/oauth/KakaoAuthToken.java
  com.project.love_data.model.oauth.KakaoAuthToken
 com/project/love_data/service/oauth/logic/RequestLoginAPIKako.java
@@ -6,12 +8,17 @@ com/project/love_data/util/URISetter.java
  com.project.love_data.util.URISetter
 com/project/love_data/service/oauth/logic/RequestUserInfoKakao.java
  com.project.love_data.service.oauth.logic.RequestUserInfoKakao
+<<<<<<< HEAD
 com/project/love_data/Repository/UserRepository.java
  com.project.love_data.repository.UserRepository
 com/project/love_data/controller/UserController.java
  com.project.love_data.controller.UserController
 com/project/love_data/Repository/TestRepository.java
  com.project.love_data.repository.TestRepository
+=======
+com/project/love_data/service/oauth/logic/TokenRequestKakao.java
+ com.project.love_data.service.oauth.logic.TokenRequestKakao
+>>>>>>> 65dbe03f99dc3e7b5abf4ed82a774966c78c79b4
 com/project/love_data/model/oauth/OAuthToken.java
  com.project.love_data.model.oauth.OAuthToken
 com/project/love_data/security/model/AuthUserModel.java
@@ -22,6 +29,8 @@ com/project/love_data/service/MailService.java
  com.project.love_data.service.MailService
 com/project/love_data/model/user/NaverUserInfo.java
  com.project.love_data.model.user.NaverUserInfo
+com/project/love_data/security/service/AuthenticationFailure.java
+ com.project.love_data.security.service.AuthenticationFailure
 com/project/love_data/model/Test.java
  com.project.love_data.model.Test
 com/project/love_data/ServletInitializer.java
@@ -39,6 +48,8 @@ com/project/love_data/service/SmsService.java
  com.project.love_data.service.SmsService
 com/project/love_data/controller/MailController.java
  com.project.love_data.controller.MailController
+com/project/love_data/controller/OAuthController.java
+ com.project.love_data.controller.OAuthController
 com/project/love_data/service/oauth/logic/TokenRequest.java
  com.project.love_data.service.oauth.logic.TokenRequest
 com/project/love_data/model/oauth/NaverAuthToken.java
@@ -57,6 +68,8 @@ com/project/love_data/service/oauth/logic/AcessCodeRequestKakao.java
  com.project.love_data.service.oauth.logic.AcessCodeRequestKakao
 com/project/love_data/security/converter/UserRoleConverter.java
  com.project.love_data.security.converter.UserRoleConverter
+com/project/love_data/repository/TestRepository.java
+ com.project.love_data.repository.TestRepository
 com/project/love_data/LoveDataApplication.java
  com.project.love_data.LoveDataApplication
 com/project/love_data/service/oauth/logic/RequestLoginAPI.java
@@ -65,11 +78,18 @@ com/project/love_data/service/oauth/logic/RequestUserInfoNaver.java
  com.project.love_data.service.oauth.logic.RequestUserInfoNaver
 com/project/love_data/security/service/UserDetailsService.java
  com.project.love_data.security.service.UserDetailsService
-com/project/love_data/controller/OAuthController.java
- com.project.love_data.controller.OAuthController
+com/project/love_data/config/ConverterConfig.java
+ com.project.love_data.config.ConverterConfig
 com/project/love_data/service/oauth/logic/AcessCodeRequestNaver.java
  com.project.love_data.service.oauth.logic.AcessCodeRequestNaver
+<<<<<<< HEAD
 com/project/love_data/service/oauth/logic/TokenRequestKakao.java
  com.project.love_data.service.oauth.logic.TokenRequestKakao
 com/project/love_data/config/ConverterConfig.java
  com.project.love_data.config.ConverterConfig
+=======
+com/project/love_data/service/account/UserAccountDelete.java
+ com.project.love_data.service.account.UserAccountDelete
+com/project/love_data/controller/UserController.java
+ com.project.love_data.controller.UserController
+>>>>>>> 65dbe03f99dc3e7b5abf4ed82a774966c78c79b4

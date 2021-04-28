@@ -14,14 +14,18 @@ import java.net.URLDecoder;
 @Log4j2
 public class AcessCodeRequestKakao implements AcessCodeRequest{
 
-    private URI setURI(String csrf) {
-        return  URISetter.getKaKao_Code(csrf);
+    private URI setURI(String csrf, HttpServletRequest request) {
+        if ("localhost".equals(request.getServerName())){
+            return  URISetter.getKaKao_Code_Local(csrf);
+        } else{
+            return  URISetter.getKaKao_Code(csrf);
+        }
     }
 
     @Override
     public String excute(HttpServletRequest request, HttpSessionCsrfTokenRepository csrfTokenRepository) {
         // https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#request-code
-        URI kakaoCodeURI = setURI(csrfTokenRepository.loadToken(request).getToken());
+        URI kakaoCodeURI = setURI(csrfTokenRepository.loadToken(request).getToken(), request);
 
         try {
             log.info("kakaoCodeURI : " + URLDecoder.decode(kakaoCodeURI.toASCIIString(), "ASCII"));
