@@ -138,6 +138,7 @@
             </tr>
         </table>
         <input type="hidden" name="social" value="<%= request.getAttribute("social")  == null ? false : request.getAttribute("social")%>">
+        <input type="hidden" name="social_info" value="<%= request.getAttribute("social_info")  == null ? "" : request.getAttribute("social_info")%>">
         <div class="sand_back">
             <button class="submit" type="submit" id="sub"
                     onclick="return to_submit();">

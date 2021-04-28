@@ -1196,76 +1196,80 @@ ATTRIBUTE_NAME</ColNames>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="363" parent="332" name="user_activation">
+    <column id="363" parent="332" name="social_info">
       <Position>2</Position>
+      <DataType>varchar(10)|0s</DataType>
+    </column>
+    <column id="364" parent="332" name="user_activation">
+      <Position>3</Position>
       <DataType>tinyint(1)|0s</DataType>
     </column>
-    <column id="364" parent="332" name="user_birth">
-      <Position>3</Position>
+    <column id="365" parent="332" name="user_birth">
+      <Position>4</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="365" parent="332" name="user_email">
-      <Position>4</Position>
+    <column id="366" parent="332" name="user_email">
+      <Position>5</Position>
       <DataType>varchar(100)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="366" parent="332" name="user_email_re">
-      <Position>5</Position>
+    <column id="367" parent="332" name="user_email_re">
+      <Position>6</Position>
       <DataType>tinyint(1)|0s</DataType>
     </column>
-    <column id="367" parent="332" name="user_name">
-      <Position>6</Position>
-      <DataType>varchar(50)|0s</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="368" parent="332" name="user_nic">
+    <column id="368" parent="332" name="user_name">
       <Position>7</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="369" parent="332" name="user_phone">
+    <column id="369" parent="332" name="user_nic">
       <Position>8</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="370" parent="332" name="user_pw">
+    <column id="370" parent="332" name="user_phone">
       <Position>9</Position>
+      <DataType>varchar(50)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="371" parent="332" name="user_pw">
+      <Position>10</Position>
       <DataType>varchar(60)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="371" parent="332" name="user_sex">
-      <Position>10</Position>
-      <DataType>tinyint(1)|0s</DataType>
-    </column>
-    <column id="372" parent="332" name="user_social">
+    <column id="372" parent="332" name="user_sex">
       <Position>11</Position>
       <DataType>tinyint(1)|0s</DataType>
     </column>
-    <column id="373" parent="332" name="user_time">
+    <column id="373" parent="332" name="user_social">
       <Position>12</Position>
+      <DataType>tinyint(1)|0s</DataType>
+    </column>
+    <column id="374" parent="332" name="user_time">
+      <Position>13</Position>
       <DataType>datetime|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <key id="374" parent="332" name="PRIMARY">
+    <key id="375" parent="332" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>user_no</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="375" parent="333" name="user_user_no">
+    <column id="376" parent="333" name="user_user_no">
       <Position>1</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="376" parent="333" name="role_set">
+    <column id="377" parent="333" name="role_set">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
     </column>
-    <index id="377" parent="333" name="FKr9gbvf29req6g5b79kcwj7oqm">
+    <index id="378" parent="333" name="FKr9gbvf29req6g5b79kcwj7oqm">
       <ColNames>user_user_no</ColNames>
       <Type>btree</Type>
     </index>
-    <foreign-key id="378" parent="333" name="FKr9gbvf29req6g5b79kcwj7oqm">
+    <foreign-key id="379" parent="333" name="FKr9gbvf29req6g5b79kcwj7oqm">
       <ColNames>user_user_no</ColNames>
       <RefTableName>user</RefTableName>
       <RefColNames>user_no</RefColNames>

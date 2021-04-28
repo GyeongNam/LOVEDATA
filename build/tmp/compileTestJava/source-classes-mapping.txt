@@ -1,0 +1,8 @@
+com/project/love_data/HttpTest.java
+ com.project.love_data.HttpTest
+com/project/love_data/LoveDataApplicationTests.java
+ com.project.love_data.LoveDataApplicationTests
+com/project/love_data/TestRepositoryTests.java
+ com.project.love_data.TestRepositoryTests
+com/project/love_data/UserTest.java
+ com.project.love_data.UserTest

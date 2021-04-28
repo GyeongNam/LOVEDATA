@@ -7,7 +7,8 @@ import com.project.love_data.model.user.KakaoUserInfo;
 import com.project.love_data.model.user.NaverUserInfo;
 import com.project.love_data.security.model.AuthUserModel;
 import com.project.love_data.security.service.UserDetailsService;
-import com.project.love_data.service.oauth.logic.*;
+import com.project.love_data.service.oauth.*;
+import com.project.love_data.service.oauth.login.*;
 import com.project.love_data.util.EmailParser;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.*;
 
@@ -63,7 +64,8 @@ public class OAuthController {
     public String kakaoLogin_Process(
             HttpServletRequest request,
             RedirectAttributes redirectAttributes,
-            HttpSession session
+            HttpSession session,
+            Model model
     ){
         token = new KakaoAuthToken();
         decodedURL = "/";
@@ -109,20 +111,20 @@ public class OAuthController {
             }
 
             if (kakaoUserInfo.getId() != null) {
-//                request.setAttribute("pwd", kakaoUserInfo.getId());
                 redirectAttributes.addFlashAttribute("pwd", kakaoUserInfo.getId());
             }
 
             if (kakaoUserInfo.getNickname() != null) {
-//                request.setAttribute("nickname", kakaoUserInfo.getNickname());
                 redirectAttributes.addFlashAttribute("nickname", kakaoUserInfo.getNickname());
             }
 
-//            request.setAttribute("social", true);
             redirectAttributes.addFlashAttribute("social", true);
+            redirectAttributes.addFlashAttribute("social_info", "kakao");
 
             return "redirect:/signup";
         }
+
+        log.info("Kakao Login Successful");
 
         return "redirect:"+decodedURL;
     }
@@ -192,27 +194,43 @@ public class OAuthController {
             if (!email.isEmpty()) {
                 redirectAttributes.addFlashAttribute("str_email01", email.get(0));
                 redirectAttributes.addFlashAttribute("str_email02", email.get(1));
-
-//                request.setAttribute("str_email01", email.get(0));
-//                request.setAttribute("str_email02", email.get(1));
             }
 
             if (naverUserInfo.getId() != null) {
-//                request.setAttribute("pwd", naverUserInfo.getId());
                 redirectAttributes.addFlashAttribute("pwd", naverUserInfo.getId());
             }
 
             if (naverUserInfo.getNickname() != null) {
-//                request.setAttribute("nickname", naverUserInfo.getNickname());
                 redirectAttributes.addFlashAttribute("nickname", naverUserInfo.getNickname());
             }
 
-            request.setAttribute("social", true);
             redirectAttributes.addFlashAttribute("social", true);
+            redirectAttributes.addFlashAttribute("social_info", "naver");
 
             return "redirect:/signup";
         }
 
         return "redirect:/";
     }
+
+    @PostMapping("/logout_kakao")
+    public String kakaoLogout(
+            HttpServletRequest request,
+            HttpSessionCsrfTokenRepository csrfTokenRepository
+    ){
+        LogoutUser logoutUser = new LogoutUserKakao();
+        LogoutProcess logoutProcess = new LogoutProcessKakao();
+        decodedURL = null;
+        String csrf = null;
+
+        decodedURL =logoutUser.execute(request, csrfTokenRepository);
+        logoutProcess.execute(decodedURL);
+
+        return "redirect:/logout";
+    }
+    
+    // @Todo 네이버 로그아웃도 만들기
+    // @Todo 카카오, 네이버 연결끊기 생각해보기
+    // 현재는 도메인이 https가 아니라서 안됨
+    // https://developers.kakao.com/console/app/565410/product/login/unlink
 }

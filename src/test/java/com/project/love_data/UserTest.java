@@ -53,27 +53,12 @@ public class UserTest {
         user.setUser_Activation(true);
         user.setUser_email_re(false);
         user.setUser_social(true);
+        user.setSocial_info("kakao");
 //        user.setUser_userRole(UserRole.ADMIN);
         user.addUserRole(UserRole.ADMIN);
         user.addUserRole(UserRole.USER);
 
-        User user1 = new User();
-        user1.setUser_email("mon0mon@naver.com");
-        user1.setUser_pw(passwordEncoder.encode("1111"));
-        user1.setUser_nic("mon0mon");
-        user1.setUser_name("이민기");
-        user1.setUser_phone("010-0000-0000");
-        user1.setUser_birth("");
-        user1.setUser_sex(true);
-        user1.setUser_time(LocalDateTime.now());
-        user1.setUser_Activation(true);
-        user1.setUser_email_re(false);
-        user1.setUser_social(true);
-        user1.addUserRole(UserRole.ADMIN);
-        user1.addUserRole(UserRole.USER);
-
         repository.save(user);
-        repository.save(user1);
     }
 
     @Test
@@ -202,5 +187,26 @@ public class UserTest {
             System.out.println("Complete");
             System.out.println("########################################");
         }
+    }
+
+    @Test
+    public void InsertMyInfo1() {
+        User user1 = new User();
+        user1.setUser_email("mon0mon@naver.com");
+        user1.setUser_pw(passwordEncoder.encode("1111"));
+        user1.setUser_nic("mon0mon");
+        user1.setUser_name("이민기");
+        user1.setUser_phone("010-0000-0000");
+        user1.setUser_birth("");
+        user1.setUser_sex(true);
+        user1.setUser_time(LocalDateTime.now());
+        user1.setUser_Activation(true);
+        user1.setUser_email_re(false);
+        user1.setUser_social(true);
+        user1.addUserRole(UserRole.ADMIN);
+        user1.addUserRole(UserRole.USER);
+        user1.setSocial_info("naver");
+
+        repository.save(user1);
     }
 }

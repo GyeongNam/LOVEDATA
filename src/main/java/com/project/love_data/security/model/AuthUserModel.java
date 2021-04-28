@@ -21,10 +21,10 @@ public class AuthUserModel extends User {
     private String user_name;
     private String user_phone;
     private String user_birth;
+    private String social_info;
     private boolean user_sex;
     private boolean user_social;
     private boolean user_emil_re;
-    // 유저 활동 관련 변수 (활동정지 및 등등)
     private boolean user_Activation;
     private LocalDateTime user_time;
 

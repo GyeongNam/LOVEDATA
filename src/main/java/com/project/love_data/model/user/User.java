@@ -68,6 +68,9 @@ public class User{
     @Column(length = 50, nullable = false)
     private LocalDateTime user_time;
 
+    @Column(length = 10, nullable = true)
+    private String social_info;
+
     @ElementCollection(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_user_no")
     @OnDelete(action = OnDeleteAction.CASCADE)

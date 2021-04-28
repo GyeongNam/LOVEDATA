@@ -23,12 +23,44 @@
 			<a href="/signup">회원가입</a>
 		</div>
 		<div class="class1">
+<%--			로그인 되어 있을 경우 Logout  --%>
 			<sec:authorize access="isAuthenticated()">
-				<form action="/logout" method="post">
-					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-					<button type="submit">LOGOUT</button>
-				</form>
+				<c:set var = "user_social"><sec:authentication property="principal.user_social"/></c:set>
+				<c:choose>
+<%--					소셜 로그인으로 로그인 되어 있을 경우--%>
+					<c:when test="${user_social eq true}">
+						<c:set var = "social_info"><sec:authentication property="principal.social_info"/></c:set>
+
+						<c:choose>
+							<%--						소셜 로그인을 카카오로 했을 경우--%>
+							<c:when test="${social_info eq 'kakao'}">
+								<form action="/logout_kakao" method="post">
+									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+									<button type="submit">LOGOUT</button>
+								</form>
+							</c:when>
+
+							<%--						소셜 로그인을 네이버로 했을 경우--%>
+							<c:when test="${social_info eq 'naver'}">
+								<form action="/logout" method="post">
+									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+									<button type="submit">LOGOUT</button>
+								</form>
+							</c:when>
+						</c:choose>
+					</c:when>
+
+<%--					일반 로그인으로 로그인 되어 있을 경우--%>
+					<c:when test="${user_social ne true}">
+						<form action="/logout" method="post">
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+							<button type="submit">LOGOUT</button>
+						</form>
+					</c:when>
+				</c:choose>
 			</sec:authorize>
+
+<%--		로그인 되어 있지 않을 경우 Login	--%>
 			<sec:authorize access="!isAuthenticated()">
 				<form action="/login" method="get">
 						<%--					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />--%>
@@ -47,12 +79,6 @@
 </body>
 <%@ include file="layout/footer.jsp" %>
 <!--  부트스트랩 js 사용 -->
-<<<<<<< HEAD
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script type="text/javascript" src="/resource/js/bootstrap.js"></script>
-</html>
-=======
 <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script defer type="text/javascript" src="/resource/js/bootstrap.js"></script>
 </html>
->>>>>>> 65dbe03f99dc3e7b5abf4ed82a774966c78c79b4

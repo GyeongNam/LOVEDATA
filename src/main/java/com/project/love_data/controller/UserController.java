@@ -9,6 +9,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,7 +43,8 @@ public class UserController {
 				@RequestParam(value = "birthday")String birthday,
 				@RequestParam(value = "gender")boolean gender,
 				@RequestParam(value = "recv_email")boolean recv_email,
-				@RequestParam(value = "social") boolean social
+				@RequestParam(value = "social") boolean social,
+				@RequestParam(value = "social_info") String social_info
     		) {
 
 		User user = User.builder()
@@ -57,6 +59,7 @@ public class UserController {
 				.user_time(LocalDateTime.now())
 				.user_social(social)
 				.user_Activation(true)
+				.social_info(social_info)
 				.build();
 		user.addUserRole(UserRole.USER);
 
