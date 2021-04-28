@@ -7,8 +7,11 @@ import com.project.love_data.model.user.KakaoUserInfo;
 import com.project.love_data.model.user.NaverUserInfo;
 import com.project.love_data.security.model.AuthUserModel;
 import com.project.love_data.security.service.UserDetailsService;
-import com.project.love_data.service.oauth.*;
 import com.project.love_data.service.oauth.login.*;
+import com.project.love_data.service.oauth.logout.LogoutProcess;
+import com.project.love_data.service.oauth.logout.LogoutProcessKakao;
+import com.project.love_data.service.oauth.logout.LogoutUser;
+import com.project.love_data.service.oauth.logout.LogoutUserKakao;
 import com.project.love_data.util.EmailParser;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,6 +88,7 @@ public class OAuthController {
         }
 
         log.info("token : " + token);
+        session.setAttribute("token", token);
 
         try {
             kakaoUserInfo = infoKakao.excute(request, token);

@@ -119,4 +119,4 @@
 <script defer src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
 <%--@Todo js폴더에 footer.js가 없음--%>
-<script defer src="/js/footer.js"></script>
+<%--<script defer src="/js/footer.js"></script>--%>

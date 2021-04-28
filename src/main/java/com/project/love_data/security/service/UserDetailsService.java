@@ -30,6 +30,7 @@ public class UserDetailsService implements org.springframework.security.core.use
         // DB에 저장된 유저 정보가 없을 때
         if (!result.isPresent()) {
 //            throw new UsernameNotFoundException("Check Email");
+            log.info("Login Failed : " + username);
             throw new BadCredentialsException("Check Email and Password");
         }
 

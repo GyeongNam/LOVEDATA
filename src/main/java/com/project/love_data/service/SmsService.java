@@ -73,6 +73,9 @@ public class SmsService {
     }
 
     public static String base64Encode(String str)  throws java.io.IOException {
+        // @Todo 컴파일러 경고남
+        // src\main\java\com\project\love_data\service\SmsService.java:76: warning: BASE64Encoder is internal proprietary API and may be removed in a future release
+        //        sun.misc.BASE64Encoder encoder = new sun.misc.BASE64Encoder();
         sun.misc.BASE64Encoder encoder = new sun.misc.BASE64Encoder();
         byte[] strByte = str.getBytes();
         String result = encoder.encode(strByte);
