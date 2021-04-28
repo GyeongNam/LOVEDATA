@@ -24,7 +24,7 @@
 				<div class="dropdown">
 					<button id="hd-btn" class="dropbtn" href="#">마이 페이지</button>
 					<div class="dropdown-content">
-						<a href="#">내 정보</a>
+						<a href="/mypage">내 정보</a>
 						<a href="#">나의 리뷰</a>
 						<a href="#">나의 코스</a>
 						<a href="#">찜 목록</a>

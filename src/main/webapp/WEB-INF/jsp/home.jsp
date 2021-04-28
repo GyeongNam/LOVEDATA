@@ -9,8 +9,9 @@
 <link href="\main\resources\static\css" rel="stylesheet">
 	<title>Home</title>
 </head>
-<body>
 <%@ include file="layout/header.jsp" %>
+<body>
+
 	<div class="container">
 <h1>
 	Hello world!
@@ -41,13 +42,9 @@
 			<a href="/find_id">회원정보 찾기 수정</a>
 		</div>
 	</div>
-
-<p>
-
-</p>
 </div>
-<%@ include file="layout/footer.jsp" %>
 </body>
+<%@ include file="layout/footer.jsp" %>
 <!--  부트스트랩 js 사용 -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript" src="/resource/js/bootstrap.js"></script>
