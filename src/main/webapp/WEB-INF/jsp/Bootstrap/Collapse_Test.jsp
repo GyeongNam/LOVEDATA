@@ -18,7 +18,7 @@
 <body>
 
 <div class="container-fluid m-3 d-flex align-items-center">
-    <div class="col-2">
+    <div class="col-2" id="sidebar">
         <ul class="nav nav-pills flex-column align-middle">
             <div class="accordion text-center" id="loc">
                 <hr>
@@ -31,7 +31,7 @@
                             </button>
                         </h2>
                     </div>
-                    <div id="loc_collapse" class="collapse" aria-labelledby="headingLoc" data-parent="#loc">
+                    <div id="loc_collapse" class="collapse show" aria-labelledby="headingLoc" data-parent="#loc">
                         <div class="card-body center-pill">
                             <p><a href="#">- 추천 장소</a></p>
                             <p><a href="#">- 장소 등록/편집</a></p>
@@ -64,8 +64,8 @@
             </div>
         </ul>
     </div>
-    <div class="container" id="display_center" style="margin-right: 30px">
-        <div class="col" id="navbar">
+    <div class="container-fluid" id="display_center" style="margin-right: 30px">
+        <div class="col" id="top_navbar">
             <nav class="navbar navbar-expand-sm navbar-light bg-light static-top">
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                 </button> <a class="navbar-brand text-dark" href="/">추천장소</a>
@@ -91,7 +91,7 @@
                 </div>
             </nav>
         </div>
-        <div class="col" id="hashtag">
+        <div class="col" id="top_hashtag">
             <nav class="navbar navbar-expand-sm navbar-light bg-light static-top">
                 <div class="collapse navbar-collapse" id="tag-navbar-collapse">
                     <ul class="navbar-nav">
@@ -100,70 +100,140 @@
 <%--                            @Todo 자바스크립트 써서 동적으로 해시태그 추가하는 것 구현하기--%>
 <%--                            https://www.w3schools.com/jsref/event_onclick.asp--%>
                             <div class="dropdown-menu" aria-labelledby="tagDropdownMenuLink">
-                                <button type="button" class="dropdown-item" href="#">Action A</button>
-                                <button type="button" class="dropdown-item" href="#">Action B</button>
-                                <button type="button" class="dropdown-item" href="#">Action C</button>
-                                <button type="button" class="dropdown-item" href="#">Action D</button>
-                                <button type="button" class="dropdown-item" href="#">Action E</button>
-                                <button type="button" class="dropdown-item" href="#">Action F</button>
-                                <button type="button" class="dropdown-item" href="#">Action G</button>
-                                <button type="button" class="dropdown-item" href="#">Action H</button>
+                                <button type="button" class="dropdown-item" onclick="">Action A</button>
+                                <button type="button" class="dropdown-item" onclick="">Action B</button>
+                                <button type="button" class="dropdown-item" onclick="">Action C</button>
+                                <button type="button" class="dropdown-item" onclick="">Action D</button>
+                                <button type="button" class="dropdown-item" onclick="">Action E</button>
+                                <button type="button" class="dropdown-item" onclick="">Action F</button>
+                                <button type="button" class="dropdown-item" onclick="">Action G</button>
+                                <button type="button" class="dropdown-item" onclick="">Action H</button>
                             </div>
                         </li>
                     </ul>
                 </div>
             </nav>
         </div>
-        <div class="col" id="loc_quater_display">
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
+        <div class="row justify-content-md-center">
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <svg class="bd-placeholder-img card-img-top" width="100%" height="170"
+                         xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
+                         preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <title>Placeholder</title>
+                        <rect width="100%" height="100%" fill="#55595c"></rect><text x="40%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
+                    </svg>
+
+                    <div class="card-body">
+                        <p class="card-text">Title</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                            </div>
+                            <small class="text-muted">9 mins</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <svg class="bd-placeholder-img card-img-top" width="100%" height="170"
+                         xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
+                         preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <title>Placeholder</title>
+                        <rect width="100%" height="100%" fill="#55595c"></rect><text x="40%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
+                    </svg>
+
+                    <div class="card-body">
+                        <p class="card-text">Title</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                            </div>
+                            <small class="text-muted">9 mins</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col" id="page_number">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&lt;</span>
-                        </a>
-                    </li>
-                    <li class="page-item disabled"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&gt;</span>
-                        </a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+        <div class="row justify-content-md-center">
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <svg class="bd-placeholder-img card-img-top" width="100%" height="170"
+                         xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
+                         preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <title>Placeholder</title>
+                        <rect width="100%" height="100%" fill="#55595c"></rect><text x="40%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
+                    </svg>
+
+                    <div class="card-body">
+                        <p class="card-text">Title</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                            </div>
+                            <small class="text-muted">9 mins</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <svg class="bd-placeholder-img card-img-top" width="100%" height="170"
+                         xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
+                         preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <title>Placeholder</title>
+                        <rect width="100%" height="100%" fill="#55595c"></rect><text x="40%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
+                    </svg>
+
+                    <div class="card-body">
+                        <p class="card-text">Title</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                            </div>
+                            <small class="text-muted">9 mins</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container bottom">
+            <div class="col" id="page_number">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&lt;</span>
+                            </a>
+                        </li>
+                        <li class="page-item disabled"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">4</a></li>
+                        <li class="page-item"><a class="page-link" href="#">5</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&gt;</span>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </div>
 </div>
@@ -176,5 +246,5 @@
         integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
         crossorigin="anonymous"></script>
 </body>
-<%@ include file="../layout/footer.jsp" %>
+<%--<%@ include file="../layout/footer.jsp" %>--%>
 </html>
