@@ -28,8 +28,6 @@
                     <div class="emailcontent">
                         <input type="text" name="str_email01" id="str_email01"
                                required="required" onblur="email_check()"
-<%--                               @Todo request대신 redirectAttribute를 어떻게 꺼내고, 만일  null 값일 경우 ""으로 처리할 수 있도록 하기--%>
-<%--                                자바스크립트를 새로 만들어서 처리하는 방안 고민 중--%>
                                value="<%= request.getAttribute("str_email01") == null ? "" : request.getAttribute("str_email01") %>"> @ <input type="text"
                                                                                     name="str_email02" id="str_email02"
                                                                                     onblur="email_check()" required

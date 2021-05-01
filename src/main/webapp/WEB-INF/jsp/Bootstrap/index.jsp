@@ -7,6 +7,5 @@
     <h1>Starter Page</h1>
     <p><a href="/bootstrap_start">BootStarpTest</a></p>
     <p><a href="/test/dropdown">Dropdown_Test</a></p>
-    <p><a href="/test/collapse">Collapse_Test</a></p>
 </body>
 </html>

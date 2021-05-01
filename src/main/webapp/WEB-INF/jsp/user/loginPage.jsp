@@ -21,7 +21,6 @@
 <%--                https://to-dy.tistory.com/81--%>
             <c:if test="${not empty SPRING_SECURITY_LAST_EXCEPTION}">
                 <div class="visible" id="login_alert">
-                    <%--@Todo 로그인 실패시 id login_alert의 클래스를 visually-hidden으로 변경--%>
                     <div class="alert alert-danger" role="alert">이메일과 비밀번호를 확인해주세요</div>
                 </div>
             </c:if>

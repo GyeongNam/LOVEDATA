@@ -30,9 +30,9 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/bootstrap").setViewName("Bootstrap/index");
         registry.addViewController("/bootstrap_start").setViewName("Bootstrap/BootStrapTest");
         registry.addViewController("/test/dropdown").setViewName("Bootstrap/Dropdown_Test");
-        registry.addViewController("/test/collapse").setViewName("Bootstrap/Collapse_Test");
 
         // Service
-        registry.addViewController("/service_sample").setViewName("/service/service_sample");
+        registry.addViewController("/service/loc_recommend").setViewName("/service/loc_recommend");
+        registry.addViewController("/service/loc_detail").setViewName("/service/loc_detail");
     }
 }

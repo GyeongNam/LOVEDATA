@@ -83,7 +83,7 @@ com/project/love_data/config/SecurityConfig.java
  com.project.love_data.config.SecurityConfig
 com/project/love_data/controller/OAuthController.java
  com.project.love_data.controller.OAuthController
-com/project/love_data/config/WebConfig.java
- com.project.love_data.config.WebConfig
 com/project/love_data/controller/TestController.java
  com.project.love_data.controller.TestController
+com/project/love_data/config/WebConfig.java
+ com.project.love_data.config.WebConfig
