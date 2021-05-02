@@ -9,6 +9,8 @@ body {
 
 .info-box {
     height: auto;
+    width: auto;
+    position:relative;
 }
 
 .title {

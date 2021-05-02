@@ -85,7 +85,7 @@
 											<input type="text" name="domain" id="email2" placeholder="">
 											<select name="select_email" class="selectbox"
 											required>
-												<option value="" selected>선택하세요</option>
+												<option value="">선택하세요</option>
 												<option value="naver.com">naver.com</option>
 												<option value="hanmail.net">hanmail.net</option>
 												<option value="hotmail.com">hotmail.com</option>
@@ -107,24 +107,7 @@
 											</button>
 											</form>
 										</li>
-										<li class="pd-v-5">
-										<input type="number" id="authnumber" name="authnumber"
-													placeholder="인증번호">
-											<button type="button" id="mobilenumberauthbutton" class="btn btn-grass" >
-													<span class="caption">인증번호 확인</span>
-													<div class="ripple"></div>
-												</button>
-											</li>
 										<li class="pd-v-5"><hr class="solid"></li>
-										<li class="pd-v-10 txt-center">
-											<button type="button"
-												class="btn btn-l hidden-icon right btn-yellow" onclick="">
-												<div class="bg"></div>
-												<span class="caption">비밀번호 찾기</span><i
-													class="material-icons">search</i>
-												<div class="ripple"></div>
-											</button>
-										</li>
 									</ul>
 								</div>
 							</div>

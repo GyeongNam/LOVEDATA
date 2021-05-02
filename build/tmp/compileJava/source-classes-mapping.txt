@@ -24,8 +24,8 @@ com/project/love_data/service/oauth/login/AcessCodeRequestNaver.java
  com.project.love_data.service.oauth.login.AcessCodeRequestNaver
 com/project/love_data/security/model/UserRole.java
  com.project.love_data.security.model.UserRole
-com/project/love_data/service/MailService.java
- com.project.love_data.service.MailService
+com/project/love_data/service/oauth/login/RequestUserInfoKakao.java
+ com.project.love_data.service.oauth.login.RequestUserInfoKakao
 com/project/love_data/service/oauth/logout/LogoutProcess.java
  com.project.love_data.service.oauth.logout.LogoutProcess
 com/project/love_data/model/user/NaverUserInfo.java
@@ -51,8 +51,8 @@ com/project/love_data/service/SmsService.java
  com.project.love_data.service.SmsService
 com/project/love_data/service/oauth/logout/LogoutProcessKakao.java
  com.project.love_data.service.oauth.logout.LogoutProcessKakao
-com/project/love_data/controller/MailController.java
- com.project.love_data.controller.MailController
+com/project/love_data/service/oauth/logout/LogoutUserKakao.java
+ com.project.love_data.service.oauth.logout.LogoutUserKakao
 com/project/love_data/service/account/UserAccountDelete.java
  com.project.love_data.service.account.UserAccountDelete
 com/project/love_data/model/oauth/NaverAuthToken.java
@@ -61,8 +61,8 @@ com/project/love_data/controller/HomeController.java
  com.project.love_data.controller.HomeController
 com/project/love_data/config/SecurityConfig.java
  com.project.love_data.config.SecurityConfig
-com/project/love_data/service/oauth/logout/LogoutUserKakao.java
- com.project.love_data.service.oauth.logout.LogoutUserKakao
+com/project/love_data/config/WebConfig.java
+ com.project.love_data.config.WebConfig
 com/project/love_data/service/oauth/login/TokenRequest.java
  com.project.love_data.service.oauth.login.TokenRequest
 com/project/love_data/model/user/KakaoUserInfo.java
@@ -79,16 +79,11 @@ com/project/love_data/service/oauth/login/AcessCodeRequest.java
  com.project.love_data.service.oauth.login.AcessCodeRequest
 com/project/love_data/controller/OAuthController.java
  com.project.love_data.controller.OAuthController
-<<<<<<< HEAD
-com/project/love_data/controller/TestController.java
- com.project.love_data.controller.TestController
-=======
 com/project/love_data/service/oauth/login/SignupAutoFillupNaver.java
  com.project.love_data.service.oauth.login.SignupAutoFillupNaver
 com/project/love_data/config/ConverterConfig.java
  com.project.love_data.config.ConverterConfig
-com/project/love_data/service/oauth/login/RequestUserInfoKakao.java
- com.project.love_data.service.oauth.login.RequestUserInfoKakao
->>>>>>> domamu
-com/project/love_data/config/WebConfig.java
- com.project.love_data.config.WebConfig
+com/project/love_data/controller/MailController.java
+ com.project.love_data.controller.MailController
+com/project/love_data/service/MailService.java
+ com.project.love_data.service.MailService
