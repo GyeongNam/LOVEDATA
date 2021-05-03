@@ -39,7 +39,6 @@ public class MailController {
         String mail = userRepository.email_send(address+"@"+domain);
         log.info("mail="+mail);
         mailService.mailSend(mail);
-
         return "redirect:/";
     }
 }

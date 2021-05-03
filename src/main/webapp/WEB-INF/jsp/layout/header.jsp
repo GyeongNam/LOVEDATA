@@ -17,25 +17,8 @@
 			</div>
 			<div id="hd-btn-box">
 				<button id="hd-btn" href="#">로그인</button>
-				<div class="dropdown">
-					<button id="hd-btn" class="dropbtn" href="#">마이 페이지</button>
-					<div class="dropdown-content">
-						<a href="/mypage">내 정보</a>
-						<a href="#">나의 리뷰</a>
-						<a href="#">나의 코스</a>
-						<a href="#">찜 목록</a>
-						<a href="#">최근 본 코스</a>
-					</div>
-				</div>
-				<div class="dropdown">
+					<button id="hd-btn" class="dropbtn" onclick="location.href='/mypage'">마이 페이지</button>
 					<button id="hd-btn" href="#">보기</button>
-					<div class="dropdown-content">
-						<a href="#">장소 보기</a>
-						<a href="#">코스 보기</a>
-						<a href="#">캘린더</a>
-						<a href="#">이벤트</a>
-					</div>
-				</div>
 				<button id="hd-btn" href="#">코스 만들기</button>
 			</div>
 		</div>
