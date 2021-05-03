@@ -19,73 +19,65 @@
 
 <div class="container-fluid m-3 d-flex">
     <%--    @Todo StickySidebar 만들수 있게 하기, 처음 위치는 무조건 현재 화면의 가운데 위치하게 하기--%>
-    <div class="col-2" id="sidebar">
-        <ul class="nav nav-pills flex-column">
-            <div class="accordion text-center" id="loc">
-                <hr>
-                <div class="card">
-                    <div class="card-header" id="headingLoc">
-                        <h2 class="mb-0">
-                            <button class="btn btn-link btn-block" type="button" data-toggle="collapse"
-                                    data-target="#loc_collapse" aria-expanded="true" aria-controls="collapseOne">
-                                장소
-                            </button>
-                        </h2>
-                    </div>
-                    <div id="loc_collapse" class="collapse show" aria-labelledby="headingLoc" data-parent="#loc">
-                        <div class="card-body center-pill">
-                            <p><a href="/service/loc_recommend">- 추천 장소</a></p>
-                            <p><a href="#">- 장소 등록/편집</a></p>
+        <div class="col-2" id="sidebar">
+            <ul class="nav nav-pills flex-column">
+                <div class="accordion text-center" id="loc">
+                    <hr>
+                    <div class="card">
+                        <div class="card-header" id="headingLoc">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link btn-block" type="button" data-toggle="collapse"
+                                        data-target="#loc_collapse" aria-expanded="true" aria-controls="collapseOne" style="text-decoration: none; color: #FF6699; font-weight: bold">
+                                    장소
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="loc_collapse" class="collapse show" aria-labelledby="headingLoc" data-parent="#loc">
+                            <div class="card-body center-pill">
+                                <p><a href="/service/loc_recommend" style="text-decoration: none; color: #ff5f5f; font-weight: bold">- 추천 장소</a></p>
+                                <p><a href="#" style="text-decoration: none; color: #BB8BD9">- 장소 등록/편집</a></p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="accordion text-center" id="course">
-                <div class="card">
-                    <div class="card-header" id="headingCourse">
-                        <h2 class="mb-0">
-                            <form action="/" method="get" class="form-label">
-                                <button type="submit" class="btn btn-link btn-block">코스</button>
-                            </form>
-                        </h2>
+                <div class="accordion text-center" id="course">
+                    <div class="card">
+                        <div class="card-header" id="headingCourse">
+                            <h2 class="mb-0">
+                                <form action="/" method="get" class="form-label">
+                                    <button type="submit" class="btn btn-link btn-block" style="text-decoration: none; color: #9448C3">코스</button>
+                                </form>
+                            </h2>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="accordion text-center" id="calendar">
-                <div class="card">
-                    <div class="card-header" id="headingCalendar">
-                        <h2 class="mb-0">
-                            <form action="/" method="get" class="form-label">
-                                <button type="submit" class="btn btn-link btn-block">캘린더</button>
-                            </form>
-                        </h2>
+                <div class="accordion text-center" id="calendar">
+                    <div class="card">
+                        <div class="card-header" id="headingCalendar">
+                            <h2 class="mb-0">
+                                <form action="/" method="get" class="form-label">
+                                    <button type="submit" class="btn btn-link btn-block" style="text-decoration: none; color: #9448C3">캘린더</button>
+                                </form>
+                            </h2>
+                        </div>
                     </div>
+                    <hr>
                 </div>
-                <hr>
-            </div>
-        </ul>
-    </div>
+            </ul>
+        </div>
     <div class="container m-5" id="display_center" style="margin-right: 30px; margin-top: 30px">
         <div class="row justify-content-md-center">
             <div class="col-md-7">
                 <div class="card mb-4 shadow-sm">
                     <form action="/" method="get" class="m-0">
-                        <button class="container p-0 btn">
-                            <svg class="bd-placeholder-img card-img-top" width="100%" height="400"
-                                 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
-                                 preserveAspectRatio="xMidYMid slice" focusable="false">
-                                <title>Placeholder</title>
-                                <rect width="100%" height="100%" fill="#55595c"></rect><text x="42%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-                            </svg>
-                        </button>
+                        <svg class="bd-placeholder-img card-img-top" width="100%" height="400"
+                             xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
+                             preserveAspectRatio="xMidYMid slice" focusable="false">
+                            <title>Placeholder</title>
+                            <rect width="100%" height="100%" fill="#55595c"></rect>
+                            <text x="42%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
+                        </svg>
                     </form>
-
-                    <div class="card-body p-2">
-                        <div class="d-flex justify-content-between align-items-center p-1">
-                            <a class="card-text text-dark" href="/" id="title_1">제목1</a>
-                            <button type="button"  class="btn"><img src="/image/icon/like/love_black.png" width="30px" height="30px" alt="찜하기"></button>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="col justify-content-md-center">
@@ -93,6 +85,7 @@
                 <h3>지역 : asdfasdf</h3>
                 <h3>해시태그 : 자전거, 공원...</h3>
                 <button class="btn btn-social btn-outline-danger">공유</button>
+                <img src="/image/icon/like/love_black.png" x="80%" y="80%" width="35px" height="35px" alt="찜하기" onclick="onClickLike(this)">
             </div>
         </div>
         <div class="row justify-content-md-center">
@@ -336,6 +329,7 @@
 <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
         crossorigin="anonymous"></script>
+<script src="/js/loc_detail.js"></script>
 </body>
 <%--<%@ include file="../layout/footer.jsp" %>--%>
 </html>
