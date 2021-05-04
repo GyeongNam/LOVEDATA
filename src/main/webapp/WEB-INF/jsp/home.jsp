@@ -72,11 +72,11 @@
 			<%--<a href="/login">로그인</a>--%>
 			<a href="/find-info">회원정보 찾기</a>
 			<a href="/find_id">회원정보 찾기 수정</a>
+			<a href="/mypage">회원정보 수정</a>
 			<a href="/user/deleteAccount">회원탈퇴</a>
 			<br><br>
-			<a href="/bootstrap">부트스트랩 테스트</a>
-			<a href="/service/loc_recommend">장소_추천</a>
-			<a href="/service/loc_detail">장소_보기</a>
+			<a href="/sample/index">테스트</a>
+			<a href="/service/loc_index">장소_인덱스</a>
 		</div>
 	</div>
 </div>

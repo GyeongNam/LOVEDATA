@@ -12,29 +12,31 @@
 	<%--	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">--%>
 	<%--	<link rel="stylesheet" type="text/css" href="/css/Bootstarp_test/bootstrap.min.css">--%>
 	<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/service/loc.css">
 	<title>Home</title>
 </head>
 <%@ include file="../layout/header.jsp" %>
 <body>
 
-<div class="container-fluid d-flex align-items-center">
+<div class="container-fluid d-flex">
 	<div class="col-2" id="sidebar">
-		<ul class="nav nav-pills flex-column align-middle">
+		<ul class="nav nav-pills flex-column col-2 position-fixed" style="top: 40%">
 			<div class="accordion text-center" id="loc">
 				<hr>
 				<div class="card">
 					<div class="card-header" id="headingLoc">
 						<h2 class="mb-0">
-							<button class="btn btn-link btn-block" type="button" data-toggle="collapse"
-									data-target="#loc_collapse" aria-expanded="true" aria-controls="collapseOne" style="text-decoration: none; color: #FF6699; font-weight: bold">
+							<button class="btn btn-link btn-block loc_highlight-selected-nav-menu" type="button" data-toggle="collapse"
+									data-target="#loc_collapse" aria-expanded="true" aria-controls="collapseOne">
 								장소
 							</button>
 						</h2>
 					</div>
 					<div id="loc_collapse" class="collapse show" aria-labelledby="headingLoc" data-parent="#loc">
 						<div class="card-body center-pill">
-							<p><a href="/service/loc_recommend" style="text-decoration: none; color: #ff5f5f; font-weight: bold">- 추천 장소</a></p>
-							<p><a href="#" style="text-decoration: none; color: #BB8BD9">- 장소 등록/편집</a></p>
+							<p><a href="/service/loc_recommend" class="loc_highlight-selected-text-menu">- 추천 장소</a></p>
+							<p><a href="/service/loc_registration" class="loc_highlight-not-selected-text-menu">- 장소 등록</a></p>
+							<p><a href="#" class="loc_highlight-not-selected-text-menu">- 장소 편집</a></p>
 						</div>
 					</div>
 				</div>
@@ -72,7 +74,6 @@
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="navbar-nav col-9">
 						<li class="nav-item dropdown">
-							<%--                            @Todo 드롭다운 선택시 동적으로 화면 전환--%>
 							<button class="nav-link dropdown-toggle" role="button" id="navbarDropdownMenuLink" data-toggle="dropdown" value="mostViewed">
 								조회순
 							</button>
@@ -98,7 +99,6 @@
 					<ul class="navbar-nav">
 						<li class="nav-item dropdown">
 							<button class="nav-link dropdown-toggle" role="button" id="tagDropdownMenuLink" data-toggle="dropdown">해시태그</button>
-							<%--                            @Todo 자바스크립트 써서 동적으로 해시태그 추가하는 것 구현하기--%>
 							<%--                            https://www.w3schools.com/jsref/event_onclick.asp--%>
 							<div class="dropdown-menu" aria-labelledby="tagDropdownMenuLink">
 								<button type="button" class="dropdown-item" onclick="addTag(this)" value="Action A">Action A</button>
@@ -162,8 +162,8 @@
 
 					<div class="card-body p-2">
 						<div class="d-flex justify-content-between align-items-center p-1">
-							<a class="card-text text-dark" href="/service/loc_detail" id="title_1">제목1</a>
-							<img src="/image/icon/like/love_black.png" width="30px" height="30px" alt="찜하기" onclick="onClickLike(this)">
+							<a class="card-text loc_rec-locTitle" href="/service/loc_detail" id="title_1">제목1</a>
+							<img src="/image/icon/like/love_black.png" class="loc_btn-like-wh" alt="찜하기" onclick="onClickLike(this)">
 						</div>
 					</div>
 				</div>
@@ -183,8 +183,8 @@
 
 					<div class="card-body p-2">
 						<div class="d-flex justify-content-between align-items-center p-1">
-							<a class="card-text text-dark" href="/service/loc_detail" id="title_2">제목2</a>
-							<img src="/image/icon/like/love_black.png" width="30px" height="30px" alt="찜하기" onclick="onClickLike(this)">
+							<a class="card-text loc_rec-locTitle" href="/service/loc_detail" id="title_2">제목2</a>
+							<img src="/image/icon/like/love_black.png" class="loc_btn-like-wh" alt="찜하기" onclick="onClickLike(this)">
 						</div>
 					</div>
 				</div>
@@ -206,8 +206,8 @@
 
 					<div class="card-body p-2">
 						<div class="d-flex justify-content-between align-items-center p-1">
-							<a class="card-text text-dark" href="/service/loc_detail" id="title_3">제목3</a>
-							<img src="/image/icon/like/love_black.png" width="30px" height="30px" alt="찜하기" onclick="onClickLike(this)">
+							<a class="card-text loc_rec-locTitle" href="/service/loc_detail" id="title_3">제목3</a>
+							<img src="/image/icon/like/love_black.png" class="loc_btn-like-wh" alt="찜하기" onclick="onClickLike(this)">
 						</div>
 					</div>
 				</div>
@@ -227,8 +227,8 @@
 
 					<div class="card-body p-2">
 						<div class="d-flex justify-content-between align-items-center p-1">
-							<a class="card-text text-dark" href="/service/loc_detail" id="title_4">제목4</a>
-							<img src="/image/icon/like/love_black.png" width="30px" height="30px" alt="찜하기" onclick="onClickLike(this)">
+							<a class="card-text loc_rec-locTitle" href="/service/loc_detail" id="title_4">제목4</a>
+							<img src="/image/icon/like/love_black.png" class="loc_btn-like-wh" alt="찜하기" onclick="onClickLike(this)">
 						</div>
 					</div>
 				</div>
@@ -277,7 +277,8 @@
 <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
 		crossorigin="anonymous"></script>
-<script src="/js/loc_recommend.js"></script>
+<script defer src="/js/loc_recommend.js"></script>
+<script defer src="/js/loc_common.js"></script>
 </body>
 <%--<%@ include file="../layout/footer.jsp" %>--%>
 </html>
