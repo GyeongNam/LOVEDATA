@@ -20,12 +20,19 @@ $('.selectbox').change(function() {
 	});
 });
 
+var token = $("meta[name='_csrf']").attr("content");
+var header = $("meta[name='_csrf_header']").attr("content");
+$(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
+
 $('#sendMail').click(function (){
 	//input 값
 	var email1 = $("#email1").val();
 	console.log($("#email1").val());
 	var email2 = $("#email2").val();
 	console.log($("#email2").val());
+
+	var postdata = {"address" : email1, "domain" : email2 }
+
 	// if(!email1){
 	if(!email1){
 		alert("값을 입력해주세요");
@@ -35,11 +42,33 @@ $('#sendMail').click(function (){
 		alert("도메인을 입력해주세요");
 		return false;
 	}else{
-		alert("이메일이 전송되었습니다.");
+		$.ajax({
+			url: " /mail",
+			dataType: 'json',
+			contentType: "application/json; charset=UTF-8",
+			data: JSON.stringify(postdata),
+			type: "POST",
+			success:function(data){
+				var datas = data;
+				console.log(datas.msg);
+				if(datas.msg == "1"){
+					alert("이메일이 전송되었습니다.");
+				}
+				else{
+					alert("등록되지 않은 이메일입니다.");
+				}
+			},
+			error : function(){
+				console.log(data);
+			}
+		});
+
 		return true;
 	}
 
 });
+
+
 
 $('#mobilenumberauthbutton').click(function(){
 	if('.phone-first.value =="empty"'){

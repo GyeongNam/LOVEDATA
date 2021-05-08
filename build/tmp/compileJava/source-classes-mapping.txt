@@ -61,8 +61,8 @@ com/project/love_data/controller/HomeController.java
  com.project.love_data.controller.HomeController
 com/project/love_data/config/SecurityConfig.java
  com.project.love_data.config.SecurityConfig
-com/project/love_data/config/WebConfig.java
- com.project.love_data.config.WebConfig
+com/project/love_data/service/MailService.java
+ com.project.love_data.service.MailService
 com/project/love_data/service/oauth/login/TokenRequest.java
  com.project.love_data.service.oauth.login.TokenRequest
 com/project/love_data/model/user/KakaoUserInfo.java
@@ -83,7 +83,7 @@ com/project/love_data/service/oauth/login/SignupAutoFillupNaver.java
  com.project.love_data.service.oauth.login.SignupAutoFillupNaver
 com/project/love_data/config/ConverterConfig.java
  com.project.love_data.config.ConverterConfig
+com/project/love_data/config/WebConfig.java
+ com.project.love_data.config.WebConfig
 com/project/love_data/controller/MailController.java
  com.project.love_data.controller.MailController
-com/project/love_data/service/MailService.java
- com.project.love_data.service.MailService

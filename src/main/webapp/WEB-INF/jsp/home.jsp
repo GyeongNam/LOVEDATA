@@ -77,6 +77,7 @@
 			<a href="/bootstrap">부트스트랩 테스트</a>
 			<a href="/service/loc_recommend">장소_추천</a>
 			<a href="/service/loc_detail">장소_보기</a>
+			<a href="/NewPassword">패스워드 재설정 미리보기</a>
 		</div>
 	</div>
 </div>
