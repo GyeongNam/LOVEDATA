@@ -2,18 +2,18 @@ com/project/love_data/service/oauth/login/RequestLoginAPIKako.java
  com.project.love_data.service.oauth.login.RequestLoginAPIKako
 com/project/love_data/service/oauth/login/AcessCodeRequestKakao.java
  com.project.love_data.service.oauth.login.AcessCodeRequestKakao
-com/project/love_data/repository/UserRepository.java
- com.project.love_data.repository.UserRepository
 com/project/love_data/model/oauth/KakaoAuthToken.java
  com.project.love_data.model.oauth.KakaoAuthToken
 com/project/love_data/service/oauth/logout/LogoutUser.java
  com.project.love_data.service.oauth.logout.LogoutUser
 com/project/love_data/util/URISetter.java
  com.project.love_data.util.URISetter
+com/project/love_data/Repository/UserRepository.java
+ com.project.love_data.repository.UserRepository
+com/project/love_data/controller/TestController.java
+ com.project.love_data.controller.TestController
 com/project/love_data/service/oauth/logout/LogoutUserKakao.java
  com.project.love_data.service.oauth.logout.LogoutUserKakao
-com/project/love_data/controller/UserController.java
- com.project.love_data.controller.UserController
 com/project/love_data/model/oauth/OAuthToken.java
  com.project.love_data.model.oauth.OAuthToken
 com/project/love_data/security/model/AuthUserModel.java
@@ -57,8 +57,8 @@ com/project/love_data/controller/HomeController.java
  com.project.love_data.controller.HomeController
 com/project/love_data/config/SecurityConfig.java
  com.project.love_data.config.SecurityConfig
-com/project/love_data/controller/TestController.java
- com.project.love_data.controller.TestController
+com/project/love_data/controller/UserController.java
+ com.project.love_data.controller.UserController
 com/project/love_data/service/oauth/login/TokenRequest.java
  com.project.love_data.service.oauth.login.TokenRequest
 com/project/love_data/model/user/KakaoUserInfo.java

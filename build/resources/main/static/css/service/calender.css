@@ -1,0 +1,44 @@
+.title {
+    text-align: center;
+    font-size: 2rem;
+    margin: 1rem;
+}
+
+.info-box {
+    height: auto;
+    width: auto;
+    position:relative;
+}
+
+.tab {
+    float: left;
+    border-top: 2px solid #d9b3ff;
+    border-bottom: 3px solid #d9b3ff;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 15rem;
+    height: auto;
+    text-align: center;
+}
+
+.tab button {
+    display: block;
+    background-color: inherit;
+    color: black;
+    padding: 22px 16px;
+    width: 100%;
+    border: none;
+    outline: none;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 17px;
+}
+
+.tabcontent {
+    float: left;
+    padding: 0px 12px;
+    /*width: 52rem;*/
+    border-left: none;
+    height: auto;
+}
