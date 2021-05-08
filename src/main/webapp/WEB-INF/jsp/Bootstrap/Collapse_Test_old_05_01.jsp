@@ -72,7 +72,6 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="navbar-nav col-9">
                         <li class="nav-item dropdown">
-<%--                            @Todo 드롭다운 선택시 동적으로 화면 전환--%>
                             <button class="nav-link dropdown-toggle" role="button" id="navbarDropdownMenuLink" data-toggle="dropdown">조회순</button>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <a class="dropdown-item" href="#">조회순</a>
@@ -98,7 +97,6 @@
                     <ul class="navbar-nav">
                         <li class="nav-item dropdown">
                             <button class="nav-link dropdown-toggle" role="button" id="tagDropdownMenuLink" data-toggle="dropdown">해시태그</button>
-<%--                            @Todo 자바스크립트 써서 동적으로 해시태그 추가하는 것 구현하기--%>
 <%--                            https://www.w3schools.com/jsref/event_onclick.asp--%>
                             <div class="dropdown-menu" aria-labelledby="tagDropdownMenuLink">
                                 <button type="button" class="dropdown-item" onclick="">Action A</button>

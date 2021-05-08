@@ -17,9 +17,10 @@
 			</div>
 			<div id="hd-btn-box">
 				<button id="hd-btn" href="#">로그인</button>
-					<button id="hd-btn" class="dropbtn" onclick="location.href='/mypage'">마이 페이지</button>
-					<button id="hd-btn" href="#">보기</button>
-				<button id="hd-btn" href="#">코스 만들기</button>
+				<button id="hd-btn" class="dropbtn" onclick="location.href='/mypage'">마이 페이지</button>
+				<button id="hd-btn" href="#">장소</button>
+				<button id="hd-btn" href="#">코스</button>
+				<button id="hd-btn" onclick="location.href='/service/calender'">캘린더</button>
 			</div>
 		</div>
 </body>

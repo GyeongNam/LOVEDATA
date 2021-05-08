@@ -9,7 +9,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -105,9 +104,12 @@ public class UserController {
 	@RequestMapping(value="/sendsms",method = RequestMethod.POST)
 	public Map<String,String> sendsms(@RequestBody HashMap<String, String> data){
 		Map<String, String> map = new HashMap<String, String>();
+		String num = smsService.RandomNum();
 		log.info("phone:"+data.get("phones"));
+		log.info("num:"+num);
 		map.put("msg","성공");
-		smsService.sendSMS(data.get("phones"));
+		map.put("num",num);
+//		smsService.sendSMS(data.get("phones"), num);
 		return map;
 	}
 
@@ -122,13 +124,6 @@ public class UserController {
 			String nickname,
 			HttpServletRequest request
 	) {
-
-//		log.info("str_email01 : " + str_email01);
-//		log.info("str_email02 : " + str_email02);
-//		log.info("pwd1 : " + pwd1);
-//		log.info("pwd2 : " + pwd2);
-//		log.info("nickname : " + nickname);
-
 		return "user/signup";
 	}
 

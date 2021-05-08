@@ -88,7 +88,9 @@
             <tr>
                 <td class="thead"><label class="label"><strong>이름
                     *</strong></label></td>
-                <td><input type="text" name="userName" id="new_name" required>
+                <td><input type="text" name="userName" id="userName" onblur="name_check()" id="new_name" required>
+                    <spen class="spen"
+                          id="userName_check"></spen>
                 </td>
             </tr>
             <tr>
@@ -139,7 +141,7 @@
         <input type="hidden" name="social_info" value="<%= request.getAttribute("social_info")  == null ? "" : request.getAttribute("social_info")%>">
         <div class="sand_back">
             <button class="submit" type="submit" id="sub"
-                    onclick="return to_submit();">
+                    onclick="return signup_check();">
                 <b>가입하기</b>
             </button>
             <button class="back" onclick="location.href='/' " id="subcc">
@@ -152,7 +154,7 @@
                 <div id="phone_num"></div>
                 <input type="text" name="phone_check2" id="security"
                        placeholder=" 숫자 6자리">
-                <button type="button" id="">인증확인</button>
+                <button type="button" id="rnum" onclick="rnum_check()">인증확인</button>
                 <div id="phone_numcheck">인증하세요!</div>
                 <button type="button" id="modal_close_btn">닫기</button>
             </div>

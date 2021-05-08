@@ -25,9 +25,11 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/mypage").setViewName("user/mypage");
 
         // sample
+        registry.addViewController("/sample/index").setViewName("/sample/index");
         registry.addViewController("/member").setViewName("/sample/member");
         registry.addViewController("/all").setViewName("/sample/all");
         registry.addViewController("/admin").setViewName("/sample/admin");
+//        registry.addViewController("/form_test").setViewName("/sample/form_test");
 
 
         // bootstarp test
@@ -36,7 +38,15 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/test/dropdown").setViewName("Bootstrap/Dropdown_Test");
 
         // Service
+        registry.addViewController("/service/loc_index").setViewName("/service/loc_index");
         registry.addViewController("/service/loc_recommend").setViewName("/service/loc_recommend");
         registry.addViewController("/service/loc_detail").setViewName("/service/loc_detail");
+//        registry.addViewController("/service/loc_registration").setViewName("/service/loc_registration");
+
+        //Popup
+//        registry.addViewController("/popup/jusoPopup").setViewName("/popup/jusoPopup");
+//        registry.addViewController("/service/loc_registration").setViewName("/service/loc_registration");
+        registry.addViewController("/service/calender").setViewName("/service/service_calender");
+
     }
 }

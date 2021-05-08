@@ -94,7 +94,7 @@ public class OAuthController {
             kakaoUserInfo = infoKakao.excute(request, token);
             // https://cusonar.tistory.com/17
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                    kakaoUserInfo.getEmail(), kakaoUserInfo.getId());
+                    kakaoUserInfo.getEmail(), kakaoUserInfo.getId()+"!@#$");
             Authentication authentication = authenticationManager.authenticate(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
@@ -115,7 +115,7 @@ public class OAuthController {
             }
 
             if (kakaoUserInfo.getId() != null) {
-                redirectAttributes.addFlashAttribute("pwd", kakaoUserInfo.getId());
+                redirectAttributes.addFlashAttribute("pwd", kakaoUserInfo.getId()+"!@#$");
             }
 
             if (kakaoUserInfo.getNickname() != null) {

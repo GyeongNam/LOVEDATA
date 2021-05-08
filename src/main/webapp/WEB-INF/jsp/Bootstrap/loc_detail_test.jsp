@@ -18,7 +18,6 @@
 <body>
 
 <div class="container-fluid m-3 d-flex">
-<%--    @Todo StickySidebar 만들수 있게 하기, 처음 위치는 무조건 현재 화면의 가운데 위치하게 하기--%>
     <div class="col-2" id="sidebar">
         <ul class="nav nav-pills flex-column">
             <div class="accordion text-center" id="loc">

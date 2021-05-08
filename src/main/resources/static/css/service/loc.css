@@ -1,0 +1,46 @@
+.loc_highlight-selected-text-menu {
+    text-decoration: none;
+    color: #ff5f5f;
+    font-weight: bold;
+}
+
+.loc_highlight-not-selected-text-menu{
+    text-decoration: none;
+    color: #BB8BD9;
+}
+
+.loc_no-text-deco-bold {
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.loc_highlight-selected-nav-menu{
+    text-decoration: none;
+    font-weight: bold;
+    color: #FF6699;
+}
+
+.loc_rec-locTitle{
+    /*color: #632C86;*/
+    color: deeppink;
+    text-decoration: none;
+    font-weight: bold;
+    margin-left: 8px;
+}
+
+.loc_btn-like-wh{
+    width: 30px;
+    height: 30px;
+    margin-right: 8px;
+}
+
+.loc_comment-profile-image-wh{
+    width: 60px;
+    height: 60px;
+    margin-left: 0px;
+    margin-right: 15px;
+}
+
+.loc_align-end{
+   float: right;
+}

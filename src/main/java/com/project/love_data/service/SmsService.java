@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Random;
 
 
 @Log4j2
@@ -22,7 +23,18 @@ public class SmsService {
     private final static String charset = "UTF-8";
     private final static boolean isTest = true;
 
-    public void sendSMS(String data){
+    public String RandomNum(){
+        Random rand = new Random();
+        String numStr = ""; //난수가 저장될 변수
+        for(int i=0;i<6;i++) {
+            //0~9 까지 난수 생성
+            String ran = Integer.toString(rand.nextInt(10));
+            numStr += ran;
+        }
+        return numStr;
+    }
+
+    public void sendSMS(String data,String num){
 
         try{
             URL obj = new URL(apiUrl);
@@ -34,7 +46,7 @@ public class SmsService {
 
             String postParams = "user_id="+base64Encode("silentsns97")
                     +"&secure="+base64Encode("1d1e0e0bdf80e01761871ec94d8f8d62")
-                    +"&msg="+base64Encode("[Lovedata]\n인증번호는 ''입니다.")
+                    +"&msg="+base64Encode("[Lovedata]\n인증번호는 '"+num+"'입니다.")
                     +"&sphone1="+base64Encode("010")
                     +"&sphone2="+base64Encode("3014")
                     +"&sphone3="+base64Encode("1437")
