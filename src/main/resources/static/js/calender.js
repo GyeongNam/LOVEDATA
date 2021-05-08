@@ -12,3 +12,22 @@ function openCity(evt, cityName) {
     evt.currentTarget.className += " active";
 }
 document.getElementById("defaultOpen").click();
+
+// 달력 띄우기
+document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        locale:'ko'
+    });
+    calendar.render();
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendars');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        locale:'ko'
+    });
+    calendar.render();
+});

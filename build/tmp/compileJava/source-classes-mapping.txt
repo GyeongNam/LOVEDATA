@@ -8,19 +8,12 @@ com/project/love_data/service/oauth/logout/LogoutUser.java
  com.project.love_data.service.oauth.logout.LogoutUser
 com/project/love_data/util/URISetter.java
  com.project.love_data.util.URISetter
-<<<<<<< HEAD
-com/project/love_data/controller/TestController.java
- com.project.love_data.controller.TestController
-com/project/love_data/controller/UserController.java
- com.project.love_data.controller.UserController
-=======
 com/project/love_data/Repository/UserRepository.java
  com.project.love_data.repository.UserRepository
 com/project/love_data/controller/TestController.java
  com.project.love_data.controller.TestController
-com/project/love_data/service/oauth/logout/LogoutUserKakao.java
- com.project.love_data.service.oauth.logout.LogoutUserKakao
->>>>>>> origin/main
+com/project/love_data/controller/UserController.java
+ com.project.love_data.controller.UserController
 com/project/love_data/model/oauth/OAuthToken.java
  com.project.love_data.model.oauth.OAuthToken
 com/project/love_data/security/model/AuthUserModel.java
@@ -62,21 +55,15 @@ com/project/love_data/model/oauth/NaverAuthToken.java
  com.project.love_data.model.oauth.NaverAuthToken
 com/project/love_data/controller/HomeController.java
  com.project.love_data.controller.HomeController
-<<<<<<< HEAD
-com/project/love_data/controller/ServiceController.java
- com.project.love_data.controller.ServiceController
-com/project/love_data/service/oauth/logout/LogoutUserKakao.java
- com.project.love_data.service.oauth.logout.LogoutUserKakao
-=======
 com/project/love_data/config/SecurityConfig.java
+ com.project.love_data.config.AllExceptUrlsStartedWith
  com.project.love_data.config.SecurityConfig
-com/project/love_data/controller/UserController.java
- com.project.love_data.controller.UserController
->>>>>>> origin/main
+com/project/love_data/config/WebConfig.java
+ com.project.love_data.config.WebConfig
 com/project/love_data/service/oauth/login/TokenRequest.java
  com.project.love_data.service.oauth.login.TokenRequest
-com/project/love_data/service/oauth/login/RequestUserInfoKakao.java
- com.project.love_data.service.oauth.login.RequestUserInfoKakao
+com/project/love_data/controller/ServiceController.java
+ com.project.love_data.controller.ServiceController
 com/project/love_data/model/user/KakaoUserInfo.java
  com.project.love_data.model.user.KakaoUserInfo
 com/project/love_data/service/oauth/login/RequestUserInfoNaver.java
@@ -95,8 +82,7 @@ com/project/love_data/service/oauth/login/SignupAutoFillupNaver.java
  com.project.love_data.service.oauth.login.SignupAutoFillupNaver
 com/project/love_data/config/ConverterConfig.java
  com.project.love_data.config.ConverterConfig
-com/project/love_data/config/WebConfig.java
- com.project.love_data.config.WebConfig
-com/project/love_data/config/SecurityConfig.java
- com.project.love_data.config.AllExceptUrlsStartedWith
- com.project.love_data.config.SecurityConfig
+com/project/love_data/service/oauth/login/RequestUserInfoKakao.java
+ com.project.love_data.service.oauth.login.RequestUserInfoKakao
+com/project/love_data/service/oauth/logout/LogoutUserKakao.java
+ com.project.love_data.service.oauth.logout.LogoutUserKakao

@@ -5,6 +5,7 @@
 }
 
 .info-box {
+    text-align: center;
     height: auto;
     width: auto;
     position:relative;
@@ -16,7 +17,7 @@
     border-bottom: 3px solid #d9b3ff;
     padding-top: 10px;
     padding-bottom: 10px;
-    width: 15rem;
+    width: 20%;
     height: auto;
     text-align: center;
 }
@@ -32,13 +33,13 @@
     text-align: center;
     cursor: pointer;
     transition: 0.3s;
-    font-size: 17px;
+    font-size: 80%;
 }
 
 .tabcontent {
     float: left;
     padding: 0px 12px;
-    /*width: 52rem;*/
+    width: 70%;
     border-left: none;
     height: auto;
 }
