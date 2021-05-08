@@ -40,6 +40,9 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/service/loc_index").setViewName("/service/loc_index");
         registry.addViewController("/service/loc_recommend").setViewName("/service/loc_recommend");
         registry.addViewController("/service/loc_detail").setViewName("/service/loc_detail");
-        registry.addViewController("/service/loc_registration").setViewName("/service/loc_registration");
+//        registry.addViewController("/service/loc_registration").setViewName("/service/loc_registration");
+
+        //Popup
+        registry.addViewController("/popup/jusoPopup").setViewName("/popup/jusoPopup");
     }
 }

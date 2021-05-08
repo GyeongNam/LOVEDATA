@@ -36,7 +36,7 @@
 						<div class="card-body center-pill">
 							<p><a href="/service/loc_recommend" class="loc_highlight-selected-text-menu">- 추천 장소</a></p>
 							<p><a href="/service/loc_registration" class="loc_highlight-not-selected-text-menu">- 장소 등록</a></p>
-							<p><a href="#" class="loc_highlight-not-selected-text-menu">- 장소 편집</a></p>
+							<p><a href="/service/loc_registration" class="loc_highlight-not-selected-text-menu">- 장소 편집</a></p>
 						</div>
 					</div>
 				</div>
@@ -79,9 +79,9 @@
 							</button>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 								<button class="dropdown-item" value="mostViewed" onclick="changeSort(this)">조회순</button>
-								<button class="dropdown-item" value="mostLiked" onclick="changeSort(this)">추천순</button>
-								<button class="dropdown-item" value="mostRecent" onclick="changeSort(this)">최근</button>
-								<button class="dropdown-item" value="mostOldest" onclick="changeSort(this)">가장 오래전</button>
+								<button class="dropdown-item" value="mostLiked" onclick="changeSort(this)">최신 등록순</button>
+								<button class="dropdown-item" value="mostOldest" onclick="changeSort(this)">오래된 등록순</button>
+								<button class="dropdown-item" value="mostRecent" onclick="changeSort(this)">좋아요 순</button>
 							</div>
 						</li>
 					</ul>
