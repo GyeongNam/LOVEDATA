@@ -44,5 +44,8 @@ public class WebConfig implements WebMvcConfigurer {
 
         //Popup
         registry.addViewController("/popup/jusoPopup").setViewName("/popup/jusoPopup");
+        registry.addViewController("/service/loc_registration").setViewName("/service/loc_registration");
+        registry.addViewController("/service/calender").setViewName("/service/service_calender");
+
     }
 }

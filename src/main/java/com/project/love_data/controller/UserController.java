@@ -124,13 +124,6 @@ public class UserController {
 			String nickname,
 			HttpServletRequest request
 	) {
-
-//		log.info("str_email01 : " + str_email01);
-//		log.info("str_email02 : " + str_email02);
-//		log.info("pwd1 : " + pwd1);
-//		log.info("pwd2 : " + pwd2);
-//		log.info("nickname : " + nickname);
-
 		return "user/signup";
 	}
 
