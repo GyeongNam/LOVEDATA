@@ -33,7 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
               .antMatchers("/admin").hasRole("ADMIN")
               .antMatchers("/all").permitAll()
               .and()
-              .csrf().ignoringAntMatchers("/service/**");
+              .csrf().ignoringAntMatchers("/service/**").ignoringAntMatchers("/popup/**");
+//              .csrf().ignoringAntMatchers("/popup/**");
 //              .csrf().requireCsrfProtectionMatcher(new AllExceptUrlsStartedWith("/service/loc_registration"));
 
 //        http.csrf().disable();

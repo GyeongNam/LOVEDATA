@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Single+Day&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+/*https://www.codinglabweb.com/2021/01/responsive-registration-form-in-html-css.html*/
 .loc_registration-box-outline{
     outline: 2px solid red;
 }
@@ -7,7 +8,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Single Day', cursive;
+    font-family: 'Jua', sans-serif;
 }
 .container .title{
     font-size: 30px;
@@ -87,11 +88,11 @@ form .category label .dot{
 form input[type="radio"]{
     display: none;
 }
-form .button{
+form .input-reg-form{
     height: 45px;
     margin: 35px 0
 }
-form .button input{
+form .input-reg-form input{
     height: 100%;
     width: 100%;
     border-radius: 5px;
@@ -104,7 +105,7 @@ form .button input{
     transition: all 0.3s ease;
     background: linear-gradient(135deg, #71b7e6, #9b59b6);
 }
-form .button input:hover{
+form .input-reg-form input:hover{
     /* transform: scale(0.99); */
     background: linear-gradient(-135deg, #71b7e6, #9b59b6);
 }
