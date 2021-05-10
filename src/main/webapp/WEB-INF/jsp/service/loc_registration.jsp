@@ -47,33 +47,33 @@
                     </div>
                 </div>
             </div>
-            <div class="accordion text-center" id="course">
-                <div class="card">
-                    <div class="card-header" id="headingCourse">
-                        <h2 class="mb-0">
-                            <form action="/" method="get" class="form-label">
-                                <button type="submit" class="btn btn-link btn-block"
-                                        style="text-decoration: none; color: #9448C3">코스
-                                </button>
-                            </form>
-                        </h2>
-                    </div>
-                </div>
-            </div>
-            <div class="accordion text-center" id="calendar">
-                <div class="card">
-                    <div class="card-header" id="headingCalendar">
-                        <h2 class="mb-0">
-                            <form action="/" method="get" class="form-label">
-                                <button type="submit" class="btn btn-link btn-block"
-                                        style="text-decoration: none; color: #9448C3">캘린더
-                                </button>
-                            </form>
-                        </h2>
-                    </div>
-                </div>
-                <hr>
-            </div>
+<%--            <div class="accordion text-center" id="course">--%>
+<%--                <div class="card">--%>
+<%--                    <div class="card-header" id="headingCourse">--%>
+<%--                        <h2 class="mb-0">--%>
+<%--                            <form action="/" method="get" class="form-label">--%>
+<%--                                <button type="submit" class="btn btn-link btn-block"--%>
+<%--                                        style="text-decoration: none; color: #9448C3">코스--%>
+<%--                                </button>--%>
+<%--                            </form>--%>
+<%--                        </h2>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+<%--            </div>--%>
+<%--            <div class="accordion text-center" id="calendar">--%>
+<%--                <div class="card">--%>
+<%--                    <div class="card-header" id="headingCalendar">--%>
+<%--                        <h2 class="mb-0">--%>
+<%--                            <form action="/" method="get" class="form-label">--%>
+<%--                                <button type="submit" class="btn btn-link btn-block"--%>
+<%--                                        style="text-decoration: none; color: #9448C3">캘린더--%>
+<%--                                </button>--%>
+<%--                            </form>--%>
+<%--                        </h2>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+<%--                <hr>--%>
+<%--            </div>--%>
         </ul>
     </div>
     <div class="container m-5" id="display_center" style="margin-right: 30px; margin-top: 30px">

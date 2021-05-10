@@ -13,15 +13,15 @@ function changeSort(sortType) {
             break;
         case "mostLiked" :
             navbarDropdownMenuLink.setAttribute("value", sortType.value);
-            navbarDropdownMenuLink.innerHTML = "추천순"
+            navbarDropdownMenuLink.innerHTML = "좋아요 순"
             break;
         case "mostRecent" :
             navbarDropdownMenuLink.setAttribute("value", sortType.value);
-            navbarDropdownMenuLink.innerHTML = "가장 최근"
+            navbarDropdownMenuLink.innerHTML = "최신 등록순"
             break;
         case "mostOldest" :
             navbarDropdownMenuLink.setAttribute("value", sortType.value);
-            navbarDropdownMenuLink.innerHTML = "가장 오래전"
+            navbarDropdownMenuLink.innerHTML = "오래된 등록순"
             break;
         default :
             navbarDropdownMenuLink.setAttribute("value", "mostViewed");
