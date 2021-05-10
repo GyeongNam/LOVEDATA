@@ -7,6 +7,8 @@
 <html>
 <head>
 <link href="/css/CSSTEST.css" rel="stylesheet">
+	<meta name="_csrf" content="${_csrf.token}">
+	<meta name="_csrf_header" content="${_csrf.headerName}">
 <title>회원정보 찾기 | LOVE DATA</title>
 </head>
 
@@ -81,6 +83,7 @@
 										<li class="pd-v-5">
 											<form action="/mail" method="post">
 												<sec:csrfInput />
+												<input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
 											<input type="text" name="address" id="email1" required="required"> @
 											<input type="text" name="domain" id="email2" placeholder="">
 											<select name="select_email" class="selectbox"
@@ -101,7 +104,7 @@
 												<option value="paran.com">paran.com</option>
 												<option value="1">직접입력</option>
 											</select>
-											<button type="submit" id="sendMail" class="btn btn-grass">
+											<button type="button" id="sendMail" class="btn btn-grass">
 												<span class="caption">인증번호전송</span>
 												<div class="ripple"></div>
 											</button>

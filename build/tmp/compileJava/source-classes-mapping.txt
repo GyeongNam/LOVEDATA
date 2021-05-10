@@ -70,9 +70,14 @@ com/project/love_data/config/SecurityConfig.java
 com/project/love_data/config/SecurityConfig.java
  com.project.love_data.config.AllExceptUrlsStartedWith
  com.project.love_data.config.SecurityConfig
+<<<<<<< HEAD
+com/project/love_data/service/MailService.java
+ com.project.love_data.service.MailService
+=======
 com/project/love_data/config/WebConfig.java
  com.project.love_data.config.WebConfig
 >>>>>>> origin/main
+>>>>>>> b86946e148f09654fd57758292cc8da75acaf57d
 com/project/love_data/service/oauth/login/TokenRequest.java
  com.project.love_data.service.oauth.login.TokenRequest
 com/project/love_data/controller/ServiceController.java
@@ -98,6 +103,12 @@ com/project/love_data/config/ConverterConfig.java
 <<<<<<< HEAD
 com/project/love_data/config/WebConfig.java
  com.project.love_data.config.WebConfig
+com/project/love_data/controller/MailController.java
+ com.project.love_data.controller.MailController
+=======
+<<<<<<< HEAD
+com/project/love_data/config/WebConfig.java
+ com.project.love_data.config.WebConfig
 com/project/love_data/controller/ServiceController.java
  com.project.love_data.controller.ServiceController
 =======
@@ -106,3 +117,4 @@ com/project/love_data/service/oauth/login/RequestUserInfoKakao.java
 com/project/love_data/service/oauth/logout/LogoutUserKakao.java
  com.project.love_data.service.oauth.logout.LogoutUserKakao
 >>>>>>> origin/main
+>>>>>>> b86946e148f09654fd57758292cc8da75acaf57d

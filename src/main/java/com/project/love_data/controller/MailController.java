@@ -8,6 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import lombok.extern.log4j.Log4j2;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Log4j2
 @Controller
 @AllArgsConstructor
@@ -22,23 +25,33 @@ public class MailController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @GetMapping("/mail")
+/*    @GetMapping("/mail")
     public String dispMail() {
         return "mail";
-    }
+    }*/
 
+    @ResponseBody
     @RequestMapping(value ="/mail" ,method = RequestMethod.POST)
-    public String execMail(
-            @RequestParam(value = "address")String address,
-            @RequestParam(value = "domain")String domain
-             ) {
-        log.info("mail C");
-        log.info("addess="+address);
-        log.info("addess="+domain);
+    public Map<String,String> execMail(@RequestBody HashMap<String, String> data){
+        Map<String, String> map = new HashMap<String, String>();
+
+        String address = data.get("address");
+        String domain = data.get("domain");
+
+        log.info("ad : " + address);
+        log.info("do : " + domain);
+
 
         String mail = userRepository.email_send(address+"@"+domain);
         log.info("mail="+mail);
-        mailService.mailSend(mail);
-        return "redirect:/";
+        if(mail ==null){
+            map.put("msg" , "0");
+            return map;
+        }
+        else{
+            mailService.mailSend(mail);
+            map.put("msg" , "1");
+            return map;
+        }
     }
 }
