@@ -10,11 +10,6 @@ com/project/love_data/service/oauth/logout/LogoutUser.java
  com.project.love_data.service.oauth.logout.LogoutUser
 com/project/love_data/util/URISetter.java
  com.project.love_data.util.URISetter
-<<<<<<< HEAD
-=======
-com/project/love_data/Repository/UserRepository.java
- com.project.love_data.repository.UserRepository
->>>>>>> origin/main
 com/project/love_data/controller/TestController.java
  com.project.love_data.controller.TestController
 com/project/love_data/controller/UserController.java
@@ -60,24 +55,11 @@ com/project/love_data/model/oauth/NaverAuthToken.java
  com.project.love_data.model.oauth.NaverAuthToken
 com/project/love_data/controller/HomeController.java
  com.project.love_data.controller.HomeController
-<<<<<<< HEAD
-com/project/love_data/service/oauth/logout/LogoutUserKakao.java
- com.project.love_data.service.oauth.logout.LogoutUserKakao
 com/project/love_data/config/SecurityConfig.java
  com.project.love_data.config.AllExceptUrlsStartedWith
  com.project.love_data.config.SecurityConfig
-=======
-com/project/love_data/config/SecurityConfig.java
- com.project.love_data.config.AllExceptUrlsStartedWith
- com.project.love_data.config.SecurityConfig
-<<<<<<< HEAD
-com/project/love_data/service/MailService.java
- com.project.love_data.service.MailService
-=======
 com/project/love_data/config/WebConfig.java
  com.project.love_data.config.WebConfig
->>>>>>> origin/main
->>>>>>> b86946e148f09654fd57758292cc8da75acaf57d
 com/project/love_data/service/oauth/login/TokenRequest.java
  com.project.love_data.service.oauth.login.TokenRequest
 com/project/love_data/controller/ServiceController.java
@@ -100,21 +82,7 @@ com/project/love_data/service/oauth/login/SignupAutoFillupNaver.java
  com.project.love_data.service.oauth.login.SignupAutoFillupNaver
 com/project/love_data/config/ConverterConfig.java
  com.project.love_data.config.ConverterConfig
-<<<<<<< HEAD
-com/project/love_data/config/WebConfig.java
- com.project.love_data.config.WebConfig
-com/project/love_data/controller/MailController.java
- com.project.love_data.controller.MailController
-=======
-<<<<<<< HEAD
-com/project/love_data/config/WebConfig.java
- com.project.love_data.config.WebConfig
-com/project/love_data/controller/ServiceController.java
- com.project.love_data.controller.ServiceController
-=======
 com/project/love_data/service/oauth/login/RequestUserInfoKakao.java
  com.project.love_data.service.oauth.login.RequestUserInfoKakao
 com/project/love_data/service/oauth/logout/LogoutUserKakao.java
  com.project.love_data.service.oauth.logout.LogoutUserKakao
->>>>>>> origin/main
->>>>>>> b86946e148f09654fd57758292cc8da75acaf57d
