@@ -42,21 +42,27 @@
 								<div class="card no-shadow tab-cont">
 									<ul class="full-list">
 										<li class="pd-v-5">
-										<select class="selectbox" name="select-box" onChange="selectEmail(this)">
+										<select class="selectbox" name="str_phone01" id="selectphone">
 												<option value="empty" selected>선택하세요</option>
 												<option value="010">010</option>
 												<option value="011">011</option>
+												<option value="017">017</option>
 												<option value="018">018</option>
 										</select>
-										<input name="email1" type="text">
-										<input name="email2" type="text">
-											<button type="button" id=""
-												class="btn btn-grass" onclick="sendFindId()">
+										<input type="text" class="phone_nums"
+											   onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"
+											   minlength='3' maxlength='4' name="str_phone02" id="str_phone02"
+											   required="required">
+										<input type="text" class="phone_nums"
+											   onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"
+											   minlength='3' maxlength='4' name="str_phone03" id="str_phone03"
+											   required="required">
+											<button type="button" id="modal_opne_btn" class="btn btn-grass" onclick="SMSsned()">
 												<span class="caption">인증번호전송</span>
 												<div class="ripple"></div>
 											</button></li>
 											<li class="pd-v-5">
-										<input type="number" id="authnumber" name="authnumber"
+										<input type="number" id="security" name="security"
 													placeholder="인증번호">
 											<button type="button" id=""
 													class="btn btn-grass" >

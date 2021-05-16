@@ -1,6 +1,3 @@
-/**
- * 
- */
 function find_id_popup() {
 	window.open("<%= request.getContextPath() %>/user/find-id.jsp",
 		"FIndUserID",
@@ -69,14 +66,52 @@ $('#sendMail').click(function (){
 });
 
 
+// 인증번호 보내기
+function SMSsned(){
+	var phone1 = $('#selectphone').val();
+	var phone2 = $('#str_phone02').val();
+	var phone3 = $('#str_phone03').val();
+	var postdata = { "phones" : phone1 + "-" + phone2 + "-" + phone3 };
 
-$('#mobilenumberauthbutton').click(function(){
-	if('.phone-first.value =="empty"'){
-		alert("휴대폰 앞 번호를 선택하세요.");
-		return false;
+	$.ajax({
+		url: "/sendsms",
+		dataType: 'json',
+		contentType: "application/json; charset=UTF-8",
+		data: JSON.stringify(postdata),
+		type: "POST",
+		success:function(data){
+			console.log(data);
+			nums = data.num;
+		},
+		error : function(){
+			console.log(data);
+		}
+	});
+}
+// 인증번호 확인하기
+function rnum_check(){
+	security = $('#security').val();
+	retextmodal = $('#phone_numcheck');
+	retext = $('#phone_check');
+
+	if (nums == security) {
+		if (security == 0) {
+			retextmodal.text("인증번호를 입력하세요.");
+			mainphone = false;
+		}
+		else {
+			retextmodal.css("color", "green");
+			retextmodal.text('인증번호가 일치합니다.');
+			retext.css("color", "green");
+			retext.text('인증된 번호입니다.');
+			mainphone = true;
+		}
 	}
-	else{
-		alert("입력한 이메일로 인증번호를 전송하였습니다.");
+	else {
+		retextmodal.css("color", "red");
+		retextmodal.text('인증번호가 일치하지 않습니다.');
+		retext.css("color", "red");
+		retext.text('인증되지 않은 번호입니다.');
+		mainphone = false;
 	}
-	
-});
+}
