@@ -41,29 +41,29 @@
 					</div>
 				</div>
 			</div>
-			<div class="accordion text-center" id="course">
-				<div class="card">
-					<div class="card-header" id="headingCourse">
-						<h2 class="mb-0">
-							<form action="/" method="get" class="form-label">
-								<button type="submit" class="btn btn-link btn-block" style="text-decoration: none; color: #9448C3">코스</button>
-							</form>
-						</h2>
-					</div>
-				</div>
-			</div>
-			<div class="accordion text-center" id="calendar">
-				<div class="card">
-					<div class="card-header" id="headingCalendar">
-						<h2 class="mb-0">
-							<form action="/" method="get" class="form-label">
-								<button type="submit" class="btn btn-link btn-block" style="text-decoration: none; color: #9448C3">캘린더</button>
-							</form>
-						</h2>
-					</div>
-				</div>
-				<hr>
-			</div>
+<%--			<div class="accordion text-center" id="course">--%>
+<%--				<div class="card">--%>
+<%--					<div class="card-header" id="headingCourse">--%>
+<%--						<h2 class="mb-0">--%>
+<%--							<form action="/" method="get" class="form-label">--%>
+<%--								<button type="submit" class="btn btn-link btn-block" style="text-decoration: none; color: #9448C3">코스</button>--%>
+<%--							</form>--%>
+<%--						</h2>--%>
+<%--					</div>--%>
+<%--				</div>--%>
+<%--			</div>--%>
+<%--			<div class="accordion text-center" id="calendar">--%>
+<%--				<div class="card">--%>
+<%--					<div class="card-header" id="headingCalendar">--%>
+<%--						<h2 class="mb-0">--%>
+<%--							<form action="/" method="get" class="form-label">--%>
+<%--								<button type="submit" class="btn btn-link btn-block" style="text-decoration: none; color: #9448C3">캘린더</button>--%>
+<%--							</form>--%>
+<%--						</h2>--%>
+<%--					</div>--%>
+<%--				</div>--%>
+<%--				<hr>--%>
+<%--			</div>--%>
 		</ul>
 	</div>
 	<div class="container-fluid" id="display_center" style="margin-right: 30px">
@@ -79,9 +79,9 @@
 							</button>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 								<button class="dropdown-item" value="mostViewed" onclick="changeSort(this)">조회순</button>
-								<button class="dropdown-item" value="mostLiked" onclick="changeSort(this)">최신 등록순</button>
+								<button class="dropdown-item" value="mostRecent" onclick="changeSort(this)">최신 등록순</button>
 								<button class="dropdown-item" value="mostOldest" onclick="changeSort(this)">오래된 등록순</button>
-								<button class="dropdown-item" value="mostRecent" onclick="changeSort(this)">좋아요 순</button>
+								<button class="dropdown-item" value="mostLiked" onclick="changeSort(this)">좋아요 순</button>
 							</div>
 						</li>
 					</ul>

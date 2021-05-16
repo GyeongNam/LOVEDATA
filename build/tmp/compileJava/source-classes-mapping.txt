@@ -8,12 +8,19 @@ com/project/love_data/service/oauth/logout/LogoutUser.java
  com.project.love_data.service.oauth.logout.LogoutUser
 com/project/love_data/util/URISetter.java
  com.project.love_data.util.URISetter
+<<<<<<< HEAD
 com/project/love_data/config/ConverterConfig.java
  com.project.love_data.config.ConverterConfig
 com/project/love_data/service/oauth/login/AcessCodeRequest.java
  com.project.love_data.service.oauth.login.AcessCodeRequest
 com/project/love_data/LoveDataApplication.java
  com.project.love_data.LoveDataApplication
+=======
+com/project/love_data/controller/TestController.java
+ com.project.love_data.controller.TestController
+com/project/love_data/controller/UserController.java
+ com.project.love_data.controller.UserController
+>>>>>>> 088bd1400adaee1100756232d1a7dd4d14373fbc
 com/project/love_data/model/oauth/OAuthToken.java
  com.project.love_data.model.oauth.OAuthToken
 com/project/love_data/security/model/AuthUserModel.java
@@ -82,7 +89,18 @@ com/project/love_data/security/service/UserDetailsService.java
  com.project.love_data.security.service.UserDetailsService
 com/project/love_data/controller/OAuthController.java
  com.project.love_data.controller.OAuthController
+<<<<<<< HEAD
 com/project/love_data/controller/TestController.java
  com.project.love_data.controller.TestController
 com/project/love_data/controller/UserController.java
  com.project.love_data.controller.UserController
+=======
+com/project/love_data/service/oauth/login/SignupAutoFillupNaver.java
+ com.project.love_data.service.oauth.login.SignupAutoFillupNaver
+com/project/love_data/config/ConverterConfig.java
+ com.project.love_data.config.ConverterConfig
+com/project/love_data/service/oauth/login/RequestUserInfoKakao.java
+ com.project.love_data.service.oauth.login.RequestUserInfoKakao
+com/project/love_data/service/oauth/logout/LogoutUserKakao.java
+ com.project.love_data.service.oauth.logout.LogoutUserKakao
+>>>>>>> 088bd1400adaee1100756232d1a7dd4d14373fbc
