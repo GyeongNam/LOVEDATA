@@ -32,11 +32,11 @@
                 <tr><th>회원정보 수정</th></tr>
                 <tr>
                     <td>이름</td>
-                    <td><span>최도비</span></td>
+                    <td  id="sec_line"><span>최도비</span></td>
                 </tr>
                 <tr>
                     <td>프로필 사진</td>
-                    <td>
+                    <td id="sec_line">
                         <div class="file-wrapper flie-wrapper-area">
                         <div class="float-left">
                             <span class="label-plus"><i class="fas fa-plus"></i></span>
@@ -52,27 +52,27 @@
                 </tr>
                 <tr>
                     <td>닉네임</td>
-                    <td><input type="text"><button id="NickName">중복 확인</button></td>
+                    <td id="sec_line"><input type="text"><button id="NickName">중복 확인</button></td>
                 </tr>
                 <tr>
                     <td>이메일</td>
-                    <td><span>272518@naver.com</span></td>
+                    <td id="sec_line"><span>272518@naver.com</span></td>
                 </tr>
                 <tr>
                     <td>기존 비밀번호 *</td>
-                    <td><input type="password"></td>
+                    <td id="sec_line"><input type="password"></td>
                 </tr>
                 <tr>
                     <td>새 비밀번호 *</td>
-                    <td><input type="password"></td>
+                    <td id="sec_line"><input type="password"></td>
                 </tr>
                 <tr>
                     <td>새 비밀번호 확인 *</td>
-                    <td><input type="password"></td>
+                    <td id="sec_line"><input type="password"></td>
                 </tr>
                 <tr>
                     <td>휴대폰 번호 *</td>
-                    <td><select name="first-phone-number">
+                    <td id="sec_line"><select name="first-phone-number">
                         <option value="010">010</option>
                         <option value="011">011</option>
                         <option value="017">017</option>
@@ -87,7 +87,7 @@
                     </td>
                 </tr>
                 <tr><td>생년월일 *</td>
-                    <td>
+                    <td id="sec_line">
                         <select name="year" id="year" title="년도" class="custom-select"></select>
                         <select name="year" id="month" title="월" class="custom-select"></select>
                         <select name="year" id="day" title="일" class="custom-select"></select>
@@ -95,7 +95,7 @@
                 </tr>
                 <tr>
                     <td>성별</td>
-                    <td>
+                    <td id="sec_line">
                         <input type="radio" name="chk_gender" value="남자">남자
                         <input type="radio" name="chk_gender" value="여자">여자
                     </td>
@@ -106,20 +106,159 @@
 
         <div id="MyReview" class="tabcontent">
             <h3>나의 리뷰</h3>
-            <p>내가 쓴 리뷰를 보여주는곳이라고 리발래꺄</p>
+            <table>
+                <thead>
+                <tr>
+                    <th>등록 날짜</th><th>제목</th><th>조회수</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><span>2022-01-01</span></td>
+                    <td>인생 맛집 투어</td><td>247</td>
+                </tr>
+                <tr>
+                    <td><span>2021-12-01</span></td>
+                    <td>누가 그 집에 가보았는가</td><td>365</td>
+                </tr>
+                <tr>
+                    <td></td><td></td><td></td>
+                </tr>
+                <tr>
+                    <td></td><td></td><td></td>
+                </tr>
+                <tr>
+                    <td></td><td></td><td></td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="pagination">
+                <a href="#">&laquo;</a>
+                <a href="#">1</a>
+                <a href="#">&raquo;</a>
+            </div>
         </div>
 
         <div id="MyPlace" class="tabcontent">
             <h3>나의 코스/장소</h3>
-            <p>Tokyo 는 3년 안에 수장된다.</p>
+            <table>
+                <thead>
+                <tr>
+                    <th>등록 날짜</th><th>제목</th><th>조회수</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><span>2022-01-01</span></td>
+                    <td>인생 맛집 투어</td><td>247</td>
+                </tr>
+                <tr>
+                    <td><span>2021-12-01</span></td>
+                    <td>누가 그 집에 가보았는가</td><td>365</td>
+                </tr>
+                <tr>
+                    <td></td><td></td><td></td>
+                </tr>
+                <tr>
+                    <td></td><td></td><td></td>
+                </tr>
+                <tr>
+                    <td></td><td></td><td></td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="pagination">
+                <a href="#">&laquo;</a>
+                <a href="#">1</a>
+                <a href="#">&raquo;</a>
+            </div>
         </div>
         <div id="LikeList" class="tabcontent">
             <h3>찜 목록</h3>
-            <p>계란찜, 고구마찜, 감자찜, 기분이찜찜</p>
+            <table>
+                <thead>
+                <tr>
+                    <th>등록 날짜</th><th>제목</th><th>조회수</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><span>2022-01-01</span></td>
+                    <td>인생 맛집 투어</td><td>247</td>
+                </tr>
+                <tr>
+                    <td><span>2021-12-01</span></td>
+                    <td>누가 그 집에 가보았는가</td><td>365</td>
+                </tr>
+                <tr>
+                    <td></td><td></td><td></td>
+                </tr>
+                <tr>
+                    <td></td><td></td><td></td>
+                </tr>
+                <tr>
+                    <td></td><td></td><td></td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="pagination">
+                <a href="#">&laquo;</a>
+                <a href="#">1</a>
+                <a href="#">&raquo;</a>
+            </div>
         </div>
         <div id="RecView" class="tabcontent">
             <h3>최근 본 코스</h3>
-            <p>최근 본 코스들 나오는 곳 리발</p>
+            <table>
+                <thead>
+                <tr>
+                    <th>No.</th><th>등록 날짜</th><th>제목</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>1</td>
+                    <td><span>2022-01-01</span></td>
+                    <td>인생 맛집 투어</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td><span>2021-12-01</span></td>
+                    <td>누가 그 집에 가보았는가</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+            * 최근 본 8개 장소만 표시됩니다.
         </div>
     </div>
 </div>
