@@ -1044,232 +1044,227 @@ lovedata|schema||lovedatauser|localhost|UPDATE|G</Grants>
     <user id="327" parent="1" name="lovedatauser">
       <Host>localhost</Host>
     </user>
-    <table id="328" parent="3" name="spring_session"/>
-    <table id="329" parent="3" name="spring_session_attributes"/>
-    <table id="330" parent="3" name="tbl_member"/>
-    <table id="331" parent="3" name="test"/>
+    <table id="328" parent="3" name="location"/>
+    <table id="329" parent="3" name="spring_session"/>
+    <table id="330" parent="3" name="spring_session_attributes"/>
+    <table id="331" parent="3" name="tbl_member"/>
     <table id="332" parent="3" name="user"/>
     <table id="333" parent="3" name="user_role_set"/>
-    <column id="334" parent="328" name="PRIMARY_ID">
+    <column id="334" parent="328" name="loc_no">
+      <Position>1</Position>
+      <DataType>bigint(20)|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <column id="335" parent="328" name="user_email">
+      <Position>2</Position>
+      <DataType>varchar(100)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <key id="336" parent="328" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>loc_no</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="337" parent="329" name="PRIMARY_ID">
       <Position>1</Position>
       <DataType>char(36)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="335" parent="328" name="SESSION_ID">
+    <column id="338" parent="329" name="SESSION_ID">
       <Position>2</Position>
       <DataType>char(36)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="336" parent="328" name="CREATION_TIME">
+    <column id="339" parent="329" name="CREATION_TIME">
       <Position>3</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="337" parent="328" name="LAST_ACCESS_TIME">
+    <column id="340" parent="329" name="LAST_ACCESS_TIME">
       <Position>4</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="338" parent="328" name="MAX_INACTIVE_INTERVAL">
+    <column id="341" parent="329" name="MAX_INACTIVE_INTERVAL">
       <Position>5</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="339" parent="328" name="EXPIRY_TIME">
+    <column id="342" parent="329" name="EXPIRY_TIME">
       <Position>6</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="340" parent="328" name="PRINCIPAL_NAME">
+    <column id="343" parent="329" name="PRINCIPAL_NAME">
       <Position>7</Position>
       <DataType>varchar(100)|0s</DataType>
     </column>
-    <index id="341" parent="328" name="SPRING_SESSION_IX1">
+    <index id="344" parent="329" name="SPRING_SESSION_IX1">
       <ColNames>SESSION_ID</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <index id="342" parent="328" name="SPRING_SESSION_IX2">
+    <index id="345" parent="329" name="SPRING_SESSION_IX2">
       <ColNames>EXPIRY_TIME</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="343" parent="328" name="SPRING_SESSION_IX3">
+    <index id="346" parent="329" name="SPRING_SESSION_IX3">
       <ColNames>PRINCIPAL_NAME</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="344" parent="328" name="PRIMARY">
+    <key id="347" parent="329" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>PRIMARY_ID</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="345" parent="328" name="SPRING_SESSION_IX1">
+    <key id="348" parent="329" name="SPRING_SESSION_IX1">
       <ColNames>SESSION_ID</ColNames>
       <UnderlyingIndexName>SPRING_SESSION_IX1</UnderlyingIndexName>
     </key>
-    <column id="346" parent="329" name="SESSION_PRIMARY_ID">
+    <column id="349" parent="330" name="SESSION_PRIMARY_ID">
       <Position>1</Position>
       <DataType>char(36)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="347" parent="329" name="ATTRIBUTE_NAME">
+    <column id="350" parent="330" name="ATTRIBUTE_NAME">
       <Position>2</Position>
       <DataType>varchar(200)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="348" parent="329" name="ATTRIBUTE_BYTES">
+    <column id="351" parent="330" name="ATTRIBUTE_BYTES">
       <Position>3</Position>
       <DataType>blob|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <key id="349" parent="329" name="PRIMARY">
+    <key id="352" parent="330" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>SESSION_PRIMARY_ID
 ATTRIBUTE_NAME</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="350" parent="329" name="SPRING_SESSION_ATTRIBUTES_FK">
+    <foreign-key id="353" parent="330" name="SPRING_SESSION_ATTRIBUTES_FK">
       <ColNames>SESSION_PRIMARY_ID</ColNames>
       <RefTableName>spring_session</RefTableName>
       <RefColNames>PRIMARY_ID</RefColNames>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="351" parent="330" name="userid">
+    <column id="354" parent="331" name="userid">
       <Position>1</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="352" parent="330" name="userpw">
+    <column id="355" parent="331" name="userpw">
       <Position>2</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="353" parent="330" name="username">
+    <column id="356" parent="331" name="username">
       <Position>3</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="354" parent="330" name="email">
+    <column id="357" parent="331" name="email">
       <Position>4</Position>
       <DataType>varchar(100)|0s</DataType>
     </column>
-    <column id="355" parent="330" name="regdate">
+    <column id="358" parent="331" name="regdate">
       <Position>5</Position>
       <DataType>timestamp|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>current_timestamp()</DefaultExpression>
     </column>
-    <column id="356" parent="330" name="updatedate">
+    <column id="359" parent="331" name="updatedate">
       <Position>6</Position>
       <DataType>timestamp|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>current_timestamp()</DefaultExpression>
     </column>
-    <key id="357" parent="330" name="PRIMARY">
+    <key id="360" parent="331" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>userid</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="358" parent="331" name="seq">
-      <Position>1</Position>
-      <DataType>int(11)|0s</DataType>
-      <NotNull>1</NotNull>
-      <SequenceIdentity>null</SequenceIdentity>
-    </column>
-    <column id="359" parent="331" name="country">
-      <Position>2</Position>
-      <DataType>varchar(10)|0s</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="360" parent="331" name="name">
-      <Position>3</Position>
-      <DataType>varchar(10)|0s</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <key id="361" parent="331" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <ColNames>seq</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <column id="362" parent="332" name="user_no">
+    <column id="361" parent="332" name="user_no">
       <Position>1</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="363" parent="332" name="social_info">
+    <column id="362" parent="332" name="social_info">
       <Position>2</Position>
       <DataType>varchar(10)|0s</DataType>
     </column>
-    <column id="364" parent="332" name="user_activation">
+    <column id="363" parent="332" name="user_activation">
       <Position>3</Position>
       <DataType>tinyint(1)|0s</DataType>
     </column>
-    <column id="365" parent="332" name="user_birth">
+    <column id="364" parent="332" name="user_birth">
       <Position>4</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="366" parent="332" name="user_email">
+    <column id="365" parent="332" name="user_email">
       <Position>5</Position>
       <DataType>varchar(100)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="367" parent="332" name="user_email_re">
+    <column id="366" parent="332" name="user_email_re">
       <Position>6</Position>
       <DataType>tinyint(1)|0s</DataType>
     </column>
-    <column id="368" parent="332" name="user_name">
+    <column id="367" parent="332" name="user_name">
       <Position>7</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="369" parent="332" name="user_nic">
+    <column id="368" parent="332" name="user_nic">
       <Position>8</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="370" parent="332" name="user_phone">
+    <column id="369" parent="332" name="user_phone">
       <Position>9</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="371" parent="332" name="user_pw">
+    <column id="370" parent="332" name="user_pw">
       <Position>10</Position>
       <DataType>varchar(60)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="372" parent="332" name="user_sex">
+    <column id="371" parent="332" name="user_sex">
       <Position>11</Position>
       <DataType>tinyint(1)|0s</DataType>
     </column>
-    <column id="373" parent="332" name="user_social">
+    <column id="372" parent="332" name="user_social">
       <Position>12</Position>
       <DataType>tinyint(1)|0s</DataType>
     </column>
-    <column id="374" parent="332" name="user_time">
+    <column id="373" parent="332" name="user_time">
       <Position>13</Position>
       <DataType>datetime|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <key id="375" parent="332" name="PRIMARY">
+    <key id="374" parent="332" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>user_no</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="376" parent="333" name="user_user_no">
+    <column id="375" parent="333" name="user_user_no">
       <Position>1</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="377" parent="333" name="role_set">
+    <column id="376" parent="333" name="role_set">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
     </column>
-    <index id="378" parent="333" name="FKr9gbvf29req6g5b79kcwj7oqm">
+    <index id="377" parent="333" name="FKr9gbvf29req6g5b79kcwj7oqm">
       <ColNames>user_user_no</ColNames>
       <Type>btree</Type>
     </index>
-    <foreign-key id="379" parent="333" name="FKr9gbvf29req6g5b79kcwj7oqm">
+    <foreign-key id="378" parent="333" name="FKr9gbvf29req6g5b79kcwj7oqm">
       <ColNames>user_user_no</ColNames>
       <RefTableName>user</RefTableName>
       <RefColNames>user_no</RefColNames>

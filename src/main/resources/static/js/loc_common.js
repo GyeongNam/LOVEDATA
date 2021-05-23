@@ -1,3 +1,6 @@
+let tagList = [];
+let index;
+
 function addTag(tag) {
     // let navbar = document.getElementById("tag-navbar-collapse");
     let list = document.getElementById('tag_list').children;
@@ -19,6 +22,8 @@ function addTag(tag) {
             list.item(i).children.item(0).innerHTML = tag.value;
             list.item(i).style.display = "inline-block";
             isReachMaxNumber = false;
+            index = i + 1;
+            tagList.push(tag.value);
             break;
         }
     }
@@ -33,14 +38,16 @@ function addTag(tag) {
         return;
     }
 
-    console.log("list count : " + list.length);
-    console.log("list type : " + typeof (list) + "\nvalue : " + list);
+    console.log("list count : " + index);
+    console.log(tagList);
 }
 
 function removeTag(tag) {
-    // tag.parentElement.style.display = "none";
     tag.parentElement.style.display="none";
     tag.parentElement.firstElementChild.setAttribute("value", "");
+    tagList.pop();
+    console.log("list count : " + (--index));
+    console.log(tagList);
 }
 
 function onClickLike(like) {

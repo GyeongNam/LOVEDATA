@@ -1,6 +1,6 @@
 package com.project.love_data.controller;
 
-import com.project.love_data.service.MailService;
+import com.project.love_data.businessLogic.MailService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
