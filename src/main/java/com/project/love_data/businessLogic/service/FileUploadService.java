@@ -21,111 +21,127 @@ public class FileUploadService {
         execute(fileList, fileType, UploadFileCount.SINGLE, 0, request);
     }
 
-    public void execute(List<MultipartFile> fileList,
+    public List<String> execute(List<MultipartFile> fileList,
                         UploadFileType fileType,
                         UploadFileCount fileCount,
                         int maxFileUploadCount,
                         HttpServletRequest request) {
         // 업로드 폴더의 상위폴더 (예시로 현재 프로젝트 폴더)
         String pathStr = System.getProperty("user.dir");
+        List<String> result = null;
 
         switch (fileCount) {
             case SINGLE:
-                singleFileUpload(fileList.get(0), pathStr, fileType, request);
+                result = singleFileUpload(fileList.get(0), pathStr, fileType, request);
                 break;
             case MULTIPLE:
-                multiFileUpload(fileList, pathStr,fileType, maxFileUploadCount,  request);
+                result =multiFileUpload(fileList, pathStr, fileType, maxFileUploadCount, request);
                 break;
             default:
                 log.warn("Not Defined UploadFileType Enum");
-                return;
+                return null;
+        }
+
+        if (result.isEmpty()) {
+            return null;
+        } else {
+            return result;
         }
     }
 
-    private boolean singleFileUpload(MultipartFile file,
+    private List<String> singleFileUpload(MultipartFile file,
                                      String pathStr,
                                      UploadFileType fileType,
                                      HttpServletRequest request) {
         String filePath = getUploadPath(pathStr);
         String fileName = null;
+        List<String> result = new ArrayList<>();
         if (filePath == null) {
             log.warn("파일 업로드 경로에 문제 발생");
-            return false;
+            return result;
         }
 
-        if (!checkFileType(fileType, file)){
+        if (!checkFileType(fileType, file)) {
             log.warn("잘못된 형식의 파일 입니다.");
-            return false;
+            return result;
         }
 
-        fileName = getFileName(filePath, file);
+        fileName = getFileName(file, FileNamingType.UUID);
 
         if (fileName == null) {
             log.warn("파일 이름이 지정되지 않았습니다.");
-            return false;
+            return result;
         }
 
-        if (!saveFile(fileName, file)){
+        if (!saveFile(filePath, fileName, file)) {
             log.warn("파일을 저장하는 중에 오류가 발생하였습니다.");
-            return false;
+            return result;
         }
 
         log.info("파일 저장 위치 : " + filePath);
-        log.info("파일 이름 : " + fileName);
-        return true;
+        log.info("기존 파일 이름 : " + file.getOriginalFilename());
+        log.info("저장된 파일 이름 : " + fileName);
+        result.add(filePath);
+        result.add(fileName);
+
+        return result;
     }
 
-    private boolean multiFileUpload(List<MultipartFile> fileList,
+    private List<String> multiFileUpload(List<MultipartFile> fileList,
                                     String pathStr,
                                     UploadFileType fileType,
                                     int maxFileUploadCount,
-                                    HttpServletRequest request){
+                                    HttpServletRequest request) {
         String filePath = getUploadPath(pathStr);
         String fileName = null;
+        List<String> result = new ArrayList<>();
         int maxFileCount = fileList.size();
         int count = 0;
         if (filePath == null) {
             log.warn("파일 업로드 경로에 문제 발생");
-            return false;
+            return result;
         }
 
+        log.info("파일 저장 위치 : " + filePath);
+        result.add(filePath);
         for (MultipartFile file : fileList) {
             ++count;
             if (count >= 8) {
-                log.info("파일 최대 업로드 갯수는 " + maxFileCount + "개 입니다. (현재 업로드된 파일 갯수 " + count + ")");
-                log.info("이후의 파일은 저장되지 않습니다.");
-                count--;
+                log.info("파일 최대 업로드 허용 갯수는 " + maxFileUploadCount + "개 입니다. (현재 메모리에 업로드된 파일 갯수 " + maxFileCount + ")");
+                log.info((--count) + "번 파일까지만 저장됩니다.");
                 break;
             }
 
-            if (!checkFileType(fileType, file)){
+            if (!checkFileType(fileType, file)) {
                 log.warn("잘못된 형식의 파일 입니다.");
                 continue;
             }
 
-            fileName = getFileName(filePath, file);
+            fileName = getFileName(file, FileNamingType.UUID);
 
             if (fileName == null) {
                 log.warn("파일 이름이 지정되지 않았습니다.");
                 continue;
             }
 
-            if (!saveFile(fileName, file)){
+            if (!saveFile(filePath, fileName, file)) {
                 log.warn("파일을 저장하는 중에 오류가 발생하였습니다.");
                 continue;
             }
 
-            log.info("파일 저장 위치 : " + filePath);
-            log.info("파일 이름 : " + fileName);
+            log.info("기존 파일 이름 : " + file.getOriginalFilename());
+            log.info("저장된 파일 이름 : " + fileName);
+
+            result.add(fileName);
         }
-        log.info("업로드 된 파일 갯수 : " + maxFileCount);
+        log.info("현재 메모리에 업로드 된 파일 갯수 : " + maxFileCount);
         log.info("저장된 파일 갯수 : " + count);
 
-        return true;
+        return result;
     }
 
     private boolean checkFileType(UploadFileType fileType, MultipartFile file) {
-        switch (fileType){
+        switch (fileType) {
             case IMAGE:
                 if (file.getContentType().startsWith("image") == false) {
                     log.warn("This file is not image types : " + file.getOriginalFilename());
@@ -156,22 +172,37 @@ public class FileUploadService {
         return path.toString();
     }
 
-    private String getFileName(String path, MultipartFile file) {
+    private String getFileName(MultipartFile file, FileNamingType fileNamingType) {
         String originalFileName = file.getOriginalFilename();
         String fileName = originalFileName.substring(originalFileName.lastIndexOf("\\") + 1);
+        String fileFormat = originalFileName.substring(originalFileName.lastIndexOf("."));
         String uuid = UUID.randomUUID().toString();
-        String saveName = path + File.separator + uuid + "_" + fileName;
+        String saveName = null;
+
+        switch (fileNamingType) {
+            case ORIGINAL:
+                saveName = fileName;
+                break;
+            case UUID:
+                saveName = uuid + fileFormat;
+                break;
+            case UUD_ORIGINAL:
+                saveName = uuid + "_" + fileName;
+                break;
+            default:
+                return null;
+        }
 
         return saveName;
     }
 
-    private boolean saveFile(String path, MultipartFile file) {
-        Path savePath = Paths.get(path);
+    private boolean saveFile(String filePath, String fileName, MultipartFile file) {
+        Path savePath = Paths.get(filePath + File.separator + fileName);
 
         try {
             file.transferTo(savePath);
         } catch (IOException e) {
-            for (StackTraceElement item: e.getStackTrace()) {
+            for (StackTraceElement item : e.getStackTrace()) {
                 log.warn(item);
             }
             return false;

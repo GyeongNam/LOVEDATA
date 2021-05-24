@@ -30,6 +30,7 @@ public class ServiceController {
     FileUploadService fileUploadService;
 
     final static int maxUploadCount = 7;
+    List<String> tagList = new ArrayList<>();
 
     @RequestMapping("/service/loc_registration")
     public String loc_Reg() {
@@ -41,67 +42,50 @@ public class ServiceController {
         return "/popup/jusoPopup";
     }
 
-    @PostMapping("/service/loc_registration/regData")
-    public String locRegistrationData(@RequestParam("files") List<MultipartFile> fileList
-            , HttpServletRequest request) {
-//        // 현재 프로젝트의 경로를 불러옴
-//        // https://j-dev.tistory.com/entry/Java-%ED%98%84%EC%9E%AC-ROOT-%EA%B2%BD%EB%A1%9C-%EA%B0%80%EC%A7%80%EA%B3%A0-%EC%98%A4%EA%B8%B0
-//        String uploadPath = System.getProperty("user.dir");
-//        int count = 0;
-//
-//        log.info("Uploaded File List Count : " + fileList.size());
-//        log.info("uploadPath : " + uploadPath);
-//
-//        Path tempPath = Paths.get(uploadPath + File.separator + "images");
-//        if(!Files.exists(tempPath)) {
-//            try {
-//                log.info("Creating File path");
-//                log.info("-\t" + tempPath.toAbsolutePath());
-//                Files.createDirectory(tempPath);
-//            } catch (IOException e) {
-//                for (StackTraceElement item : e.getStackTrace()) {
-//                    log.warn(item);
-//                }
-//            }
-//        }
-//
-//        for (MultipartFile file : fileList) {
-//            if (file.getContentType().startsWith("image") == false) {
-//                log.warn("This file is not image types : " + file.getOriginalFilename());
-//            }
-//
-//            count ++;
-//            if (count >= 8) {
-//                log.info("Image Upload Count Reached Max (Maximum Count is 7)");
-//                log.info("Current Uploaded Image Count is : " + count);
-//                log.info("Last Uploaded Image won't save");
-//                count--;
-//                break;
-//            }
-//
-//            String originalName = file.getOriginalFilename();
-//            String fileName = originalName.substring(originalName.lastIndexOf("\\") + 1);
-//            String uuid = UUID.randomUUID().toString();
-//
-//            String saveName = uploadPath + File.separator + "images" + File.separator + uuid + "_" + fileName;
-//            Path savePath = Paths.get(saveName);
-//
-//            log.info("saveName : " + saveName);
-//            log.info("savePath : " + savePath);
-//
-//            try {
-//                file.transferTo(savePath);
-//            } catch (IOException e) {
-//                for (StackTraceElement item: e.getStackTrace()) {
-//                    log.warn(item);
-//                }
-//            }
-//        }
-//
-//        log.info("Uploaded Image Count : " + count);
+    @PostMapping("/service/loc/tags")
+    public void locGetTagsList(@RequestParam("tags[]") String[] tagArray) {
+        tagList = Arrays.asList(tagArray);
+    }
 
-        fileUploadService.execute(fileList, UploadFileType.IMAGE,
+    @GetMapping("/service/loc_registration/regData")
+    public String locRegistartionDataNoAccess() {
+        log.info("Access Invalid(Shouldn\'t Access with GET Method)");
+        return "redirect:/service/loc_recommend";
+    }
+
+    @PostMapping("/service/loc_registration/regData")
+    public String locRegistrationData(@RequestParam("files") List<MultipartFile> fileList,
+                                      HttpServletRequest request) {
+        List<String> filePath = null;
+
+        String name = request.getParameter("name");
+        String tel = request.getParameter("tel");
+        String info = request.getParameter("info");
+        String zipNo = request.getParameter("zipNo");
+        String roadAddr = request.getParameter("roadAddrPart1");
+        String addrDetail = request.getParameter("addrDetail");
+        // 시 도 명칭 (ex 경기도, 서울 특별시 등)
+        String siDoName = request.getParameter("siNm");
+        // 시 군 구 명칭 (ex 고양시, 덕양구, 강화군 등)
+        String siGunGuName = request.getParameter("sggNm");
+        
+        // @Todo 입력시 최소 1개의 태그는 추가하도록 하는 javascript 및 백엔드 서버 기능 추가
+        if (tagList.isEmpty()) {
+            log.warn("No Location Tag Found (Must add tag before submit location)");
+            return "redirect:/service/loc_recommend";
+        }
+
+        filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE,
                 UploadFileCount.MULTIPLE, maxUploadCount, request);
+
+        if (filePath == null) {
+            log.warn("파일이 제대로 저장되지 않았습니다.");
+            return "redirect:/service/loc_recommend";
+        }
+
+//        for (String s : filePath) {
+//            System.out.println("s = " + s);
+//        }
 
         return "redirect:/service/loc_recommend";
     }

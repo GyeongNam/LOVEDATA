@@ -83,7 +83,7 @@
 				<div class="user-details basic-style">
 					<div class="input-box">
 						<span class="details">이름</span>
-						<input type="text" placeholder="Enter your name" required>
+						<input type="text" id="name" name="name" placeholder="Enter your name" required>
 					</div>
 					<div class="row">
 						<div class="col" id="top_hashtag">
@@ -177,18 +177,23 @@
 						<span class="details">위치</span>
 						<form method="post" name="form" id="form">
 							<input type="button" onclick="goPopup()" value="주소검색">
-							<input type="text" placeholder="우편번호" id="zipNo" name="zipNo" disabled value="" required>
-							<input type="text" placeholder="도로명 주소" id="roadAddrPart1" name="roadAddrPart1" disabled
+							<input type="text" placeholder="우편번호" id="zipNo" name="zipNo" readonly value="" required>
+							<input type="text" placeholder="도로명 주소" id="roadAddrPart1" name="roadAddrPart1" readonly
 								   required>
-							<input type="text" placeholder="도로명 주소 (상세)" id="addrDetail" name="addrDetail" disabled
+							<input type="text" placeholder="도로명 주소 (상세)" id="addrDetail" name="addrDetail" readonly
 								   required>
-							<input type="hidden" placeholder="시도명" id="siNm" name="siNm" disabled required>
-							<input type="hidden" placeholder="시군구명" id="sggNm" name="sggNm" disabled required>
+							<input type="hidden" placeholder="시도명" id="siNm" name="siNm" readonly required>
+							<input type="hidden" placeholder="시군구명" id="sggNm" name="sggNm" readonly required>
 						</form>
 					</div>
 					<div class="input-box">
 						<span class="details">연락처</span>
-						<input type="text" placeholder="Enter your number" required>
+						<input type="tel" id="tel" name="tel" placeholder="010-0000-0000" required>
+					</div>
+					<div class="input-box">
+						<span class="details">정보</span>
+						<textarea rows="4" maxlength="150" name="info" id="info" required></textarea>
+<%--						<input type="text" maxlength="150" name="info" id="info" required>--%>
 					</div>
 					<div>
 						<input name="files" type="file" multiple  accept="image/*">
@@ -267,16 +272,29 @@
     $(function(){
         $("button[type = 'submit']").click(function(){
             var $fileUpload = $("input[type='file']");
-            // if (parseInt($fileUpload.get(0).files.length) == 0) {
-            //     alert("최소 1개의 이미지 파일은 업로드 해야합니다.")
-			// } else if (parseInt($fileUpload.get(0).files.length) > 7){
-            //     alert("최대 7개의 이미지 파일만 업로드 가능합니다.");
-            // } else {
-            //     var formData = $("form");
-            //     formData.submit();
-			// }
-            var formData = $("form");
-            formData.submit();
+            if (parseInt($fileUpload.get(0).files.length) == 0) {
+                alert("최소 1개의 이미지 파일은 업로드 해야합니다.")
+			} else if (parseInt($fileUpload.get(0).files.length) > 7){
+                alert("최대 7개의 이미지 파일만 업로드 가능합니다.");
+            } else {
+                var formData = $("form");
+                $.ajax({
+                    type : "POST",
+                    url : "/service/loc/tags",
+                    data : {
+                        tags: tagList //notice that "myArray" matches the value for @RequestParam
+                                   //on the Java side
+                    },
+                    success : function(response) {
+                        // do something ...
+						console.log("Success")
+                    },
+                    error : function(e) {
+                        console.log("Failed")
+                    }
+                });
+                formData.submit();
+			}
         });
     });
 </script>

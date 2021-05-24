@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - UserTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>UserTest</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/com.project.love_data.html">com.project.love_data</a> &gt; UserTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">1</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">9.180s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Tests</a>
+</li>
+<li>
+<a href="#tab1">Standard output</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">insertDummies()</td>
+<td class="success">9.180s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div id="tab1" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>17:50:06.515 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating CacheAwareContextLoaderDelegate from class [org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate]
+17:50:06.527 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating BootstrapContext using constructor [public org.springframework.test.context.support.DefaultBootstrapContext(java.lang.Class,org.springframework.test.context.CacheAwareContextLoaderDelegate)]
+17:50:06.560 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating TestContextBootstrapper for test class [com.project.love_data.UserTest] from class [org.springframework.boot.test.context.SpringBootTestContextBootstrapper]
+17:50:06.584 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Neither @ContextConfiguration nor @ContextHierarchy found for test class [com.project.love_data.UserTest], using SpringBootContextLoader
+17:50:06.588 [Test worker] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [com.project.love_data.UserTest]: class path resource [com/project/love_data/UserTest-context.xml] does not exist
+17:50:06.589 [Test worker] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [com.project.love_data.UserTest]: class path resource [com/project/love_data/UserTestContext.groovy] does not exist
+17:50:06.589 [Test worker] INFO org.springframework.test.context.support.AbstractContextLoader - Could not detect default resource locations for test class [com.project.love_data.UserTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+17:50:06.591 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.project.love_data.UserTest]: UserTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+17:50:06.645 [Test worker] DEBUG org.springframework.test.context.support.ActiveProfilesUtils - Could not find an 'annotation declaring class' for annotation type [org.springframework.test.context.ActiveProfiles] and class [com.project.love_data.UserTest]
+17:50:06.706 [Test worker] DEBUG org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider - Identified candidate component class: file [D:\Study\GitHub\Projects\Team Project\LoveData\build\classes\java\main\com\project\love_data\LoveDataApplication.class]
+17:50:06.709 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.project.love_data.LoveDataApplication for test class com.project.love_data.UserTest
+17:50:06.816 [Test worker] DEBUG org.springframework.boot.test.context.SpringBootTestContextBootstrapper - @TestExecutionListeners is not present for class [com.project.love_data.UserTest]: using defaults.
+17:50:06.817 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener, org.springframework.security.test.context.support.ReactorContextTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+17:50:06.878 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@75f7abd0, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@28c00978, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@1d0b5c1d, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@13bbe2f3, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@5bda627f, org.springframework.test.context.support.DirtiesContextTestExecutionListener@73793bb5, org.springframework.test.context.transaction.TransactionalTestExecutionListener@34d57a73, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@78b5ba60, org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener@7074e693, org.springframework.test.context.event.EventPublishingTestExecutionListener@4aeadfbb, org.springframework.security.test.context.support.ReactorContextTestExecutionListener@55f33277, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@40e413, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@57d7caf6, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@4bdcd0b0, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@7703336, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@973fb7, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@69fec529]
+17:50:06.891 [Test worker] DEBUG org.springframework.test.context.support.AbstractDirtiesContextTestExecutionListener - Before test class: context [DefaultTestContext@2607341e testClass = UserTest, testInstance = [null], testMethod = [null], testException = [null], mergedContextConfiguration = [WebMergedContextConfiguration@7990f13b testClass = UserTest, locations = '{}', classes = '{class com.project.love_data.LoveDataApplication}', contextInitializerClasses = '[]', activeProfiles = '{}', propertySourceLocations = '{}', propertySourceProperties = '{org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true}', contextCustomizers = set[org.springframework.boot.test.autoconfigure.actuate.metrics.MetricsExportContextCustomizerFactory$DisableMetricExportContextCustomizer@154b2353, org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizerFactory$Customizer@1f3b1755, org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@64f7724a, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@3ecb5139, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.springframework.boot.test.web.client.TestRestTemplateContextCustomizer@49711d1d, org.springframework.boot.test.context.SpringBootTestArgs@1, org.springframework.boot.test.context.SpringBootTestWebEnvironment@4c84b8f4], resourceBasePath = 'src/main/webapp', contextLoader = 'org.springframework.boot.test.context.SpringBootContextLoader', parent = [null]], attributes = map['org.springframework.test.context.web.ServletTestExecutionListener.activateListener' -&gt; true]], class annotated with @DirtiesContext [false] with mode [null].
+17:50:06.929 [Test worker] DEBUG org.springframework.test.context.support.TestPropertySourceUtils - Adding inlined properties to environment: {spring.jmx.enabled=false, org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true}
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+?[32m :: Spring Boot :: ?[39m              ?[2m (v2.4.4)?[0;39m
+
+?[2m2021-05-24 17:50:07.373?[0;39m ?[32m INFO?[0;39m ?[35m19300?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mcom.project.love_data.UserTest          ?[0;39m ?[2m:?[0;39m Starting UserTest using Java 1.8.0_281 on MyPC with PID 19300 (started by ARA in D:\Study\GitHub\Projects\Team Project\LoveData)
+?[2m2021-05-24 17:50:07.376?[0;39m ?[32m INFO?[0;39m ?[35m19300?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mcom.project.love_data.UserTest          ?[0;39m ?[2m:?[0;39m No active profile set, falling back to default profiles: default
+?[2m2021-05-24 17:50:08.466?[0;39m ?[32m INFO?[0;39m ?[35m19300?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36m.s.d.r.c.RepositoryConfigurationDelegate?[0;39m ?[2m:?[0;39m Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+?[2m2021-05-24 17:50:08.532?[0;39m ?[32m INFO?[0;39m ?[35m19300?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36m.s.d.r.c.RepositoryConfigurationDelegate?[0;39m ?[2m:?[0;39m Finished Spring Data repository scanning in 57 ms. Found 1 JPA repository interfaces.
+?[2m2021-05-24 17:50:08.662?[0;39m ?[33m WARN?[0;39m ?[35m19300?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mo.m.s.mapper.ClassPathMapperScanner     ?[0;39m ?[2m:?[0;39m No MyBatis mapper was found in '[com.project.love_data]' package. Please check your configuration.
+?[2m2021-05-24 17:50:08.879?[0;39m ?[32m INFO?[0;39m ?[35m19300?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mtrationDelegate$BeanPostProcessorChecker?[0;39m ?[2m:?[0;39m Bean 'org.springframework.ws.config.annotation.DelegatingWsConfiguration' of type [org.springframework.ws.config.annotation.DelegatingWsConfiguration$$EnhancerBySpringCGLIB$$e8a944c2] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+?[2m2021-05-24 17:50:08.995?[0;39m ?[32m INFO?[0;39m ?[35m19300?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36m.w.s.a.s.AnnotationActionEndpointMapping?[0;39m ?[2m:?[0;39m Supporting [WS-Addressing August 2004, WS-Addressing 1.0]
+?[2m2021-05-24 17:50:09.346?[0;39m ?[32m INFO?[0;39m ?[35m19300?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mo.hibernate.jpa.internal.util.LogHelper ?[0;39m ?[2m:?[0;39m HHH000204: Processing PersistenceUnitInfo [name: default]
+?[2m2021-05-24 17:50:09.417?[0;39m ?[32m INFO?[0;39m ?[35m19300?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36morg.hibernate.Version                   ?[0;39m ?[2m:?[0;39m HHH000412: Hibernate ORM core version 5.4.29.Final
+?[2m2021-05-24 17:50:09.619?[0;39m ?[32m INFO?[0;39m ?[35m19300?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mo.hibernate.annotations.common.Version  ?[0;39m ?[2m:?[0;39m HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+?[2m2021-05-24 17:50:09.772?[0;39m ?[32m INFO?[0;39m ?[35m19300?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mcom.zaxxer.hikari.HikariDataSource      ?[0;39m ?[2m:?[0;39m HikariPool-1 - Starting...
+?[2m2021-05-24 17:50:10.066?[0;39m ?[32m INFO?[0;39m ?[35m19300?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mcom.zaxxer.hikari.HikariDataSource      ?[0;39m ?[2m:?[0;39m HikariPool-1 - Start completed.
+?[2m2021-05-24 17:50:10.110?[0;39m ?[32m INFO?[0;39m ?[35m19300?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36morg.hibernate.dialect.Dialect           ?[0;39m ?[2m:?[0;39m HHH000400: Using dialect: org.hibernate.dialect.MySQL55Dialect
+?[2m2021-05-24 17:50:10.885?[0;39m ?[32m INFO?[0;39m ?[35m19300?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mo.h.e.t.j.p.i.JtaPlatformInitiator      ?[0;39m ?[2m:?[0;39m HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+?[2m2021-05-24 17:50:10.896?[0;39m ?[32m INFO?[0;39m ?[35m19300?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mj.LocalContainerEntityManagerFactoryBean?[0;39m ?[2m:?[0;39m Initialized JPA EntityManagerFactory for persistence unit 'default'
+?[2m2021-05-24 17:50:11.081?[0;39m ?[33m WARN?[0;39m ?[35m19300?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mJpaBaseConfiguration$JpaWebConfiguration?[0;39m ?[2m:?[0;39m spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+?[2m2021-05-24 17:50:12.175?[0;39m ?[32m INFO?[0;39m ?[35m19300?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mo.s.s.web.DefaultSecurityFilterChain    ?[0;39m ?[2m:?[0;39m Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@532c2923, org.springframework.security.web.context.SecurityContextPersistenceFilter@325beb32, org.springframework.security.web.header.HeaderWriterFilter@ff601bd, org.springframework.security.web.csrf.CsrfFilter@6917f9c6, org.springframework.security.web.authentication.logout.LogoutFilter@7be04da2, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@1f5c8cf7, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3ede21de, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7189db54, org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter@22313620, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6f6b3662, org.springframework.security.web.session.SessionManagementFilter@1edd9c24, org.springframework.security.web.access.ExceptionTranslationFilter@7dc4a6d9, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@491f448f]
+?[2m2021-05-24 17:50:12.573?[0;39m ?[32m INFO?[0;39m ?[35m19300?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mo.s.s.concurrent.ThreadPoolTaskExecutor ?[0;39m ?[2m:?[0;39m Initializing ExecutorService 'applicationTaskExecutor'
+?[2m2021-05-24 17:50:13.388?[0;39m ?[32m INFO?[0;39m ?[35m19300?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mo.s.b.a.e.web.EndpointLinksResolver     ?[0;39m ?[2m:?[0;39m Exposing 2 endpoint(s) beneath base path '/actuator'
+?[2m2021-05-24 17:50:13.451?[0;39m ?[32m INFO?[0;39m ?[35m19300?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mcom.project.love_data.UserTest          ?[0;39m ?[2m:?[0;39m Started UserTest in 6.497 seconds (JVM running for 8.296)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user (social_info, user_activation, user_birth, user_email, user_email_re, user_name, user_nic, user_phone, user_pw, user_sex, user_social, user_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+Hibernate: insert into user_role_set (user_user_no, role_set) values (?, ?)
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="http://www.gradle.org">Gradle 6.8.3</a> at 2021. 5. 24 오후 5:50:22</p>
+</div>
+</div>
+</body>
+</html>
