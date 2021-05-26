@@ -5,6 +5,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.xml.bind.DatatypeConverter;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -88,10 +89,13 @@ public class SmsService {
         // @Todo 컴파일러 경고남
         // src\main\java\com\project\love_data\service\SmsService.java:76: warning: BASE64Encoder is internal proprietary API and may be removed in a future release
         //        sun.misc.BASE64Encoder encoder = new sun.misc.BASE64Encoder();
-        sun.misc.BASE64Encoder encoder = new sun.misc.BASE64Encoder();
-        byte[] strByte = str.getBytes();
-        String result = encoder.encode(strByte);
-        return result ;
+//        sun.misc.BASE64Encoder encoder = new sun.misc.BASE64Encoder();
+//        byte[] strByte = str.getBytes();
+//        String result = encoder.encode(strByte);
+        byte[] strByte = DatatypeConverter.parseBase64Binary(str);
+        String result = null;
+        assert result == DatatypeConverter.printBase64Binary(strByte);
 
+        return result ;
     }
 }

@@ -18,14 +18,15 @@ public class FileUploadService {
     public void execute(List<MultipartFile> fileList,
                         UploadFileType fileType,
                         HttpServletRequest request) {
-        execute(fileList, fileType, UploadFileCount.SINGLE, 0, request);
+        execute(fileList, fileType, UploadFileCount.SINGLE, 1, 1, request);
     }
 
     public List<String> execute(List<MultipartFile> fileList,
-                        UploadFileType fileType,
-                        UploadFileCount fileCount,
-                        int maxFileUploadCount,
-                        HttpServletRequest request) {
+                                UploadFileType fileType,
+                                UploadFileCount fileCount,
+                                int minFileUploadCount,
+                                int maxFileUploadCount,
+                                HttpServletRequest request) {
         // 업로드 폴더의 상위폴더 (예시로 현재 프로젝트 폴더)
         String pathStr = System.getProperty("user.dir");
         List<String> result = null;
@@ -35,7 +36,7 @@ public class FileUploadService {
                 result = singleFileUpload(fileList.get(0), pathStr, fileType, request);
                 break;
             case MULTIPLE:
-                result =multiFileUpload(fileList, pathStr, fileType, maxFileUploadCount, request);
+                result = multiFileUpload(fileList, pathStr, fileType, minFileUploadCount, maxFileUploadCount, request);
                 break;
             default:
                 log.warn("Not Defined UploadFileType Enum");
@@ -50,9 +51,9 @@ public class FileUploadService {
     }
 
     private List<String> singleFileUpload(MultipartFile file,
-                                     String pathStr,
-                                     UploadFileType fileType,
-                                     HttpServletRequest request) {
+                                          String pathStr,
+                                          UploadFileType fileType,
+                                          HttpServletRequest request) {
         String filePath = getUploadPath(pathStr);
         String fileName = null;
         List<String> result = new ArrayList<>();
@@ -88,10 +89,11 @@ public class FileUploadService {
     }
 
     private List<String> multiFileUpload(List<MultipartFile> fileList,
-                                    String pathStr,
-                                    UploadFileType fileType,
-                                    int maxFileUploadCount,
-                                    HttpServletRequest request) {
+                                         String pathStr,
+                                         UploadFileType fileType,
+                                         int minFileUploadCount,
+                                         int maxFileUploadCount,
+                                         HttpServletRequest request) {
         String filePath = getUploadPath(pathStr);
         String fileName = null;
         List<String> result = new ArrayList<>();
@@ -102,11 +104,16 @@ public class FileUploadService {
             return result;
         }
 
+        if (minFileUploadCount > fileList.size()) {
+            log.warn("최소 업로드 파일 수는 " + minFileUploadCount + "개 입니다.");
+            return result;
+        }
+
         log.info("파일 저장 위치 : " + filePath);
         result.add(filePath);
         for (MultipartFile file : fileList) {
             ++count;
-            if (count >= 8) {
+            if (count > maxFileUploadCount) {
                 log.info("파일 최대 업로드 허용 갯수는 " + maxFileUploadCount + "개 입니다. (현재 메모리에 업로드된 파일 갯수 " + maxFileCount + ")");
                 log.info((--count) + "번 파일까지만 저장됩니다.");
                 break;

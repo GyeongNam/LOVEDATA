@@ -193,7 +193,13 @@
 					<div class="input-box">
 						<span class="details">정보</span>
 						<textarea rows="4" maxlength="150" name="info" id="info" required></textarea>
-<%--						<input type="text" maxlength="150" name="info" id="info" required>--%>
+						<sec:authorize access = "isAuthenticated()">
+							<c:set var = "user_no"><sec:authentication property="user_no"></sec:authentication></c:set>
+							<c:when test="${not empty user_no}">
+								<input type="hidden" name="user_no" id="user_no" value="${user_no}">
+							</c:when>
+						</sec:authorize>
+						<input type="hidden" name="user_no_debug" id="user_no_debug" value="0">
 					</div>
 					<div>
 						<input name="files" type="file" multiple  accept="image/*">
@@ -272,10 +278,10 @@
     $(function(){
         $("button[type = 'submit']").click(function(){
             var $fileUpload = $("input[type='file']");
-            if (parseInt($fileUpload.get(0).files.length) == 0) {
-                alert("최소 1개의 이미지 파일은 업로드 해야합니다.")
-			} else if (parseInt($fileUpload.get(0).files.length) > 7){
-                alert("최대 7개의 이미지 파일만 업로드 가능합니다.");
+            if (parseInt($fileUpload.get(0).files.length) < 3) {
+                alert("최소 3개의 이미지 파일은 업로드 해야합니다.")
+			} else if (parseInt($fileUpload.get(0).files.length) > 10){
+                alert("최대 10개의 이미지 파일만 업로드 가능합니다.");
             } else {
                 var formData = $("form");
                 $.ajax({

@@ -11,13 +11,22 @@ import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
-@NoRepositoryBean
-public interface LocationRepository extends JpaRepository<Long, Location> {
-
+public interface LocationRepository extends JpaRepository<Location, Long> {
     @Query(value = "SELECT * from Location l WHERE  l.loc_name = :name", nativeQuery = true)
     Optional<Location> findLocByName(@Param("name") String name);
 
+    @Query(value = "SELECT * from Location l WHERE  l.loc_no = :loc_no", nativeQuery = true)
+    Optional<Location> findLocByLoc_no(@Param("loc_no") String loc_no);
+
     @EntityGraph(attributePaths = {"tagSet"}, type = EntityGraph.EntityGraphType.LOAD)
-    @Query(value = "SELECT * from Location l WHERE l.loc_name = :name", nativeQuery = true)
-    Optional<Location> findLocByName_Tag(@Param("name") String name);
+    @Query(value = "SELECT l from Location l WHERE l.loc_name = :name")
+    Optional<Location> findLoc_TagByName(@Param("name") String name);
+
+//    @EntityGraph(attributePaths = {"imgSet"}, type = EntityGraph.EntityGraphType.LOAD)
+//    @Query(value = "SELECT l from Location l WHERE l.loc_no = SELECT l.loc_no FROM Location l where l.loc_name = :name")
+//    Optional<Location> findLoc_ImgByName(@Param("name") String name);
+
+    @EntityGraph(attributePaths = {"imgSet"}, type = EntityGraph.EntityGraphType.LOAD)
+    @Query(value = "SELECT l from Location l WHERE l.loc_no = :loc_no")
+    Optional<Location> findLoc_ImgByNo(@Param("loc_no") Long loc_no);
 }

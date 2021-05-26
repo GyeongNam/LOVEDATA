@@ -8,5 +8,7 @@ public enum LocationTag {
     ACTION_E,
     ACTION_F,
     ACTION_G,
-    ACTION_H
+    ACTION_H,
+    TYPE_ODD,
+    TYPE_EVEN
 }

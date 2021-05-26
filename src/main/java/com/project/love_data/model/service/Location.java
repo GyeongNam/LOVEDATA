@@ -1,5 +1,8 @@
 package com.project.love_data.model.service;
 
+import com.project.love_data.model.base.TimeEntity;
+import com.project.love_data.model.resource.Image;
+import com.sun.istack.NotNull;
 import lombok.*;
 import lombok.extern.log4j.Log4j2;
 import org.hibernate.annotations.Cascade;
@@ -8,6 +11,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -22,11 +26,12 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Log4j2
-public class Location {
+public class Location extends TimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
+    @NotNull
     private Long loc_no;
 
     @Column(name = "loc_name", nullable = false, length = 40, unique = true)
@@ -57,19 +62,19 @@ public class Location {
     @Builder.Default
     private Set<String> tagSet = new HashSet<>();
 
-    @Column(name = "likecount", length = 255, nullable = false)
-    @ColumnDefault("0")
-    private Long likeCount;
+    @OneToMany(mappedBy = "Location", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Image> imgList = new ArrayList<>();
 
-    @CreatedDate
-    @Column(name = "regdate", updatable = false)
-    private LocalDateTime regDate;
-
-    @LastModifiedDate
-    @Column(name = "moddate", updatable = false)
-    private LocalDateTime modDate;
+    @Column(name = "likecount", nullable = false, columnDefinition = "bigint default 0")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Builder.Default
+    private Long likeCount = Long.valueOf(0);
     
     // Todo 여기에 댓글 칼럼도 추가
+
+    public void addLocImg(Image img) {
+        imgList.add(img);
+    }
 
     public void addLocTag(String str) {
         LocationTag tag = null;
