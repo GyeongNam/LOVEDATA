@@ -1,5 +1,6 @@
 package com.project.love_data.dto;
 
+import com.project.love_data.model.resource.Image;
 import com.project.love_data.model.service.LocationTag;
 import lombok.*;
 
@@ -50,5 +51,17 @@ public class LocationDTO {
 
     public String getFullAddr() {
         return this.roadAddr + this.addrDetail;
+    }
+
+    public void addImg(ImageDTO img) {
+        img.setIdx((long) imgList.size());
+        img.setLocation(this);
+        imgList.add(img);
+    }
+
+    public void addImg(List<ImageDTO> img) {
+        for (ImageDTO image : img) {
+            addImg(image);
+        }
     }
 }

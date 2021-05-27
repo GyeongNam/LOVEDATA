@@ -137,6 +137,12 @@ public class LocationService {
         return repository.findByLoc_nameContaining(sb.toString());
     }
 
+    public LocationDTO select(Long loc_no) {
+        Optional<Location> result = repository.findById(loc_no);
+
+        return result.isPresent() ? entityToDto(result.get()) : null;
+    }
+
     public void update(Location loc) {
         repository.save(loc);
     }

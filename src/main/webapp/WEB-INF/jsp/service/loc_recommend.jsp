@@ -13,6 +13,13 @@
 	<%--	<link rel="stylesheet" type="text/css" href="/css/Bootstarp_test/bootstrap.min.css">--%>
 	<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/css/service/loc.css">
+	<style>
+        @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+        body {
+            font-family: 'Jua', sans-serif;
+        }
+	</style>
 	<title>Home</title>
 </head>
 <%@ include file="../layout/header.jsp" %>
@@ -187,24 +194,51 @@
 				</c:if>
 				<div class="col-md-4" id="loc_${i}">
 					<div class="card mb-4 shadow-sm">
-						<form action="/service/loc_detail" method="get" class="m-0">
-							<button class="container p-0 btn">
-								<svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-									 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
-									 preserveAspectRatio="xMidYMid slice" focusable="false">
-									<title>Placeholder</title>
-									<rect width="100%" height="100%" fill="#55595c"></rect>
-									<text x="40%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-								</svg>
-							</button>
-						</form>
+						<c:url var="loc_detail" value="/service/loc_detail">
+							<c:param name="locNo" value="${result.dtoList.get(i).loc_no}"/>
+							<c:param name="page" value="${result.page}"/>
+						</c:url>
+						<a class="container p-0 btn" href="${loc_detail}">
+							<c:set var="imgList" value="${result.dtoList.get(i).imgList}"></c:set>
+							<c:choose>
+								<c:when test="${!empty imgList}">
+									<svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+										 xmlns="http://www.w3.org/2000/svg" role="img"
+										 aria-label="Placeholder: Thumbnail"
+										 preserveAspectRatio="xMidYMid slice" focusable="false">
+										<rect width="100%" height="100%" fill="#55595c">
+											<image height="100%" width="100%" href="${imgList.get(i).img_url}"></image>
+										</rect>
+									</svg>
+								</c:when>
+								<c:otherwise>
+									<svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+										 xmlns="http://www.w3.org/2000/svg" role="img"
+										 aria-label="Placeholder: Thumbnail"
+										 preserveAspectRatio="xMidYMid slice" focusable="false">
+										<title>Placeholder</title>
+										<rect width="100%" height="100%" fill="#55595c"></rect>
+										<text x="40%" y="50%" fill="#eceeef"
+											  dy=".3em">${result.dtoList.get(i).loc_name}</text>
+									</svg>
+								</c:otherwise>
+							</c:choose>
+						</a>
 
 						<div class="card-body p-2">
 							<div class="d-flex justify-content-between align-items-center p-1">
-								<a class="card-text loc_rec-locTitle" href="/service/loc_detail"
-								   id="title_${i+1}">${result.dtoList.get(i).loc_name}</a>
-								<img src="/image/icon/like/love_black.png" class="loc_btn-like-wh" alt="찜하기"
-									 onclick="onClickLike(this)">
+								<div class="d-flex">
+									<a class="card-text loc_rec-locTitle" href="/service/loc_detail"
+									   id="title_${i+0}">${result.dtoList.get(i).loc_name}</a>
+								</div>
+								<div class="d-flex align-items-center">
+									<img src="/image/icon/comment.png" class="loc_icon" alt="댓글">
+										<%--									Todo 댓글 항목 Location Entity에 추가하기--%>
+									<span class="align-middle">댓글 항목 추가하기${result.dtoList.get(i).loc_no}</span>
+									<img src="/image/icon/like/love_black.png" class="loc_icon" alt="찜하기"
+										 onclick="onClickLike(this)">
+									<span class="align-middle">${result.dtoList.get(i).likeCount}</span>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -244,16 +278,36 @@
 				</nav>
 			</div>
 		</div>
+
+		<div class="modal" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-header">
+					<h5 class="modal-title">Modal Title</h5>
+					<button type="button" class="close" data-dimiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<p>Modal body text goes here.</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-secondary">Save changes</button>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 
 <!--  부트스트랩 js 사용 -->
-<script defer src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-		crossorigin="anonymous"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
-		crossorigin="anonymous"></script>
+<%--<script defer src="https://code.jquery.com/jquery-3.5.1.slim.min.js"--%>
+<%--		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"--%>
+<%--		crossorigin="anonymous"></script>--%>
+<%--<script defer src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"--%>
+<%--		integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"--%>
+<%--		crossorigin="anonymous"></script>--%>
+<script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script defer src="/js/bootstrap.js"></script>
 <script defer src="/js/loc_recommend.js"></script>
 <script defer src="/js/loc_common.js"></script>
 </body>

@@ -14,8 +14,10 @@ public class ImageDTO {
     private Long img_no;
     private Long user_no;
 //    private String loc_uuid;
-    private Location location;
+    private LocationDTO location;
     // @Todo 코스, 리뷰 칼럼 추가
     private String img_url;
     private String img_uuid;
+    @Builder.Default
+    private Long idx = 0L;
 }

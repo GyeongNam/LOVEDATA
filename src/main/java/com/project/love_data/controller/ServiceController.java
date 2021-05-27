@@ -10,11 +10,9 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -57,7 +55,8 @@ public class ServiceController {
 
     @PostMapping("/service/loc_registration/regData")
     public String locRegistrationData(@RequestParam("files") List<MultipartFile> fileList,
-                                      HttpServletRequest request) {
+                                      HttpServletRequest request,
+                                      RedirectAttributes redirectAttributes) {
         List<String> filePath = null;
         Map<String, String> reqParam = new HashMap<>();
 
@@ -91,7 +90,8 @@ public class ServiceController {
             return "redirect:/service/loc_recommend";
         }
 
-        locService.register(reqParam, tagList, filePath);
+        LocationDTO dto = locService.entityToDto(locService.register(reqParam, tagList, filePath));
+        redirectAttributes.addFlashAttribute("dto", dto);
 
         return "redirect:/service/loc_recommend";
     }
@@ -99,6 +99,17 @@ public class ServiceController {
     @GetMapping(value = "/service/loc_recommend")
     public String goToLocRecommendList() {
         return "redirect:/service/loc_recommend/list";
+    }
+
+    @GetMapping(value = "/service/loc_detail")
+    public String locDetail(Long locNo, @ModelAttribute("requestDTO") PageRequestDTO pageRequestDTO,
+                            Model model,
+                            HttpServletRequest request) {
+        LocationDTO dto = locService.select(locNo);
+
+        model.addAttribute("dto", dto);
+
+        return "/service/loc_detail";
     }
 
     @GetMapping(value = "/service/loc_recommend/list")
@@ -129,6 +140,8 @@ public class ServiceController {
         System.out.println("=================================================");
         List<Integer> temp = resultDTO.getPageList();
         resultDTO.getPageList().forEach(i -> System.out.println(i));
+
+        resultDTO.getDtoList().get(0).getImgList().isEmpty();
         return "/service/loc_recommend";
     }
 }
