@@ -112,6 +112,10 @@ public class ServiceController {
 
         model.addAttribute("result", resultDTO);
 
+        System.out.println("Result.page = " + resultDTO.getPage());
+        System.out.println("Result start = " + resultDTO.getStart());
+        System.out.println("Result end = " + resultDTO.getEnd());
+
         System.out.println("PREV = " + resultDTO.isPrev());
         System.out.println("NEXT = " + resultDTO.isNext());
         System.out.println("TOTAL : " + resultDTO.getTotalPage());
