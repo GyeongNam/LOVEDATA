@@ -3,7 +3,9 @@ package com.project.love_data.businessLogic.service;
 import com.project.love_data.dto.LocationDTO;
 import com.project.love_data.dto.PageRequestDTO;
 import com.project.love_data.dto.PageResultDTO;
+import com.project.love_data.model.resource.Image;
 import com.project.love_data.model.service.Location;
+import com.project.love_data.repository.ImageRepository;
 import com.project.love_data.repository.LocationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -20,18 +22,28 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class LocationService {
     private final LocationRepository repository;
+    private final ImageService imgService;
 
-    public String register(Map<String, String> reqParam, List<String> tagList) {
+    public Location register(Map<String, String> reqParam, List<String> tagList, List<String> filePath) {
         LocationDTO dto = getLocationDto(reqParam, tagList);
+        List<Image> imgList = new ArrayList<>();
         Location entity = dtoToEntity(dto);
+
+        for (int i = 1; i < filePath.size() - 1; i++) {
+            imgList.add(imgService.register(reqParam.get("user_no"), filePath.get(0), filePath.get(i), entity));
+        }
+
+        entity.setImgList(imgList);
 
         repository.save(entity);
 
-        return entity.getLoc_uuid();
+        log.info("entity : " + entity);
+
+        return entity;
     }
 
-    public Location dtoToEntity(LocationDTO dto) {
-        Location entity = Location.builder()
+    public com.project.love_data.model.service.Location dtoToEntity(LocationDTO dto) {
+        com.project.love_data.model.service.Location entity = com.project.love_data.model.service.Location.builder()
                 .loc_name(dto.getLoc_name())
                 .user_no(dto.getUser_no())
                 .roadAddr(dto.getRoadAddr())
@@ -48,7 +60,7 @@ public class LocationService {
         return entity;
     }
 
-    public LocationDTO entityToDto(Location entity){
+    public LocationDTO entityToDto(com.project.love_data.model.service.Location entity){
         LocationDTO dto = LocationDTO.builder()
                 .loc_no(entity.getLoc_no())
                 .loc_name(entity.getLoc_name())
@@ -90,17 +102,17 @@ public class LocationService {
         return loc;
     }
 
-    public PageResultDTO<LocationDTO, Location> getList(PageRequestDTO requestDTO) {
+    public PageResultDTO<LocationDTO, com.project.love_data.model.service.Location> getList(PageRequestDTO requestDTO) {
         Pageable pageable = requestDTO.getPageable(Sort.by("viewCount").descending());
 
-        Page<Location> result = repository.findAll(pageable);
+        Page<com.project.love_data.model.service.Location> result = repository.findAll(pageable);
 
-        Function<Location, LocationDTO> fn = (entity -> entityToDto(entity));
+        Function<com.project.love_data.model.service.Location, LocationDTO> fn = (entity -> entityToDto(entity));
 
         return new PageResultDTO<>(result, fn);
     }
 
-    public List<Location> locationNameSearch(String loc_name, SearchOption searchOption) {
+    public List<com.project.love_data.model.service.Location> locationNameSearch(String loc_name, SearchOption searchOption) {
         StringBuilder sb = new StringBuilder();
         switch (searchOption) {
             case START_WITH:
@@ -123,5 +135,27 @@ public class LocationService {
         log.info(sb.toString());
 
         return repository.findByLoc_nameContaining(sb.toString());
+    }
+
+    public void update(Location loc) {
+        repository.save(loc);
+    }
+
+    public void delete(Location loc) {
+        List<Image> list = loc.getImgList();
+
+        for (Image image : list) {
+            image.setLocation(null);
+
+            imgService.update(image);
+
+            imgService.delete(image);
+        }
+
+        loc.setImgList(null);
+
+        update(loc);
+
+        repository.deleteByLoc_uuid(loc.getLoc_uuid());
     }
 }

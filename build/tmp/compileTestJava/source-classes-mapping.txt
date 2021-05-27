@@ -2,9 +2,9 @@ com/project/love_data/HttpTest.java
  com.project.love_data.HttpTest
 com/project/love_data/UserTest.java
  com.project.love_data.UserTest
-com/project/love_data/ImageTest.java
- com.project.love_data.ImageTest
 com/project/love_data/LoveDataApplicationTests.java
  com.project.love_data.LoveDataApplicationTests
 com/project/love_data/LocationTest.java
  com.project.love_data.LocationTest
+com/project/love_data/ImageTest.java
+ com.project.love_data.ImageTest

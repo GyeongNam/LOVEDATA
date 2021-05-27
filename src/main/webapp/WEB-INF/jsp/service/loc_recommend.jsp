@@ -147,7 +147,8 @@
 			</nav>
 		</div>
 		<div class="row justify-content-md-center">
-			<div class="col-md-4">
+<%--			<c:if test="${result}"></c:if>--%>
+			<div class="col-md-4" id="loc_1">
 				<div class="card mb-4 shadow-sm">
 					<form action="/service/loc_detail" method="get" class="m-0">
 						<button class="container p-0 btn">
@@ -168,7 +169,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-4" id="loc_2">
 				<div class="card mb-4 shadow-sm">
 					<form action="/service/loc_detail" method="get" class="m-0">
 						<button class="container p-0 btn">
@@ -191,7 +192,7 @@
 			</div>
 		</div>
 		<div class="row justify-content-md-center">
-			<div class="col-md-4">
+			<div class="col-md-4" id="loc_3">
 				<div class="card mb-4 shadow-sm">
 					<form action="/service/loc_detail" method="get" class="m-0">
 						<button class="container p-0 btn">
@@ -212,7 +213,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-4" id="loc_4">
 				<div class="card mb-4 shadow-sm">
 					<form action="/service/loc_detail" method="get" class="m-0">
 						<button class="container p-0 btn">
@@ -234,6 +235,8 @@
 				</div>
 			</div>
 		</div>
+
+<%--	PageNumber	--%>
 		<div class="container d-flex" id="">
 			<div class="col" id="page_number">
 				<nav aria-label="Page navigation example">

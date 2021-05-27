@@ -4,6 +4,7 @@ import com.project.love_data.businessLogic.service.*;
 import com.project.love_data.dto.LocationDTO;
 import com.project.love_data.dto.PageRequestDTO;
 import com.project.love_data.dto.PageResultDTO;
+import com.project.love_data.model.resource.Image;
 import com.project.love_data.model.service.Location;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,12 +91,7 @@ public class ServiceController {
             return "redirect:/service/loc_recommend";
         }
 
-        String loc_uuid = locService.register(reqParam, tagList);
-        List<String> img_uuid = new ArrayList<>();
-
-        for (int i = 1; i < filePath.size() - 1; i++) {
-            img_uuid.add(imgService.register(reqParam.get("user_no"), loc_uuid, filePath.get(0), filePath.get(i)));
-        }
+        locService.register(reqParam, tagList, filePath);
 
         return "redirect:/service/loc_recommend";
     }
@@ -110,7 +106,7 @@ public class ServiceController {
                                    PageRequestDTO pageRequestDTO,
                                    Model model) {
         pageRequestDTO.setSize(MAX_LOC_REC_PAGE_SIZE_COUNT);
-        PageResultDTO<LocationDTO, Location> resultDTO = locService.getList(pageRequestDTO);
+        PageResultDTO<LocationDTO, com.project.love_data.model.service.Location> resultDTO = locService.getList(pageRequestDTO);
 
         log.info("list................." + pageRequestDTO);
 
@@ -121,6 +117,7 @@ public class ServiceController {
         System.out.println("TOTAL : " + resultDTO.getTotalPage());
 
         System.out.println("-------------------------------------------------");
+        System.out.println("Content Count : " + resultDTO.getDtoList().size());
         for (LocationDTO locationDTO : resultDTO.getDtoList()) {
             System.out.println(locationDTO.getLoc_no() + "\tlocationDTO = " + locationDTO);
         }

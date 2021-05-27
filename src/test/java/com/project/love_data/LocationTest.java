@@ -5,6 +5,7 @@ import com.project.love_data.businessLogic.service.SearchOption;
 import com.project.love_data.dto.LocationDTO;
 import com.project.love_data.dto.PageRequestDTO;
 import com.project.love_data.dto.PageResultDTO;
+import com.project.love_data.model.resource.Image;
 import com.project.love_data.model.service.Location;
 import com.project.love_data.model.service.LocationTag;
 import com.project.love_data.repository.ImageRepository;
@@ -59,6 +60,19 @@ public class LocationTest {
             }
 
             locationRepository.save(loc);
+
+            Image img = Image.builder()
+                    .location(loc)
+                    .img_uuid("UUID_"+i)
+                    .user_no((long) i)
+                    .img_url("path/" + i)
+                    .build();
+
+            imageRepository.save(img);
+
+            loc.addImg(img);
+
+            locationRepository.save(loc);
         }
 
         Location loc = Location.builder()
@@ -89,6 +103,7 @@ public class LocationTest {
         Location temp = loc.get();
 
         System.out.println(temp);
+        System.out.println(temp.getImgList());
     }
 
     @Test
@@ -97,6 +112,7 @@ public class LocationTest {
 
         for (Location location : list) {
             System.out.println("location = " + location);
+            System.out.println(location.getImgList());
         }
     }
 
@@ -107,25 +123,41 @@ public class LocationTest {
         Location temp = loc.get();
 
         System.out.println("temp = " + temp);
+        System.out.println(temp.getImgList());
 
         temp.setLoc_name("Updated Loc_0");
         temp.setInfo("Updated Location Info");
+        Image img = Image.builder()
+                .img_url("Path/10")
+                .img_uuid("UUID_0010.png")
+                .user_no(0L)
+                .location(temp)
+                .build();
+
+        imageRepository.save(img);
+
+        temp.addImg(img);
 
         locationRepository.save(temp);
+
+        Optional<Location> box = locationRepository.findLocByUUID(temp.getLoc_uuid());
+        System.out.println(box.get());
+        System.out.println(box.get().getImgList());
     }
 
     @Test
     public void testLocUUID_Read() {
-        Optional<Location> item = locationRepository.findLocByUUID("UUID_0");
+        Optional<Location> item = locationRepository.findLocByUUID("UUID_1");
 
         System.out.println("item = " + item.get());
+        System.out.println(item.get().getImgList());
     }
 
     @Test
     public void testLocAddr_Read() {
-        List<Location> list = locationRepository.findByRoadAddrContaining("Addr");
+        List<com.project.love_data.model.service.Location> list = locationRepository.findByRoadAddrContaining("Addr");
 
-        for (Location location : list) {
+        for (com.project.love_data.model.service.Location location : list) {
             System.out.println("location = " + location);
         }
 
@@ -133,17 +165,17 @@ public class LocationTest {
 
         list = locationRepository.findAllByRoadAddrAndAddrDetail("Addr_000", "AddrDetail_0000");
 
-        for (Location location : list) {
+        for (com.project.love_data.model.service.Location location : list) {
             System.out.println("location = " + location);
         }
     }
 
     @Test
     public void testLocContaining() {
-        List<Location> list = locService.locationNameSearch("Loc", SearchOption.CONTAIN);
+        List<com.project.love_data.model.service.Location> list = locService.locationNameSearch("Loc", SearchOption.CONTAIN);
         int i = 0;
 
-        for (Location location : list) {
+        for (com.project.love_data.model.service.Location location : list) {
             System.out.println("location " + (++i) + " = " + location);
         }
     }
@@ -155,7 +187,7 @@ public class LocationTest {
                 .size(4)
                 .build();
 
-        PageResultDTO<LocationDTO, Location> resultDTO = locService.getList(pageRequestDTO);
+        PageResultDTO<LocationDTO, com.project.love_data.model.service.Location> resultDTO = locService.getList(pageRequestDTO);
 
         System.out.println("PREV = " + resultDTO.isPrev());
         System.out.println("NEXT = " + resultDTO.isNext());
@@ -169,5 +201,37 @@ public class LocationTest {
         System.out.println("=================================================");
         List<Integer> temp = resultDTO.getPageList();
         resultDTO.getPageList().forEach(i -> System.out.println(i));
+    }
+
+    @Test
+    public void ImageDeleteByUUID() {
+//        locationRepository.deleteByLoc_uuid("UUID_0");
+        String uuid = "UUID_0";
+
+        Optional<Location> box = locationRepository.findLocByUUID(uuid);
+
+        if (!box.isPresent()){
+            System.out.println("데이터가 없습니다.");
+           return;
+        }
+
+        Location loc = box.get();
+
+        locService.delete(loc);
+
+        box = locationRepository.findLocByUUID(uuid);
+
+        if (box.isPresent()) {
+            System.out.println("삭제 실패");
+        } else {
+            System.out.println("삭제 성공");
+        }
+
+        List<Location> list = locationRepository.findAll();
+
+        for (Location location : list) {
+            System.out.println("location = " + location);
+            System.out.println(location.getImgList());
+        }
     }
 }

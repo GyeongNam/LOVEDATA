@@ -15,7 +15,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "location")
-@ToString
+@ToString(exclude = "imgList")
 @Setter
 @Getter
 @Builder
@@ -36,6 +36,8 @@ public class Location extends TimeEntity {
     private Long user_no;
 
     @Column(name = "loc_uuid", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
     @Builder.Default
     private String loc_uuid = UUID.randomUUID().toString();
 
@@ -67,6 +69,13 @@ public class Location extends TimeEntity {
     @Builder.Default
     private Set<String> tagSet = new HashSet<>();
 
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "loc_no")
+    @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
+    @Builder.Default
+    private List<Image> imgList = new ArrayList<>();
+
     @Column(name = "likecount", nullable = false, columnDefinition = "bigint default 0")
     @Builder.Default
     private Long likeCount = 0L;
@@ -74,7 +83,7 @@ public class Location extends TimeEntity {
     @Column(name = "viewcount", nullable = false, columnDefinition = "bigint default 0")
     @Builder.Default
     private Long viewCount = 0L;
-    
+
     // Todo 여기에 댓글 칼럼도 추가
 
     public void addLocTag(String str) {
@@ -90,5 +99,17 @@ public class Location extends TimeEntity {
 
     public String getFullAddr() {
         return this.roadAddr + this.addrDetail;
+    }
+
+    public void addImg(Image img) {
+        img.setIdx((long) imgList.size());
+        img.setLocation(this);
+        imgList.add(img);
+    }
+
+    public void addImg(List<Image> img) {
+        for (Image image : img) {
+            addImg(image);
+        }
     }
 }

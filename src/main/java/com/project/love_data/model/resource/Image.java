@@ -6,12 +6,13 @@ import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.data.util.Lazy;
 
 import javax.persistence.*;
 
 @Entity
 @Table (name = "image")
-@ToString
+@ToString (exclude = "location")
 @Setter
 @Getter
 @Builder
@@ -30,6 +31,10 @@ public class Image {
 //    @JoinColumn(name = "user_no")
 //    private User user;
 
+    @Column(name = "img_idx", nullable = false)
+    @Builder.Default
+    private Long idx = 0L;
+
     @Column(name = "user_no", nullable = false)
     private Long user_no;
 
@@ -38,14 +43,14 @@ public class Image {
 //    @JoinColumn(name = "loc_no")
 //    private Location location;
 
-    @Column(name = "loc_uuid", nullable = true)
-    private String loc_uuid;
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
+    private Location location;
 
     // @Todo 코스, 리뷰 칼럼 추가
 
     @Column(name = "img_url", nullable = false, length = 200)
     private String img_url;
 
-    @Column(name = "img_uuid", nullable = false, length = 45, unique = true)
+    @Column(name = "img_uuid", nullable = false, length = 45)
     private String img_uuid;
 }

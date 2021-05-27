@@ -1,5 +1,7 @@
 package com.project.love_data;
 
+import com.project.love_data.businessLogic.service.ImageService;
+import com.project.love_data.dto.ImageDTO;
 import com.project.love_data.model.resource.Image;
 import com.project.love_data.repository.ImageRepository;
 import org.junit.jupiter.api.Test;
@@ -13,41 +15,36 @@ public class ImageTest {
     @Autowired
     ImageRepository imageRepository;
 
+    @Autowired
+    ImageService imgService;
+
+
     @Test
     public void ImageInsertTest() {
         for (int i = 0; i < 10; i++) {
-            Image img = Image.builder()
+            ImageDTO dto = ImageDTO.builder()
                     .img_url("path/" + i)
                     .user_no(Long.valueOf(i))
-                    .loc_uuid("UUID_" + i)
+//                    .loc_uuid("UUID_" + i)
                     .img_uuid("uuid_" + i)
                     .build();
 
-            imageRepository.save(img);
+            imageRepository.save(imgService.dtoToEntity(dto));
         }
 
-        Image img = Image.builder()
+        ImageDTO img = ImageDTO.builder()
                 .img_url("test")
                 .user_no(0L)
-                .loc_uuid("Random UUID")
+//                .loc_uuid("Random UUID")
                 .img_uuid("test.png")
                 .build();
 
-        imageRepository.save(img);
+        imageRepository.save(imgService.dtoToEntity(img));
     }
 
     @Test
     public void ImageReadByUserNo() {
         List<Image> list = imageRepository.findAllByUser_no(0L);
-
-        for (Image image : list) {
-            System.out.println("image = " + image);
-        }
-    }
-
-    @Test
-    public void ImageReadByLocUUID() {
-        List<Image> list = imageRepository.findAllByLoc_uuid("UUID_0");
 
         for (Image image : list) {
             System.out.println("image = " + image);

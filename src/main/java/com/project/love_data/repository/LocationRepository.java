@@ -4,6 +4,7 @@ import com.project.love_data.model.service.Location;
 import com.project.love_data.model.user.User;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.query.Param;
@@ -21,6 +22,11 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
 
     @Query(value = "SELECT * from Location l WHERE  l.loc_uuid = :loc_uuid", nativeQuery = true)
     Optional<Location> findLocByUUID(@Param("loc_uuid") String loc_uuid);
+
+    @Modifying
+    @Query(value = "DELETE FROM location  WHERE loc_uuid = :loc_uuid", nativeQuery = true)
+    @Transactional
+    void deleteByLoc_uuid(@Param("loc_uuid") String loc_uuid);
 
 //    @EntityGraph(attributePaths = {"tagSet"}, type = EntityGraph.EntityGraphType.LOAD)
 //    @Query(value = "SELECT l from Location l WHERE l.loc_no = :loc_no")

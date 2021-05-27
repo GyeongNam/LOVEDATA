@@ -1,13 +1,8 @@
 package com.project.love_data.dto;
 
 import com.project.love_data.model.service.LocationTag;
-import com.sun.istack.NotNull;
 import lombok.*;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -37,6 +32,8 @@ public class LocationDTO {
     private Long likeCount = 0L;
     @Builder.Default
     private Long viewCount = 0L;
+    @Builder.Default
+    private List<ImageDTO> imgList = new ArrayList<>();
 
     // Todo 여기에 댓글 칼럼도 추가
 
