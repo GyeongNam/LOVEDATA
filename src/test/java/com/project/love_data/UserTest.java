@@ -96,8 +96,8 @@ public class UserTest {
 
         User temp = result.get();
 
-//        System.out.println(temp);
-        System.out.println(temp.getRoleSet());
+        System.out.println(temp);
+//        System.out.println(temp.getRoleSet());
     }
 
     @Test

@@ -1,19 +1,27 @@
 package com.project.love_data.businessLogic.service;
 
+import com.project.love_data.dto.ImageDTO;
 import com.project.love_data.model.resource.Image;
-import com.project.love_data.model.resource.ImageDTO;
-import com.project.love_data.model.service.Location;
-import com.project.love_data.model.service.LocationDTO;
+import com.project.love_data.repository.ImageRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class ImageService {
+    private final ImageRepository repository;
 
-    public Image dtoToEntity(ImageDTO dto) {
+    public String register(String user_no, String loc_uuid, String fileRootPath, String fileName) {
+        ImageDTO dto = getImageDTO(user_no, loc_uuid, fileRootPath, fileName);
+        Image entity = dtoToEntity(dto);
+
+        repository.save(entity);
+
+        return entity.getImg_uuid();
+    }
+
+    private Image dtoToEntity(ImageDTO dto) {
         Image entity = Image.builder()
                 .img_url(dto.getImg_url())
                 .user_no(dto.getUser_no())
@@ -24,11 +32,11 @@ public class ImageService {
         return entity;
     }
 
-    public ImageDTO getImageDTO(LocationDTO locDTO, String fileRootPath, String fileName) {
+    private ImageDTO getImageDTO(String user_no, String loc_uuid, String fileRootPath, String fileName) {
         ImageDTO dto = ImageDTO.builder()
                 .img_url(fileRootPath + File.separator + fileName)
-                .user_no(locDTO.getUser_no())
-                .loc_uuid(locDTO.getLoc_uuid())
+                .user_no(Long.valueOf(user_no))
+                .loc_uuid(loc_uuid)
                 .img_uuid(fileName)
                 .build();
 

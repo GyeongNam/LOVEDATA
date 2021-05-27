@@ -6,6 +6,7 @@ import com.sun.istack.NotNull;
 import lombok.*;
 import lombok.extern.log4j.Log4j2;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -26,7 +27,6 @@ public class Location extends TimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
-    @NotNull
     private Long loc_no;
 
     @Column(name = "loc_name", nullable = false, length = 40)
@@ -48,6 +48,9 @@ public class Location extends TimeEntity {
     @Column(name = "addrdetail", length = 30, nullable = false)
     private String addrDetail;
 
+    @Column(name = "zipno", length = 10, nullable = false)
+    private String zipNo;
+
     @Column(name = "sido", length = 15, nullable = false)
     private String siDo;
 
@@ -65,9 +68,12 @@ public class Location extends TimeEntity {
     private Set<String> tagSet = new HashSet<>();
 
     @Column(name = "likecount", nullable = false, columnDefinition = "bigint default 0")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Builder.Default
     private Long likeCount = 0L;
+
+    @Column(name = "viewcount", nullable = false, columnDefinition = "bigint default 0")
+    @Builder.Default
+    private Long viewCount = 0L;
     
     // Todo 여기에 댓글 칼럼도 추가
 

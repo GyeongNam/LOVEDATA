@@ -30,7 +30,11 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
 //    @Query(value = "SELECT l from Location l WHERE l.loc_uuid = :loc_uuid")
 //    Optional<Location> findLoc_TagByUUID(@Param("loc_uuid") String loc_uuid);
 
-    @Query(value = "SELECT * from Location l WHERE  l.roadaddr LIKE :roadaddr", nativeQuery = true)
-    List<Location> findLocByAddr(@Param("roadaddr") String roadaddr);
+    List<Location> findByRoadAddrContaining(@Param("roadaddr") String roadaddr);
+
+    List<Location> findAllByRoadAddrAndAddrDetail(@Param("roadaddr") String roadaddr, @Param("addrdetail") String addrdetail);
+
+    @Query(value = "SELECT l from Location l WHERE  l.loc_name LIKE :loc_name")
+    List<Location> findByLoc_nameContaining(@Param("loc_name") String loc_name);
 
 }

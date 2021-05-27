@@ -1,15 +1,14 @@
 package com.project.love_data.controller;
 
 import com.project.love_data.businessLogic.service.*;
-import com.project.love_data.model.resource.Image;
+import com.project.love_data.dto.LocationDTO;
+import com.project.love_data.dto.PageRequestDTO;
+import com.project.love_data.dto.PageResultDTO;
 import com.project.love_data.model.service.Location;
-import com.project.love_data.model.service.LocationDTO;
-import com.project.love_data.repository.ImageRepository;
-import com.project.love_data.repository.LocationRepository;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 import java.util.*;
 
 @Log4j2
@@ -26,16 +24,13 @@ public class ServiceController {
     @Autowired
     FileUploadService fileUploadService;
     @Autowired
-    LocationRepository locationRepository;
-    @Autowired
-    ImageRepository imageRepository;
-    @Autowired
     LocationService locService;
     @Autowired
     ImageService imgService;
 
-    final static int maxUploadCount = 10;
-    final static int minUploadCount = 3;
+    final static int MAX_LOC_REC_PAGE_SIZE_COUNT = 4;
+    final static int MAX_UPLOAD_COUNT = 10;
+    final static int MIN_UPLOAD_COUNT = 3;
     List<String> tagList = new ArrayList<>();
 
     @RequestMapping("/service/loc_registration")
@@ -88,24 +83,51 @@ public class ServiceController {
         }
 
         filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE,
-                UploadFileCount.MULTIPLE, minUploadCount, maxUploadCount, request);
+                UploadFileCount.MULTIPLE, MIN_UPLOAD_COUNT, MAX_UPLOAD_COUNT, request);
 
         if (filePath == null) {
             log.warn("파일이 제대로 저장되지 않았습니다.");
             return "redirect:/service/loc_recommend";
         }
 
-        LocationDTO locDTO = locService.getLocationDTO(reqParam, tagList);
-        Location loc = locService.dtoToEntity(locDTO);
+        String loc_uuid = locService.register(reqParam, tagList);
+        List<String> img_uuid = new ArrayList<>();
 
-        locationRepository.save(loc);
-
-        for (int i = 1; i < filePath.size()-1; i++) {
-            Image img = imgService.dtoToEntity(imgService.getImageDTO(locDTO, filePath.get(0), filePath.get(i)));
-
-            imageRepository.save(img);
+        for (int i = 1; i < filePath.size() - 1; i++) {
+            img_uuid.add(imgService.register(reqParam.get("user_no"), loc_uuid, filePath.get(0), filePath.get(i)));
         }
 
         return "redirect:/service/loc_recommend";
+    }
+
+    @GetMapping(value = "/service/loc_recommend")
+    public String goToLocRecommendList() {
+        return "redirect:/service/loc_recommend/list";
+    }
+
+    @GetMapping(value = "/service/loc_recommend/list")
+    public String locRecommendList(HttpServletRequest request,
+                                   PageRequestDTO pageRequestDTO,
+                                   Model model) {
+        pageRequestDTO.setSize(MAX_LOC_REC_PAGE_SIZE_COUNT);
+        PageResultDTO<LocationDTO, Location> resultDTO = locService.getList(pageRequestDTO);
+
+        log.info("list................." + pageRequestDTO);
+
+        model.addAttribute("result", resultDTO);
+
+        System.out.println("PREV = " + resultDTO.isPrev());
+        System.out.println("NEXT = " + resultDTO.isNext());
+        System.out.println("TOTAL : " + resultDTO.getTotalPage());
+
+        System.out.println("-------------------------------------------------");
+        for (LocationDTO locationDTO : resultDTO.getDtoList()) {
+            System.out.println(locationDTO.getLoc_no() + "\tlocationDTO = " + locationDTO);
+        }
+
+        System.out.println("=================================================");
+        List<Integer> temp = resultDTO.getPageList();
+        resultDTO.getPageList().forEach(i -> System.out.println(i));
+        return "/service/loc_recommend";
     }
 }
