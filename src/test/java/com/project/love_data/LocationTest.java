@@ -32,12 +32,14 @@ public class LocationTest {
             String pad = StringUtils.leftPad(Integer.toString(i), 4, '0');
             Location loc = Location.builder()
                     .loc_name("Location_" + pad)
-                    .user_no(new Random().nextLong())
+                    .user_no((long) new Random().nextInt(4))
                     .roadAddr("Addr_" + pad)
                     .addrDetail("AddrDetail_" + pad)
                     .siDo("siDo_" + pad)
                     .siGunGu(pad)
                     .info("This locaiton is Generated randomly " + pad)
+                    .loc_uuid("UUID_" + i)
+                    .tel("010-0000-00" + StringUtils.leftPad(Integer.toString(i), 2, '0'))
                     .build();
 
             if (i % 2 == 0) {
@@ -48,17 +50,6 @@ public class LocationTest {
                 loc.addLocTag(tagSet.get(3).toString());
             }
 
-//            loc.addLocImg("Img_" + pad);
-
-            Image img = Image.builder()
-                    .img_url("path/" + i)
-                    .user_no(Long.valueOf(i))
-                    .loc_no(Long.valueOf(i))
-                    .img_uuid("uuid_" + i)
-                    .build();
-
-            imageRepository.save(img);
-
             locationRepository.save(loc);
         }
 
@@ -67,22 +58,40 @@ public class LocationTest {
 
     @Test
     public void testLocTag_Read() {
-        Optional<Location> loc = locationRepository.findLoc_TagByName("Location_0000");
+        Optional<Location> loc = locationRepository.findLocByLoc_no(1L);
 
         Location temp = loc.get();
 
-        System.out.println(temp.getTagSet());
+        System.out.println(temp);
     }
 
     @Test
-    public void testLocImg_Read() {
-//        Optional<Location> loc = locationRepository.findLoc_ImgByName("asdfasdf asdf");
-        Optional<Location> loc = locationRepository.findLocByName("loc_1");
+    public void testLoc_Update() {
+        Optional<Location> loc = locationRepository.findLocByUUID("UUID_0");
 
         Location temp = loc.get();
 
-        loc = locationRepository.findLoc_ImgByNo(temp.getLoc_no());
+        System.out.println("temp = " + temp);
 
-        System.out.println(temp.getImgList());
+        temp.setLoc_name("Updated Loc_0");
+        temp.setInfo("Updated Location Info");
+
+        locationRepository.save(temp);
+    }
+
+    @Test
+    public void testLocUUID_Read() {
+        Optional<Location> item = locationRepository.findLocByUUID("UUID_0");
+
+        System.out.println("item = " + item.get());
+    }
+
+    @Test
+    public void testLocAddr_Read() {
+        List<Location> list = locationRepository.findLocByAddr("Addr");
+
+        for (Location location : list) {
+            System.out.println("location = " + location);
+        }
     }
 }

@@ -8,6 +8,8 @@ com/project/love_data/util/URISetter.java
  com.project.love_data.util.URISetter
 com/project/love_data/controller/TestController.java
  com.project.love_data.controller.TestController
+com/project/love_data/businessLogic/service/ImageService.java
+ com.project.love_data.businessLogic.service.ImageService
 com/project/love_data/controller/UserController.java
  com.project.love_data.controller.UserController
 com/project/love_data/security/model/AuthUserModel.java
@@ -60,6 +62,8 @@ com/project/love_data/config/ConverterConfig.java
  com.project.love_data.config.ConverterConfig
 com/project/love_data/model/service/LocationTag.java
  com.project.love_data.model.service.LocationTag
+com/project/love_data/businessLogic/service/LocationService.java
+ com.project.love_data.businessLogic.service.LocationService
 com/project/love_data/model/oauth/KakaoAuthToken.java
  com.project.love_data.model.oauth.KakaoAuthToken
 com/project/love_data/businessLogic/oauth/login/RequestUserInfoKakao.java
@@ -83,6 +87,9 @@ com/project/love_data/businessLogic/oauth/login/TokenRequestNaver.java
  com.project.love_data.businessLogic.oauth.login.TokenRequestNaver
 com/project/love_data/util/EmailParser.java
  com.project.love_data.util.EmailParser
+com/project/love_data/model/service/LocationDTO.java
+ com.project.love_data.model.service.LocationDTO
+ com.project.love_data.model.service.LocationDTO$LocationDTOBuilder
 com/project/love_data/controller/MailController.java
  com.project.love_data.controller.MailController
 com/project/love_data/businessLogic/SmsService.java
@@ -109,3 +116,6 @@ com/project/love_data/businessLogic/oauth/login/TokenRequestKakao.java
  com.project.love_data.businessLogic.oauth.login.TokenRequestKakao
 com/project/love_data/security/converter/UserRoleConverter.java
  com.project.love_data.security.converter.UserRoleConverter
+com/project/love_data/model/resource/ImageDTO.java
+ com.project.love_data.model.resource.ImageDTO
+ com.project.love_data.model.resource.ImageDTO$ImageDTOBuilder

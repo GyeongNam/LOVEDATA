@@ -1,15 +1,14 @@
 package com.project.love_data.controller;
 
-import com.project.love_data.businessLogic.service.FileUploadService;
-import com.project.love_data.businessLogic.service.UploadFileCount;
-import com.project.love_data.businessLogic.service.UploadFileType;
+import com.project.love_data.businessLogic.service.*;
 import com.project.love_data.model.resource.Image;
 import com.project.love_data.model.service.Location;
+import com.project.love_data.model.service.LocationDTO;
 import com.project.love_data.repository.ImageRepository;
 import com.project.love_data.repository.LocationRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,14 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.Servlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.filechooser.FileSystemView;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 @Log4j2
@@ -32,12 +25,14 @@ import java.util.*;
 public class ServiceController {
     @Autowired
     FileUploadService fileUploadService;
-
     @Autowired
     LocationRepository locationRepository;
-
     @Autowired
     ImageRepository imageRepository;
+    @Autowired
+    LocationService locService;
+    @Autowired
+    ImageService imgService;
 
     final static int maxUploadCount = 10;
     final static int minUploadCount = 3;
@@ -60,7 +55,7 @@ public class ServiceController {
 
     @GetMapping("/service/loc_registration/regData")
     public String locRegistartionDataNoAccess() {
-        log.info("Access Invalid(Shouldn\'t Access with GET Method)");
+        log.info("Access Invalid(Shouldn't Access with GET Method)");
         return "redirect:/service/loc_recommend";
     }
 
@@ -68,27 +63,25 @@ public class ServiceController {
     public String locRegistrationData(@RequestParam("files") List<MultipartFile> fileList,
                                       HttpServletRequest request) {
         List<String> filePath = null;
+        Map<String, String> reqParam = new HashMap<>();
 
-        String name = request.getParameter("name");
-        String tel = request.getParameter("tel");
-        String info = request.getParameter("info");
-        String zipNo = request.getParameter("zipNo");
-        String roadAddr = request.getParameter("roadAddrPart1");
-        String addrDetail = request.getParameter("addrDetail");
-        // 시 도 명칭 (ex 경기도, 서울 특별시 등)
-        String siDoName = request.getParameter("siNm");
-        // 시 군 구 명칭 (ex 고양시, 덕양구, 강화군 등)
-        String siGunGuName = request.getParameter("sggNm");
-        // 유저 넘버
-        Long user_no = null;
-        // Todo Debug 목적용 코드 나중에 삭제할 것
+        reqParam.put("name", request.getParameter("name"));
+        reqParam.put("tel", request.getParameter("tel"));
+        reqParam.put("info", request.getParameter("info"));
+        reqParam.put("zipNo", request.getParameter("zipNo"));
+        reqParam.put("roadAddr", request.getParameter("roadAddrPart1"));
+        reqParam.put("addrDetail", request.getParameter("addrDetail"));
+        reqParam.put("siDoName", request.getParameter("siNm"));
+        reqParam.put("siGunGuName", request.getParameter("sggNm"));
+//        // Todo Debug 목적용 코드 나중에 삭제할 것
         if (request.getParameter("user_no") != null) {
-            user_no = Long.valueOf(request.getParameter("user_no"));
+            reqParam.put("user_no", (request.getParameter("user_no")));
         } else {
-            user_no = Long.parseLong(request.getParameter("user_no_debug"));
+            reqParam.put("user_no", (request.getParameter("user_no_debug")));
         }
 
-        // @Todo 입력시 최소 1개의 태그는 추가하도록 하는 javascript 및 백엔드 서버 기능 추가
+        // Todo 입력시 최소 1개의 태그는 추가하도록 하는 javascript 및 백엔드 서버 기능 추가
+        // Todo 전화번호 입력 포맷 완성시키기
         if (tagList.isEmpty()) {
             log.warn("No Location Tag Found (Must add tag before submit location)");
             return "redirect:/service/loc_recommend";
@@ -102,46 +95,16 @@ public class ServiceController {
             return "redirect:/service/loc_recommend";
         }
 
-        Location loc = Location.builder()
-                .loc_name(name)
-                .user_no(user_no)
-                .roadAddr(roadAddr)
-                .addrDetail(addrDetail)
-                .siDo(siDoName)
-                .siGunGu(siGunGuName)
-                .info(info)
-                .build();
-
-        for (String item : tagList) {
-            loc.addLocTag(item);
-        }
-
-        // Todo 이미지랑 장소 어떻게 연관지을 건지 생각해보기
-        // 1) 다대일 관계 하지 말고 그냥 조인해버리기
-//        for (int i = 1; i < filePath.size()-1; i++) {
-//            loc.addLocImg(filePath.get(i));
-//        }
+        LocationDTO locDTO = locService.getLocationDTO(reqParam, tagList);
+        Location loc = locService.dtoToEntity(locDTO);
 
         locationRepository.save(loc);
-        Optional<Location> item = locationRepository.findLocByName(name);
-        if (item.isPresent()) {
-            loc = item.get();
-        }
 
         for (int i = 1; i < filePath.size()-1; i++) {
-            Image img = Image.builder()
-                    .img_url(filePath.get(0) + File.separator + filePath.get(i))
-                    .user_no(user_no)
-                    .loc_no(loc.getLoc_no())
-                    .img_uuid(filePath.get(i))
-                    .build();
+            Image img = imgService.dtoToEntity(imgService.getImageDTO(locDTO, filePath.get(0), filePath.get(i)));
 
             imageRepository.save(img);
         }
-
-//        for (String s : filePath) {
-//            System.out.println("s = " + s);
-//        }
 
         return "redirect:/service/loc_recommend";
     }

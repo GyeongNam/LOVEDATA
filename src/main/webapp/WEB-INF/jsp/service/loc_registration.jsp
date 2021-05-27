@@ -188,7 +188,7 @@
 					</div>
 					<div class="input-box">
 						<span class="details">연락처</span>
-						<input type="tel" id="tel" name="tel" placeholder="010-0000-0000" required>
+						<input type="tel" id="tel" name="tel" placeholder="010-0000-0000" pattern="[0-9]{3}-[0-9]{4}-[0-9]{3}" required>
 					</div>
 					<div class="input-box">
 						<span class="details">정보</span>

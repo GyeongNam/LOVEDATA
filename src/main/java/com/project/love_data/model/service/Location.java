@@ -6,15 +6,10 @@ import com.sun.istack.NotNull;
 import lombok.*;
 import lombok.extern.log4j.Log4j2;
 import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
@@ -34,11 +29,18 @@ public class Location extends TimeEntity {
     @NotNull
     private Long loc_no;
 
-    @Column(name = "loc_name", nullable = false, length = 40, unique = true)
+    @Column(name = "loc_name", nullable = false, length = 40)
     private String loc_name;
 
     @Column(name = "user_no", nullable = false)
     private Long user_no;
+
+    @Column(name = "loc_uuid", nullable = false)
+    @Builder.Default
+    private String loc_uuid = UUID.randomUUID().toString();
+
+    @Column(name = "tel", nullable = false)
+    private String tel;
 
     @Column(name = "roadaddr", length = 50, nullable = false)
     private String roadAddr;
@@ -55,26 +57,19 @@ public class Location extends TimeEntity {
     @Column(name = "info", length = 150, nullable = false)
     private String info;
 
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection(fetch = FetchType.EAGER)
     @JoinColumn(name = "loc_no")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
     @Builder.Default
     private Set<String> tagSet = new HashSet<>();
 
-    @OneToMany(mappedBy = "Location", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Image> imgList = new ArrayList<>();
-
     @Column(name = "likecount", nullable = false, columnDefinition = "bigint default 0")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Builder.Default
-    private Long likeCount = Long.valueOf(0);
+    private Long likeCount = 0L;
     
     // Todo 여기에 댓글 칼럼도 추가
-
-    public void addLocImg(Image img) {
-        imgList.add(img);
-    }
 
     public void addLocTag(String str) {
         LocationTag tag = null;
@@ -84,11 +79,10 @@ public class Location extends TimeEntity {
 
         tag = LocationTag.valueOf(temp);
 
-        if (tag == null) {
-            log.warn("Location Entity에 tag를 추가하는 과정에서 오류 발생");
-            return;
-        }
-
         tagSet.add(tag.name());
+    }
+
+    public String getFullAddr() {
+        return this.roadAddr + this.addrDetail;
     }
 }

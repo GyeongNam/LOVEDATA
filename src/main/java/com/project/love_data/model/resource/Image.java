@@ -38,8 +38,8 @@ public class Image {
 //    @JoinColumn(name = "loc_no")
 //    private Location location;
 
-    @Column(name = "loc_no", nullable = true)
-    private Long loc_no;
+    @Column(name = "loc_uuid", nullable = true)
+    private String loc_uuid;
 
     // @Todo 코스, 리뷰 칼럼 추가
 
