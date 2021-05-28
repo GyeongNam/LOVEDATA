@@ -7,12 +7,17 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import java.util.*;
+
 @Builder
 @AllArgsConstructor
 @Data
 public class PageRequestDTO {
     private int page;
     private int size;
+    private List<String> tagList;
+    private String keyword;
+    private Long locNo;
 
     public PageRequestDTO() {
         this.page = 1;

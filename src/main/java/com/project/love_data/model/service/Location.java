@@ -2,11 +2,9 @@ package com.project.love_data.model.service;
 
 import com.project.love_data.model.base.TimeEntity;
 import com.project.love_data.model.resource.Image;
-import com.sun.istack.NotNull;
 import lombok.*;
 import lombok.extern.log4j.Log4j2;
 import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -76,6 +74,12 @@ public class Location extends TimeEntity {
     @Builder.Default
     private List<Image> imgList = new ArrayList<>();
 
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "location")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
+    @Builder.Default
+    private Set<Comment> cmtSet = new HashSet<>();
+
     @Column(name = "likecount", nullable = false, columnDefinition = "bigint default 0")
     @Builder.Default
     private Long likeCount = 0L;
@@ -110,6 +114,18 @@ public class Location extends TimeEntity {
     public void addImg(List<Image> img) {
         for (Image image : img) {
             addImg(image);
+        }
+    }
+
+    public void addCmt(Comment cmt) {
+        cmt.setCmtIdx((long) cmtSet.size());
+        cmt.setLocation(this);
+        cmtSet.add(cmt);
+    }
+
+    public void addCmt(List<Comment> cmt) {
+        for (Comment item : cmt) {
+            addCmt(item);
         }
     }
 }

@@ -4,6 +4,7 @@ import com.project.love_data.dto.LocationDTO;
 import com.project.love_data.dto.PageRequestDTO;
 import com.project.love_data.dto.PageResultDTO;
 import com.project.love_data.model.resource.Image;
+import com.project.love_data.model.service.Comment;
 import com.project.love_data.model.service.Location;
 import com.project.love_data.repository.ImageRepository;
 import com.project.love_data.repository.LocationRepository;
@@ -24,6 +25,7 @@ public class LocationService {
     private final LocationRepository repository;
     private final ImageRepository imgRepository;
     private final ImageService imgService;
+    private final CommentService cmtService;
 
     public Location register(Map<String, String> reqParam, List<String> tagList, List<String> filePath) {
         LocationDTO dto = getLocationDto(reqParam, tagList);
@@ -62,6 +64,7 @@ public class LocationService {
                 .zipNo(dto.getZipNo())
                 .tagSet(dto.getTagSet())
                 .imgList(dto.getImgList())
+                .cmtSet(dto.getCmdSet())
                 .build();
 
         return entity;
@@ -84,6 +87,7 @@ public class LocationService {
                 .regDate(entity.getRegDate())
                 .modDate(entity.getModDate())
                 .imgList(entity.getImgList())
+                .cmdSet(entity.getCmtSet())
                 .build();
 
         return dto;
@@ -105,8 +109,6 @@ public class LocationService {
         for (String item : tagList) {
             loc.addLocTag(item);
         }
-
-        System.out.println("loc = " + loc);
 
         return loc;
     }
@@ -141,8 +143,6 @@ public class LocationService {
                 return null;
         }
 
-        log.info(sb.toString());
-
         return repository.findByLoc_nameContaining(sb.toString());
     }
 
@@ -158,6 +158,7 @@ public class LocationService {
 
     public void delete(Location loc) {
         List<Image> list = loc.getImgList();
+        Set<Comment> cmtSet = loc.getCmtSet();
 
         for (Image image : list) {
             image.setLocation(null);
@@ -165,6 +166,10 @@ public class LocationService {
             imgService.update(image);
 
             imgService.delete(image);
+        }
+
+        for (Comment cmt : cmtSet) {
+            cmtService.delete(cmt);
         }
 
         loc.setImgList(null);

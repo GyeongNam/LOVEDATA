@@ -1,5 +1,6 @@
 package com.project.love_data.model.resource;
 
+import com.project.love_data.model.base.TimeEntity;
 import com.project.love_data.model.service.Location;
 import com.project.love_data.model.user.User;
 import lombok.*;
@@ -18,7 +19,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Image {
+public class Image  extends TimeEntity {
     @Id
     @Column(name = "img_no")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

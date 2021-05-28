@@ -204,7 +204,7 @@ public class LocationTest {
     }
 
     @Test
-    public void ImageDeleteByUUID() {
+    public void deleteByUUID() {
 //        locationRepository.deleteByLoc_uuid("UUID_0");
         String uuid = "UUID_0";
 
@@ -216,6 +216,9 @@ public class LocationTest {
         }
 
         Location loc = box.get();
+
+        System.out.println("삭제 전 데이터");
+        System.out.println(loc);
 
         locService.delete(loc);
 

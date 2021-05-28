@@ -53,7 +53,10 @@ public class ImageService {
                 .img_no(img.getImg_no())
                 .img_url(img.getImg_url())
                 .img_uuid(img.getImg_uuid())
-                .location(img.getLocation()).build();
+                .location(img.getLocation())
+                .regDate(img.getRegDate())
+                .modDate(img.getModDate())
+                .build();
 
         return dto;
     }

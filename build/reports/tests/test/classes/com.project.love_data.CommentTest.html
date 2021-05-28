@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - CommentTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>CommentTest</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/com.project.love_data.html">com.project.love_data</a> &gt; CommentTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">1</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">0.279s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Tests</a>
+</li>
+<li>
+<a href="#tab1">Standard output</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">pageCommentLocFilter()</td>
+<td class="success">0.279s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div id="tab1" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>02:18:18.654 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating CacheAwareContextLoaderDelegate from class [org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate]
+02:18:18.666 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating BootstrapContext using constructor [public org.springframework.test.context.support.DefaultBootstrapContext(java.lang.Class,org.springframework.test.context.CacheAwareContextLoaderDelegate)]
+02:18:18.700 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating TestContextBootstrapper for test class [com.project.love_data.CommentTest] from class [org.springframework.boot.test.context.SpringBootTestContextBootstrapper]
+02:18:18.713 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Neither @ContextConfiguration nor @ContextHierarchy found for test class [com.project.love_data.CommentTest], using SpringBootContextLoader
+02:18:18.718 [Test worker] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [com.project.love_data.CommentTest]: class path resource [com/project/love_data/CommentTest-context.xml] does not exist
+02:18:18.718 [Test worker] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [com.project.love_data.CommentTest]: class path resource [com/project/love_data/CommentTestContext.groovy] does not exist
+02:18:18.718 [Test worker] INFO org.springframework.test.context.support.AbstractContextLoader - Could not detect default resource locations for test class [com.project.love_data.CommentTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+02:18:18.719 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.project.love_data.CommentTest]: CommentTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+02:18:18.763 [Test worker] DEBUG org.springframework.test.context.support.ActiveProfilesUtils - Could not find an 'annotation declaring class' for annotation type [org.springframework.test.context.ActiveProfiles] and class [com.project.love_data.CommentTest]
+02:18:18.830 [Test worker] DEBUG org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider - Identified candidate component class: file [D:\Study\GitHub\Projects\Team Project\LoveData\build\classes\java\main\com\project\love_data\LoveDataApplication.class]
+02:18:18.833 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.project.love_data.LoveDataApplication for test class com.project.love_data.CommentTest
+02:18:18.935 [Test worker] DEBUG org.springframework.boot.test.context.SpringBootTestContextBootstrapper - @TestExecutionListeners is not present for class [com.project.love_data.CommentTest]: using defaults.
+02:18:18.935 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener, org.springframework.security.test.context.support.ReactorContextTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+02:18:18.960 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@7074e693, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@4aeadfbb, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@55f33277, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@40e413, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@57d7caf6, org.springframework.test.context.support.DirtiesContextTestExecutionListener@4bdcd0b0, org.springframework.test.context.transaction.TransactionalTestExecutionListener@7703336, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@973fb7, org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener@69fec529, org.springframework.test.context.event.EventPublishingTestExecutionListener@440ad1f6, org.springframework.security.test.context.support.ReactorContextTestExecutionListener@42e5b3c2, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@7b3656ae, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@64fe136c, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@7669eb64, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@197d2dc8, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@50b79b6f, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@44c69766]
+02:18:18.964 [Test worker] DEBUG org.springframework.test.context.support.AbstractDirtiesContextTestExecutionListener - Before test class: context [DefaultTestContext@58cb559d testClass = CommentTest, testInstance = [null], testMethod = [null], testException = [null], mergedContextConfiguration = [WebMergedContextConfiguration@79d16ec1 testClass = CommentTest, locations = '{}', classes = '{class com.project.love_data.LoveDataApplication}', contextInitializerClasses = '[]', activeProfiles = '{}', propertySourceLocations = '{}', propertySourceProperties = '{org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true}', contextCustomizers = set[org.springframework.boot.test.autoconfigure.actuate.metrics.MetricsExportContextCustomizerFactory$DisableMetricExportContextCustomizer@58e24c12, org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizerFactory$Customizer@76225106, org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@1ddd1645, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@4811566e, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.springframework.boot.test.web.client.TestRestTemplateContextCustomizer@626bbdfe, org.springframework.boot.test.context.SpringBootTestArgs@1, org.springframework.boot.test.context.SpringBootTestWebEnvironment@4c84b8f4], resourceBasePath = 'src/main/webapp', contextLoader = 'org.springframework.boot.test.context.SpringBootContextLoader', parent = [null]], attributes = map['org.springframework.test.context.web.ServletTestExecutionListener.activateListener' -&gt; true]], class annotated with @DirtiesContext [false] with mode [null].
+02:18:18.997 [Test worker] DEBUG org.springframework.test.context.support.TestPropertySourceUtils - Adding inlined properties to environment: {spring.jmx.enabled=false, org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true}
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+?[32m :: Spring Boot :: ?[39m              ?[2m (v2.4.4)?[0;39m
+
+?[2m2021-05-29 02:18:19.375?[0;39m ?[32m INFO?[0;39m ?[35m19096?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mcom.project.love_data.CommentTest       ?[0;39m ?[2m:?[0;39m Starting CommentTest using Java 1.8.0_281 on MyPC with PID 19096 (started by ARA in D:\Study\GitHub\Projects\Team Project\LoveData)
+?[2m2021-05-29 02:18:19.377?[0;39m ?[32m INFO?[0;39m ?[35m19096?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mcom.project.love_data.CommentTest       ?[0;39m ?[2m:?[0;39m No active profile set, falling back to default profiles: default
+?[2m2021-05-29 02:18:20.380?[0;39m ?[32m INFO?[0;39m ?[35m19096?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36m.s.d.r.c.RepositoryConfigurationDelegate?[0;39m ?[2m:?[0;39m Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+?[2m2021-05-29 02:18:20.460?[0;39m ?[32m INFO?[0;39m ?[35m19096?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36m.s.d.r.c.RepositoryConfigurationDelegate?[0;39m ?[2m:?[0;39m Finished Spring Data repository scanning in 73 ms. Found 4 JPA repository interfaces.
+?[2m2021-05-29 02:18:20.600?[0;39m ?[33m WARN?[0;39m ?[35m19096?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mo.m.s.mapper.ClassPathMapperScanner     ?[0;39m ?[2m:?[0;39m No MyBatis mapper was found in '[com.project.love_data]' package. Please check your configuration.
+?[2m2021-05-29 02:18:20.900?[0;39m ?[32m INFO?[0;39m ?[35m19096?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mtrationDelegate$BeanPostProcessorChecker?[0;39m ?[2m:?[0;39m Bean 'org.springframework.ws.config.annotation.DelegatingWsConfiguration' of type [org.springframework.ws.config.annotation.DelegatingWsConfiguration$$EnhancerBySpringCGLIB$$daa7539d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+?[2m2021-05-29 02:18:20.957?[0;39m ?[32m INFO?[0;39m ?[35m19096?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36m.w.s.a.s.AnnotationActionEndpointMapping?[0;39m ?[2m:?[0;39m Supporting [WS-Addressing August 2004, WS-Addressing 1.0]
+?[2m2021-05-29 02:18:21.316?[0;39m ?[32m INFO?[0;39m ?[35m19096?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mo.hibernate.jpa.internal.util.LogHelper ?[0;39m ?[2m:?[0;39m HHH000204: Processing PersistenceUnitInfo [name: default]
+?[2m2021-05-29 02:18:21.395?[0;39m ?[32m INFO?[0;39m ?[35m19096?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36morg.hibernate.Version                   ?[0;39m ?[2m:?[0;39m HHH000412: Hibernate ORM core version 5.4.29.Final
+?[2m2021-05-29 02:18:21.580?[0;39m ?[32m INFO?[0;39m ?[35m19096?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mo.hibernate.annotations.common.Version  ?[0;39m ?[2m:?[0;39m HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+?[2m2021-05-29 02:18:21.712?[0;39m ?[32m INFO?[0;39m ?[35m19096?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mcom.zaxxer.hikari.HikariDataSource      ?[0;39m ?[2m:?[0;39m HikariPool-1 - Starting...
+?[2m2021-05-29 02:18:21.921?[0;39m ?[32m INFO?[0;39m ?[35m19096?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mcom.zaxxer.hikari.HikariDataSource      ?[0;39m ?[2m:?[0;39m HikariPool-1 - Start completed.
+?[2m2021-05-29 02:18:21.959?[0;39m ?[32m INFO?[0;39m ?[35m19096?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36morg.hibernate.dialect.Dialect           ?[0;39m ?[2m:?[0;39m HHH000400: Using dialect: org.hibernate.dialect.MySQL55Dialect
+?[2m2021-05-29 02:18:22.963?[0;39m ?[32m INFO?[0;39m ?[35m19096?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mo.h.e.t.j.p.i.JtaPlatformInitiator      ?[0;39m ?[2m:?[0;39m HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+?[2m2021-05-29 02:18:22.974?[0;39m ?[32m INFO?[0;39m ?[35m19096?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mj.LocalContainerEntityManagerFactoryBean?[0;39m ?[2m:?[0;39m Initialized JPA EntityManagerFactory for persistence unit 'default'
+?[2m2021-05-29 02:18:24.116?[0;39m ?[33m WARN?[0;39m ?[35m19096?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mJpaBaseConfiguration$JpaWebConfiguration?[0;39m ?[2m:?[0;39m spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+?[2m2021-05-29 02:18:24.676?[0;39m ?[32m INFO?[0;39m ?[35m19096?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mo.s.s.web.DefaultSecurityFilterChain    ?[0;39m ?[2m:?[0;39m Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@beada8a, org.springframework.security.web.context.SecurityContextPersistenceFilter@4ddeab5a, org.springframework.security.web.header.HeaderWriterFilter@7ab41252, org.springframework.security.web.csrf.CsrfFilter@6a381572, org.springframework.security.web.authentication.logout.LogoutFilter@5655d3a7, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@e3df189, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@35698c3a, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@85417ba, org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter@5a098039, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@32b96528, org.springframework.security.web.session.SessionManagementFilter@6b56e87a, org.springframework.security.web.access.ExceptionTranslationFilter@27048d11, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@667487e4]
+?[2m2021-05-29 02:18:25.135?[0;39m ?[32m INFO?[0;39m ?[35m19096?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mo.s.s.concurrent.ThreadPoolTaskExecutor ?[0;39m ?[2m:?[0;39m Initializing ExecutorService 'applicationTaskExecutor'
+?[2m2021-05-29 02:18:25.959?[0;39m ?[32m INFO?[0;39m ?[35m19096?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mo.s.b.a.e.web.EndpointLinksResolver     ?[0;39m ?[2m:?[0;39m Exposing 2 endpoint(s) beneath base path '/actuator'
+?[2m2021-05-29 02:18:26.031?[0;39m ?[32m INFO?[0;39m ?[35m19096?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mcom.project.love_data.CommentTest       ?[0;39m ?[2m:?[0;39m Started CommentTest in 7.027 seconds (JVM running for 8.437)
+PREV = false
+NEXT = false
+TOTAL : 1
+-------------------------------------------------
+11(commentNo)	commentDTO = CommentDTO(cmtNo=11, cmtContent=Temp, userNo=0, regDate=2021-05-29T01:28:50, modDate=2021-05-29T01:28:50, cmtIdx=0, cmtUuid=01b36afc-05cb-4927-b553-6ec5f28bfde8)
+1(locationNo)
+1(commentNo)	commentDTO = CommentDTO(cmtNo=1, cmtContent=Comment Content 0, userNo=1, regDate=2021-05-29T01:28:49, modDate=2021-05-29T01:28:49, cmtIdx=0, cmtUuid=4f57b3d8-fcf8-431b-9d66-d724e20ac772)
+1(locationNo)
+=================================================
+1
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="http://www.gradle.org">Gradle 6.8.3</a> at 2021. 5. 29 오전 2:18:26</p>
+</div>
+</div>
+</body>
+</html>
