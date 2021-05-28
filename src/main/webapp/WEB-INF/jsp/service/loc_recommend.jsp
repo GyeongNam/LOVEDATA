@@ -207,7 +207,7 @@
 										 aria-label="Placeholder: Thumbnail"
 										 preserveAspectRatio="xMidYMid slice" focusable="false">
 										<rect width="100%" height="100%" fill="#55595c">
-											<image height="100%" width="100%" href="${imgList.get(i).img_url}"></image>
+											<image height="100%" width="100%" href="${imgList.get(0).img_url}"></image>
 										</rect>
 									</svg>
 								</c:when>
@@ -228,7 +228,7 @@
 						<div class="card-body p-2">
 							<div class="d-flex justify-content-between align-items-center p-1">
 								<div class="d-flex">
-									<a class="card-text loc_rec-locTitle" href="/service/loc_detail"
+									<a class="card-text loc_rec-locTitle" href="${loc_detail}"
 									   id="title_${i+0}">${result.dtoList.get(i).loc_name}</a>
 								</div>
 								<div class="d-flex align-items-center">

@@ -14,7 +14,7 @@ public class ImageDTO {
     private Long img_no;
     private Long user_no;
 //    private String loc_uuid;
-    private LocationDTO location;
+    private Location location;
     // @Todo 코스, 리뷰 칼럼 추가
     private String img_url;
     private String img_uuid;

@@ -1,6 +1,7 @@
 package com.project.love_data.dto;
 
 import com.project.love_data.model.resource.Image;
+import com.project.love_data.model.service.Location;
 import com.project.love_data.model.service.LocationTag;
 import lombok.*;
 
@@ -34,7 +35,7 @@ public class LocationDTO {
     @Builder.Default
     private Long viewCount = 0L;
     @Builder.Default
-    private List<ImageDTO> imgList = new ArrayList<>();
+    private List<Image> imgList = new ArrayList<>();
 
     // Todo 여기에 댓글 칼럼도 추가
 
@@ -53,14 +54,29 @@ public class LocationDTO {
         return this.roadAddr + this.addrDetail;
     }
 
-    public void addImg(ImageDTO img) {
+    public void addImg(Image img) {
         img.setIdx((long) imgList.size());
-        img.setLocation(this);
+        img.setLocation(
+                Location.builder()
+                        .loc_no(this.getLoc_no())
+                        .loc_name(this.getLoc_name())
+                        .loc_uuid(this.getLoc_uuid())
+                        .user_no(this.getUser_no())
+                        .roadAddr(this.getRoadAddr())
+                        .addrDetail(this.getAddrDetail())
+                        .siDo(this.getSiDo())
+                        .siGunGu(this.getSiGunGu())
+                        .info(this.getInfo())
+                        .tel(this.getTel())
+                        .zipNo(this.getZipNo())
+                        .tagSet(this.getTagSet())
+                        .imgList(this.getImgList())
+                        .build());
         imgList.add(img);
     }
 
-    public void addImg(List<ImageDTO> img) {
-        for (ImageDTO image : img) {
+    public void addImg(List<Image> img) {
+        for (Image image : img) {
             addImg(image);
         }
     }

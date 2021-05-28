@@ -1,6 +1,7 @@
 package com.project.love_data.businessLogic.service;
 
 import com.project.love_data.dto.ImageDTO;
+import com.project.love_data.dto.LocationDTO;
 import com.project.love_data.model.resource.Image;
 import com.project.love_data.model.service.Location;
 import com.project.love_data.repository.ImageRepository;
@@ -13,11 +14,18 @@ import java.io.File;
 public class ImageService {
     private final ImageRepository repository;
 
-    public Image register(String user_no, String fileRootPath, String fileName, Location location) {
-        ImageDTO dto = getImageDTO(user_no, fileRootPath, fileName, location);
-        Image entity = dtoToEntity(dto);
+    public Image getImageEntity(String user_no, String fileRootPath, String fileName, Location location) {
+//        ImageDTO dto = getImageDTO(user_no, fileRootPath, fileName, location);
+//        Image entity = dtoToEntity(dto);
 
-        repository.save(entity);
+        Image entity = Image.builder()
+                .location(location)
+                .img_uuid(fileName)
+                .img_url(fileRootPath+File.separator+fileName)
+                .user_no(Long.valueOf(user_no))
+                .build();
+
+//        repository.save(entity);
 
         return entity;
     }
@@ -27,15 +35,27 @@ public class ImageService {
     }
 
     public Image dtoToEntity(ImageDTO dto) {
-        com.project.love_data.model.resource.Image entity = com.project.love_data.model.resource.Image.builder()
+        Image entity = Image.builder()
                 .img_url(dto.getImg_url())
                 .user_no(dto.getUser_no())
 //                .loc_uuid(dto.getLoc_uuid())
                 .location(dto.getLocation())
                 .img_uuid(dto.getImg_uuid())
+                .idx(dto.getIdx())
                 .build();
 
         return entity;
+    }
+
+    public ImageDTO entityToDTO(Image img) {
+        ImageDTO dto = ImageDTO.builder()
+                .idx(img.getIdx())
+                .img_no(img.getImg_no())
+                .img_url(img.getImg_url())
+                .img_uuid(img.getImg_uuid())
+                .location(img.getLocation()).build();
+
+        return dto;
     }
 
     private ImageDTO getImageDTO(String user_no, String fileRootPath, String fileName, Location location) {

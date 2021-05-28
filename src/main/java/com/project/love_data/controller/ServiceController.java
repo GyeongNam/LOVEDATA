@@ -118,30 +118,8 @@ public class ServiceController {
                                    Model model) {
         pageRequestDTO.setSize(MAX_LOC_REC_PAGE_SIZE_COUNT);
         PageResultDTO<LocationDTO, com.project.love_data.model.service.Location> resultDTO = locService.getList(pageRequestDTO);
-
-        log.info("list................." + pageRequestDTO);
-
         model.addAttribute("result", resultDTO);
 
-        System.out.println("Result.page = " + resultDTO.getPage());
-        System.out.println("Result start = " + resultDTO.getStart());
-        System.out.println("Result end = " + resultDTO.getEnd());
-
-        System.out.println("PREV = " + resultDTO.isPrev());
-        System.out.println("NEXT = " + resultDTO.isNext());
-        System.out.println("TOTAL : " + resultDTO.getTotalPage());
-
-        System.out.println("-------------------------------------------------");
-        System.out.println("Content Count : " + resultDTO.getDtoList().size());
-        for (LocationDTO locationDTO : resultDTO.getDtoList()) {
-            System.out.println(locationDTO.getLoc_no() + "\tlocationDTO = " + locationDTO);
-        }
-
-        System.out.println("=================================================");
-        List<Integer> temp = resultDTO.getPageList();
-        resultDTO.getPageList().forEach(i -> System.out.println(i));
-
-        resultDTO.getDtoList().get(0).getImgList().isEmpty();
         return "/service/loc_recommend";
     }
 }

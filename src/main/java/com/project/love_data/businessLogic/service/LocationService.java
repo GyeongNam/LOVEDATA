@@ -22,6 +22,7 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class LocationService {
     private final LocationRepository repository;
+    private final ImageRepository imgRepository;
     private final ImageService imgService;
 
     public Location register(Map<String, String> reqParam, List<String> tagList, List<String> filePath) {
@@ -30,40 +31,47 @@ public class LocationService {
         Location entity = dtoToEntity(dto);
 
         for (int i = 1; i < filePath.size() - 1; i++) {
-            imgList.add(imgService.register(reqParam.get("user_no"), filePath.get(0), filePath.get(i), entity));
+            imgList.add(imgService.getImageEntity(reqParam.get("user_no"), filePath.get(0), filePath.get(i), entity));
         }
 
         entity.setImgList(imgList);
 
         repository.save(entity);
 
+        for (Image image : imgList) {
+            imgRepository.save(image);
+        }
+
         log.info("entity : " + entity);
 
         return entity;
     }
 
-    public com.project.love_data.model.service.Location dtoToEntity(LocationDTO dto) {
-        com.project.love_data.model.service.Location entity = com.project.love_data.model.service.Location.builder()
+    public Location dtoToEntity(LocationDTO dto) {
+        Location entity = Location.builder()
+                .loc_no(dto.getLoc_no())
                 .loc_name(dto.getLoc_name())
+                .loc_uuid(dto.getLoc_uuid())
                 .user_no(dto.getUser_no())
                 .roadAddr(dto.getRoadAddr())
                 .addrDetail(dto.getAddrDetail())
                 .siDo(dto.getSiDo())
                 .siGunGu(dto.getSiGunGu())
                 .info(dto.getInfo())
-                .loc_uuid(dto.getLoc_uuid())
                 .tel(dto.getTel())
-                .tagSet(dto.getTagSet())
                 .zipNo(dto.getZipNo())
+                .tagSet(dto.getTagSet())
+                .imgList(dto.getImgList())
                 .build();
 
         return entity;
     }
 
-    public LocationDTO entityToDto(com.project.love_data.model.service.Location entity){
+    public LocationDTO entityToDto(Location entity){
         LocationDTO dto = LocationDTO.builder()
                 .loc_no(entity.getLoc_no())
                 .loc_name(entity.getLoc_name())
+                .loc_uuid(entity.getLoc_uuid())
                 .user_no(entity.getUser_no())
                 .roadAddr(entity.getRoadAddr())
                 .addrDetail(entity.getAddrDetail())
@@ -75,6 +83,7 @@ public class LocationService {
                 .tagSet(entity.getTagSet())
                 .regDate(entity.getRegDate())
                 .modDate(entity.getModDate())
+                .imgList(entity.getImgList())
                 .build();
 
         return dto;
@@ -102,7 +111,7 @@ public class LocationService {
         return loc;
     }
 
-    public PageResultDTO<LocationDTO, com.project.love_data.model.service.Location> getList(PageRequestDTO requestDTO) {
+    public PageResultDTO<LocationDTO, Location> getList(PageRequestDTO requestDTO) {
         Pageable pageable = requestDTO.getPageable(Sort.by("viewCount").descending());
 
         Page<com.project.love_data.model.service.Location> result = repository.findAll(pageable);
@@ -112,7 +121,7 @@ public class LocationService {
         return new PageResultDTO<>(result, fn);
     }
 
-    public List<com.project.love_data.model.service.Location> locationNameSearch(String loc_name, SearchOption searchOption) {
+    public List<Location> locationNameSearch(String loc_name, SearchOption searchOption) {
         StringBuilder sb = new StringBuilder();
         switch (searchOption) {
             case START_WITH:

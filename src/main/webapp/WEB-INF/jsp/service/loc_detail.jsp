@@ -131,7 +131,7 @@
             </div>
         </div>
         <div class="row justify-content-md-start">
-            <ul class="nav nav-pills" id="pills-tab" role="tablist" style="height:60px; padding-top: 5px; padding-bottom: 5px">
+            <ul class="nav nav-pills nav-fill col-5" id="pills-tab" role="tablist" style="height:50px; padding-top: 5px; padding-bottom: 5px">
                 <li class="nav-item" role="presentation">
                     <button class="mw-100 mh-100 nav-link active" id="location-comment-tab" data-bs-toggle="pill" data-bs-target="#location-comment" type="button" role="tab" aria-controls="location-comment" aria-selected="true">댓글</button>
                 </li>
@@ -142,7 +142,82 @@
             <div class="tab-content" id="pills-tabContent">
 <%--      댓글--%>
                 <div class="tab-pane fade show active" id="location-comment" role="tabpanel" aria-labelledby="location-comment-tab">
-
+                    <div class="container mt-0">
+                        <div class="d-flex justify-content-start row">
+                            <div class="col-md-10">
+                                <div class="d-flex flex-column">
+                                    <div class="bg-white p-2">
+                                        <div class="d-flex flex-row align-items-center"><img src="/image/icon/user/user.png"
+                                                                                             class="loc_comment-profile-image-wh">
+                                            <div class="flex-column">
+                                        <span class="d-block font-weight-bold name">
+                                            유저 닉네임
+                                            <button class="btn btn-primary">수정</button>
+                                            <button class="btn btn-primary">삭제</button>
+                                        </span>
+                                                <span class="date text-black-50 ml-5">(2021/05/02 00:39)</span>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2">
+                                            <p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                                                do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+                                                veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                                consequat.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container d-flex" id="pagination">
+                        <div class="col" id="page_number">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Previous">
+                                            <span aria-hidden="true">&lt;</span>
+                                        </a>
+                                    </li>
+<%--                          Todo  댓글 어떻게 화면 전환 없이 가져올 수 있을지 생각해보기        --%>
+                                    <li class="page-item disabled"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Previous">
+                                            <span aria-hidden="true">&gt;</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+<%--                    Todo 추후에 comment 섹션을 안에다 넣으면, 로그인 한 사람만 댓글 작성 가능--%>
+<%--                    <sec:authorize access="isAuthenticated()">--%>
+<%--                        --%>
+<%--                    </sec:authorize>--%>
+                    <div class="d-flex justify-content-start" id="comment">
+                        <div class="bg-light p-2 col-10">
+                            <div class="d-flex flex-row align-items-start">
+                                <img class="rounded-circle m-3" src="https://i.imgur.com/RpzrMR2.jpg" width="60">
+                                <textarea class="form-control ml-1 shadow-none textarea"></textarea>
+                            </div>
+                            <div class="mt-2 text-end">
+                                <button class="btn btn-primary btn shadow-none" type="button">Post comment</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 <%--    설명--%>
                 <div class="tab-pane fade" id="location-info" role="tabpanel" aria-labelledby="location-info-tab">
