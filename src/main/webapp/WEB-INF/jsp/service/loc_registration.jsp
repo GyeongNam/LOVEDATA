@@ -20,9 +20,10 @@
 	<link rel="stylesheet" href="/css/service/loc_registration.css">
 	<style>
         @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
-		body{
+
+        body {
             font-family: 'Jua', sans-serif;
-		}
+        }
 	</style>
 	<title>Home</title>
 </head>
@@ -196,13 +197,14 @@
 					</div>
 					<div class="input-box">
 						<span class="details">연락처</span>
-						<input type="tel" id="tel" name="tel" placeholder="010-0000-0000" pattern="[0-9]{3}-[0-9]{4}-[0-9]{3}" required>
+						<input type="tel" id="tel" name="tel" placeholder="010-0000-0000"
+							   pattern="[0-9]{3}-[0-9]{4}-[0-9]{3}" required>
 					</div>
 					<div class="input-box">
 						<span class="details">정보</span>
 						<textarea rows="4" maxlength="150" name="info" id="info" required></textarea>
-						<sec:authorize access = "isAuthenticated()">
-							<c:set var = "user_no"><sec:authentication property="user_no"></sec:authentication></c:set>
+						<sec:authorize access="isAuthenticated()">
+							<c:set var="user_no"><sec:authentication property="user_no"></sec:authentication></c:set>
 							<c:when test="${not empty user_no}">
 								<input type="hidden" name="user_no" id="user_no" value="${user_no}">
 							</c:when>
@@ -210,25 +212,27 @@
 						<input type="hidden" name="user_no_debug" id="user_no_debug" value="0">
 					</div>
 					<div>
-						<input name="files" type="file" multiple  accept="image/*">
-<%--						@Todo 이미지 업로드시 미리 보기 추가--%>
-<%--						http://yoonbumtae.com/?p=3304 --%>
+						<input name="files" type="file" multiple accept="image/*">
+						<%--						@Todo 이미지 업로드시 미리 보기 추가--%>
+						<%--						http://yoonbumtae.com/?p=3304 --%>
 					</div>
 				</div>
-				<button type="submit">Register</button>
+				<button type="submit" id="register" name="register" onclick="onClickRegister()">Register</button>
 			</form>
 		</div>
 	</div>
 </div>
 
 <!--  부트스트랩 js 사용 -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-		crossorigin="anonymous"></script>
+<script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<%--slim 사용시 ajax 미지원--%>
+<%-- https://song8420.tistory.com/236 --%>
+<%--<script defer src="https://code.jquery.com/jquery-3.5.1.slim.min.js"--%>
+<%--		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"--%>
+<%--		crossorigin="anonymous"></script>--%>
 <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
 		crossorigin="anonymous"></script>
-<%--<script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>--%>
 <%--<script defer src="/js/bootstrap.js"></script>--%>
 <script defer src="/js/loc_detail.js"></script>
 <script defer src="/js/loc_common.js"></script>
@@ -285,34 +289,64 @@
     }
 </script>
 <script>
-    $(function(){
-        $("button[type = 'submit']").click(function(){
-            var $fileUpload = $("input[type='file']");
-            if (parseInt($fileUpload.get(0).files.length) < 3) {
-                alert("최소 3개의 이미지 파일은 업로드 해야합니다.")
-			} else if (parseInt($fileUpload.get(0).files.length) > 10){
-                alert("최대 10개의 이미지 파일만 업로드 가능합니다.");
-            } else {
-                var formData = $("form");
-                $.ajax({
-                    type : "POST",
-                    url : "/service/loc/tags",
-                    data : {
-                        tags: tagList //notice that "myArray" matches the value for @RequestParam
-                                   //on the Java side
-                    },
-                    success : function(response) {
-                        // do something ...
-						console.log("Success")
-                    },
-                    error : function(e) {
-                        console.log("Failed")
+    function onClickRegister() {
+        console.log("submit butten clicked");
+        var $fileUpload = $("input[type='file']");
+        var loginCheck = null;
+        var debugCheck = {"debug": true}
+
+        $.ajax({
+            type: "POST",
+            url: "/rest/authenticationCheck",
+            data: JSON.stringify(debugCheck),
+            dataType: 'json',
+            contentType: "application/json; charset=UTF-8",
+            beforeSend: function (xhr) {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                xhr.setRequestHeader(header, token);
+            },
+            success: function (response) {
+                // do something ...
+                console.log("Login Check Success");
+                console.log("is login : " + response);
+
+                if (response) {
+                    if (parseInt($fileUpload.get(0).files.length) < 3) {
+                        alert("최소 3개의 이미지 파일은 업로드 해야합니다.")
+                    } else if (parseInt($fileUpload.get(0).files.length) > 10) {
+                        alert("최대 10개의 이미지 파일만 업로드 가능합니다.");
+                    } else {
+                        var formData = $("form");
+                        $.ajax({
+                            type: "POST",
+                            url: "/service/loc/tags",
+                            data: {
+                                tags: tagList //notice that "myArray" matches the value for @RequestParam
+                                //on the Java side
+                            },
+                            success: function (response) {
+                                // do something ...
+                                console.log("장소 등록 성공");
+								alert("장소 등록 성공");
+                            },
+                            error: function (e) {
+                                console.log("태그 등록 실패");
+                            }
+                        });
+                        formData.submit();
                     }
-                });
-                formData.submit();
-			}
+				}
+                else {
+                    alert("장소 등록 실패 : 로그인을 해주세요");
+                    console.log("장소 등록 실패 : 로그인을 해주세요");
+				}
+            },
+            error: function (e) {
+                console.log("Login Check Failed")
+                alert("장소 등록 실패");
+                console.log("장소 등록 실패");
+            }
         });
-    });
+    }
 </script>
 <%--<script defer src="/js/JusoAPI.js"></script>--%>
 </body>

@@ -46,6 +46,12 @@ public class ServiceController {
     @PostMapping("/service/loc/tags")
     public void locGetTagsList(@RequestParam("tags[]") String[] tagArray) {
         tagList = Arrays.asList(tagArray);
+
+        if (tagList != null) {
+            log.info("태그 등록 성공");
+        } else {
+            log.info("태그 등록 실패");
+        }
     }
 
     @GetMapping("/service/loc_registration/regData")

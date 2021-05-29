@@ -204,6 +204,40 @@ public class LocationTest {
     }
 
     @Test
+    public void deleteByID() {
+        long id = 14L;
+
+        Optional<Location> box = locationRepository.findById(id);
+
+        if (!box.isPresent()){
+            System.out.println("데이터가 없습니다.");
+            return;
+        }
+
+        Location loc = box.get();
+
+        System.out.println("삭제 전 데이터");
+        System.out.println(loc);
+
+        locService.delete(loc);
+
+        box = locationRepository.findById(id);
+
+        if (box.isPresent()) {
+            System.out.println("삭제 실패");
+        } else {
+            System.out.println("삭제 성공");
+        }
+
+        List<Location> list = locationRepository.findAll();
+
+        for (Location location : list) {
+            System.out.println("location = " + location);
+            System.out.println(location.getImgList());
+        }
+    }
+
+    @Test
     public void deleteByUUID() {
 //        locationRepository.deleteByLoc_uuid("UUID_0");
         String uuid = "UUID_0";

@@ -54,11 +54,23 @@ function removeTag(tag) {
 }
 
 function onClickLike(Like) {
-    var likeCount = Like.nextElementSibling.innerText;
-    var loc_no = Like.nextElementSibling.nextElementSibling.innerText;
+    var countChangeFlag = true;
+    var likeCount = null;
+    var loc_no = null;
+    var loc = null;
+    var path_noparm = location.pathname;
+
+    console.log(path_noparm);
+    if (path_noparm ===  "/service/loc_detail" || path_noparm === "/service/loc_detail/ex") {
+        countChangeFlag = false;
+        loc = document.getElementById("loc_no");
+    } else {
+        likeCount = Like.nextElementSibling.innerText;
+        loc_no = Like.nextElementSibling.nextElementSibling.innerText;
+        loc = Like.nextElementSibling;
+    }
     var jsonData = {"loc_no": loc_no}
     var isClicked = false;
-    var loc = Like.nextElementSibling;
     var map = new Map();
 
     if (Like.getAttribute("src") === "/image/icon/like/love_color.png") {
@@ -75,6 +87,7 @@ function onClickLike(Like) {
     map.set("isClicked", isClicked);
     map.set("like", Like);
     map.set("loc", loc);
+    map.set("countChangeFlag", countChangeFlag);
 
     onLoginCheck(map);
 }
@@ -113,6 +126,7 @@ function onClickLikeAction(map) {
     var isClicked = map.get("isClicked");
     var like = map.get("like");
     var loc = map.get("loc");
+    var countChangeFlag = map.get("countChangeFlag");
 
     console.log("loc_no : " + loc_no);
 
@@ -135,10 +149,12 @@ function onClickLikeAction(map) {
                 console.log("Like Success")
 
                 like.src = "/image/icon/like/love_color.png";
-                console.log(parseInt(likeCount));
-                console.log(parseInt(likeCount) + 1);
-                console.log(typeof (likeCount) + "\t" + likeCount);
-                loc.innerText = parseInt(likeCount) + 1;
+                if (countChangeFlag) {
+                    console.log(parseInt(likeCount));
+                    console.log(parseInt(likeCount) + 1);
+                    console.log(typeof (likeCount) + "\t" + likeCount);
+                    loc.innerText = parseInt(likeCount) + 1;
+                }
                 lastLikeLocId = loc_no;
             },
             error: function (e) {
@@ -160,10 +176,13 @@ function onClickLikeAction(map) {
                 console.log("Undo Success")
 
                 like.src = "/image/icon/like/love_black.png";
-                console.log(parseInt(likeCount));
-                console.log(parseInt(likeCount) - 1);
-                console.log(typeof (likeCount) + "\t" + likeCount);
-                loc.innerText = parseInt(likeCount) - 1;
+                if (countChangeFlag) {
+                    console.log(parseInt(likeCount));
+                    console.log(parseInt(likeCount) - 1);
+                    console.log(typeof (likeCount) + "\t" + likeCount);
+                    loc.innerText = parseInt(likeCount) - 1;
+                }
+
                 lastLikeLocId = loc_no;
             },
             error: function (e) {
@@ -171,6 +190,32 @@ function onClickLikeAction(map) {
             }
         });
     }
+}
+
+function LoginCheck() {
+    var debugCheck = {"debug": true}
+
+    $.ajax({
+        type: "POST",
+        url: "/rest/authenticationCheck",
+        data: JSON.stringify(debugCheck),
+        dataType: 'json',
+        contentType: "application/json; charset=UTF-8",
+        beforeSend: function (xhr) {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (response) {
+            // do something ...
+            console.log("Login Check Success")
+            console.log("is login : " + response)
+            return true;
+        },
+        error: function (e) {
+            console.log("Login Check Failed")
+            alert("로그인을 해주세요")
+            return false;
+        }
+    });
 }
 
 function ajaxCall() {
