@@ -1207,7 +1207,7 @@ lovedata|schema||lovedatauser|localhost|UPDATE|G</Grants>
     </column>
     <column id="369" parent="330" name="likecount">
       <Position>6</Position>
-      <DataType>bigint(20)|0s</DataType>
+      <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>0</DefaultExpression>
     </column>
@@ -1248,7 +1248,7 @@ lovedata|schema||lovedatauser|localhost|UPDATE|G</Grants>
     </column>
     <column id="377" parent="330" name="viewcount">
       <Position>14</Position>
-      <DataType>bigint(20)|0s</DataType>
+      <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>0</DefaultExpression>
     </column>

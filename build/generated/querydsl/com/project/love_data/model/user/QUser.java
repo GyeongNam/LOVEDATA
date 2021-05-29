@@ -20,6 +20,8 @@ public class QUser extends EntityPathBase<User> {
 
     public static final QUser user = new QUser("user");
 
+    public final SetPath<com.project.love_data.model.service.Location, com.project.love_data.model.service.QLocation> likeLoc = this.<com.project.love_data.model.service.Location, com.project.love_data.model.service.QLocation>createSet("likeLoc", com.project.love_data.model.service.Location.class, com.project.love_data.model.service.QLocation.class, PathInits.DIRECT2);
+
     public final StringPath profile_pic = createString("profile_pic");
 
     public final SetPath<String, StringPath> roleSet = this.<String, StringPath>createSet("roleSet", String.class, StringPath.class, PathInits.DIRECT2);

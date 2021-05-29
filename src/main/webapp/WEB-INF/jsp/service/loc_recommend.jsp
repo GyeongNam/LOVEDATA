@@ -9,6 +9,8 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="_csrf" content="${_csrf.token}">
+	<meta name="_csrf_header" content="${_csrf.headerName}">
 	<%--	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">--%>
 	<%--	<link rel="stylesheet" type="text/css" href="/css/Bootstarp_test/bootstrap.min.css">--%>
 	<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
@@ -188,62 +190,71 @@
 			</nav>
 		</div>
 		<div class="row justify-content-md-center">
-			<c:forEach var="i" begin="0" end="${result.dtoList.size()-1}">
-				<c:if test="${i eq 2}">
-					<div class="w-100"></div>
-				</c:if>
-				<div class="col-md-4" id="loc_${i}">
-					<div class="card mb-4 shadow-sm">
-						<c:url var="loc_detail" value="/service/loc_detail">
-							<c:param name="locNo" value="${result.dtoList.get(i).loc_no}"/>
-							<c:param name="page" value="${result.page}"/>
-						</c:url>
-						<a class="container p-0 btn" href="${loc_detail}">
-							<c:set var="imgList" value="${result.dtoList.get(i).imgList}"></c:set>
-							<c:choose>
-								<c:when test="${!empty imgList}">
-									<svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-										 xmlns="http://www.w3.org/2000/svg" role="img"
-										 aria-label="Placeholder: Thumbnail"
-										 preserveAspectRatio="xMidYMid slice" focusable="false">
-										<rect width="100%" height="100%" fill="#55595c">
-											<image height="100%" width="100%" href="${imgList.get(0).img_url}"></image>
-										</rect>
-									</svg>
-								</c:when>
-								<c:otherwise>
-									<svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-										 xmlns="http://www.w3.org/2000/svg" role="img"
-										 aria-label="Placeholder: Thumbnail"
-										 preserveAspectRatio="xMidYMid slice" focusable="false">
-										<title>Placeholder</title>
-										<rect width="100%" height="100%" fill="#55595c"></rect>
-										<text x="40%" y="50%" fill="#eceeef"
-											  dy=".3em">${result.dtoList.get(i).loc_name}</text>
-									</svg>
-								</c:otherwise>
-							</c:choose>
-						</a>
+			<c:choose>
+				<c:when test="${result.end ne 0}">
+					<c:forEach var="i" begin="0" end="${result.dtoList.size()-1}">
+						<c:if test="${i eq 2}">
+							<div class="w-100"></div>
+						</c:if>
+						<div class="col-md-4" id="loc_${i}">
+							<div class="card mb-4 shadow-sm">
+								<c:url var="loc_detail" value="/service/loc_detail">
+									<c:param name="locNo" value="${result.dtoList.get(i).loc_no}"/>
+									<c:param name="page" value="${result.page}"/>
+								</c:url>
+								<a class="container p-0 btn" href="${loc_detail}">
+									<c:set var="imgList" value="${result.dtoList.get(i).imgList}"></c:set>
+									<c:choose>
+										<c:when test="${!empty imgList}">
+											<svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+												 xmlns="http://www.w3.org/2000/svg" role="img"
+												 aria-label="Placeholder: Thumbnail"
+												 preserveAspectRatio="xMidYMid slice" focusable="false">
+												<rect width="100%" height="100%" fill="#55595c">
+													<image height="100%" width="100%" href="${imgList.get(0).img_url}"></image>
+												</rect>
+											</svg>
+										</c:when>
+										<c:otherwise>
+											<svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+												 xmlns="http://www.w3.org/2000/svg" role="img"
+												 aria-label="Placeholder: Thumbnail"
+												 preserveAspectRatio="xMidYMid slice" focusable="false">
+												<title>Placeholder</title>
+												<rect width="100%" height="100%" fill="#55595c"></rect>
+												<text x="40%" y="50%" fill="#eceeef"
+													  dy=".3em">${result.dtoList.get(i).loc_name}</text>
+											</svg>
+										</c:otherwise>
+									</c:choose>
+								</a>
 
-						<div class="card-body p-2">
-							<div class="d-flex justify-content-between align-items-center p-1">
-								<div class="d-flex">
-									<a class="card-text loc_rec-locTitle" href="${loc_detail}"
-									   id="title_${i+0}">${result.dtoList.get(i).loc_name}</a>
-								</div>
-								<div class="d-flex align-items-center">
-									<img src="/image/icon/comment.png" class="loc_icon" alt="댓글">
-										<%--									Todo 댓글 항목 Location Entity에 추가하기--%>
-									<span class="align-middle">댓글 항목 추가하기${result.dtoList.get(i).loc_no}</span>
-									<img src="/image/icon/like/love_black.png" class="loc_icon" alt="찜하기"
-										 onclick="onClickLike(this)">
-									<span class="align-middle">${result.dtoList.get(i).likeCount}</span>
+								<div class="card-body p-2">
+									<div class="d-flex justify-content-between align-items-center p-1">
+										<div class="d-flex">
+											<a class="card-text loc_rec-locTitle" href="${loc_detail}"
+											   id="title_${i+0}">${result.dtoList.get(i).loc_name}</a>
+										</div>
+										<div class="d-flex align-items-center">
+											<img src="/image/icon/comment.png" class="loc_icon" alt="댓글">
+												<%--									Todo 댓글 항목 Location Entity에 추가하기--%>
+											<span class="align-middle">${result.dtoList.get(i).cmdSet.size()}</span>
+											<img src="/image/icon/like/love_black.png" class="loc_icon" alt="찜하기"
+												 onclick="onClickLike(this)">
+											<span class="align-middle" id="loc_like_count" name="loc_like_count">${result.dtoList.get(i).likeCount}</span>
+											<span class="d-none">${result.dtoList.get(i).loc_no}</span>
+											<span class="d-none">${result.dtoList.get(i).loc_uuid}</span>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-				</div>
-			</c:forEach>
+					</c:forEach>
+				</c:when>
+				<c:otherwise>
+					<h1 class="text-center">등록된 정보가 없습니다.</h1>
+				</c:otherwise>
+			</c:choose>
 
 		</div>
 
@@ -261,9 +272,18 @@
 							</li>
 						</c:if>
 						<c:forEach var="j" begin="${result.start}" end="${result.end}">
-						<li class="page-item <c:if test="${result.page eq j-1 ? 'active' : ''}"></c:if>">
+						<c:choose>
+						<c:when test="${result.page eq j}">
+						<li class="page-item active">
 							<a class="page-link"
 							   href="/service/loc_recommend/list?page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>
+							</c:when>
+							<c:otherwise>
+						<li class="page-item">
+							<a class="page-link"
+							   href="/service/loc_recommend/list?page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>
+							</c:otherwise>
+							</c:choose>
 							</c:forEach>
 						</li>
 						<c:if test="${result.next eq true}">

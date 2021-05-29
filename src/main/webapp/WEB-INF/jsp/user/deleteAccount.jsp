@@ -5,6 +5,8 @@
 <html>
 <head>
     <title>Account Delete Temp</title>
+    <meta name="_csrf" content="${_csrf.token}">
+    <meta name="_csrf_header" content="${_csrf.headerName}">
 </head>
 <body>
 <form method="post" action="/user/deleteAccount/process">

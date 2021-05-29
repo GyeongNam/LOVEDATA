@@ -34,9 +34,9 @@ public class LocationDTO {
     @Builder.Default
     private Set<String> tagSet = new HashSet<>();
     @Builder.Default
-    private Long likeCount = 0L;
+    private int likeCount = 0;
     @Builder.Default
-    private Long viewCount = 0L;
+    private int viewCount = 0;
     @Builder.Default
     private List<Image> imgList = new ArrayList<>();
     @Builder.Default
@@ -113,5 +113,14 @@ public class LocationDTO {
         for (Comment item : cmt) {
             addCmt(item);
         }
+    }
+
+    public String longToString(Long item) {
+
+        if (item == null) {
+            return null;
+        }
+
+        return String.valueOf(item);
     }
 }

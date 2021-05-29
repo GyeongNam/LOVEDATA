@@ -80,13 +80,13 @@ public class Location extends TimeEntity {
     @Builder.Default
     private Set<Comment> cmtSet = new HashSet<>();
 
-    @Column(name = "likecount", nullable = false, columnDefinition = "bigint default 0")
+    @Column(name = "likecount", nullable = false, columnDefinition = "int default 0")
     @Builder.Default
-    private Long likeCount = 0L;
+    private int likeCount = 0;
 
-    @Column(name = "viewcount", nullable = false, columnDefinition = "bigint default 0")
+    @Column(name = "viewcount", nullable = false, columnDefinition = "int default 0")
     @Builder.Default
-    private Long viewCount = 0L;
+    private int viewCount = 0;
 
     // Todo 여기에 댓글 칼럼도 추가
 

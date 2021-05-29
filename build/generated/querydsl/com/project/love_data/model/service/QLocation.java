@@ -30,7 +30,7 @@ public class QLocation extends EntityPathBase<Location> {
 
     public final StringPath info = createString("info");
 
-    public final NumberPath<Long> likeCount = createNumber("likeCount", Long.class);
+    public final NumberPath<Integer> likeCount = createNumber("likeCount", Integer.class);
 
     public final StringPath loc_name = createString("loc_name");
 
@@ -56,7 +56,7 @@ public class QLocation extends EntityPathBase<Location> {
 
     public final NumberPath<Long> user_no = createNumber("user_no", Long.class);
 
-    public final NumberPath<Long> viewCount = createNumber("viewCount", Long.class);
+    public final NumberPath<Integer> viewCount = createNumber("viewCount", Integer.class);
 
     public final StringPath zipNo = createString("zipNo");
 

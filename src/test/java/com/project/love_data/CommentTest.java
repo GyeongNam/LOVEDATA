@@ -56,7 +56,7 @@ public class CommentTest {
         Comment cmt = Comment.builder()
                 .userNo(0L)
                 .cmtContent("Temp")
-                .location(locService.dtoToEntity(locService.select(1L))).build();
+                .location(locService.dtoToEntity(locService.selectLocDTO(1L))).build();
 
         cmtRepository.save(cmt);
 

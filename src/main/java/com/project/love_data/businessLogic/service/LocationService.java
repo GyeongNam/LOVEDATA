@@ -65,6 +65,7 @@ public class LocationService {
                 .tagSet(dto.getTagSet())
                 .imgList(dto.getImgList())
                 .cmtSet(dto.getCmdSet())
+                .likeCount(dto.getLikeCount())
                 .build();
 
         return entity;
@@ -88,6 +89,7 @@ public class LocationService {
                 .modDate(entity.getModDate())
                 .imgList(entity.getImgList())
                 .cmdSet(entity.getCmtSet())
+                .likeCount(entity.getLikeCount())
                 .build();
 
         return dto;
@@ -146,8 +148,26 @@ public class LocationService {
         return repository.findByLoc_nameContaining(sb.toString());
     }
 
-    public LocationDTO select(Long loc_no) {
+    public Location selectLoc(Long loc_no){
         Optional<Location> result = repository.findById(loc_no);
+
+        return result.isPresent() ? result.get() : null;
+    }
+
+    public LocationDTO selectLocDTO(Long loc_no) {
+        Optional<Location> result = repository.findById(loc_no);
+
+        return result.isPresent() ? entityToDto(result.get()) : null;
+    }
+
+    public Location selectLoc(String loc_uuid) {
+        Optional<Location> result = repository.findLocByUUID(loc_uuid);
+
+        return result.isPresent() ? result.get() : null;
+    }
+
+    public LocationDTO selectLocDTO(String loc_uuid) {
+        Optional<Location> result = repository.findLocByUUID(loc_uuid);
 
         return result.isPresent() ? entityToDto(result.get()) : null;
     }
@@ -177,5 +197,33 @@ public class LocationService {
         update(loc);
 
         repository.deleteByLoc_uuid(loc.getLoc_uuid());
+    }
+
+    public boolean onClickLike(Long loc_no) {
+        Location entity = selectLoc(loc_no);
+
+        if (entity == null) {
+            return false;
+        }
+
+        entity.setLikeCount(entity.getLikeCount() + 1);
+
+        update(entity);
+
+        return true;
+    }
+
+    public boolean onClickLikeUndo(Long loc_no) {
+        Location entity = selectLoc(loc_no);
+
+        if(entity == null) {
+            return false;
+        }
+
+        entity.setLikeCount(entity.getLikeCount() - 1);
+
+        update(entity);
+
+        return true;
     }
 }

@@ -1,5 +1,6 @@
 package com.project.love_data.model.user;
 
+import com.project.love_data.model.service.Location;
 import com.project.love_data.security.model.UserRole;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
@@ -47,6 +48,11 @@ public class User{
     
     @Column(length = 50, nullable = false)
     private String user_birth;
+
+    // Todo 유저 테이블에 좋아요 누른 장소 목록 추가
+//    @OneToMany(fetch = FetchType.LAZY)
+//    @Builder.Default
+//    private Set<Location> likeLoc = new HashSet<>();
 
     // 성별
     @Column(length = 1, nullable = true, columnDefinition = "TINYINT(1)")

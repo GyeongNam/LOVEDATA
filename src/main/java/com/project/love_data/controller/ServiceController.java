@@ -4,10 +4,10 @@ import com.project.love_data.businessLogic.service.*;
 import com.project.love_data.dto.LocationDTO;
 import com.project.love_data.dto.PageRequestDTO;
 import com.project.love_data.dto.PageResultDTO;
-import com.project.love_data.model.resource.Image;
-import com.project.love_data.model.service.Location;
+import com.project.love_data.security.model.AuthUserModel;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.*;
 
 @Log4j2
@@ -105,9 +106,11 @@ public class ServiceController {
     public String locDetail(Long locNo, @ModelAttribute("requestDTO") PageRequestDTO pageRequestDTO,
                             Model model,
                             HttpServletRequest request) {
-        LocationDTO dto = locService.select(locNo);
+        if (locNo != null){
+            LocationDTO dto = locService.selectLocDTO(locNo);
 
-        model.addAttribute("dto", dto);
+            model.addAttribute("dto", dto);
+        }
 
         return "/service/loc_detail";
     }
@@ -115,10 +118,16 @@ public class ServiceController {
     @GetMapping(value = "/service/loc_recommend/list")
     public String locRecommendList(HttpServletRequest request,
                                    PageRequestDTO pageRequestDTO,
+                                   Authentication authentication,
                                    Model model) {
         pageRequestDTO.setSize(MAX_LOC_REC_PAGE_SIZE_COUNT);
         PageResultDTO<LocationDTO, com.project.love_data.model.service.Location> resultDTO = locService.getList(pageRequestDTO);
         model.addAttribute("result", resultDTO);
+
+        if(authentication != null) {
+            AuthUserModel authUser = (AuthUserModel) authentication.getPrincipal();
+            log.info(authUser.getUser_no());
+        }
 
         return "/service/loc_recommend";
     }
