@@ -1,8 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
 /*https://www.codinglabweb.com/2021/01/responsive-registration-form-in-html-css.html*/
-.loc_registration-box-outline{
-    outline: 2px solid red;
-}
 
 .basic-style{
     margin: 0;
@@ -42,6 +39,17 @@ form .input-box span.details{
 }
 .user-details .input-box input{
     height: 45px;
+    width: 100%;
+    outline: none;
+    font-size: 16px;
+    border-radius: 5px;
+    padding-left: 15px;
+    border: 1px solid #ccc;
+    border-bottom-width: 2px;
+    transition: all 0.3s ease;
+}
+.user-details .input-box textarea{
+    height: 180px;
     width: 100%;
     outline: none;
     font-size: 16px;

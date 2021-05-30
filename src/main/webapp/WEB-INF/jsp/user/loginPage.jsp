@@ -7,12 +7,21 @@
     <meta lang="kr">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="_csrf" content="${_csrf.token}">
+    <meta name="_csrf_header" content="${_csrf.headerName}">
 <%--    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">--%>
     <title>로그인 | LOVEDATA</title>
 <%--    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">--%>
 <%--    <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>--%>
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+        body {
+            font-family: 'Jua', sans-serif;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
@@ -34,10 +43,16 @@
             <label for="password" class="sr-only">Password</label>
             <input type="password" id="password" name="password" class="form-control" placeholder="비밀번호" required>
         </p>
-        <p><input type='checkbox' name='remember-me' onclick="alert('개인 PC에서만 사용해주세요')"/>자동 로그인</p>
+        <div class="d-flex justify-content-between">
+            <div class="align-middle"><input type='checkbox' name='remember-me' onclick="alert('개인 PC에서만 사용해주세요')"/>자동 로그인</div>
+            <p><button type="btn" class="btn btn-sm btn-link btn-block" onclick="location.href='/find_id'">회원 정보 찾기</button></p>
+        </div>
         <sec:csrfInput />
-        <button class="btn btn-lg btn-primary btn-block" type="submit">로그인</button>
-    </form>
+        <div class="d-flex justify-content-between">
+            <button class="btn btn-lg btn-primary btn-block" onclick="location.href='/signup'">회원가입</button>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">로그인</button>
+        </div>
+	</form>
     <center>
         <form method="get" action="/login_kakao">
             <sec:csrfInput />

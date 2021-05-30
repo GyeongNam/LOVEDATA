@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - LocationTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>LocationTest</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/com.project.love_data.html">com.project.love_data</a> &gt; LocationTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">1</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">0.873s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Tests</a>
+</li>
+<li>
+<a href="#tab1">Standard output</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">deleteByID()</td>
+<td class="success">0.873s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div id="tab1" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>22:14:54.848 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating CacheAwareContextLoaderDelegate from class [org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate]
+22:14:54.859 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating BootstrapContext using constructor [public org.springframework.test.context.support.DefaultBootstrapContext(java.lang.Class,org.springframework.test.context.CacheAwareContextLoaderDelegate)]
+22:14:54.893 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating TestContextBootstrapper for test class [com.project.love_data.LocationTest] from class [org.springframework.boot.test.context.SpringBootTestContextBootstrapper]
+22:14:54.904 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Neither @ContextConfiguration nor @ContextHierarchy found for test class [com.project.love_data.LocationTest], using SpringBootContextLoader
+22:14:54.908 [Test worker] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [com.project.love_data.LocationTest]: class path resource [com/project/love_data/LocationTest-context.xml] does not exist
+22:14:54.908 [Test worker] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [com.project.love_data.LocationTest]: class path resource [com/project/love_data/LocationTestContext.groovy] does not exist
+22:14:54.909 [Test worker] INFO org.springframework.test.context.support.AbstractContextLoader - Could not detect default resource locations for test class [com.project.love_data.LocationTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+22:14:54.909 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.project.love_data.LocationTest]: LocationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+22:14:54.955 [Test worker] DEBUG org.springframework.test.context.support.ActiveProfilesUtils - Could not find an 'annotation declaring class' for annotation type [org.springframework.test.context.ActiveProfiles] and class [com.project.love_data.LocationTest]
+22:14:55.024 [Test worker] DEBUG org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider - Identified candidate component class: file [D:\Study\GitHub\Projects\Team Project\LoveData\build\classes\java\main\com\project\love_data\LoveDataApplication.class]
+22:14:55.027 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.project.love_data.LoveDataApplication for test class com.project.love_data.LocationTest
+22:14:55.129 [Test worker] DEBUG org.springframework.boot.test.context.SpringBootTestContextBootstrapper - @TestExecutionListeners is not present for class [com.project.love_data.LocationTest]: using defaults.
+22:14:55.129 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener, org.springframework.security.test.context.support.ReactorContextTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+22:14:55.153 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@15236e07, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@21863253, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@6a5e610, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@7b2ceeb1, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@7571f485, org.springframework.test.context.support.DirtiesContextTestExecutionListener@65f554d2, org.springframework.test.context.transaction.TransactionalTestExecutionListener@4c49ab1a, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@508c9d44, org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener@2a238e0c, org.springframework.test.context.event.EventPublishingTestExecutionListener@65bf0c5e, org.springframework.security.test.context.support.ReactorContextTestExecutionListener@64af6a88, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@507dbde4, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@66981a09, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@7bd83778, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@643cf9a1, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@5993ea5f, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@7f7deb36]
+22:14:55.157 [Test worker] DEBUG org.springframework.test.context.support.AbstractDirtiesContextTestExecutionListener - Before test class: context [DefaultTestContext@79a14cb0 testClass = LocationTest, testInstance = [null], testMethod = [null], testException = [null], mergedContextConfiguration = [WebMergedContextConfiguration@611cbf2d testClass = LocationTest, locations = '{}', classes = '{class com.project.love_data.LoveDataApplication}', contextInitializerClasses = '[]', activeProfiles = '{}', propertySourceLocations = '{}', propertySourceProperties = '{org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true}', contextCustomizers = set[org.springframework.boot.test.autoconfigure.actuate.metrics.MetricsExportContextCustomizerFactory$DisableMetricExportContextCustomizer@13d3fd18, org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizerFactory$Customizer@4c6e9475, org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@bfe1589, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@3275c669, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.springframework.boot.test.web.client.TestRestTemplateContextCustomizer@783a6b19, org.springframework.boot.test.context.SpringBootTestArgs@1, org.springframework.boot.test.context.SpringBootTestWebEnvironment@2aef2f2f], resourceBasePath = 'src/main/webapp', contextLoader = 'org.springframework.boot.test.context.SpringBootContextLoader', parent = [null]], attributes = map['org.springframework.test.context.web.ServletTestExecutionListener.activateListener' -&gt; true]], class annotated with @DirtiesContext [false] with mode [null].
+22:14:55.189 [Test worker] DEBUG org.springframework.test.context.support.TestPropertySourceUtils - Adding inlined properties to environment: {spring.jmx.enabled=false, org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true}
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+?[32m :: Spring Boot :: ?[39m              ?[2m (v2.4.4)?[0;39m
+
+?[2m2021-05-29 22:14:55.550?[0;39m ?[32m INFO?[0;39m ?[35m22316?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mcom.project.love_data.LocationTest      ?[0;39m ?[2m:?[0;39m Starting LocationTest using Java 1.8.0_281 on MyPC with PID 22316 (started by ARA in D:\Study\GitHub\Projects\Team Project\LoveData)
+?[2m2021-05-29 22:14:55.552?[0;39m ?[32m INFO?[0;39m ?[35m22316?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mcom.project.love_data.LocationTest      ?[0;39m ?[2m:?[0;39m No active profile set, falling back to default profiles: default
+?[2m2021-05-29 22:14:56.505?[0;39m ?[32m INFO?[0;39m ?[35m22316?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36m.s.d.r.c.RepositoryConfigurationDelegate?[0;39m ?[2m:?[0;39m Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+?[2m2021-05-29 22:14:56.583?[0;39m ?[32m INFO?[0;39m ?[35m22316?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36m.s.d.r.c.RepositoryConfigurationDelegate?[0;39m ?[2m:?[0;39m Finished Spring Data repository scanning in 71 ms. Found 4 JPA repository interfaces.
+?[2m2021-05-29 22:14:56.711?[0;39m ?[33m WARN?[0;39m ?[35m22316?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mo.m.s.mapper.ClassPathMapperScanner     ?[0;39m ?[2m:?[0;39m No MyBatis mapper was found in '[com.project.love_data]' package. Please check your configuration.
+?[2m2021-05-29 22:14:56.968?[0;39m ?[32m INFO?[0;39m ?[35m22316?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mtrationDelegate$BeanPostProcessorChecker?[0;39m ?[2m:?[0;39m Bean 'org.springframework.ws.config.annotation.DelegatingWsConfiguration' of type [org.springframework.ws.config.annotation.DelegatingWsConfiguration$$EnhancerBySpringCGLIB$$e1cb0f28] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+?[2m2021-05-29 22:14:57.026?[0;39m ?[32m INFO?[0;39m ?[35m22316?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36m.w.s.a.s.AnnotationActionEndpointMapping?[0;39m ?[2m:?[0;39m Supporting [WS-Addressing August 2004, WS-Addressing 1.0]
+?[2m2021-05-29 22:14:57.348?[0;39m ?[32m INFO?[0;39m ?[35m22316?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mo.hibernate.jpa.internal.util.LogHelper ?[0;39m ?[2m:?[0;39m HHH000204: Processing PersistenceUnitInfo [name: default]
+?[2m2021-05-29 22:14:57.417?[0;39m ?[32m INFO?[0;39m ?[35m22316?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36morg.hibernate.Version                   ?[0;39m ?[2m:?[0;39m HHH000412: Hibernate ORM core version 5.4.29.Final
+?[2m2021-05-29 22:14:57.595?[0;39m ?[32m INFO?[0;39m ?[35m22316?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mo.hibernate.annotations.common.Version  ?[0;39m ?[2m:?[0;39m HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+?[2m2021-05-29 22:14:57.726?[0;39m ?[32m INFO?[0;39m ?[35m22316?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mcom.zaxxer.hikari.HikariDataSource      ?[0;39m ?[2m:?[0;39m HikariPool-1 - Starting...
+?[2m2021-05-29 22:14:57.935?[0;39m ?[32m INFO?[0;39m ?[35m22316?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mcom.zaxxer.hikari.HikariDataSource      ?[0;39m ?[2m:?[0;39m HikariPool-1 - Start completed.
+?[2m2021-05-29 22:14:57.974?[0;39m ?[32m INFO?[0;39m ?[35m22316?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36morg.hibernate.dialect.Dialect           ?[0;39m ?[2m:?[0;39m HHH000400: Using dialect: org.hibernate.dialect.MySQL55Dialect
+?[2m2021-05-29 22:14:58.844?[0;39m ?[32m INFO?[0;39m ?[35m22316?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mo.h.e.t.j.p.i.JtaPlatformInitiator      ?[0;39m ?[2m:?[0;39m HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+?[2m2021-05-29 22:14:58.854?[0;39m ?[32m INFO?[0;39m ?[35m22316?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mj.LocalContainerEntityManagerFactoryBean?[0;39m ?[2m:?[0;39m Initialized JPA EntityManagerFactory for persistence unit 'default'
+?[2m2021-05-29 22:14:59.879?[0;39m ?[33m WARN?[0;39m ?[35m22316?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mJpaBaseConfiguration$JpaWebConfiguration?[0;39m ?[2m:?[0;39m spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+?[2m2021-05-29 22:15:00.391?[0;39m ?[32m INFO?[0;39m ?[35m22316?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mo.s.s.web.DefaultSecurityFilterChain    ?[0;39m ?[2m:?[0;39m Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@71d95724, org.springframework.security.web.context.SecurityContextPersistenceFilter@5ab95d99, org.springframework.security.web.header.HeaderWriterFilter@6cb86538, org.springframework.security.web.csrf.CsrfFilter@31d6568a, org.springframework.security.web.authentication.logout.LogoutFilter@7e1cc381, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@4a367cbc, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5b10f694, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5a234088, org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter@8887146, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@67873020, org.springframework.security.web.session.SessionManagementFilter@7747acf, org.springframework.security.web.access.ExceptionTranslationFilter@3553f58e, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@5c9c7ac1]
+?[2m2021-05-29 22:15:00.797?[0;39m ?[32m INFO?[0;39m ?[35m22316?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mo.s.s.concurrent.ThreadPoolTaskExecutor ?[0;39m ?[2m:?[0;39m Initializing ExecutorService 'applicationTaskExecutor'
+?[2m2021-05-29 22:15:01.654?[0;39m ?[32m INFO?[0;39m ?[35m22316?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mo.s.b.a.e.web.EndpointLinksResolver     ?[0;39m ?[2m:?[0;39m Exposing 2 endpoint(s) beneath base path '/actuator'
+?[2m2021-05-29 22:15:01.727?[0;39m ?[32m INFO?[0;39m ?[35m22316?[0;39m ?[2m---?[0;39m ?[2m[    Test worker]?[0;39m ?[36mcom.project.love_data.LocationTest      ?[0;39m ?[2m:?[0;39m Started LocationTest in 6.531 seconds (JVM running for 7.919)
+삭제 전 데이터
+Location(loc_no=14, loc_name=asdfasdf asdf, user_no=0, loc_uuid=f41e2b68-c310-4a9f-853c-ec395b46f968, tel=2310231232, roadAddr=서울특별시 은평구 진관1로 21-10, addrDetail=124, zipNo=03311, siDo=서울특별시, siGunGu=은평구, info=asdfasdf, tagSet=[ACTION_C, ACTION_A, ACTION_B], cmtSet=[], likeCount=0, viewCount=0)
+삭제 성공
+location = Location(loc_no=1, loc_name=Location_0000, user_no=0, loc_uuid=UUID_0, tel=010-0000-0000, roadAddr=Addr_0000, addrDetail=AddrDetail_0000, zipNo=0, siDo=siDo_0000, siGunGu=0000, info=This locaiton is Generated randomly 0000, tagSet=[TYPE_ODD, ACTION_A], cmtSet=[Comment(cmtNo=11, cmtIdx=0, cmtContent=Temp, userNo=0, cmtUuid=4a4440e8-e9a1-45e0-849e-cc12d5429eb2), Comment(cmtNo=1, cmtIdx=0, cmtContent=Comment Content 0, userNo=0, cmtUuid=de4387e6-8546-47a1-b335-5081a2f88d08)], likeCount=56, viewCount=0)
+[Image(img_no=1, idx=0, user_no=0, img_url=path/0, img_uuid=UUID_0)]
+location = Location(loc_no=2, loc_name=Location_0001, user_no=0, loc_uuid=UUID_1, tel=010-0000-0001, roadAddr=Addr_0001, addrDetail=AddrDetail_0001, zipNo=1, siDo=siDo_0001, siGunGu=0001, info=This locaiton is Generated randomly 0001, tagSet=[TYPE_EVEN, ACTION_B], cmtSet=[Comment(cmtNo=2, cmtIdx=0, cmtContent=Comment Content 1, userNo=0, cmtUuid=8d9c052e-299e-4a78-989c-60e34560ac19)], likeCount=3, viewCount=0)
+[Image(img_no=2, idx=0, user_no=1, img_url=path/1, img_uuid=UUID_1)]
+location = Location(loc_no=3, loc_name=Location_0002, user_no=1, loc_uuid=UUID_2, tel=010-0000-0002, roadAddr=Addr_0002, addrDetail=AddrDetail_0002, zipNo=2, siDo=siDo_0002, siGunGu=0002, info=This locaiton is Generated randomly 0002, tagSet=[TYPE_ODD, ACTION_A], cmtSet=[Comment(cmtNo=3, cmtIdx=0, cmtContent=Comment Content 2, userNo=1, cmtUuid=9c39f395-4c0e-4aed-aaea-e6036b48aa3e)], likeCount=1, viewCount=0)
+[Image(img_no=3, idx=0, user_no=2, img_url=path/2, img_uuid=UUID_2)]
+location = Location(loc_no=4, loc_name=Location_0003, user_no=2, loc_uuid=UUID_3, tel=010-0000-0003, roadAddr=Addr_0003, addrDetail=AddrDetail_0003, zipNo=3, siDo=siDo_0003, siGunGu=0003, info=This locaiton is Generated randomly 0003, tagSet=[TYPE_EVEN, ACTION_B], cmtSet=[Comment(cmtNo=4, cmtIdx=0, cmtContent=Comment Content 3, userNo=2, cmtUuid=58b66503-1272-41e4-bfb9-991274355e01)], likeCount=2, viewCount=0)
+[Image(img_no=4, idx=0, user_no=3, img_url=path/3, img_uuid=UUID_3)]
+location = Location(loc_no=5, loc_name=Location_0004, user_no=0, loc_uuid=UUID_4, tel=010-0000-0004, roadAddr=Addr_0004, addrDetail=AddrDetail_0004, zipNo=4, siDo=siDo_0004, siGunGu=0004, info=This locaiton is Generated randomly 0004, tagSet=[TYPE_ODD, ACTION_A], cmtSet=[Comment(cmtNo=5, cmtIdx=0, cmtContent=Comment Content 4, userNo=0, cmtUuid=0ccdc8b0-6e0f-44ca-afae-3c3466db3129)], likeCount=0, viewCount=0)
+[Image(img_no=5, idx=0, user_no=4, img_url=path/4, img_uuid=UUID_4)]
+location = Location(loc_no=6, loc_name=Location_0005, user_no=0, loc_uuid=UUID_5, tel=010-0000-0005, roadAddr=Addr_0005, addrDetail=AddrDetail_0005, zipNo=5, siDo=siDo_0005, siGunGu=0005, info=This locaiton is Generated randomly 0005, tagSet=[TYPE_EVEN, ACTION_B], cmtSet=[Comment(cmtNo=6, cmtIdx=0, cmtContent=Comment Content 5, userNo=0, cmtUuid=6ea43041-ca73-454a-ae0c-57a1d97ce9a7)], likeCount=0, viewCount=0)
+[Image(img_no=6, idx=0, user_no=5, img_url=path/5, img_uuid=UUID_5)]
+location = Location(loc_no=7, loc_name=Location_0006, user_no=1, loc_uuid=UUID_6, tel=010-0000-0006, roadAddr=Addr_0006, addrDetail=AddrDetail_0006, zipNo=6, siDo=siDo_0006, siGunGu=0006, info=This locaiton is Generated randomly 0006, tagSet=[TYPE_ODD, ACTION_A], cmtSet=[Comment(cmtNo=7, cmtIdx=0, cmtContent=Comment Content 6, userNo=1, cmtUuid=35c46257-1201-4cfe-aa94-68d7b7d928eb)], likeCount=0, viewCount=0)
+[Image(img_no=7, idx=0, user_no=6, img_url=path/6, img_uuid=UUID_6)]
+location = Location(loc_no=8, loc_name=Location_0007, user_no=2, loc_uuid=UUID_7, tel=010-0000-0007, roadAddr=Addr_0007, addrDetail=AddrDetail_0007, zipNo=7, siDo=siDo_0007, siGunGu=0007, info=This locaiton is Generated randomly 0007, tagSet=[TYPE_EVEN, ACTION_B], cmtSet=[Comment(cmtNo=8, cmtIdx=0, cmtContent=Comment Content 7, userNo=2, cmtUuid=56fa1c8a-f14b-4a13-acee-aa981b5d13b1)], likeCount=0, viewCount=0)
+[Image(img_no=8, idx=0, user_no=7, img_url=path/7, img_uuid=UUID_7)]
+location = Location(loc_no=9, loc_name=Location_0008, user_no=0, loc_uuid=UUID_8, tel=010-0000-0008, roadAddr=Addr_0008, addrDetail=AddrDetail_0008, zipNo=8, siDo=siDo_0008, siGunGu=0008, info=This locaiton is Generated randomly 0008, tagSet=[TYPE_ODD, ACTION_A], cmtSet=[Comment(cmtNo=9, cmtIdx=0, cmtContent=Comment Content 8, userNo=0, cmtUuid=6ba035da-926f-4aae-b652-283136ae2cbe)], likeCount=0, viewCount=0)
+[Image(img_no=9, idx=0, user_no=8, img_url=path/8, img_uuid=UUID_8)]
+location = Location(loc_no=10, loc_name=Location_0009, user_no=3, loc_uuid=UUID_9, tel=010-0000-0009, roadAddr=Addr_0009, addrDetail=AddrDetail_0009, zipNo=9, siDo=siDo_0009, siGunGu=0009, info=This locaiton is Generated randomly 0009, tagSet=[TYPE_EVEN, ACTION_B], cmtSet=[Comment(cmtNo=10, cmtIdx=0, cmtContent=Comment Content 9, userNo=3, cmtUuid=b40054ca-8685-4371-b1a3-222fee4d6ac9)], likeCount=0, viewCount=0)
+[Image(img_no=10, idx=0, user_no=9, img_url=path/9, img_uuid=UUID_9)]
+location = Location(loc_no=11, loc_name=Location_0001, user_no=2, loc_uuid=UUID_0010, tel=010-0000-0001, roadAddr=Addr_0001, addrDetail=AddrDetail_0001, zipNo=00000, siDo=siDo_0001, siGunGu=0001, info=This locaiton is Generated randomly duplicated, tagSet=[TYPE_ODD, ACTION_A], cmtSet=[], likeCount=0, viewCount=0)
+[]
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="http://www.gradle.org">Gradle 6.8.3</a> at 2021. 5. 29 오후 10:15:02</p>
+</div>
+</div>
+</body>
+</html>
