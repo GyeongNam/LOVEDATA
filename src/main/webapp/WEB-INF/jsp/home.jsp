@@ -81,6 +81,7 @@
 			<a href="/NewPassword">패스워드 재설정 미리보기</a>
 			<a href="/sample/index">테스트</a>
 			<a href="/service/loc_index">장소_인덱스</a>
+			<a href="/Notice">공지사항</a>
 		</div>
 	</div>
 </div>

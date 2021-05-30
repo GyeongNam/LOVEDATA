@@ -18,6 +18,7 @@
     </div>
     <div id="jb-sidebar">
         <div class="tab">
+
             <button class="tablinks" onclick="MenuTab(event, 'Myinfo')" id="defaultOpen">내 정보</button>
             <button class="tablinks" onclick="MenuTab(event, 'MyReview')">나의 리뷰</button>
             <button class="tablinks" onclick="MenuTab(event, 'MyPlace')">나의 코스/장소</button>
