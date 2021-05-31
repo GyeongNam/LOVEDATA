@@ -1,9 +1,8 @@
 package com.project.love_data.controller;
 
 import com.project.love_data.businessLogic.service.*;
-import com.project.love_data.dto.LocationDTO;
-import com.project.love_data.dto.PageRequestDTO;
-import com.project.love_data.dto.PageResultDTO;
+import com.project.love_data.dto.*;
+import com.project.love_data.model.service.Comment;
 import com.project.love_data.security.model.AuthUserModel;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
 import java.util.*;
 
 @Log4j2
@@ -27,8 +25,11 @@ public class ServiceController {
     LocationService locService;
     @Autowired
     ImageService imgService;
+    @Autowired
+    CommentService comService;
 
-    final static int MAX_LOC_REC_PAGE_SIZE_COUNT = 4;
+    final static int MAX_LOC_LIST_SIZE = 4;
+    final static int MAX_COM_COUNT = 10;
     final static int MAX_UPLOAD_COUNT = 10;
     final static int MIN_UPLOAD_COUNT = 3;
     List<String> tagList = new ArrayList<>();
@@ -113,14 +114,31 @@ public class ServiceController {
                             Model model,
                             HttpServletRequest request) {
         if (locNo != null){
+            locService.incViewCount(locNo);
             LocationDTO dto = locService.selectLocDTO(locNo);
+            pageRequestDTO.setSize(MAX_COM_COUNT);
+            PageResultDTO<CommentDTO, Comment> resultCommentDTO
+//                    = comService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION, CommentSortType.IDX_ASC);
+            = comService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION);
 
             model.addAttribute("dto", dto);
+            model.addAttribute("resComDTO", resultCommentDTO);
 
-            log.info("dto imgList : " + dto.printImgURLS());
+            log.info("Comment List : " + dto.getCmdSet());
+           log.info("PREV = " + resultCommentDTO.isPrev());
+           log.info("NEXT = " + resultCommentDTO.isNext());
+           log.info("TOTAL : " + resultCommentDTO.getTotalPage());
+
+           log.info("-------------------------------------------------");
+            for (CommentDTO commentDTO : resultCommentDTO.getDtoList()) {
+               log.info(commentDTO.getCmtNo() + "\tcommentDTO = " + commentDTO);
+            }
+            log.info("-------------------------------------------------");
+
+            return "/service/loc_detail";
         }
 
-        return "/service/loc_detail";
+        return "/service/loc_recommend";
     }
 
     @GetMapping(value = "/service/loc_recommend/list")
@@ -128,7 +146,7 @@ public class ServiceController {
                                    PageRequestDTO pageRequestDTO,
                                    Authentication authentication,
                                    Model model) {
-        pageRequestDTO.setSize(MAX_LOC_REC_PAGE_SIZE_COUNT);
+        pageRequestDTO.setSize(MAX_LOC_LIST_SIZE);
         PageResultDTO<LocationDTO, com.project.love_data.model.service.Location> resultDTO = locService.getList(pageRequestDTO);
         model.addAttribute("result", resultDTO);
 

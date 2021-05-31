@@ -91,7 +91,7 @@ public class LocationDTO {
     }
 
     public void addCmt(Comment cmt) {
-        cmt.setCmtNo((long) imgList.size());
+        cmt.setCmtIdx((long) imgList.size());
         cmt.setLocation(
                 Location.builder()
                         .loc_no(this.getLoc_no())

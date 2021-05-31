@@ -1,12 +1,7 @@
 package com.project.love_data;
 
-import com.project.love_data.businessLogic.service.CommentService;
-import com.project.love_data.businessLogic.service.LocationService;
-import com.project.love_data.businessLogic.service.SearchOption;
-import com.project.love_data.dto.CommentDTO;
-import com.project.love_data.dto.CommentPageType;
-import com.project.love_data.dto.PageRequestDTO;
-import com.project.love_data.dto.PageResultDTO;
+import com.project.love_data.businessLogic.service.*;
+import com.project.love_data.dto.*;
 import com.project.love_data.model.service.Comment;
 import com.project.love_data.model.service.Location;
 import com.project.love_data.repository.CommentRepository;
@@ -53,14 +48,19 @@ public class CommentTest {
             locService.update(loc);
         }
 
+        LocationDTO dto = locService.selectLocDTO(1L);
+
         Comment cmt = Comment.builder()
                 .userNo(0L)
                 .cmtContent("Temp")
-                .location(locService.dtoToEntity(locService.selectLocDTO(1L))).build();
+                .location(locService.dtoToEntity(dto)).build();
 
         cmtRepository.save(cmt);
 
+        dto.addCmt(cmt);
+        Location entity = locService.dtoToEntity(dto);
 
+        locService.update(entity);
     }
 
     @Test
@@ -121,7 +121,8 @@ public class CommentTest {
                 .size(10)
                 .build();
 
-        PageResultDTO<CommentDTO, Comment> resultDTO = cmtService.getCmtPage(pageRequestDTO, CommentPageType.ALL);
+        PageResultDTO<CommentDTO, Comment> resultDTO
+                = cmtService.getCmtPage(pageRequestDTO, CommentPageType.ALL, CommentSortType.IDX_ASC);
 
         System.out.println("PREV = " + resultDTO.isPrev());
         System.out.println("NEXT = " + resultDTO.isNext());
@@ -145,7 +146,8 @@ public class CommentTest {
                 .locNo(1L)
                 .build();
 
-        PageResultDTO<CommentDTO, Comment> resultDTO = cmtService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION);
+        PageResultDTO<CommentDTO, Comment> resultDTO
+                = cmtService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION, CommentSortType.IDX_ASC);
 
         System.out.println("PREV = " + resultDTO.isPrev());
         System.out.println("NEXT = " + resultDTO.isNext());

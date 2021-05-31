@@ -31,6 +31,10 @@ com/project/love_data/dto/PageResultDTO.java
  com.project.love_data.dto.PageResultDTO
 com/project/love_data/model/base/TimeEntity.java
  com.project.love_data.model.base.TimeEntity
+com/project/love_data/businessLogic/service/CommentPageType.java
+ com.project.love_data.businessLogic.service.CommentPageType
+com/project/love_data/businessLogic/service/CommentSortType.java
+ com.project.love_data.businessLogic.service.CommentSortType
 com/project/love_data/security/service/AuthenticationFailure.java
  com.project.love_data.security.service.AuthenticationFailure
 com/project/love_data/model/user/User.java
@@ -122,8 +126,6 @@ com/project/love_data/controller/MailController.java
  com.project.love_data.controller.MailController
 com/project/love_data/model/service/QLocation.java
  com.project.love_data.model.service.QLocation
-com/project/love_data/dto/CommentPageType.java
- com.project.love_data.dto.CommentPageType
 com/project/love_data/businessLogic/SmsService.java
  com.project.love_data.businessLogic.SmsService
 com/project/love_data/model/resource/Image.java

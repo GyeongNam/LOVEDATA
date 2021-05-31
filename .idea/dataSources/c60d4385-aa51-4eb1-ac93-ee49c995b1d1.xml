@@ -1411,9 +1411,10 @@ ATTRIBUTE_NAME</ColNames>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="410" parent="335" name="img_uuid">
+    <column id="410" parent="335" name="profile_pic">
       <Position>2</Position>
-      <DataType>varchar(45)|0s</DataType>
+      <DataType>varchar(100)|0s</DataType>
+      <NotNull>1</NotNull>
     </column>
     <column id="411" parent="335" name="social_info">
       <Position>3</Position>
@@ -1470,8 +1471,8 @@ ATTRIBUTE_NAME</ColNames>
       <DataType>datetime|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="423" parent="335" name="UK_8i1syoo6m6etayv0xg2thr6yk">
-      <ColNames>img_uuid</ColNames>
+    <index id="423" parent="335" name="UK_qajwtw6rf9hy6xs43jcupchre">
+      <ColNames>profile_pic</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
@@ -1480,9 +1481,9 @@ ATTRIBUTE_NAME</ColNames>
       <ColNames>user_no</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="425" parent="335" name="UK_8i1syoo6m6etayv0xg2thr6yk">
-      <ColNames>img_uuid</ColNames>
-      <UnderlyingIndexName>UK_8i1syoo6m6etayv0xg2thr6yk</UnderlyingIndexName>
+    <key id="425" parent="335" name="UK_qajwtw6rf9hy6xs43jcupchre">
+      <ColNames>profile_pic</ColNames>
+      <UnderlyingIndexName>UK_qajwtw6rf9hy6xs43jcupchre</UnderlyingIndexName>
     </key>
     <column id="426" parent="336" name="user_user_no">
       <Position>1</Position>

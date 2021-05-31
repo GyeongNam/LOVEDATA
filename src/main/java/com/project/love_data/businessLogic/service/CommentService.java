@@ -1,7 +1,6 @@
 package com.project.love_data.businessLogic.service;
 
 import com.project.love_data.dto.CommentDTO;
-import com.project.love_data.dto.CommentPageType;
 import com.project.love_data.dto.PageRequestDTO;
 import com.project.love_data.dto.PageResultDTO;
 import com.project.love_data.model.service.Comment;
@@ -55,12 +54,28 @@ public class CommentService {
         return dto;
     }
 
-    public PageResultDTO<CommentDTO, Comment> getCmtPage(PageRequestDTO requestDTO, CommentPageType pageType) {
-        Pageable pageable = requestDTO.getPageable(Sort.by("cmtIdx").descending());
+    public PageResultDTO<CommentDTO, Comment> getCmtPage(PageRequestDTO requestDTO,
+                                                         CommentPageType commentType) {
+       return getCmtPage(requestDTO, commentType, CommentSortType.IDX_ASC);
+    }
+
+    public PageResultDTO<CommentDTO, Comment> getCmtPage(PageRequestDTO requestDTO,
+                                                         CommentPageType commentType,
+                                                         CommentSortType commentSortType) {
+        Pageable pageable;
+        switch (commentSortType) {
+            case IDX_DES:
+                pageable = requestDTO.getPageable(Sort.by("cmtIdx").descending());
+                break;
+            case IDX_ASC:
+            default:
+                pageable = requestDTO.getPageable(Sort.by("cmtIdx").ascending());
+                break;
+        }
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
 
-        switch (pageType) {
+        switch (commentType) {
             case LOCATION:
                 booleanBuilder = getCmtPage_Loc(requestDTO);
                 break;

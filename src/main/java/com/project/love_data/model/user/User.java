@@ -78,8 +78,9 @@ public class User{
     @Column(length = 10, nullable = true)
     private String social_info;
 
-    @Column(name = "img_uuid", nullable = true, length = 45, unique = true)
-    private String profile_pic;
+    @Column(name = "profile_pic", nullable = false, length = 100, unique = true)
+    @Builder.Default
+    private String profile_pic = "/image/icon/user/user.png";
 
     @ElementCollection(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_user_no")
