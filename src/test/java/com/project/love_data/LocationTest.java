@@ -29,6 +29,56 @@ public class LocationTest {
     LocationService locService;
 
     @Test
+    public void InsertInitLocation() {
+        List<LocationTag> tagSet = new ArrayList<>();
+        tagSet.add(LocationTag.ACTION_A);
+        tagSet.add(LocationTag.ACTION_B);
+
+        Long user_no = (long) new Random().nextInt(4);
+
+        Location loc = Location.builder()
+                .loc_name("중부대학교 충청캠퍼스")
+                .user_no(user_no)
+                .roadAddr("충청남도 금산군 추부면 대학로 201")
+                .addrDetail("충청캠퍼스")
+                .siDo("충청남도")
+                .siGunGu("금산군")
+                .info("중부대학교는 학생성장을 학교 발전을 위한 최고의 비전으로 추구하고 있습니다." +
+                        " 학생성장은 인공지능과 융복합 시대의 전공역량을 충분히 획득한 전문인재, 올바른 인성과 균형 잡힌 교양을 갖춘 바른 인재, 그리고 창의적인 문제해결력을 갖춘 창의인재로의 발전을 지향합니다")
+                .loc_uuid(UUID.randomUUID().toString())
+                .tel("041-750-6500")
+                .zipNo("32713")
+                .build();
+
+        loc.addLocTag(String.valueOf(tagSet.get(0)));
+
+        locationRepository.save(loc);
+
+        Image img;
+        for (int i = 0; i < 3; i++) {
+            img = Image.builder()
+                    .location(loc)
+                    .img_uuid("Jungbu_Chungnam_" + i + ".jpg")
+                    .user_no(user_no)
+                    .img_url("/image/init/Jungbu-Chungnam-" + i + ".jpg")
+                    .build();
+            img.setLocation(loc);
+
+            imageRepository.save(img);
+
+            loc.addImg(img);
+
+            if ("".equals(loc.getThumbnail())) {
+                loc.setThumbnail(img.getImg_url());
+            }
+        }
+
+        locationRepository.save(loc);
+
+        System.out.println("Location 저장 완료");
+    }
+
+    @Test
     public void InsertLocation() {
         List<LocationTag> tagSet = new ArrayList<>();
         tagSet.add(LocationTag.TYPE_ODD);
@@ -72,6 +122,10 @@ public class LocationTest {
 
             loc.addImg(img);
 
+            if ("".equals(loc.getThumbnail())){
+                loc.setThumbnail(img.getImg_url());
+            }
+
             locationRepository.save(loc);
         }
 
@@ -103,7 +157,7 @@ public class LocationTest {
         Location temp = loc.get();
 
         System.out.println(temp);
-        System.out.println(temp.getImgList());
+        System.out.println(temp.getImgSet());
     }
 
     @Test
@@ -112,7 +166,7 @@ public class LocationTest {
 
         for (Location location : list) {
             System.out.println("location = " + location);
-            System.out.println(location.getImgList());
+            System.out.println(location.getImgSet());
         }
     }
 
@@ -123,7 +177,7 @@ public class LocationTest {
         Location temp = loc.get();
 
         System.out.println("temp = " + temp);
-        System.out.println(temp.getImgList());
+        System.out.println(temp.getImgSet());
 
         temp.setLoc_name("Updated Loc_0");
         temp.setInfo("Updated Location Info");
@@ -142,7 +196,7 @@ public class LocationTest {
 
         Optional<Location> box = locationRepository.findLocByUUID(temp.getLoc_uuid());
         System.out.println(box.get());
-        System.out.println(box.get().getImgList());
+        System.out.println(box.get().getImgSet());
     }
 
     @Test
@@ -150,7 +204,7 @@ public class LocationTest {
         Optional<Location> item = locationRepository.findLocByUUID("UUID_1");
 
         System.out.println("item = " + item.get());
-        System.out.println(item.get().getImgList());
+        System.out.println(item.get().getImgSet());
     }
 
     @Test
@@ -233,7 +287,7 @@ public class LocationTest {
 
         for (Location location : list) {
             System.out.println("location = " + location);
-            System.out.println(location.getImgList());
+            System.out.println(location.getImgSet());
         }
     }
 
@@ -268,7 +322,7 @@ public class LocationTest {
 
         for (Location location : list) {
             System.out.println("location = " + location);
-            System.out.println(location.getImgList());
+            System.out.println(location.getImgSet());
         }
     }
 }

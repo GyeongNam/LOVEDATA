@@ -10,5 +10,8 @@ public enum LocationTag {
     ACTION_G,
     ACTION_H,
     TYPE_ODD,
-    TYPE_EVEN
+    TYPE_EVEN,
+    야외,
+    학교,
+    공원
 }

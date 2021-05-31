@@ -72,7 +72,7 @@ public class Location extends TimeEntity {
     @JoinColumn(name = "loc_no")
     @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
     @Builder.Default
-    private List<Image> imgList = new ArrayList<>();
+    private Set<Image> imgSet = new HashSet<>();
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "location")
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -87,6 +87,10 @@ public class Location extends TimeEntity {
     @Column(name = "viewcount", nullable = false, columnDefinition = "int default 0")
     @Builder.Default
     private int viewCount = 0;
+
+    @Column(name = "thumbnail", nullable = false)
+    @Builder.Default
+    private String thumbnail = "";
 
     // Todo 여기에 댓글 칼럼도 추가
 
@@ -106,9 +110,9 @@ public class Location extends TimeEntity {
     }
 
     public void addImg(Image img) {
-        img.setIdx((long) imgList.size());
+        img.setIdx((long) imgSet.size());
         img.setLocation(this);
-        imgList.add(img);
+        imgSet.add(img);
     }
 
     public void addImg(List<Image> img) {

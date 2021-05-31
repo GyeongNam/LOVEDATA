@@ -21,7 +21,7 @@ public class ImageService {
         Image entity = Image.builder()
                 .location(location)
                 .img_uuid(fileName)
-                .img_url(fileRootPath+File.separator+fileName)
+                .img_url(fileRootPath+"/"+fileName)
                 .user_no(Long.valueOf(user_no))
                 .build();
 

@@ -89,14 +89,33 @@
 					<c:set var="imgList" value="${dto.imgList}"></c:set>
 					<c:choose>
 						<c:when test="${!empty imgList}">
-							<svg class="bd-placeholder-img card-img-top" width="100%" height="400"
-								 xmlns="http://www.w3.org/2000/svg" role="img"
-								 aria-label="Placeholder: Thumbnail"
-								 preserveAspectRatio="xMidYMid slice" focusable="false">
-								<rect width="100%" height="100%" fill="#55595c">
-									<image height="100%" width="100%" href="${imgList.get(i).img_url}"></image>
-								</rect>
-							</svg>
+							<div class="d-flex justify-content-center">
+								<img class="bd-placeholder-img card-img-top d-flex justify-content-center" width="100%"
+									 height="400"
+									 alt="${dto.loc_name}"
+									 src="${dto.imgList.get(0).img_url}"
+									 id="imgDisplay"
+									 name="imgDisplay"
+									 preserveAspectRatio="xMidYMid slice" focusable="false">
+								<div class="d-flex justify-content-between h-25 card-img-overlay" style="top: 40%">
+									<button class="btn btn-sm" id="imgPrev" name="imgPrev" onclick="clickImgPrev()">
+										<img src="/image/icon/left-arrow.png" width="30px" height="30px" alt="imgPrev">
+									</button>
+									<button class="btn btn-sm" id="imgNext" name="imgNext" onclick="clickImgNext()">
+										<img src="/image/icon/right-arrow.png" width="30px" height="30px" alt="imgNext">
+									</button>
+										<%--									<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor"--%>
+										<%--										 class="bi bi-arrow-right-circle" viewBox="0 0 100 100">--%>
+										<%--										<path fill-rule="evenodd"--%>
+										<%--											  d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>--%>
+										<%--									</svg>--%>
+								</div>
+								</img>
+								<span class="visually-hidden" id="imgListSize" name="imgListSize">${imgList.size()}</span>
+								<span class="visually-hidden" id="dtoImgListSize" name="dtoImgListSize">${dto.imgList.size()}</span>
+								<span class="visually-hidden" id="imgListIndex" name="imgListIndex">0</span>
+								<intpu type="hidden" id="imgList" name="imgList" value="${dto.imgList}"></intpu>
+							</div>
 						</c:when>
 						<c:otherwise>
 							<svg class="bd-placeholder-img card-img-top" width="100%" height="400"
@@ -257,7 +276,36 @@
 <%--		crossorigin="anonymous"></script>--%>
 <script defer src="/js/bootstrap.js"></script>
 <script defer src="/js/loc_detail.js"></script>
-<script defer src="/js/loc_common.js"></script>
+<script defer src="/js/loc_common.js"></script>a
+<script defer>
+    function clickImgNext() {
+        var imgDisplay = document.getElementById("imgDisplay");
+        var index = document.getElementById("imgListIndex");
+        var temp = '<c:out value="${dto.printImgURLS()}"/>';
+        var imgList = temp.split('_');
+        var tempIndex = parseInt(index.innerText);
+
+        if (imgList.length > tempIndex + 1) {
+            index.innerText = tempIndex + 1;
+            tempIndex += 1;
+            imgDisplay.src = imgList[tempIndex];
+        }
+    }
+
+    function clickImgPrev() {
+        var imgDisplay = document.getElementById("imgDisplay");
+        var index = document.getElementById("imgListIndex");
+        var temp = '<c:out value="${dto.printImgURLS()}"/>';
+        var imgList = temp.split('_');
+        var tempIndex = parseInt(index.innerText);
+
+        if (0 <= tempIndex - 1) {
+            index.innerText = tempIndex - 1;
+            tempIndex -= 1;
+            imgDisplay.src = imgList[tempIndex];
+        }
+    }
+</script>
 </body>
 <%--<%@ include file="../layout/footer.jsp" %>--%>
 </html>
