@@ -43,3 +43,10 @@
     border-left: none;
     height: auto;
 }
+
+.fc-daygrid-day.fc-day.fc-day-sat.fc-day-past{
+    color:#0000FF;
+}
+.fc-daygrid-day.fc-day.fc-day-sun.fc-day-past{
+    color:#FF0000;
+}
