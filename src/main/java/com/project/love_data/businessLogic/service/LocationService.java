@@ -44,6 +44,9 @@ public class LocationService {
 
         for (Image image : imgList) {
             imgRepository.save(image);
+            if ("".equals(entity.getThumbnail())) {
+                entity.setThumbnail(image.getImg_url());
+            }
         }
 
         log.info("entity : " + entity);
@@ -69,6 +72,7 @@ public class LocationService {
                 .cmtSet(dto.getCmdSet())
                 .likeCount(dto.getLikeCount())
                 .thumbnail(dto.getThumbnail())
+                .viewCount(dto.getViewCount())
                 .build();
 
         return entity;
@@ -93,6 +97,7 @@ public class LocationService {
                 .cmdSet(entity.getCmtSet())
                 .likeCount(entity.getLikeCount())
                 .thumbnail(entity.getThumbnail())
+                .viewCount(entity.getViewCount())
                 .build();
 
         List<Image> tempList = new ArrayList<>();
@@ -247,5 +252,15 @@ public class LocationService {
         update(entity);
 
         return true;
+    }
+
+    public void incViewCount(Long loc_no) {
+        LocationDTO dto = selectLocDTO(loc_no);
+
+        dto.setViewCount(dto.getViewCount()+1);
+
+        Location entity = dtoToEntity(dto);
+
+        update(entity);
     }
 }

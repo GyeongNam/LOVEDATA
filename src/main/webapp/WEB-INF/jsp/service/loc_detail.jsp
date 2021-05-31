@@ -110,6 +110,13 @@
 										<%--											  d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>--%>
 										<%--									</svg>--%>
 								</div>
+								<div class="d-flex justify-content-end h-25 card-img-overlay" style="top : 75%">
+									<div class="badge bg-dark d-flex justify-content-center" style="width: 6rem">
+										<p class="text-center fs-3 align-self-center mb-0" id="indexIndicator" name="indexIndicator">
+											1/${imgList.size()}
+										</p>
+									</div>
+								</div>
 								</img>
 								<span class="visually-hidden" id="imgListSize" name="imgListSize">${imgList.size()}</span>
 								<span class="visually-hidden" id="dtoImgListSize" name="dtoImgListSize">${dto.imgList.size()}</span>
@@ -134,7 +141,7 @@
 				<div class="row d-flex">
 					<div class="row d-flex justify-content-between p-1">
 						<span class="h1 col-5">${dto.loc_name}</span>
-						<button class="btn btn-outline-danger col-2" style="max-height: 56px" onclick="">공유</button>
+						<button class="btn btn-outline-danger col-2" style="max-height: 56px" onclick="copyURL()">공유</button>
 					</div>
 					<div class="row d-flex">
 						<h3>지역 : ${dto.siDo} ${dto.siGunGu}</h3>
@@ -148,8 +155,15 @@
 				</div>
 				<div class="row d-flex">
 				</div>
-				<img src="/image/icon/like/love_black.png" class="loc_icon" alt="찜하기"
-					 onclick="onClickLike(this)">
+
+				<div class="d-flex align-content-end flex-wrap">
+					<img src="/image/icon/like/love_black.png" class="loc_icon_big me-2" alt="찜하기"
+						 onclick="onClickLike(this)">
+					<span class="text-center align-middle fs-3 me-4" id="likeCount">${dto.likeCount}</span>
+					<img src="/image/icon/comment.png" class="loc_icon_big me-2" alt="댓글">
+					<span class="text-center align-middle fs-3 me-4">${dto.cmdSet.size()}</span>
+				</div>
+
 				<span class="d-none" id="loc_no">${dto.loc_no}</span>
 			</div>
 		</div>
@@ -284,11 +298,13 @@
         var temp = '<c:out value="${dto.printImgURLS()}"/>';
         var imgList = temp.split('_');
         var tempIndex = parseInt(index.innerText);
+        var indexIndicator = document.getElementById("indexIndicator");
 
         if (imgList.length > tempIndex + 1) {
             index.innerText = tempIndex + 1;
             tempIndex += 1;
             imgDisplay.src = imgList[tempIndex];
+            indexIndicator.innerText = (tempIndex+1) + "/" + imgList.length;
         }
     }
 
@@ -298,11 +314,13 @@
         var temp = '<c:out value="${dto.printImgURLS()}"/>';
         var imgList = temp.split('_');
         var tempIndex = parseInt(index.innerText);
+        var indexIndicator = document.getElementById("indexIndicator");
 
         if (0 <= tempIndex - 1) {
             index.innerText = tempIndex - 1;
             tempIndex -= 1;
             imgDisplay.src = imgList[tempIndex];
+            indexIndicator.innerText = (tempIndex+1) + "/" + imgList.length;
         }
     }
 </script>

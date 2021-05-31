@@ -231,6 +231,8 @@
 											   id="title_${i+0}">${result.dtoList.get(i).loc_name}</a>
 										</div>
 										<div class="d-flex align-items-center">
+											<img src="/image/icon/browser.png" class="loc_icon" alt="조회수">
+											<span class="align-middle">${result.dtoList.get(i).viewCount}</span>
 											<img src="/image/icon/comment.png" class="loc_icon" alt="댓글">
 												<%--									Todo 댓글 항목 Location Entity에 추가하기--%>
 											<span class="align-middle">${result.dtoList.get(i).cmdSet.size()}</span>
