@@ -7,90 +7,137 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="/fullcalendar/fullcalendar.min.css" />
+    <link rel="stylesheet" href="/fullcalendar/bootstrap.min.css">
+    <link rel="stylesheet" href='/fullcalendar/select.min.css' />
+    <link rel="stylesheet" href='/fullcalendar/bootstrap-datetimepicker.min.css' />
+    <link rel="stylesheet" href="/fullcalendar/main.css">
+
+<%--    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>--%>
+<%--    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>--%>
     <meta name="_csrf" content="${_csrf.token}">
     <meta name="_csrf_header" content="${_csrf.headerName}">
     <title>LoveData Calender</title>
 </head>
 <%@ include file="../layout/header.jsp" %>
 <body>
-    <div class="title">캘린더</div>
-    <div class="contents">
-    <div class="tab">
-        <button class="tablinks" onclick="openCity(event, 'all_calendar')" id="defaultOpen">전체일정보기</button>
-        <button class="add_calendar" onclick="openCity(event, 'add_calendar')">일정 추가</button>
-        <button class="tablinks" onclick="openCity(event, 'Anniversary')">기념일 보기</button>
-    </div>
     <div class="info-box">
         <div id="all_calendar" class="tabcontent">
-            <div id='calendar'></div>
+            <div class="container">
+                <!-- 일자 클릭시 메뉴오픈 -->
+                <div id="contextMenu" class="dropdown clearfix">
+                    <ul class="dropdown-menu dropNewEvent" role="menu" aria-labelledby="dropdownMenu"
+                        style="display:block;position:static;margin-bottom:5px;">
+                        <li><a tabindex="-1" href="#">add</a></li>
+                        <li class="divider"></li>
+                        <li><a tabindex="-1" href="#" data-role="close">Close</a></li>
+                    </ul>
+                </div>
+                <div id="wrapper">
+                    <div id="loading"></div>
+                    <div id="calendar"></div>
+                </div>
+
+                <!-- 일정 추가 MODAL -->
+                <div class="modal fade" tabindex="-1" role="dialog" id="eventModal">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                        aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title"></h4>
+                            </div>
+                            <div class="modal-body">
+
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <label class="col-xs-4" for="edit-allDay">하루종일</label>
+                                        <input class='allDayNewEvent' id="edit-allDay" type="checkbox"></label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <label class="col-xs-4" for="edit-title">일정명</label>
+                                        <input class="inputModal" type="text" name="edit-title" id="edit-title"
+                                               required="required" />
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <label class="col-xs-4" for="edit-title">주소 <button type="button" onclick="goPopup()" value="주소검색">주소검색</button></label>
+                                        <input type="hidden" placeholder="우편번호" id="zipNo" name="zipNo" readonly value="" required>
+                                        <input type="text" class="roadModal" placeholder="도로명 주소" id="roadAddrPart1" name="roadAddrPart1" readonly
+                                               required>
+                                        <input type="text" class="roadModal" placeholder="상세 주소" id="addrDetail" name="addrDetail" readonly
+                                               required>
+                                        <input type="hidden" placeholder="시도명" id="siNm" name="siNm" readonly required>
+                                        <input type="hidden" placeholder="시군구명" id="sggNm" name="sggNm" readonly required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <label class="col-xs-4" for="edit-start">시작</label>
+                                        <input class="inputModal" type="text" name="edit-start" id="edit-start" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <label class="col-xs-4" for="edit-end">끝</label>
+                                        <input class="inputModal" type="text" name="edit-end" id="edit-end" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <label class="col-xs-4" for="edit-color">색상</label>
+                                        <select class="inputModal" name="color" id="edit-color">
+                                            <option value="#D25565" style="color:#D25565;">빨간색</option>
+                                            <option value="#ffa94d" style="color:#ffa94d;">주황색</option>
+                                            <option value="#74c0fc" style="color:#74c0fc;">파란색</option>
+                                            <option value="#f06595" style="color:#f06595;">핑크색</option>
+                                            <option value="#63e6be" style="color:#63e6be;">연두색</option>
+                                            <option value="#a9e34b" style="color:#a9e34b;">초록색</option>
+                                            <option value="#4d638c" style="color:#4d638c;">남색</option>
+                                            <option value="#495057" style="color:#495057;">검정색</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <label class="col-xs-4" for="edit-desc">설명</label>
+                                        <textarea rows="4" cols="50" class="inputModal" name="edit-desc"
+                                                  id="edit-desc"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer modalBtnContainer-addEvent">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+                                <button type="button" class="btn btn-primary" id="save-event">저장</button>
+                            </div>
+                            <div class="modal-footer modalBtnContainer-modifyEvent">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                                <button type="button" class="btn btn-danger" id="deleteEvent">삭제</button>
+                                <button type="button" class="btn btn-primary" id="updateEvent">저장</button>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+            </div>
+            <!-- /.container -->
             </div>
         </div>
-
-        <div id="add_calendar" class="tabcontent">
-            <h3>일정 추가</h3>
-            <form>
-            <table id="add-content">
-                <tr>
-                    <td>제목*</td>
-                    <td><input type="text" name="cal_title" id="cal_title"></td>
-                </tr>
-                <tr>
-                    <td>기념일</td>
-                    <td>
-                        <input class="checkbox" type="hidden" name="cal_sday_chek" value=false/>
-                        <input type="checkbox" id="cal_sday" name="cal_sday" value=false/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>주소</td>
-                    <td>
-                        <input type="hidden" placeholder="우편번호" id="zipNo" name="zipNo" readonly value="" required>
-                        <input type="text" placeholder="도로명 주소" id="roadAddrPart1" name="roadAddrPart1" readonly
-                               required>
-                        <input type="text" placeholder="상세 주소" id="addrDetail" name="addrDetail" readonly
-                               required>
-                        <input type="hidden" placeholder="시도명" id="siNm" name="siNm" readonly required>
-                        <input type="hidden" placeholder="시군구명" id="sggNm" name="sggNm" readonly required>
-                        <button type="button" onclick="goPopup()" value="주소검색">주소검색</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>일시</td>
-                    <td>
-                        <input type="date" id="startDate">
-                        <input type="time" id="startTime">
-                        ~
-                        <input type="date" id="endDate">
-                        <input type="time" id="endTime">
-                        <input class="checkbox" type="hidden" name="cal_time_chek" value=false/>
-                        <input type="checkbox" id="cal_time" name="cal_time" value=false/>
-                        종일
-                    </td>
-                </tr>
-                <tr>
-                    <td>설명</td>
-                    <td>
-                        <textarea type="text" id="body"></textarea>
-                    </td>
-                </tr>
-            </table>
-                <button type="submit">저장</button>
-            </form>
-        </div>
-
-        <div id="Anniversary" class="tabcontent">
-            <h3>기념일 보기</h3>
-        </div>
-
-    </div>
     </div>
 </body>
 <%@ include file="../layout/footer.jsp" %>
-<link href="/css/service/calender.css" rel="stylesheet">
-<link href='/fullcalendar/main.css' rel='stylesheet' />
-<script src="/js/calender.js"></script>
-<script src='/fullcalendar/main.js'></script>
-<script src='/fullcalendar/ko.js'></script>
+
+
+<script src="/fullcalendar/jquery.min.js"></script>
+<script src="/fullcalendar/bootstrap.min.js"></script>
+<script src="/fullcalendar/moment.min.js"></script>
+<script src="/fullcalendar/fullcalendar.min.js"></script>
+<script src="/fullcalendar/ko.js"></script>
+<script src="/fullcalendar/select.min.js"></script>
+<script src="/fullcalendar/bootstrap-datetimepicker.min.js"></script>
+<script src="/fullcalendar/main.js"></script>
 </html>
