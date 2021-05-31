@@ -1052,209 +1052,213 @@ lovedata|schema||lovedatauser|localhost|UPDATE|G</Grants>
     <table id="333" parent="3" name="spring_session_attributes"/>
     <table id="334" parent="3" name="tbl_member"/>
     <table id="335" parent="3" name="user"/>
-    <table id="336" parent="3" name="user_like_loc"/>
-    <table id="337" parent="3" name="user_role_set"/>
-    <column id="338" parent="328" name="cmt_uuid">
+    <table id="336" parent="3" name="user_role_set"/>
+    <column id="337" parent="328" name="cmt_uuid">
       <Position>1</Position>
       <DataType>varchar(60)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="339" parent="328" name="moddate">
+    <column id="338" parent="328" name="moddate">
       <Position>2</Position>
       <DataType>datetime|0s</DataType>
     </column>
-    <column id="340" parent="328" name="regdate">
+    <column id="339" parent="328" name="regdate">
       <Position>3</Position>
       <DataType>datetime|0s</DataType>
     </column>
-    <column id="341" parent="328" name="cmt_content">
+    <column id="340" parent="328" name="cmt_content">
       <Position>4</Position>
       <DataType>varchar(100)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="342" parent="328" name="cmt_idx">
+    <column id="341" parent="328" name="cmt_idx">
       <Position>5</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="343" parent="328" name="cmt_no">
+    <column id="342" parent="328" name="cmt_no">
       <Position>6</Position>
       <DataType>bigint(20) unsigned|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="344" parent="328" name="user_no">
+    <column id="343" parent="328" name="user_no">
       <Position>7</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="345" parent="328" name="location_loc_no">
+    <column id="344" parent="328" name="location_loc_no">
       <Position>8</Position>
       <DataType>bigint(20)|0s</DataType>
     </column>
-    <index id="346" parent="328" name="cmt_no">
+    <index id="345" parent="328" name="cmt_no">
       <ColNames>cmt_no</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <index id="347" parent="328" name="FKe2sqie7jgcyvvyuekwx181vsf">
+    <index id="346" parent="328" name="FKe2sqie7jgcyvvyuekwx181vsf">
       <ColNames>location_loc_no</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="348" parent="328" name="PRIMARY">
+    <key id="347" parent="328" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>cmt_uuid</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="349" parent="328" name="cmt_no">
+    <key id="348" parent="328" name="cmt_no">
       <ColNames>cmt_no</ColNames>
       <UnderlyingIndexName>cmt_no</UnderlyingIndexName>
     </key>
-    <foreign-key id="350" parent="328" name="FKe2sqie7jgcyvvyuekwx181vsf">
+    <foreign-key id="349" parent="328" name="FKe2sqie7jgcyvvyuekwx181vsf">
       <ColNames>location_loc_no</ColNames>
       <RefTableName>location</RefTableName>
       <RefColNames>loc_no</RefColNames>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="351" parent="329" name="img_no">
+    <column id="350" parent="329" name="img_no">
       <Position>1</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="352" parent="329" name="moddate">
+    <column id="351" parent="329" name="moddate">
       <Position>2</Position>
       <DataType>datetime|0s</DataType>
     </column>
-    <column id="353" parent="329" name="regdate">
+    <column id="352" parent="329" name="regdate">
       <Position>3</Position>
       <DataType>datetime|0s</DataType>
     </column>
-    <column id="354" parent="329" name="img_idx">
+    <column id="353" parent="329" name="img_idx">
       <Position>4</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="355" parent="329" name="img_url">
+    <column id="354" parent="329" name="img_url">
       <Position>5</Position>
       <DataType>varchar(200)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="356" parent="329" name="img_uuid">
+    <column id="355" parent="329" name="img_uuid">
       <Position>6</Position>
       <DataType>varchar(45)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="357" parent="329" name="user_no">
+    <column id="356" parent="329" name="user_no">
       <Position>7</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="358" parent="329" name="location_loc_no">
+    <column id="357" parent="329" name="location_loc_no">
       <Position>8</Position>
       <DataType>bigint(20)|0s</DataType>
     </column>
-    <column id="359" parent="329" name="loc_no">
+    <column id="358" parent="329" name="loc_no">
       <Position>9</Position>
       <DataType>bigint(20)|0s</DataType>
     </column>
-    <index id="360" parent="329" name="FKsmfku1vfn448ya7hm6wkvma13">
+    <index id="359" parent="329" name="FKsmfku1vfn448ya7hm6wkvma13">
       <ColNames>location_loc_no</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="361" parent="329" name="FK68o1a9syqm1gfsosaxcj01kiy">
+    <index id="360" parent="329" name="FK68o1a9syqm1gfsosaxcj01kiy">
       <ColNames>loc_no</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="362" parent="329" name="PRIMARY">
+    <key id="361" parent="329" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>img_no</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="363" parent="329" name="FKsmfku1vfn448ya7hm6wkvma13">
+    <foreign-key id="362" parent="329" name="FKsmfku1vfn448ya7hm6wkvma13">
       <ColNames>location_loc_no</ColNames>
       <RefTableName>location</RefTableName>
       <RefColNames>loc_no</RefColNames>
     </foreign-key>
-    <foreign-key id="364" parent="329" name="FK68o1a9syqm1gfsosaxcj01kiy">
+    <foreign-key id="363" parent="329" name="FK68o1a9syqm1gfsosaxcj01kiy">
       <ColNames>loc_no</ColNames>
       <RefTableName>location</RefTableName>
       <RefColNames>loc_no</RefColNames>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="365" parent="330" name="loc_no">
+    <column id="364" parent="330" name="loc_no">
       <Position>1</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="366" parent="330" name="moddate">
+    <column id="365" parent="330" name="moddate">
       <Position>2</Position>
       <DataType>datetime|0s</DataType>
     </column>
-    <column id="367" parent="330" name="regdate">
+    <column id="366" parent="330" name="regdate">
       <Position>3</Position>
       <DataType>datetime|0s</DataType>
     </column>
-    <column id="368" parent="330" name="addrdetail">
+    <column id="367" parent="330" name="addrdetail">
       <Position>4</Position>
       <DataType>varchar(30)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="369" parent="330" name="info">
+    <column id="368" parent="330" name="info">
       <Position>5</Position>
       <DataType>varchar(150)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="370" parent="330" name="likecount">
+    <column id="369" parent="330" name="likecount">
       <Position>6</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>0</DefaultExpression>
     </column>
-    <column id="371" parent="330" name="loc_name">
+    <column id="370" parent="330" name="loc_name">
       <Position>7</Position>
       <DataType>varchar(40)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="372" parent="330" name="loc_uuid">
+    <column id="371" parent="330" name="loc_uuid">
       <Position>8</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="373" parent="330" name="roadaddr">
+    <column id="372" parent="330" name="roadaddr">
       <Position>9</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="374" parent="330" name="sido">
+    <column id="373" parent="330" name="sido">
       <Position>10</Position>
       <DataType>varchar(15)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="375" parent="330" name="sigungu">
+    <column id="374" parent="330" name="sigungu">
       <Position>11</Position>
       <DataType>varchar(8)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="376" parent="330" name="tel">
+    <column id="375" parent="330" name="tel">
       <Position>12</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="377" parent="330" name="user_no">
+    <column id="376" parent="330" name="thumbnail">
       <Position>13</Position>
+      <DataType>varchar(255)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="377" parent="330" name="user_no">
+      <Position>14</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
     <column id="378" parent="330" name="viewcount">
-      <Position>14</Position>
+      <Position>15</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>0</DefaultExpression>
     </column>
     <column id="379" parent="330" name="zipno">
-      <Position>15</Position>
+      <Position>16</Position>
       <DataType>varchar(10)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
@@ -1485,50 +1489,15 @@ ATTRIBUTE_NAME</ColNames>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="427" parent="336" name="like_loc_loc_no">
-      <Position>2</Position>
-      <DataType>bigint(20)|0s</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <index id="428" parent="336" name="UK_69y535o8q3c3642lkkkifddk">
-      <ColNames>like_loc_loc_no</ColNames>
-      <Unique>1</Unique>
-      <Type>btree</Type>
-    </index>
-    <key id="429" parent="336" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <ColNames>user_user_no
-like_loc_loc_no</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <key id="430" parent="336" name="UK_69y535o8q3c3642lkkkifddk">
-      <ColNames>like_loc_loc_no</ColNames>
-      <UnderlyingIndexName>UK_69y535o8q3c3642lkkkifddk</UnderlyingIndexName>
-    </key>
-    <foreign-key id="431" parent="336" name="FK6t079244m8a4xpb2tn3wxjold">
-      <ColNames>user_user_no</ColNames>
-      <RefTableName>user</RefTableName>
-      <RefColNames>user_no</RefColNames>
-    </foreign-key>
-    <foreign-key id="432" parent="336" name="FKt390ffh1at7xk0tbdfh6lfd5u">
-      <ColNames>like_loc_loc_no</ColNames>
-      <RefTableName>location</RefTableName>
-      <RefColNames>loc_no</RefColNames>
-    </foreign-key>
-    <column id="433" parent="337" name="user_user_no">
-      <Position>1</Position>
-      <DataType>bigint(20)|0s</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="434" parent="337" name="role_set">
+    <column id="427" parent="336" name="role_set">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
     </column>
-    <index id="435" parent="337" name="FKr9gbvf29req6g5b79kcwj7oqm">
+    <index id="428" parent="336" name="FKr9gbvf29req6g5b79kcwj7oqm">
       <ColNames>user_user_no</ColNames>
       <Type>btree</Type>
     </index>
-    <foreign-key id="436" parent="337" name="FKr9gbvf29req6g5b79kcwj7oqm">
+    <foreign-key id="429" parent="336" name="FKr9gbvf29req6g5b79kcwj7oqm">
       <ColNames>user_user_no</ColNames>
       <RefTableName>user</RefTableName>
       <RefColNames>user_no</RefColNames>

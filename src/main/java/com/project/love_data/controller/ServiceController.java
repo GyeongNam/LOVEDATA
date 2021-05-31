@@ -116,6 +116,8 @@ public class ServiceController {
             LocationDTO dto = locService.selectLocDTO(locNo);
 
             model.addAttribute("dto", dto);
+
+            log.info("dto imgList : " + dto.printImgURLS());
         }
 
         return "/service/loc_detail";

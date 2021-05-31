@@ -200,20 +200,15 @@
 							<div class="card mb-4 shadow-sm">
 								<c:url var="loc_detail" value="/service/loc_detail">
 									<c:param name="locNo" value="${result.dtoList.get(i).loc_no}"/>
-									<c:param name="page" value="${result.page}"/>
 								</c:url>
 								<a class="container p-0 btn" href="${loc_detail}">
 									<c:set var="imgList" value="${result.dtoList.get(i).imgList}"></c:set>
 									<c:choose>
 										<c:when test="${!empty imgList}">
-											<svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-												 xmlns="http://www.w3.org/2000/svg" role="img"
-												 aria-label="Placeholder: Thumbnail"
-												 preserveAspectRatio="xMidYMid slice" focusable="false">
-												<rect width="100%" height="100%" fill="#55595c">
-													<image height="100%" width="100%" href="${imgList.get(0).img_url}"></image>
-												</rect>
-											</svg>
+									<img class="bd-placeholder-img card-img-top" width="100%" height="225"
+										 alt="${result.dtoList.get(i).loc_name}"
+										 src="${result.dtoList.get(i).thumbnail}"
+										 preserveAspectRatio="xMidYMid slice" focusable="false">
 										</c:when>
 										<c:otherwise>
 											<svg class="bd-placeholder-img card-img-top" width="100%" height="225"

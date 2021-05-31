@@ -41,6 +41,8 @@ public class LocationDTO {
     private List<Image> imgList = new ArrayList<>();
     @Builder.Default
     private Set<Comment> cmdSet = new HashSet<>();
+    @Builder.Default
+    private String thumbnail = "";
 
     // Todo 여기에 댓글 칼럼도 추가
 
@@ -75,8 +77,9 @@ public class LocationDTO {
                         .tel(this.getTel())
                         .zipNo(this.getZipNo())
                         .tagSet(this.getTagSet())
-                        .imgList(this.getImgList())
+                        .imgSet(new HashSet<>(this.getImgList()))
                         .cmtSet(this.getCmdSet())
+                        .thumbnail(this.getThumbnail())
                         .build());
         imgList.add(img);
     }
@@ -103,8 +106,9 @@ public class LocationDTO {
                         .tel(this.getTel())
                         .zipNo(this.getZipNo())
                         .tagSet(this.getTagSet())
-                        .imgList(this.getImgList())
+                        .imgSet(new HashSet<>(this.getImgList()))
                         .cmtSet(this.getCmdSet())
+                        .thumbnail(this.getThumbnail())
                         .build());
         cmdSet.add(cmt);
     }
@@ -122,5 +126,20 @@ public class LocationDTO {
         }
 
         return String.valueOf(item);
+    }
+
+    public String printImgURLS() {
+        StringBuilder sb = new StringBuilder();
+
+        if(imgList == null) {
+            return null;
+        }
+
+        for (Image img : imgList) {
+            sb.append(img.getImg_url());
+            sb.append("_");
+        }
+
+        return sb.toString().substring(0, sb.toString().length()-1);
     }
 }

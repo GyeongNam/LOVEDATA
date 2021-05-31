@@ -55,6 +55,7 @@ public class FileUploadService {
                                           UploadFileType fileType,
                                           HttpServletRequest request) {
         String filePath = getUploadPath(pathStr);
+        String URIPath = "/image/upload";
         String fileName = null;
         List<String> result = new ArrayList<>();
         if (filePath == null) {
@@ -80,9 +81,10 @@ public class FileUploadService {
         }
 
         log.info("파일 저장 위치 : " + filePath);
+        log.info("URI 파일 위치 : " + URIPath);
         log.info("기존 파일 이름 : " + file.getOriginalFilename());
         log.info("저장된 파일 이름 : " + fileName);
-        result.add(filePath);
+        result.add(URIPath);
         result.add(fileName);
 
         return result;
@@ -95,6 +97,7 @@ public class FileUploadService {
                                          int maxFileUploadCount,
                                          HttpServletRequest request) {
         String filePath = getUploadPath(pathStr);
+        String URIPath = "/image/upload";
         String fileName = null;
         List<String> result = new ArrayList<>();
         int maxFileCount = fileList.size();
@@ -110,7 +113,8 @@ public class FileUploadService {
         }
 
         log.info("파일 저장 위치 : " + filePath);
-        result.add(filePath);
+        log.info("URI 파일 위치 : " + URIPath);
+        result.add(URIPath);
         for (MultipartFile file : fileList) {
             ++count;
             if (count > maxFileUploadCount) {
@@ -163,7 +167,13 @@ public class FileUploadService {
     // 업로드된 파일의 저장 위치 설정
     private String getUploadPath(String pathStr) {
         // 현재 프로젝트 폴더 하위 폴더인 images 폴더를 업로드 폴더로 지정
-        Path path = Paths.get(pathStr + File.separator + "images");
+        Path path = Paths.get(pathStr + File.separator +
+                "src" + File.separator +
+                "main" + File.separator +
+                "resources" + File.separator +
+                "static" + File.separator +
+                "image" + File.separator +
+                "upload");
         if (!Files.exists(path)) {
             try {
                 log.info("Creating File path");

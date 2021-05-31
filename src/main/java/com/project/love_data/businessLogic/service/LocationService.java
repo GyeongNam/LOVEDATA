@@ -32,11 +32,13 @@ public class LocationService {
         List<Image> imgList = new ArrayList<>();
         Location entity = dtoToEntity(dto);
 
-        for (int i = 1; i < filePath.size() - 1; i++) {
+        for (int i = 1; i < filePath.size(); i++) {
+            // filePath.get(0)  ==  Parent Folder (URI)
+            // filePath.get(i)  ==  fileNames
             imgList.add(imgService.getImageEntity(reqParam.get("user_no"), filePath.get(0), filePath.get(i), entity));
         }
 
-        entity.setImgList(imgList);
+        entity.setImgSet(new HashSet<>(imgList));
 
         repository.save(entity);
 
@@ -63,9 +65,10 @@ public class LocationService {
                 .tel(dto.getTel())
                 .zipNo(dto.getZipNo())
                 .tagSet(dto.getTagSet())
-                .imgList(dto.getImgList())
+                .imgSet(new HashSet<>(dto.getImgList()))
                 .cmtSet(dto.getCmdSet())
                 .likeCount(dto.getLikeCount())
+                .thumbnail(dto.getThumbnail())
                 .build();
 
         return entity;
@@ -87,10 +90,29 @@ public class LocationService {
                 .tagSet(entity.getTagSet())
                 .regDate(entity.getRegDate())
                 .modDate(entity.getModDate())
-                .imgList(entity.getImgList())
                 .cmdSet(entity.getCmtSet())
                 .likeCount(entity.getLikeCount())
+                .thumbnail(entity.getThumbnail())
                 .build();
+
+        List<Image> tempList = new ArrayList<>();
+        List<Image> imgList = new ArrayList<>();
+
+        for (Image img :
+                entity.getImgSet()) {
+            tempList.add(img);
+        }
+
+        for (int i = 0; i < tempList.size(); i++) {
+            for (int j = 0; j < tempList.size(); j++) {
+                if (tempList.get(j).getIdx() == i) {
+                    imgList.add(tempList.get(j));
+                    break;
+                }
+            }
+        }
+
+        dto.setImgList(imgList);
 
         return dto;
     }
@@ -177,7 +199,7 @@ public class LocationService {
     }
 
     public void delete(Location loc) {
-        List<Image> list = loc.getImgList();
+        List<Image> list = (List<Image>) loc.getImgSet();
         Set<Comment> cmtSet = loc.getCmtSet();
 
         for (Image image : list) {
@@ -192,7 +214,7 @@ public class LocationService {
             cmtService.delete(cmt);
         }
 
-        loc.setImgList(null);
+        loc.setImgSet(null);
 
         update(loc);
 

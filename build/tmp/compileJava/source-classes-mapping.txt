@@ -8,26 +8,12 @@ com/project/love_data/businessLogic/oauth/login/RequestLoginAPI.java
  com.project.love_data.businessLogic.oauth.login.RequestLoginAPI
 com/project/love_data/util/URISetter.java
  com.project.love_data.util.URISetter
-<<<<<<< HEAD
-com/project/love_data/config/ConverterConfig.java
- com.project.love_data.config.ConverterConfig
-com/project/love_data/service/oauth/login/AcessCodeRequest.java
- com.project.love_data.service.oauth.login.AcessCodeRequest
-com/project/love_data/LoveDataApplication.java
- com.project.love_data.LoveDataApplication
-=======
->>>>>>> 8ba72554119c5e2430f99f9b02309c9e67ba0579
 com/project/love_data/controller/TestController.java
  com.project.love_data.controller.TestController
 com/project/love_data/businessLogic/service/ImageService.java
  com.project.love_data.businessLogic.service.ImageService
 com/project/love_data/controller/UserController.java
  com.project.love_data.controller.UserController
-<<<<<<< HEAD
-com/project/love_data/model/oauth/OAuthToken.java
- com.project.love_data.model.oauth.OAuthToken
-=======
->>>>>>> 8ba72554119c5e2430f99f9b02309c9e67ba0579
 com/project/love_data/security/model/AuthUserModel.java
  com.project.love_data.security.model.AuthUserModel
 com/project/love_data/businessLogic/oauth/login/SignupAutoFillupNaver.java
@@ -61,20 +47,8 @@ com/project/love_data/businessLogic/oauth/logout/LogoutProcessKakao.java
  com.project.love_data.businessLogic.oauth.logout.LogoutProcessKakao
 com/project/love_data/model/oauth/NaverAuthToken.java
  com.project.love_data.model.oauth.NaverAuthToken
-<<<<<<< HEAD
-com/project/love_data/controller/HomeController.java
- com.project.love_data.controller.HomeController
-com/project/love_data/config/SecurityConfig.java
- com.project.love_data.config.AllExceptUrlsStartedWith
- com.project.love_data.config.SecurityConfig
-com/project/love_data/controller/OAuthController.java
- com.project.love_data.controller.OAuthController
-com/project/love_data/service/oauth/login/TokenRequest.java
- com.project.love_data.service.oauth.login.TokenRequest
-=======
 com/project/love_data/businessLogic/service/FileNamingType.java
  com.project.love_data.businessLogic.service.FileNamingType
->>>>>>> 8ba72554119c5e2430f99f9b02309c9e67ba0579
 com/project/love_data/controller/ServiceController.java
  com.project.love_data.controller.ServiceController
 com/project/love_data/model/user/KakaoUserInfo.java
@@ -97,10 +71,6 @@ com/project/love_data/businessLogic/oauth/login/TokenRequest.java
  com.project.love_data.businessLogic.oauth.login.TokenRequest
 com/project/love_data/security/service/UserDetailsService.java
  com.project.love_data.security.service.UserDetailsService
-<<<<<<< HEAD
-com/project/love_data/config/WebConfig.java
- com.project.love_data.config.WebConfig
-=======
 com/project/love_data/controller/OAuthController.java
  com.project.love_data.controller.OAuthController
 com/project/love_data/dto/CommentDTO.java
@@ -182,4 +152,3 @@ com/project/love_data/security/converter/UserRoleConverter.java
  com.project.love_data.security.converter.UserRoleConverter
 com/project/love_data/controller/RestController.java
  com.project.love_data.controller.RestController
->>>>>>> 8ba72554119c5e2430f99f9b02309c9e67ba0579
