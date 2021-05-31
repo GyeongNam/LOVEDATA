@@ -50,7 +50,8 @@ public class LocationTest {
                 .zipNo("32713")
                 .build();
 
-        loc.addLocTag(String.valueOf(tagSet.get(0)));
+        loc.addLocTag(String.valueOf(LocationTag.학교));
+        loc.addLocTag(String.valueOf(LocationTag.야외));
 
         locationRepository.save(loc);
 
@@ -61,6 +62,50 @@ public class LocationTest {
                     .img_uuid("Jungbu_Chungnam_" + i + ".jpg")
                     .user_no(user_no)
                     .img_url("/image/init/Jungbu-Chungnam-" + i + ".jpg")
+                    .build();
+            img.setLocation(loc);
+
+            imageRepository.save(img);
+
+            loc.addImg(img);
+
+            if ("".equals(loc.getThumbnail())) {
+                loc.setThumbnail(img.getImg_url());
+            }
+        }
+
+        locationRepository.save(loc);
+
+        user_no = (long) new Random().nextInt(4);
+
+        loc = null;
+
+        loc = Location.builder()
+                .loc_name("중부대학교 고양캠퍼스")
+                .user_no(user_no)
+                .roadAddr("경기도 고양시 덕양구 동헌로 305")
+                .addrDetail("고양캠퍼스")
+                .siDo("경기도")
+                .siGunGu("고양시")
+                .info("중부대학교는 학생성장을 학교 발전을 위한 최고의 비전으로 추구하고 있습니다." +
+                        " 학생성장은 인공지능과 융복합 시대의 전공역량을 충분히 획득한 전문인재, 올바른 인성과 균형 잡힌 교양을 갖춘 바른 인재, 그리고 창의적인 문제해결력을 갖춘 창의인재로의 발전을 지향합니다")
+                .loc_uuid(UUID.randomUUID().toString())
+                .tel("031-8075-1000")
+                .zipNo("10279")
+                .build();
+
+        loc.addLocTag(String.valueOf(LocationTag.학교));
+        loc.addLocTag(String.valueOf(LocationTag.야외));
+
+        locationRepository.save(loc);
+
+        img = null;
+        for (int i = 0; i < 3; i++) {
+            img = Image.builder()
+                    .location(loc)
+                    .img_uuid("Jungbu-Goyang-" + i + ".jpg")
+                    .user_no(user_no)
+                    .img_url("/image/init/Jungbu-Goyang-" + i + ".jpg")
                     .build();
             img.setLocation(loc);
 

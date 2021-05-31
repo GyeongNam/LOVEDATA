@@ -16,4 +16,4 @@
 <ol><a> https://www.flaticon.com/free-icon/left-arrow_271220?related_id=271220&origin=pack </a></ol>
 
 6. View Count Icon
-<ol><a> https://www.flaticon.com/free-icon/browser_846205?term=web%20click&related_id=846205 </a></ol>
+<ol><a> https://www.flaticon.com/free-icon/view_709612?term=eyes&page=1&position=6&page=1&position=6&related_id=709612&origin=search </a></ol>
