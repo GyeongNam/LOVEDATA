@@ -1,6 +1,7 @@
 package com.project.love_data.model.service;
 
 import com.project.love_data.model.base.TimeEntity;
+import com.project.love_data.model.user.User;
 import lombok.*;
 import lombok.extern.log4j.Log4j2;
 import org.hibernate.annotations.Cascade;
@@ -12,7 +13,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "comment")
-@ToString(exclude = "location")
+@ToString(exclude = {"location", "user"})
 @Setter
 @Getter
 @Builder
@@ -36,8 +37,8 @@ public class Comment extends TimeEntity {
     @Column(length = 100, nullable = false)
     private String cmtContent;
 
-    @Column(nullable = false)
-    private Long userNo;
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private User user;
 
     @Id
     @OnDelete(action = OnDeleteAction.CASCADE)

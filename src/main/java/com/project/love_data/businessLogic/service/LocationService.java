@@ -69,7 +69,7 @@ public class LocationService {
                 .zipNo(dto.getZipNo())
                 .tagSet(dto.getTagSet())
                 .imgSet(new HashSet<>(dto.getImgList()))
-                .cmtSet(dto.getCmdSet())
+                .cmtSet(new HashSet<>(dto.getCmtList()))
                 .likeCount(dto.getLikeCount())
                 .thumbnail(dto.getThumbnail())
                 .viewCount(dto.getViewCount())
@@ -94,12 +94,13 @@ public class LocationService {
                 .tagSet(entity.getTagSet())
                 .regDate(entity.getRegDate())
                 .modDate(entity.getModDate())
-                .cmdSet(entity.getCmtSet())
                 .likeCount(entity.getLikeCount())
                 .thumbnail(entity.getThumbnail())
                 .viewCount(entity.getViewCount())
                 .build();
 
+        // Image List 변환 및 정렬
+        // idx 기준 정렬
         List<Image> tempList = new ArrayList<>();
         List<Image> imgList = new ArrayList<>();
 
@@ -117,7 +118,22 @@ public class LocationService {
             }
         }
 
+        // Comment List 변환 및 정렬
+        // cmd_idx 기준 정렬
+        List<Comment> tempCmtList = new ArrayList<>(entity.getCmtSet());
+        List<Comment> cmtList = new ArrayList<>();
+
+        for (int i = 0; i < tempCmtList.size(); i++) {
+            for (int j = 0; j < tempCmtList.size(); j++) {
+                if (tempCmtList.get(j).getCmtIdx() == i) {
+                    cmtList.add(tempCmtList.get(j));
+                    break;
+                }
+            }
+        }
+
         dto.setImgList(imgList);
+        dto.setCmtList(cmtList);
 
         return dto;
     }

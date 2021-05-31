@@ -124,7 +124,7 @@ public class ServiceController {
             model.addAttribute("dto", dto);
             model.addAttribute("resComDTO", resultCommentDTO);
 
-            log.info("Comment List : " + dto.getCmdSet());
+            log.info("Comment List : " + dto.getCmtList());
            log.info("PREV = " + resultCommentDTO.isPrev());
            log.info("NEXT = " + resultCommentDTO.isNext());
            log.info("TOTAL : " + resultCommentDTO.getTotalPage());

@@ -53,4 +53,22 @@ class LoveDataApplicationTests {
 
 		System.out.println();
 	}
+
+	@Test
+	public void QueueTest() {
+		Queue<Integer> queue = new LinkedList<>();
+
+		for (int i = 0; i < 6; i++) {
+			if (queue.size() < 6) {
+				queue.add(i);
+			} else {
+				queue.poll();
+				queue.add(i);
+			}
+		}
+
+		for (Integer integer : queue) {
+			System.out.print(integer);
+		}
+	}
 }

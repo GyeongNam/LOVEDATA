@@ -235,7 +235,7 @@
 											<span class="align-middle">${result.dtoList.get(i).viewCount}</span>
 											<img src="/image/icon/comment.png" class="loc_icon" alt="댓글">
 												<%--									Todo 댓글 항목 Location Entity에 추가하기--%>
-											<span class="align-middle">${result.dtoList.get(i).cmdSet.size()}</span>
+											<span class="align-middle">${result.dtoList.get(i).cmtList.size()}</span>
 											<img src="/image/icon/like/love_black.png" class="loc_icon" alt="찜하기"
 												 onclick="onClickLike(this)">
 											<span class="align-middle" id="loc_like_count" name="loc_like_count">${result.dtoList.get(i).likeCount}</span>

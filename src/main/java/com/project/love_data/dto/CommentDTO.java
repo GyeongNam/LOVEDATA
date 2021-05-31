@@ -1,6 +1,7 @@
 package com.project.love_data.dto;
 
 import com.project.love_data.model.service.Location;
+import com.project.love_data.model.user.User;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.OnDelete;
@@ -19,7 +20,7 @@ public class CommentDTO {
     @ToString.Exclude
     private Location location;
     private String cmtContent;
-    private Long userNo;
+    private User user;
 
     @Builder.Default
     private LocalDateTime regDate = LocalDateTime.now();

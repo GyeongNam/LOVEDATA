@@ -112,14 +112,17 @@
 								</div>
 								<div class="d-flex justify-content-end h-25 card-img-overlay" style="top : 75%">
 									<div class="badge bg-dark d-flex justify-content-center" style="width: 6rem">
-										<p class="text-center fs-3 align-self-center mb-0" id="indexIndicator" name="indexIndicator">
+										<p class="text-center fs-3 align-self-center mb-0" id="indexIndicator"
+										   name="indexIndicator">
 											1/${imgList.size()}
 										</p>
 									</div>
 								</div>
 								</img>
-								<span class="visually-hidden" id="imgListSize" name="imgListSize">${imgList.size()}</span>
-								<span class="visually-hidden" id="dtoImgListSize" name="dtoImgListSize">${dto.imgList.size()}</span>
+								<span class="visually-hidden" id="imgListSize"
+									  name="imgListSize">${imgList.size()}</span>
+								<span class="visually-hidden" id="dtoImgListSize"
+									  name="dtoImgListSize">${dto.imgList.size()}</span>
 								<span class="visually-hidden" id="imgListIndex" name="imgListIndex">0</span>
 								<intpu type="hidden" id="imgList" name="imgList" value="${dto.imgList}"></intpu>
 							</div>
@@ -141,7 +144,8 @@
 				<div class="row d-flex">
 					<div class="row d-flex justify-content-between p-1">
 						<span class="h1 col-5">${dto.loc_name}</span>
-						<button class="btn btn-outline-danger col-2" style="max-height: 56px" onclick="copyURL()">공유</button>
+						<button class="btn btn-outline-danger col-2" style="max-height: 56px" onclick="copyURL()">공유
+						</button>
 					</div>
 					<div class="row d-flex">
 						<h3>지역 : ${dto.siDo} ${dto.siGunGu}</h3>
@@ -161,7 +165,7 @@
 						 onclick="onClickLike(this)">
 					<span class="text-center align-middle fs-3 me-4" id="likeCount">${dto.likeCount}</span>
 					<img src="/image/icon/comment.png" class="loc_icon_big me-2" alt="댓글">
-					<span class="text-center align-middle fs-3 me-4">${dto.cmdSet.size()}</span>
+					<span class="text-center align-middle fs-3 me-4">${dto.cmtList.size()}</span>
 				</div>
 
 				<span class="d-none" id="loc_no">${dto.loc_no}</span>
@@ -191,29 +195,144 @@
 						<div class="d-flex justify-content-start row">
 							<div class="col-md-10">
 								<div class="d-flex flex-column">
-									<div class="bg-white p-2">
-										<div class="d-flex flex-row align-items-center"><img
-												src="/image/icon/user/user.png"
-												class="loc_comment-profile-image-wh">
-											<div class="flex-column">
+									<c:set var="cmtList" value="${dto.cmtList}"></c:set>
+									<c:choose>
+										<c:when test="${0 != cmtList.size()}">
+											<c:forEach var="c" begin="0" end="${cmtList.size()-1}">
+												<div class="bg-white p-2">
+													<div class="d-flex flex-row align-items-center"><img
+															src="/image/icon/user/user.png"
+															class="loc_comment-profile-image-wh">
+														<div class="flex-column">
+                                        <span class="d-block font-weight-bold name">
+                                            ${cmtList.get(c).user.user_no}
+											<sec:authorize access="isAuthenticated()">
+												<c:set var="user_no"><sec:authentication
+														property="principal.user_no"/></c:set>
+												<c:choose>
+													<c:when test="${user_no eq cmtList.get(c).user.user_no}">
+														<button class="btn btn-primary">수정</button>
+														<button class="btn btn-primary">삭제</button>
+													</c:when>
+												</c:choose>
+											</sec:authorize>
+                                        </span>
+															<span class="date text-black-50 ml-5">${cmtList.get(c).regDate}</span>
+														</div>
+													</div>
+													<div class="mt-2">
+														<p class="comment-text">${cmtList.get(c).cmtContent}</p>
+													</div>
+												</div>
+											</c:forEach>
+										</c:when>
+										<c:otherwise>
+											<div class="bg-white p-2">
+												<div class="d-flex flex-row align-items-center"><img
+														src="/image/icon/user/user.png"
+														class="loc_comment-profile-image-wh">
+													<div class="flex-column">
                                         <span class="d-block font-weight-bold name">
                                             유저 닉네임
                                             <button class="btn btn-primary">수정</button>
                                             <button class="btn btn-primary">삭제</button>
                                         </span>
-												<span class="date text-black-50 ml-5">(2021/05/02 00:39)</span>
+														<span class="date text-black-50 ml-5">(2021/05/02 00:39)</span>
+													</div>
+												</div>
+												<div class="mt-2">
+													<p class="comment-text">Lorem ipsum dolor sit amet, consectetur
+														adipiscing
+														elit, sed
+														do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+														Ut enim
+														ad minim
+														veniam, quis nostrud exercitation ullamco laboris nisi ut
+														aliquip ex ea
+														commodo
+														consequat.</p>
+												</div>
 											</div>
-										</div>
-										<div class="mt-2">
-											<p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipiscing
-												elit, sed
-												do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-												ad minim
-												veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-												commodo
-												consequat.</p>
-										</div>
-									</div>
+											<div class="bg-white p-2">
+												<div class="d-flex flex-row align-items-center"><img
+														src="/image/icon/user/user.png"
+														class="loc_comment-profile-image-wh">
+													<div class="flex-column">
+                                        <span class="d-block font-weight-bold name">
+                                            유저 닉네임
+                                            <button class="btn btn-primary">수정</button>
+                                            <button class="btn btn-primary">삭제</button>
+                                        </span>
+														<span class="date text-black-50 ml-5">(2021/05/02 00:39)</span>
+													</div>
+												</div>
+												<div class="mt-2">
+													<p class="comment-text">Lorem ipsum dolor sit amet, consectetur
+														adipiscing
+														elit, sed
+														do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+														Ut enim
+														ad minim
+														veniam, quis nostrud exercitation ullamco laboris nisi ut
+														aliquip ex ea
+														commodo
+														consequat.</p>
+												</div>
+											</div>
+											<div class="bg-white p-2">
+												<div class="d-flex flex-row align-items-center"><img
+														src="/image/icon/user/user.png"
+														class="loc_comment-profile-image-wh">
+													<div class="flex-column">
+                                        <span class="d-block font-weight-bold name">
+                                            유저 닉네임
+                                            <button class="btn btn-primary">수정</button>
+                                            <button class="btn btn-primary">삭제</button>
+                                        </span>
+														<span class="date text-black-50 ml-5">(2021/05/02 00:39)</span>
+													</div>
+												</div>
+												<div class="mt-2">
+													<p class="comment-text">Lorem ipsum dolor sit amet, consectetur
+														adipiscing
+														elit, sed
+														do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+														Ut enim
+														ad minim
+														veniam, quis nostrud exercitation ullamco laboris nisi ut
+														aliquip ex ea
+														commodo
+														consequat.</p>
+												</div>
+											</div>
+											<div class="bg-white p-2">
+												<div class="d-flex flex-row align-items-center"><img
+														src="/image/icon/user/user.png"
+														class="loc_comment-profile-image-wh">
+													<div class="flex-column">
+                                        <span class="d-block font-weight-bold name">
+                                            유저 닉네임
+                                            <button class="btn btn-primary">수정</button>
+                                            <button class="btn btn-primary">삭제</button>
+                                        </span>
+														<span class="date text-black-50 ml-5">(2021/05/02 00:39)</span>
+													</div>
+												</div>
+												<div class="mt-2">
+													<p class="comment-text">Lorem ipsum dolor sit amet, consectetur
+														adipiscing
+														elit, sed
+														do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+														Ut enim
+														ad minim
+														veniam, quis nostrud exercitation ullamco laboris nisi ut
+														aliquip ex ea
+														commodo
+														consequat.</p>
+												</div>
+											</div>
+										</c:otherwise>
+									</c:choose>
 								</div>
 							</div>
 						</div>
@@ -290,7 +409,8 @@
 <%--		crossorigin="anonymous"></script>--%>
 <script defer src="/js/bootstrap.js"></script>
 <script defer src="/js/loc_detail.js"></script>
-<script defer src="/js/loc_common.js"></script>a
+<script defer src="/js/loc_common.js"></script>
+a
 <script defer>
     function clickImgNext() {
         var imgDisplay = document.getElementById("imgDisplay");
@@ -304,7 +424,7 @@
             index.innerText = tempIndex + 1;
             tempIndex += 1;
             imgDisplay.src = imgList[tempIndex];
-            indexIndicator.innerText = (tempIndex+1) + "/" + imgList.length;
+            indexIndicator.innerText = (tempIndex + 1) + "/" + imgList.length;
         }
     }
 
@@ -320,7 +440,7 @@
             index.innerText = tempIndex - 1;
             tempIndex -= 1;
             imgDisplay.src = imgList[tempIndex];
-            indexIndicator.innerText = (tempIndex+1) + "/" + imgList.length;
+            indexIndicator.innerText = (tempIndex + 1) + "/" + imgList.length;
         }
     }
 </script>

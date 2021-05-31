@@ -40,7 +40,11 @@ public class LocationDTO {
     @Builder.Default
     private List<Image> imgList = new ArrayList<>();
     @Builder.Default
-    private Set<Comment> cmdSet = new HashSet<>();
+    private List<Comment> cmtList = new ArrayList<>();
+    @Builder.Default
+    private List<Location> likeLocList = new ArrayList<>();
+    @Builder.Default
+    private List<Location> recentLocList = new ArrayList<>();
     @Builder.Default
     private String thumbnail = "";
 
@@ -78,7 +82,7 @@ public class LocationDTO {
                         .zipNo(this.getZipNo())
                         .tagSet(this.getTagSet())
                         .imgSet(new HashSet<>(this.getImgList()))
-                        .cmtSet(this.getCmdSet())
+                        .cmtSet(new HashSet<>(getCmtList()))
                         .thumbnail(this.getThumbnail())
                         .build());
         imgList.add(img);
@@ -107,10 +111,10 @@ public class LocationDTO {
                         .zipNo(this.getZipNo())
                         .tagSet(this.getTagSet())
                         .imgSet(new HashSet<>(this.getImgList()))
-                        .cmtSet(this.getCmdSet())
+                        .cmtSet(new HashSet<>(getCmtList()))
                         .thumbnail(this.getThumbnail())
                         .build());
-        cmdSet.add(cmt);
+        cmtList.add(cmt);
     }
 
     public void addCmt(List<Comment> cmt) {

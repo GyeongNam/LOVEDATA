@@ -13,7 +13,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "location")
-@ToString(exclude = "imgList")
+@ToString(exclude = "imgSet")
 @Setter
 @Getter
 @Builder

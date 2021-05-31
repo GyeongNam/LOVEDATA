@@ -8,6 +8,7 @@ import com.project.love_data.model.service.Location;
 import com.project.love_data.model.service.QComment;
 import com.project.love_data.repository.CommentRepository;
 import com.project.love_data.repository.LocationRepository;
+import com.project.love_data.repository.UserRepository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ import java.util.function.Function;
 public class CommentService {
     private final CommentRepository cmtRepository;
     private final LocationRepository locRepository;
+    private final UserRepository userRepository;
 
     public Comment dtoToEntity(CommentDTO dto){
         Comment entity = Comment.builder()
@@ -33,7 +35,7 @@ public class CommentService {
                 .cmtIdx(dto.getCmtIdx())
                 .cmtUuid(dto.getCmtUuid())
                 .cmtContent(dto.getCmtContent())
-                .userNo(dto.getUserNo())
+                .user(userRepository.findById(dto.getUser().getUser_no()).get())
                 .build();
 
         return entity;
@@ -45,7 +47,7 @@ public class CommentService {
                 .cmtIdx(cmt.getCmtIdx())
                 .cmtUuid(cmt.getCmtUuid())
                 .cmtContent(cmt.getCmtContent())
-                .userNo(cmt.getUserNo())
+                .user(cmt.getUser())
                 .location(cmt.getLocation())
                 .regDate(cmt.getRegDate())
                 .modDate(cmt.getModDate())
