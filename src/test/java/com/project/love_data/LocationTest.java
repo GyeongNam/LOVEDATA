@@ -34,7 +34,7 @@ public class LocationTest {
         tagSet.add(LocationTag.ACTION_A);
         tagSet.add(LocationTag.ACTION_B);
 
-        Long user_no = (long) new Random().nextInt(4);
+        Long user_no = (long) (Math.random() * 10)+1;
 
         Location loc = Location.builder()
                 .loc_name("중부대학교 충청캠퍼스")
@@ -76,7 +76,7 @@ public class LocationTest {
 
         locationRepository.save(loc);
 
-        user_no = (long) new Random().nextInt(4);
+        user_no = (long) (Math.random() * 10)+1;
 
         loc = null;
 
@@ -120,7 +120,7 @@ public class LocationTest {
 
         locationRepository.save(loc);
 
-        user_no = (long) new Random().nextInt(4);
+        user_no = (long) (Math.random() * 10)+1;
 
         loc = null;
 
@@ -164,6 +164,27 @@ public class LocationTest {
         }
 
         locationRepository.save(loc);
+
+        Optional<Location> temp = locationRepository.findLocByUUID(loc.getLoc_uuid());
+
+        if(temp.isPresent()){
+            Location item = temp.get();
+
+            img = null;
+            img = Image.builder()
+                    .location(item)
+                    .img_uuid("Seoul-Forest-03.jpg")
+                    .user_no(user_no)
+                    .img_url("/image/init/Seoul-Forest-03.jpg")
+                    .build();
+            img.setLocation(item);
+
+            imageRepository.save(img);
+
+            item.addImg(img);
+
+            locService.update(item);
+        }
 
         System.out.println("Location 저장 완료");
     }
