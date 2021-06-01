@@ -195,33 +195,33 @@
 						<div class="d-flex justify-content-start row">
 							<div class="col-md-10">
 								<div class="d-flex flex-column">
-									<c:set var="cmtList" value="${dto.cmtList}"></c:set>
+									<c:set var="cmtDTO" value="${resComDTO.dtoList}"></c:set>
 									<c:choose>
-										<c:when test="${0 != cmtList.size()}">
-											<c:forEach var="c" begin="0" end="${cmtList.size()-1}">
+										<c:when test="${0 != cmtDTO.size()}">
+											<c:forEach var="c" begin="0" end="${cmtDTO.size()-1}">
 												<div class="bg-white p-2">
 													<div class="d-flex flex-row align-items-center"><img
 															src="/image/icon/user/user.png"
 															class="loc_comment-profile-image-wh">
 														<div class="flex-column">
                                         <span class="d-block font-weight-bold name">
-                                            ${cmtList.get(c).user.user_no}
+                                            ${cmtDTO.get(c).user.user_no}
 											<sec:authorize access="isAuthenticated()">
 												<c:set var="user_no"><sec:authentication
 														property="principal.user_no"/></c:set>
 												<c:choose>
-													<c:when test="${user_no eq cmtList.get(c).user.user_no}">
+													<c:when test="${user_no eq cmtDTO.get(c).user.user_no}">
 														<button class="btn btn-primary">수정</button>
 														<button class="btn btn-primary">삭제</button>
 													</c:when>
 												</c:choose>
 											</sec:authorize>
                                         </span>
-															<span class="date text-black-50 ml-5">${cmtList.get(c).regDate}</span>
+															<span class="date text-black-50 ml-5">${cmtDTO.get(c).regDate}</span>
 														</div>
 													</div>
 													<div class="mt-2">
-														<p class="comment-text">${cmtList.get(c).cmtContent}</p>
+														<p class="comment-text">${cmtDTO.get(c).cmtContent}</p>
 													</div>
 												</div>
 											</c:forEach>
@@ -337,44 +337,49 @@
 							</div>
 						</div>
 					</div>
-					<div class="container d-flex" id="pagination">
+
+
+					<%--	PageNumber	--%>
+					<div class="container d-flex" id="">
 						<div class="col" id="page_number">
 							<nav aria-label="Page navigation example">
 								<ul class="pagination justify-content-center">
+									<c:if test="${resComDTO.next eq true}">
+										<li class="page-item">
+											<a class="page-link" href="/service/loc_detail?locNo=${dto.user_no}&page=${resComDTO.start - 1}"
+											   aria-label="Previous">
+												<span aria-hidden="true">&laquo;</span>
+											</a>
+										</li>
+									</c:if>
+									<c:forEach var="j" begin="${resComDTO.start}" end="${resComDTO.end}">
+									<c:choose>
+									<c:when test="${resComDTO.page eq j}">
+									<li class="page-item active">
+										<a class="page-link"
+										   href="/service/loc_detail?locNo=${dto.user_no}&page=${resComDTO.pageList.get(j-1)}">${resComDTO.pageList.get(j-1)}</a>
+										</c:when>
+										<c:otherwise>
 									<li class="page-item">
-										<a class="page-link" href="#" aria-label="Previous">
-											<span aria-hidden="true">&laquo;</span>
-										</a>
+										<a class="page-link"
+										   href="/service/loc_detail?locNo=${dto.user_no}&page=${resComDTO.pageList.get(j-1)}">${resComDTO.pageList.get(j-1)}</a>
+										</c:otherwise>
+										</c:choose>
+										</c:forEach>
 									</li>
-									<li class="page-item">
-										<a class="page-link" href="#" aria-label="Previous">
-											<span aria-hidden="true">&lt;</span>
-										</a>
-									</li>
-									<%--                          Todo  댓글 어떻게 화면 전환 없이 가져올 수 있을지 생각해보기        --%>
-									<li class="page-item disabled"><a class="page-link" href="#">1</a></li>
-									<li class="page-item"><a class="page-link" href="#">2</a></li>
-									<li class="page-item"><a class="page-link" href="#">3</a></li>
-									<li class="page-item"><a class="page-link" href="#">4</a></li>
-									<li class="page-item"><a class="page-link" href="#">5</a></li>
-									<li class="page-item">
-										<a class="page-link" href="#" aria-label="Previous">
-											<span aria-hidden="true">&gt;</span>
-										</a>
-									</li>
-									<li class="page-item">
-										<a class="page-link" href="#" aria-label="Next">
-											<span aria-hidden="true">&raquo;</span>
-										</a>
-									</li>
+									<c:if test="${resComDTO.next eq true}">
+										<li class="page-item">
+											<a class="page-link" href="/service/loc_detail?locNo=${dto.user_no}&page=${resComDTO.end + 1}"
+											   aria-label="Previous">
+												<span aria-hidden="true">&raquo;</span>
+											</a>
+										</li>
+									</c:if>
 								</ul>
 							</nav>
 						</div>
 					</div>
-					<%--                    Todo 추후에 comment 섹션을 안에다 넣으면, 로그인 한 사람만 댓글 작성 가능--%>
-					<%--                    <sec:authorize access="isAuthenticated()">--%>
-					<%--                        --%>
-					<%--                    </sec:authorize>--%>
+
 					<div class="d-flex justify-content-start" id="comment">
 						<div class="bg-light p-2 col-10">
 							<div class="d-flex flex-row align-items-start">

@@ -29,7 +29,7 @@ public class ServiceController {
     CommentService comService;
 
     final static int MAX_LOC_LIST_SIZE = 4;
-    final static int MAX_COM_COUNT = 10;
+    final static int MAX_COM_COUNT = 5;
     final static int MAX_UPLOAD_COUNT = 10;
     final static int MIN_UPLOAD_COUNT = 3;
     List<String> tagList = new ArrayList<>();
@@ -123,17 +123,6 @@ public class ServiceController {
 
             model.addAttribute("dto", dto);
             model.addAttribute("resComDTO", resultCommentDTO);
-
-            log.info("Comment List : " + dto.getCmtList());
-           log.info("PREV = " + resultCommentDTO.isPrev());
-           log.info("NEXT = " + resultCommentDTO.isNext());
-           log.info("TOTAL : " + resultCommentDTO.getTotalPage());
-
-           log.info("-------------------------------------------------");
-            for (CommentDTO commentDTO : resultCommentDTO.getDtoList()) {
-               log.info(commentDTO.getCmtNo() + "\tcommentDTO = " + commentDTO);
-            }
-            log.info("-------------------------------------------------");
 
             return "/service/loc_detail";
         }
