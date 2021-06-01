@@ -143,18 +143,16 @@
 			<div class="col-md-5 justify-content-md-center">
 				<div class="row d-flex">
 					<div class="row d-flex justify-content-between p-1">
-						<span class="h1 col-5">${dto.loc_name}</span>
-						<button class="btn btn-outline-danger col-2" style="max-height: 56px" onclick="copyURL()">공유
-						</button>
+						<span class="h2">${dto.loc_name}</span>
 					</div>
 					<div class="row d-flex">
-						<h3>지역 : ${dto.siDo} ${dto.siGunGu}</h3>
+						<h5>지역 : ${dto.siDo} ${dto.siGunGu}</h5>
 					</div>
 					<div class="row d-flex">
-						<h3>해시태그 : ${dto.tagSet}</h3>
+						<h5>해시태그 : ${dto.tagSet}</h5>
 					</div>
 					<div class="row d-flex">
-						<h3 class="text-truncate">설명 : ${dto.info}</h3>
+						<h5 class="text-truncate">설명 : ${dto.info}</h5>
 					</div>
 				</div>
 				<div class="row d-flex">
@@ -166,6 +164,8 @@
 					<span class="text-center align-middle fs-3 me-4" id="likeCount">${dto.likeCount}</span>
 					<img src="/image/icon/comment.png" class="loc_icon_big me-2" alt="댓글">
 					<span class="text-center align-middle fs-3 me-4">${dto.cmtList.size()}</span>
+					<button class="btn btn-outline-danger col-3" style="max-height: 56px" onclick="copyURL()">공유
+					</button>
 				</div>
 
 				<span class="d-none" id="loc_no">${dto.loc_no}</span>
@@ -396,7 +396,7 @@
 				<div class="tab-pane fade" id="location-info" role="tabpanel" aria-labelledby="location-info-tab">
 					<div class="container">
 						<div class="d-flex mt-3">
-							<span class="h3">${dto.info}</span>
+							<span class="fs-5" style="white-space: pre-wrap;">${dto.info}</span>
 						</div>
 					</div>
 				</div>
@@ -415,7 +415,6 @@
 <script defer src="/js/bootstrap.js"></script>
 <script defer src="/js/loc_detail.js"></script>
 <script defer src="/js/loc_common.js"></script>
-a
 <script defer>
     function clickImgNext() {
         var imgDisplay = document.getElementById("imgDisplay");

@@ -13,5 +13,9 @@ public enum LocationTag {
     TYPE_EVEN,
     야외,
     학교,
-    공원
+    공원,
+    역사유적,
+    광장,
+    문화재,
+    숲
 }
