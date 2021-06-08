@@ -339,12 +339,12 @@
                     alert("장소 등록 실패 : 로그인을 해주세요");
                     console.log("장소 등록 실패 : 로그인을 해주세요");
 				}
-            },
-            error: function (e) {
+            },error: function (e) {
                 console.log("Login Check Failed")
                 alert("장소 등록 실패");
                 console.log("장소 등록 실패");
             }
+
         });
     }
 </script>

@@ -34,7 +34,7 @@ public class LocationTest {
         tagSet.add(LocationTag.ACTION_A);
         tagSet.add(LocationTag.ACTION_B);
 
-        Long user_no = (long) new Random().nextInt(4);
+        Long user_no = (long) new Random().nextInt(4) + 1L;
 
         Location loc = Location.builder()
                 .loc_name("중부대학교 충청캠퍼스")
@@ -145,7 +145,7 @@ public class LocationTest {
         locationRepository.save(loc);
 
         img = null;
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             img = Image.builder()
                     .location(loc)
                     .img_uuid("Seoul-Forest-0" + i + ".jpg")

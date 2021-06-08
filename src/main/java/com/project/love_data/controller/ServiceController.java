@@ -83,8 +83,6 @@ public class ServiceController {
             reqParam.put("user_no", (request.getParameter("user_no_debug")));
         }
 
-        // Todo 입력시 최소 1개의 태그는 추가하도록 하는 javascript 및 백엔드 서버 기능 추가
-        // Todo 전화번호 입력 포맷 완성시키기
         if (tagList.isEmpty()) {
             log.warn("No Location Tag Found (Must add tag before submit location)");
             return "redirect:/service/loc_recommend";
@@ -135,6 +133,7 @@ public class ServiceController {
                                    PageRequestDTO pageRequestDTO,
                                    Authentication authentication,
                                    Model model) {
+        // 최대 4개의 장소 표시
         pageRequestDTO.setSize(MAX_LOC_LIST_SIZE);
         PageResultDTO<LocationDTO, com.project.love_data.model.service.Location> resultDTO = locService.getList(pageRequestDTO);
         model.addAttribute("result", resultDTO);

@@ -357,19 +357,19 @@
 									<c:when test="${resComDTO.page eq j}">
 									<li class="page-item active">
 										<a class="page-link"
-										   href="/service/loc_detail?locNo=${dto.user_no}&page=${resComDTO.pageList.get(j-1)}">${resComDTO.pageList.get(j-1)}</a>
+										   href="/service/loc_detail?locNo=${dto.loc_no}&page=${resComDTO.pageList.get(j-1)}">${resComDTO.pageList.get(j-1)}</a>
 										</c:when>
 										<c:otherwise>
 									<li class="page-item">
 										<a class="page-link"
-										   href="/service/loc_detail?locNo=${dto.user_no}&page=${resComDTO.pageList.get(j-1)}">${resComDTO.pageList.get(j-1)}</a>
+										   href="/service/loc_detail?locNo=${dto.loc_no}&page=${resComDTO.pageList.get(j-1)}">${resComDTO.pageList.get(j-1)}</a>
 										</c:otherwise>
 										</c:choose>
 										</c:forEach>
 									</li>
 									<c:if test="${resComDTO.next eq true}">
 										<li class="page-item">
-											<a class="page-link" href="/service/loc_detail?locNo=${dto.user_no}&page=${resComDTO.end + 1}"
+											<a class="page-link" href="/service/loc_detail?locNo=${dto.loc_no}&page=${resComDTO.end + 1}"
 											   aria-label="Previous">
 												<span aria-hidden="true">&raquo;</span>
 											</a>

@@ -109,13 +109,18 @@ public class LocationService {
             tempList.add(img);
         }
 
+//        for (int i = 0; i < tempList.size(); i++) {
+//            for (int j = 0; j < tempList.size(); j++) {
+//                if (tempList.get(j).getIdx() == i) {
+//                    imgList.add(tempList.get(j));
+//                    break;
+//                }
+//            }
+//        }
+
         for (int i = 0; i < tempList.size(); i++) {
-            for (int j = 0; j < tempList.size(); j++) {
-                if (tempList.get(j).getIdx() == i) {
-                    imgList.add(tempList.get(j));
-                    break;
-                }
-            }
+            tempList.get(i).setIdx((long) i);
+            imgList.add(tempList.get(i));
         }
 
         // Comment List 변환 및 정렬
