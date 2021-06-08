@@ -78,7 +78,7 @@ public class LocationService {
         return entity;
     }
 
-    public LocationDTO entityToDto(Location entity){
+    public LocationDTO entityToDto(Location entity) {
         LocationDTO dto = LocationDTO.builder()
                 .loc_no(entity.getLoc_no())
                 .loc_name(entity.getLoc_name())
@@ -103,6 +103,8 @@ public class LocationService {
         // idx 기준 정렬
         List<Image> tempList = new ArrayList<>();
         List<Image> imgList = new ArrayList<>();
+        boolean sortedFlag = false;
+        int count = 0;
 
         for (Image img :
                 entity.getImgSet()) {
@@ -118,10 +120,36 @@ public class LocationService {
 //            }
 //        }
 
+        // idx가 전부 0일 경우 정리가 되지 않은 것이므로
         for (int i = 0; i < tempList.size(); i++) {
-            tempList.get(i).setIdx((long) i);
-            imgList.add(tempList.get(i));
+            if (tempList.get(i).getIdx() == 0) {
+                count++;
+            }
         }
+
+        // 플래그 설정
+        if (count > 1) {
+            sortedFlag = false;
+        } else {
+            sortedFlag = true;
+        }
+
+        if (!sortedFlag) {
+            for (int i = 0; i < tempList.size(); i++) {
+                tempList.get(i).setIdx((long) i);
+                imgList.add(tempList.get(i));
+            }
+        } else {
+            for (int i = 0; i < tempList.size(); i++) {
+                for (int j = 0; j < tempList.size(); j++) {
+                    if (tempList.get(j).getIdx() == i) {
+                        imgList.add(tempList.get(j));
+                        break;
+                    }
+                }
+            }
+        }
+
 
         // Comment List 변환 및 정렬
         // cmd_idx 기준 정렬
@@ -196,7 +224,7 @@ public class LocationService {
         return repository.findByLoc_nameContaining(sb.toString());
     }
 
-    public Location selectLoc(Long loc_no){
+    public Location selectLoc(Long loc_no) {
         Optional<Location> result = repository.findById(loc_no);
 
         return result.isPresent() ? result.get() : null;
@@ -264,7 +292,7 @@ public class LocationService {
     public boolean onClickLikeUndo(Long loc_no) {
         Location entity = selectLoc(loc_no);
 
-        if(entity == null) {
+        if (entity == null) {
             return false;
         }
 
@@ -278,7 +306,7 @@ public class LocationService {
     public void incViewCount(Long loc_no) {
         LocationDTO dto = selectLocDTO(loc_no);
 
-        dto.setViewCount(dto.getViewCount()+1);
+        dto.setViewCount(dto.getViewCount() + 1);
 
         Location entity = dtoToEntity(dto);
 
