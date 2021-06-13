@@ -86,10 +86,18 @@ com/project/love_data/dto/CommentDTO.java
  com.project.love_data.dto.CommentDTO$CommentDTOBuilder
 com/project/love_data/config/ConverterConfig.java
  com.project.love_data.config.ConverterConfig
+<<<<<<< HEAD
 com/project/love_data/model/service/LocationTag.java
  com.project.love_data.model.service.LocationTag
 com/project/love_data/businessLogic/oauth/login/TokenRequestKakao.java
  com.project.love_data.businessLogic.oauth.login.TokenRequestKakao
+=======
+com/project/love_data/businessLogic/oauth/login/TokenRequestKakao.java
+ com.project.love_data.businessLogic.oauth.login.TokenRequestKakao
+com/project/love_data/businessLogic/service/LocationService.java
+ com.project.love_data.businessLogic.service.LocationService
+ com.project.love_data.businessLogic.service.LocationService$1
+>>>>>>> LMK
 com/project/love_data/model/oauth/KakaoAuthToken.java
  com.project.love_data.model.oauth.KakaoAuthToken
 com/project/love_data/dto/PageRequestDTO.java
@@ -150,6 +158,7 @@ com/project/love_data/businessLogic/service/UploadFileType.java
  com.project.love_data.businessLogic.service.UploadFileType
 com/project/love_data/businessLogic/account/UserAccountDelete.java
  com.project.love_data.businessLogic.account.UserAccountDelete
+<<<<<<< HEAD
 com/project/love_data/businessLogic/service/LocationService.java
  com.project.love_data.businessLogic.service.LocationService
  com.project.love_data.businessLogic.service.LocationService$1
@@ -157,3 +166,13 @@ com/project/love_data/controller/ServiceController.java
  com.project.love_data.controller.ServiceController
 com/project/love_data/controller/RestController.java
  com.project.love_data.controller.RestController
+=======
+com/project/love_data/dto/LocationDTO.java
+ com.project.love_data.dto.LocationDTO
+ com.project.love_data.dto.LocationDTO$LocationDTOBuilder
+com/project/love_data/model/service/Location.java
+ com.project.love_data.model.service.Location
+ com.project.love_data.model.service.Location$LocationBuilder
+com/project/love_data/model/service/LocationTag.java
+ com.project.love_data.model.service.LocationTag
+>>>>>>> LMK
