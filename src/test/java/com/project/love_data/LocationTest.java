@@ -34,11 +34,7 @@ public class LocationTest {
         tagSet.add(LocationTag.ACTION_A);
         tagSet.add(LocationTag.ACTION_B);
 
-<<<<<<< HEAD
         Long user_no = (long) new Random().nextInt(4) + 1L;
-=======
-        Long user_no = (long) (Math.random() * 10)+1;
->>>>>>> LMK
 
         Location loc = Location.builder()
                 .loc_name("중부대학교 충청캠퍼스")
