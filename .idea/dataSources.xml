@@ -9,5 +9,12 @@
       <jdbc-url>jdbc:mariadb://localhost:3306/lovedata</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="RPI Server (LoveData)" uuid="7d1ce827-643a-4abc-ab55-c471c67a7c93">
+      <driver-ref>mariadb</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mariadb://mon0mon.iptime.org:23306/lovedata</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

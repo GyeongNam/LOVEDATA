@@ -13,11 +13,15 @@ class LoveDataApplicationTests {
 
 	@Test
 	void contextLoads() {
-		Set<String> stringSet = new HashSet<>();
+		Map<String, String> temp = System.getenv();
+		Iterator it = temp.keySet().iterator();
 
-		stringSet.add("asdf");
+//		System.out.println(temp.get("OS"));
 
-		System.out.println(stringSet.size());
+		while (it.hasNext()) {
+			String item = (String) it.next();
+			System.out.println(item + " : " + temp.get(item));
+		}
 	}
 
 	@Test
