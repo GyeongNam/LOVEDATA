@@ -9,6 +9,16 @@
           </mappings>
         </serverdata>
       </paths>
+      <paths name="PI_Tomcat">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$/build/generated/querydsl" web="/" />
+            <mapping local="$PROJECT_DIR$/build/generated/sources/annotationProcessor/java/main" web="/" />
+            <mapping local="$PROJECT_DIR$/src/main" web="/" />
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="Test">
         <serverdata>
           <mappings>

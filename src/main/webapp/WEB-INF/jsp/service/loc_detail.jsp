@@ -124,7 +124,7 @@
 								<span class="visually-hidden" id="dtoImgListSize"
 									  name="dtoImgListSize">${dto.imgList.size()}</span>
 								<span class="visually-hidden" id="imgListIndex" name="imgListIndex">0</span>
-								<intpu type="hidden" id="imgList" name="imgList" value="${dto.imgList}"></intpu>
+								<input type="hidden" id="imgList" name="imgList" value="${dto.imgList}"></input>
 							</div>
 						</c:when>
 						<c:otherwise>

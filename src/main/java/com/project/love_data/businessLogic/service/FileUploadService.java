@@ -32,7 +32,7 @@ public class FileUploadService {
         if ("Windows_NT".equals(System.getenv().get("OS"))) {
             pathStr =System.getProperty("user.dir");
         } else {
-            pathStr = "/home/tomcat/LoveData_Storage";
+            pathStr = "/home/tomcat/LoveData-Storage";
         }
         List<String> result = null;
 
@@ -101,7 +101,7 @@ public class FileUploadService {
         if ("Windows_NT".equals(System.getenv().get("OS"))) {
             URIPath = "/image/upload";
         } else {
-            URIPath = "/home/tomcat/LoveData_Storage";
+            URIPath = "/img";
         }
         String fileName = null;
         List<String> result = new ArrayList<>();
@@ -150,7 +150,7 @@ public class FileUploadService {
         if ("Windows_NT".equals(System.getenv().get("OS"))) {
             URIPath = "/image/upload";
         } else {
-            URIPath = "/home/tomcat/LoveData_Storage";
+            URIPath = "/img";
         }
         String fileName = null;
         List<String> result = new ArrayList<>();
