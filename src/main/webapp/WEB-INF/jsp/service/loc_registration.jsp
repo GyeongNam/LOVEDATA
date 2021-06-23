@@ -212,18 +212,118 @@
 						<input type="hidden" name="user_no_debug" id="user_no_debug" value="0">
 					</div>
 					<div>
-						<input id="imgInput" name="files" type="file" multiple accept="image/*" onchange="readImage()">
-						<div id="canvas" class="row flex-nowrap" style="height: 230px; overflow-x: scroll">
-							<img src="" alt="temp" id="img1" width="200px" height="200px" class="visible">
-							<img src="" alt="temp" id="img2" width="200px" height="200px" class="visually-hidden">
-							<img src="" alt="temp" id="img3" width="200px" height="200px" class="visually-hidden">
-							<img src="" alt="temp" id="img4" width="200px" height="200px" class="visually-hidden">
-							<img src="" alt="temp" id="img5" width="200px" height="200px" class="visually-hidden">
-							<img src="" alt="temp" id="img6" width="200px" height="200px" class="visually-hidden">
-							<img src="" alt="temp" id="img7" width="200px" height="200px" class="visually-hidden">
-							<img src="" alt="temp" id="img8" width="200px" height="200px" class="visually-hidden">
-							<img src="" alt="temp" id="img9" width="200px" height="200px" class="visually-hidden">
-							<img src="" alt="temp" id="img10" width="200px" height="200px" class="visually-hidden">
+						<input class="visually-hidden" id="imgInput" name="files" type="file" multiple accept="image/*" onchange="readImage()">
+						<div id="canvas" class="row flex-nowrap mx-0 mt-3" style="overflow-x: scroll">
+							<div class="card col-3 p-0">
+								<img src="/image/icon/480px-Solid_white.png" alt="" id="img1" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
+								<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
+									<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd1"
+										 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
+								</div>
+								<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
+									<img class="btn btn-lg align-middle p-0" id="imgDel1" onclick="deleteImage()"
+										 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
+								</div>
+							</div>
+							<div class="card col-3 p-0">
+								<img src="/image/icon/480px-Solid_white.png" alt="" id="img2" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
+								<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
+									<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd2"
+										 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
+								</div>
+								<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
+									<img class="btn btn-lg align-middle p-0" id="imgDel2"
+										 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
+								</div>
+							</div>
+							<div class="card col-3 p-0">
+								<img src="/image/icon/480px-Solid_white.png" alt="" id="img3" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
+								<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
+									<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd3"
+										 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
+								</div>
+								<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
+									<img class="btn btn-lg align-middle p-0" id="imgDel3"
+										 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
+								</div>
+							</div>
+							<div class="card col-3 p-0">
+								<img src="/image/icon/480px-Solid_white.png" alt="" id="img4" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
+								<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
+									<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd4"
+										 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
+								</div>
+								<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
+									<img class="btn btn-lg align-middle p-0" id="imgDel4"
+										 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
+								</div>
+							</div>
+							<div class="card col-3 p-0">
+								<img src="/image/icon/480px-Solid_white.png" alt="" id="img5" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
+								<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
+									<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd5"
+										 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
+								</div>
+								<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
+									<img class="btn btn-lg align-middle p-0" id="imgDel5"
+										 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
+								</div>
+							</div>
+							<div class="card col-3 p-0">
+								<img src="/image/icon/480px-Solid_white.png" alt="" id="img6" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
+								<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
+									<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd6"
+										 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
+								</div>
+								<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
+									<img class="btn btn-lg align-middle p-0" id="imgDel6"
+										 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
+								</div>
+							</div>
+							<div class="card col-3 p-0">
+								<img src="/image/icon/480px-Solid_white.png" alt="" id="img7" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
+								<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
+									<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd7"
+										 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
+								</div>
+								<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
+									<img class="btn btn-lg align-middle p-0" id="imgDel7"
+										 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
+								</div>
+							</div>
+							<div class="card col-3 p-0">
+								<img src="/image/icon/480px-Solid_white.png" alt="" id="img8" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
+								<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
+									<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd8"
+										 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
+								</div>
+								<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
+									<img class="btn btn-lg align-middle p-0" id="imgDel8"
+										 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
+								</div>
+							</div>
+							<div class="card col-3 p-0">
+								<img src="/image/icon/480px-Solid_white.png" alt="" id="img9" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
+								<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
+									<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd9"
+										 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
+								</div>
+								<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
+									<img class="btn btn-lg align-middle p-0" id="imgDel9"
+										 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
+								</div>
+							</div>
+							<div class="card col-3 p-0">
+								<img src="/image/icon/480px-Solid_white.png" alt="" id="img10" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
+								<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
+									<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd10"
+										 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
+								</div>
+								<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
+									<img class="btn btn-lg align-middle p-0" id="imgDel10"
+										 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -298,25 +398,70 @@
     }
 </script>
 <script>
+    let input = document.getElementById("imgInput");
+    let isBuffered = false;
+
+	function onClickAddImage() {
+	    isBuffered = true;
+        $('#imgInput').trigger('click');
+    }
+
+    function toggleAddDelBtn(offset) {
+	    for (let i = 1; i < 11; i++) {
+            let btnAddParent = document.getElementById("imgAdd" + i).parentElement;
+            let btnDelParent = document.getElementById("imgDel" + i).parentElement;
+
+	        if (offset < i) {
+                btnAddParent.setAttribute('class', 'd-flex justify-content-center card-img-overlay');
+                btnDelParent.setAttribute('class', 'd-flex justify-content-end card-img-overlay p-0 visually-hidden');
+			} else {
+                btnAddParent.setAttribute('class', 'd-flex justify-content-center card-img-overlay visually-hidden');
+                btnDelParent.setAttribute('class', 'd-flex justify-content-end card-img-overlay p-0');
+			}
+		}
+	}
+
     <%--						http://yoonbumtae.com/?p=3304 --%>
     function readImage() {
-        let input = document.getElementById("imgInput");
         let fileList = Array.from(input.files);
 
+        console.log(input.files);
         console.log(fileList);
         fileList.forEach((file, index) => {
             let reader = new FileReader();
             // console.log(i + "번 째 아이템이 등록되었습니다.");
 			let item = document.getElementById("img" + (index+1));
 			reader.onload= e => {
-			    item.className = "col-3 visible";
+			    // item.className = "col-3 visible";
 			    item.src = e.target.result;
 			}
             reader.readAsDataURL(file);
             console.log(item);
         })
-		//Todo 이미지 삭제 버튼 및 추가 버튼 기능 추가
+		if (isBuffered) {
+            for (let i = fileList.length; i < 11; i++) {
+                let img = document.getElementById("img" + i);
+                img.src = "/image/icon/480px-Solid_white.png";
+            }
+		}
+        toggleAddDelBtn(fileList.length);
     }
+
+    function deleteImage() {
+        let files = Array.from(input.files);
+
+        console.log(files);
+
+        let temp = files.splice(files.length-1, 1);
+
+        console.log(temp);
+
+        input.files = temp;
+
+        // Todo
+        // fileList는 readonly 속성
+		// arrary로 받고 나서 해당 목록을 어떻게 다시 input 에 넣을 건지 생각해보기
+	}
 
     function onClickRegister() {
         console.log("submit butten clicked");

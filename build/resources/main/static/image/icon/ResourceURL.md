@@ -17,3 +17,12 @@
 
 6. View Count Icon
 <ol><a> https://www.flaticon.com/free-icon/view_709612?term=eyes&page=1&position=6&page=1&position=6&related_id=709612&origin=search </a></ol>
+
+7. Plus Icon
+<ol><a>https://fonts.google.com/icons?selected=Material%20Icons%20Outlined%3Aadd</a></ol>
+
+8. Clear Icon
+<ol><a>https://fonts.google.com/icons?selected=Material%20Icons%20Outlined%3Aclear</a></ol>
+
+9. White Background
+<ol><a>https://ko.m.wikipedia.org/wiki/%ED%8C%8C%EC%9D%BC:Solid_white.svg</a></ol>

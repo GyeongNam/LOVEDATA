@@ -91,7 +91,7 @@
 					<c:choose>
 						<c:when test="${!empty imgList}">
 							<div class="d-flex justify-content-center">
-								<img class="bd-placeholder-img card-img-top d-flex justify-content-center" width="100%"
+								<img class="bd-placeholder-img card-img" width="100%"
 									 height="400"
 									 alt="${dto.loc_name}"
 									 src="${dto.imgList.get(0).img_url}"
