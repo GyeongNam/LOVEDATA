@@ -212,9 +212,19 @@
 						<input type="hidden" name="user_no_debug" id="user_no_debug" value="0">
 					</div>
 					<div>
-						<input name="files" type="file" multiple accept="image/*">
-						<%--						@Todo 이미지 업로드시 미리 보기 추가--%>
-						<%--						http://yoonbumtae.com/?p=3304 --%>
+						<input id="imgInput" name="files" type="file" multiple accept="image/*" onchange="readImage()">
+						<div id="canvas" class="row flex-nowrap" style="height: 230px; overflow-x: scroll">
+							<img src="" alt="temp" id="img1" width="200px" height="200px" class="visible">
+							<img src="" alt="temp" id="img2" width="200px" height="200px" class="visually-hidden">
+							<img src="" alt="temp" id="img3" width="200px" height="200px" class="visually-hidden">
+							<img src="" alt="temp" id="img4" width="200px" height="200px" class="visually-hidden">
+							<img src="" alt="temp" id="img5" width="200px" height="200px" class="visually-hidden">
+							<img src="" alt="temp" id="img6" width="200px" height="200px" class="visually-hidden">
+							<img src="" alt="temp" id="img7" width="200px" height="200px" class="visually-hidden">
+							<img src="" alt="temp" id="img8" width="200px" height="200px" class="visually-hidden">
+							<img src="" alt="temp" id="img9" width="200px" height="200px" class="visually-hidden">
+							<img src="" alt="temp" id="img10" width="200px" height="200px" class="visually-hidden">
+						</div>
 					</div>
 				</div>
 				<button type="submit" id="register" name="register" onclick="onClickRegister()">Register</button>
@@ -241,12 +251,11 @@
     document.domain = "localhost:8080"
 
     function goPopup() {
-        //
-        // 주소검색을 수행할 팝업 페이지를 호출합니다.
-        // 호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(https://www.juso.go.kr/addrlink/addrLinkUrl.do)를 호출하게 됩니다.
+<%--        // 주소검색을 수행할 팝업 페이지를 호출합니다.
+        // 호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(https://www.juso.go.kr/addrlink/addrLinkUrl.do)를 호출하게 됩니다. --%>
         var pop = window.open("/popup/jusoPopup", "pop", "width=570,height=420, scrollbars=yes, resizable=yes");
 
-        // 모바일 웹인 경우, 호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(https://www.juso.go.kr/addrlink/addrMobileLinkUrl.do)를 호출하게 됩니다.
+        <%-- // 모바일 웹인 경우, 호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(https://www.juso.go.kr/addrlink/addrMobileLinkUrl.do)를 호출하게 됩니다. --%>
         //var pop = window.open("/popup/jusoPopup.jsp","pop","scrollbars=yes, resizable=yes");
     }
 
@@ -259,7 +268,7 @@
         document.getElementById("zipNo").value = zipNo;
         document.getElementById("siNm").value = siNm;
         document.getElementById("sggNm").value = sggNm;
-        // document.form.roadFullAddr.value = roadFullAddr;
+        <%--// document.form.roadFullAddr.value = roadFullAddr;
         // document.form.roadAddrPart1.value = roadAddrPart1;
         // document.form.roadAddrPart2.value = roadAddrPart2;
         // document.form.addrDetail.value = addrDetail;
@@ -285,10 +294,30 @@
         // document.form.lnbrMnnm.value = lnbrMnnm;
         // document.form.lnbrSlno.value = lnbrSlno;
         /** 2017년 3월 추가제공 **/
-        // document.form.emdNo.value = emdNo;
+        // document.form.emdNo.value = emdNo; --%>
     }
 </script>
 <script>
+    <%--						http://yoonbumtae.com/?p=3304 --%>
+    function readImage() {
+        let input = document.getElementById("imgInput");
+        let fileList = Array.from(input.files);
+
+        console.log(fileList);
+        fileList.forEach((file, index) => {
+            let reader = new FileReader();
+            // console.log(i + "번 째 아이템이 등록되었습니다.");
+			let item = document.getElementById("img" + (index+1));
+			reader.onload= e => {
+			    item.className = "col-3 visible";
+			    item.src = e.target.result;
+			}
+            reader.readAsDataURL(file);
+            console.log(item);
+        })
+		//Todo 이미지 삭제 버튼 및 추가 버튼 기능 추가
+    }
+
     function onClickRegister() {
         console.log("submit butten clicked");
         var $fileUpload = $("input[type='file']");

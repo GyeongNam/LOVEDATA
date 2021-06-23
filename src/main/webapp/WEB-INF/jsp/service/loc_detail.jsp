@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -344,20 +345,30 @@
 						<div class="col" id="page_number">
 							<nav aria-label="Page navigation example">
 								<ul class="pagination justify-content-center">
-									<c:if test="${resComDTO.next eq true}">
+									<c:if test="${resComDTO.prev eq true}">
 										<li class="page-item">
-											<a class="page-link" href="/service/loc_detail?locNo=${dto.user_no}&page=${resComDTO.start - 1}"
+											<a class="page-link" href="/service/loc_detail?locNo=${dto.loc_no}&page=${resComDTO.start - 1}"
 											   aria-label="Previous">
 												<span aria-hidden="true">&laquo;</span>
 											</a>
 										</li>
 									</c:if>
-									<c:forEach var="j" begin="${resComDTO.start}" end="${resComDTO.end}">
 									<c:choose>
-									<c:when test="${resComDTO.page eq j}">
+										<c:when test="${resComDTO.start < 10}">
+											<c:set var="power" value="${0}"/>
+										</c:when>
+										<c:otherwise>
+											<c:set var="power" value="${resComDTO.start - (resComDTO.start mod 10)}"/>
+										</c:otherwise>
+									</c:choose>
+									<c:forEach var="j" begin="${1}" end="${resComDTO.end - resComDTO.start + 1}">
+									<c:choose>
+									<c:when test="${resComDTO.page eq j + power}">
 									<li class="page-item active">
 										<a class="page-link"
-										   href="/service/loc_detail?locNo=${dto.loc_no}&page=${resComDTO.pageList.get(j-1)}">${resComDTO.pageList.get(j-1)}</a>
+<%--										   pageList에는 현재 8개의 리스트 밖에 없지만 반복문 j는 11에서부터 시작하므로 인덱스 오류가 발생함--%>
+										   href="/service/loc_detail?locNo=${dto.loc_no}&page=${resComDTO.pageList.get(j - 1)}">${resComDTO.pageList.get(j - 1)}</a>
+<%--										   href="/service/loc_detail?locNo=${dto.loc_no}&page=${resComDTO.pageList.get(j)}">${resComDTO.pageList.get(j)}</a>--%>
 										</c:when>
 										<c:otherwise>
 									<li class="page-item">

@@ -109,7 +109,8 @@ public class CommentTest {
 
     @Test
     public void readComment(){
-        Location loc = locService.locationNameSearch(String.valueOf(0), SearchOption.CONTAIN).get(0);
+        Location loc = locService.locationNameSearch("중부대학교 충청캠퍼스", SearchOption.CONTAIN).get(0);
+//        Location loc = locService.locationNameSearch(String.valueOf(0), SearchOption.CONTAIN).get(0);
 
         System.out.println("loc Comment Set");
         for (Comment comment : loc.getCmtSet()) {

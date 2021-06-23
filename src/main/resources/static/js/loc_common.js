@@ -23,7 +23,6 @@ function addTag(tag) {
         if (list.item(i).children.item(0).getAttribute("value") === "") {
             list.item(i).children.item(0).setAttribute("value", tag.value);
             list.item(i).children.item(0).innerHTML = tag.value;
-            list.item(i).style.display = "inline-block";
             isReachMaxNumber = false;
             index = i + 1;
             tagList.push(tag.value);

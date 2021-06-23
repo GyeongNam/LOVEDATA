@@ -27,11 +27,13 @@ public class FileUploadService {
                                 int minFileUploadCount,
                                 int maxFileUploadCount,
                                 HttpServletRequest request) {
-        // 업로드 폴더의 상위폴더 (예시로 현재 프로젝트 폴더)
+        // 업로드하는 파일이 실제로 저장되는 위치
         String pathStr;
         if ("Windows_NT".equals(System.getenv().get("OS"))) {
+            // 윈도우 OS에서 돌아갈 경우(디버깅 및 테스트) 현재 프로젝트설치 위치로 지정
             pathStr =System.getProperty("user.dir");
         } else {
+            // 윈도우 이외의 OS에서 돌아갈 경우 /home/tomcat/LoveData-Storage에 위치로 지정
             pathStr = "/home/tomcat/LoveData-Storage";
         }
         List<String> result = null;
@@ -60,40 +62,6 @@ public class FileUploadService {
                                           UploadFileType fileType,
                                           HttpServletRequest request) {
         String filePath = getUploadPath(pathStr);
-        // Todo 서버와 로컬 구분하는 방법
-        // 1) 서버 이름으로 구분하기
-        // if ("localhost".equals(request.getServerName()))
-        // 이 방법은 현재 서버와 로컬이 같은 이름인 내 경우엔 적용 X
-        // 2) OS 이름으로 구분하기
-        // System.getenv()로 현재 OS 이름 가져 올 수 있음
-        // System.getenv().get("OS")
-        // if (window) == Windows_NT
-        // else == null
-        /*
-        *  LANGUAGE : en_US.UTF-8
-        * PATH : /usr/local/bin:/usr/bin:/bin:/usr/games
-        * SHELL : /usr/bin/zsh
-        * JETBRAINS_REMOTE_RUN : 1
-        * SSH_TTY : /dev/pts/3
-        * SSH_CLIENT : 192.168.0.1 6285 22
-        * OLDPWD : /home/tomcat
-        * TERM : vt100
-        * USER : tomcat
-        * LANG : en_US.UTF-8
-        * DBUS_SESSION_BUS_ADDRESS : unix:path=/run/user/1001/bus
-        * XDG_SESSION_TYPE : tty
-        * XDG_SESSION_ID : 23
-        * SSH_CONNECTION : 192.168.0.1 6285 192.168.0.10 22
-        * MAIL : /var/mail/tomcat
-        * LC_ALL : en_US.UTF-8
-        * LOGNAME : tomcat
-        * PWD : /home/tomcat/spring/PtSb5FKRKt
-        * XDG_RUNTIME_DIR : /run/user/1001
-        * SHLVL : 0
-        * HOME : /home/tomcat
-        * _ : /usr/bin/env
-        * XDG_SESSION_CLASS : user
-         */
 
         String URIPath;
         // 리눅스 서버에서 돌아갈 경우
