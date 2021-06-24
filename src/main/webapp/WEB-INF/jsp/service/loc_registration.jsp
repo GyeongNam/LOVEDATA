@@ -215,112 +215,112 @@
 						<input class="visually-hidden" id="imgInput" name="files" type="file" multiple accept="image/*" onchange="readImage()">
 						<div id="canvas" class="row flex-nowrap mx-0 mt-3" style="overflow-x: scroll">
 							<div class="card col-3 p-0">
-								<img src="/image/icon/480px-Solid_white.png" alt="" id="img1" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
+								<img src="/image/icon/480px-Solid_white.png" alt="" id="img_1" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
 								<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
-									<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd1"
+									<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_1"
 										 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
 								</div>
 								<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
-									<img class="btn btn-lg align-middle p-0" id="imgDel1" onclick="deleteImage()"
+									<img class="btn btn-lg align-middle p-0" id="imgDel_1" onclick="deleteImage(this)"
 										 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
 								</div>
 							</div>
 							<div class="card col-3 p-0">
-								<img src="/image/icon/480px-Solid_white.png" alt="" id="img2" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
+								<img src="/image/icon/480px-Solid_white.png" alt="" id="img_2" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
 								<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
-									<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd2"
+									<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_2"
 										 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
 								</div>
 								<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
-									<img class="btn btn-lg align-middle p-0" id="imgDel2"
+									<img class="btn btn-lg align-middle p-0" id="imgDel_2" onclick="deleteImage(this)"
 										 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
 								</div>
 							</div>
 							<div class="card col-3 p-0">
-								<img src="/image/icon/480px-Solid_white.png" alt="" id="img3" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
+								<img src="/image/icon/480px-Solid_white.png" alt="" id="img_3" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
 								<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
-									<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd3"
+									<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_3"
 										 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
 								</div>
 								<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
-									<img class="btn btn-lg align-middle p-0" id="imgDel3"
+									<img class="btn btn-lg align-middle p-0" id="imgDel_3" onclick="deleteImage(this)"
 										 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
 								</div>
 							</div>
 							<div class="card col-3 p-0">
-								<img src="/image/icon/480px-Solid_white.png" alt="" id="img4" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
+								<img src="/image/icon/480px-Solid_white.png" alt="" id="img_4" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
 								<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
-									<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd4"
+									<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_4"
 										 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
 								</div>
 								<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
-									<img class="btn btn-lg align-middle p-0" id="imgDel4"
+									<img class="btn btn-lg align-middle p-0" id="imgDel_4" onclick="deleteImage(this)"
 										 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
 								</div>
 							</div>
 							<div class="card col-3 p-0">
-								<img src="/image/icon/480px-Solid_white.png" alt="" id="img5" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
+								<img src="/image/icon/480px-Solid_white.png" alt="" id="img_5" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
 								<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
-									<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd5"
+									<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_5"
 										 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
 								</div>
 								<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
-									<img class="btn btn-lg align-middle p-0" id="imgDel5"
+									<img class="btn btn-lg align-middle p-0" id="imgDel_5" onclick="deleteImage(this)"
 										 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
 								</div>
 							</div>
 							<div class="card col-3 p-0">
-								<img src="/image/icon/480px-Solid_white.png" alt="" id="img6" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
+								<img src="/image/icon/480px-Solid_white.png" alt="" id="img_6" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
 								<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
-									<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd6"
+									<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_6"
 										 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
 								</div>
 								<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
-									<img class="btn btn-lg align-middle p-0" id="imgDel6"
+									<img class="btn btn-lg align-middle p-0" id="imgDel_6" onclick="deleteImage(this)"
 										 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
 								</div>
 							</div>
 							<div class="card col-3 p-0">
-								<img src="/image/icon/480px-Solid_white.png" alt="" id="img7" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
+								<img src="/image/icon/480px-Solid_white.png" alt="" id="img_7" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
 								<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
-									<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd7"
+									<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_7"
 										 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
 								</div>
 								<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
-									<img class="btn btn-lg align-middle p-0" id="imgDel7"
+									<img class="btn btn-lg align-middle p-0" id="imgDel_7" onclick="deleteImage(this)"
 										 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
 								</div>
 							</div>
 							<div class="card col-3 p-0">
-								<img src="/image/icon/480px-Solid_white.png" alt="" id="img8" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
+								<img src="/image/icon/480px-Solid_white.png" alt="" id="img_8" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
 								<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
-									<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd8"
+									<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_8"
 										 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
 								</div>
 								<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
-									<img class="btn btn-lg align-middle p-0" id="imgDel8"
+									<img class="btn btn-lg align-middle p-0" id="imgDel_8" onclick="deleteImage(this)"
 										 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
 								</div>
 							</div>
 							<div class="card col-3 p-0">
-								<img src="/image/icon/480px-Solid_white.png" alt="" id="img9" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
+								<img src="/image/icon/480px-Solid_white.png" alt="" id="img_9" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
 								<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
-									<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd9"
+									<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_9"
 										 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
 								</div>
 								<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
-									<img class="btn btn-lg align-middle p-0" id="imgDel9"
+									<img class="btn btn-lg align-middle p-0" id="imgDel_9" onclick="deleteImage(this)"
 										 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
 								</div>
 							</div>
 							<div class="card col-3 p-0">
-								<img src="/image/icon/480px-Solid_white.png" alt="" id="img10" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
+								<img src="/image/icon/480px-Solid_white.png" alt="" id="img_10" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
 								<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
-									<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd10"
+									<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_10"
 										 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
 								</div>
 								<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
-									<img class="btn btn-lg align-middle p-0" id="imgDel10"
+									<img class="btn btn-lg align-middle p-0" id="imgDel_10" onclick="deleteImage(this)"
 										 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
 								</div>
 							</div>
@@ -407,9 +407,9 @@
     }
 
     function toggleAddDelBtn(offset) {
-	    for (let i = 1; i < 11; i++) {
-            let btnAddParent = document.getElementById("imgAdd" + i).parentElement;
-            let btnDelParent = document.getElementById("imgDel" + i).parentElement;
+	    for (let i = 1; i <= 10; i++) {
+            let btnAddParent = document.getElementById("imgAdd_" + i).parentElement;
+            let btnDelParent = document.getElementById("imgDel_" + i).parentElement;
 
 	        if (offset < i) {
                 btnAddParent.setAttribute('class', 'd-flex justify-content-center card-img-overlay');
@@ -430,7 +430,7 @@
         fileList.forEach((file, index) => {
             let reader = new FileReader();
             // console.log(i + "번 째 아이템이 등록되었습니다.");
-			let item = document.getElementById("img" + (index+1));
+			let item = document.getElementById("img_" + (index+1));
 			reader.onload= e => {
 			    // item.className = "col-3 visible";
 			    item.src = e.target.result;
@@ -438,29 +438,51 @@
             reader.readAsDataURL(file);
             console.log(item);
         })
+
+		// 기존에 있던 이미지 지우기
 		if (isBuffered) {
-            for (let i = fileList.length; i < 11; i++) {
-                let img = document.getElementById("img" + i);
+            for (let i = 0; i < fileList.length; i++) {
+                let img = document.getElementById("img_" + (i+1));
                 img.src = "/image/icon/480px-Solid_white.png";
             }
 		}
         toggleAddDelBtn(fileList.length);
     }
 
-    function deleteImage() {
-        let files = Array.from(input.files);
+    function deleteImage(obj) {
+        <%-- https://stackoverflow.com/questions/16943605/remove-a-filelist-item-from-a-multiple-inputfile  --%>
+		let dt = new DataTransfer();
+		dt.files = input.files;
 
-        console.log(files);
+		let objId = obj.id.split('_');
+		let index = objId[objId.length - 1];
+        console.log(index);
+		for (let file of input.files){
+		    if (file !== input.files[index - 1]){
+		        dt.items.add(file);
+			}
+		}
 
-        let temp = files.splice(files.length-1, 1);
+		for (let i = 1; i <= 10; i++) {
+		    if (i >= index) {
+		       if (i !== 10) {
+                   document.getElementById("img_"+i).src = document.getElementById("img_"+(i+1)).src;
+               } else {
+		           document.getElementById("img_"+i).src = "/image/icon/480px-Solid_white.png";
+			   }
+			}
+		}
 
-        console.log(temp);
+		input.files = dt.files;
+        console.log(dt.files);
+        console.log(input.files);
 
-        input.files = temp;
+        for (let i = input.files.length + 1; i <= 10; i++) {
+            let img = document.getElementById("img_" + i);
+            img.src = "/image/icon/480px-Solid_white.png";
+        }
 
-        // Todo
-        // fileList는 readonly 속성
-		// arrary로 받고 나서 해당 목록을 어떻게 다시 input 에 넣을 건지 생각해보기
+        toggleAddDelBtn(input.files.length);
 	}
 
     function onClickRegister() {

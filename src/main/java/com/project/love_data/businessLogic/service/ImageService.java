@@ -14,7 +14,7 @@ import java.io.File;
 public class ImageService {
     private final ImageRepository repository;
 
-    public Image getImageEntity(String user_no, String fileRootPath, String fileName, Location location) {
+    public Image getImageEntity(String user_no, String fileRootPath, String fileName, Location location, long img_index) {
 //        ImageDTO dto = getImageDTO(user_no, fileRootPath, fileName, location);
 //        Image entity = dtoToEntity(dto);
 
@@ -23,6 +23,7 @@ public class ImageService {
                 .img_uuid(fileName)
                 .img_url(fileRootPath+"/"+fileName)
                 .user_no(Long.valueOf(user_no))
+                .idx(img_index)
                 .build();
 
 //        repository.save(entity);

@@ -35,18 +35,16 @@ public class LocationService {
         for (int i = 1; i < filePath.size(); i++) {
             // filePath.get(0)  ==  Parent Folder (URI)
             // filePath.get(i)  ==  fileNames
-            imgList.add(imgService.getImageEntity(reqParam.get("user_no"), filePath.get(0), filePath.get(i), entity));
+            imgList.add(imgService.getImageEntity(reqParam.get("user_no"), filePath.get(0), filePath.get(i), entity, i-1));
         }
 
         entity.setImgSet(new HashSet<>(imgList));
+        entity.setThumbnail(imgList.get(0).getImg_url());
 
         repository.save(entity);
 
         for (Image image : imgList) {
             imgRepository.save(image);
-            if ("".equals(entity.getThumbnail())) {
-                entity.setThumbnail(image.getImg_url());
-            }
         }
 
         log.info("entity : " + entity);
