@@ -165,8 +165,8 @@
 					<span class="text-center align-middle fs-3 me-4" id="likeCount">${dto.likeCount}</span>
 					<img src="/image/icon/comment.png" class="loc_icon_big me-2" alt="댓글">
 					<span class="text-center align-middle fs-3 me-4">${dto.cmtList.size()}</span>
-					<button class="btn btn-outline-danger col-3" style="max-height: 56px" onclick="copyURL()">공유
-					</button>
+					<button class="btn btn-outline-danger col-3" style="max-height: 56px" onclick="copyURL()">공유</button>
+					<button class="btn btn-outline-danger col-3" style="max-height: 56px;" onclick="location.href='/service/loc_edit?locNo=${dto.loc_no}'">수정</button>
 				</div>
 
 				<span class="d-none" id="loc_no">${dto.loc_no}</span>

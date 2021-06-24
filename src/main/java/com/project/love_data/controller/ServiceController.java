@@ -145,4 +145,17 @@ public class ServiceController {
 
         return "/service/loc_recommend";
     }
+
+    @GetMapping("/service/loc_edit")
+    public String locEdit(Long locNo, Model model) {
+        if (locNo != null){
+            LocationDTO dto = locService.selectLocDTO(locNo);
+
+            model.addAttribute("dto", dto);
+
+            return "/service/loc_edit";
+        }
+
+        return "/service/loc_recommend";
+    }
 }

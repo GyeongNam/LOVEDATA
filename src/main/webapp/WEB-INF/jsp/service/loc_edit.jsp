@@ -49,50 +49,24 @@
 						<div class="card-body center-pill">
 							<p><a href="/service/loc_recommend" class="loc_highlight-not-selected-text-menu">- 추천 장소</a>
 							</p>
-							<p><a href="/service/loc_registration" class="loc_highlight-selected-text-menu">- 장소 등록</a>
+							<p><a href="/service/loc_registration" class="loc_highlight-not-selected-text-menu">- 장소 등록</a>
 							</p>
-							<p><a href="#" class="loc_highlight-not-selected-text-menu">- 장소 편집</a></p>
+							<p><a href="#" class="loc_highlight-selected-text-menu">- 장소 편집</a></p>
 						</div>
 					</div>
 				</div>
 			</div>
-			<%--            <div class="accordion text-center" id="course">--%>
-			<%--                <div class="card">--%>
-			<%--                    <div class="card-header" id="headingCourse">--%>
-			<%--                        <h2 class="mb-0">--%>
-			<%--                            <form action="/" method="get" class="form-label">--%>
-			<%--                                <button type="submit" class="btn btn-link btn-block"--%>
-			<%--                                        style="text-decoration: none; color: #9448C3">코스--%>
-			<%--                                </button>--%>
-			<%--                            </form>--%>
-			<%--                        </h2>--%>
-			<%--                    </div>--%>
-			<%--                </div>--%>
-			<%--            </div>--%>
-			<%--            <div class="accordion text-center" id="calendar">--%>
-			<%--                <div class="card">--%>
-			<%--                    <div class="card-header" id="headingCalendar">--%>
-			<%--                        <h2 class="mb-0">--%>
-			<%--                            <form action="/" method="get" class="form-label">--%>
-			<%--                                <button type="submit" class="btn btn-link btn-block"--%>
-			<%--                                        style="text-decoration: none; color: #9448C3">캘린더--%>
-			<%--                                </button>--%>
-			<%--                            </form>--%>
-			<%--                        </h2>--%>
-			<%--                    </div>--%>
-			<%--                </div>--%>
-			<%--                <hr>--%>
-			<%--            </div>--%>
 		</ul>
 	</div>
 	<div class="container m-5" id="display_center" style="margin-right: 30px; margin-top: 30px">
-		<h1>장소 등록</h1>
+		<h1>장소 수정</h1>
+		<c:set var="dto" value="${dto}"/>
 		<div class="container-fluid">
 			<form action="/service/loc_registration/regData" method="post" enctype="multipart/form-data">
 				<div class="user-details basic-style">
 					<div class="input-box">
 						<span class="details">이름</span>
-						<input type="text" id="name" name="name" placeholder="Enter your name" required>
+						<input type="text" id="name" name="name" placeholder="Enter your name" value="${dto.loc_name}" required>
 					</div>
 					<div class="row">
 						<div class="col" id="top_hashtag">
@@ -186,23 +160,23 @@
 						<span class="details">위치</span>
 						<form method="post" name="form" id="form">
 							<input type="button" onclick="goPopup()" value="주소검색">
-							<input type="text" placeholder="우편번호" id="zipNo" name="zipNo" readonly value="" required>
-							<input type="text" placeholder="도로명 주소" id="roadAddrPart1" name="roadAddrPart1" readonly
+							<input type="text" placeholder="우편번호" value="${dto.zipNo}" id="zipNo" name="zipNo" readonly required>
+							<input type="text" placeholder="도로명 주소" value="${dto.roadAddr}" id="roadAddrPart1" name="roadAddrPart1" readonly
 								   required>
-							<input type="text" placeholder="도로명 주소 (상세)" id="addrDetail" name="addrDetail" readonly
+							<input type="text" placeholder="도로명 주소 (상세)" value="${dto.addrDetail}" id="addrDetail" name="addrDetail" readonly
 								   required>
-							<input type="hidden" placeholder="시도명" id="siNm" name="siNm" readonly required>
-							<input type="hidden" placeholder="시군구명" id="sggNm" name="sggNm" readonly required>
+							<input type="hidden" placeholder="시도명" value="${dto.siDo}" id="siNm" name="siNm" readonly required>
+							<input type="hidden" placeholder="시군구명" value="${dto.siGunGu}" id="sggNm" name="sggNm" readonly required>
 						</form>
 					</div>
 					<div class="input-box">
 						<span class="details">연락처</span>
-						<input type="tel" id="tel" name="tel" placeholder="010-0000-0000"
+						<input type="tel" id="tel" name="tel" placeholder="010-0000-0000" value="${dto.tel}"
 							   pattern="[0-9]{3}-[0-9]{4}-[0-9]{3}" required>
 					</div>
 					<div class="input-box">
 						<span class="details">정보</span>
-						<textarea rows="4" maxlength="150" name="info" id="info" required></textarea>
+						<textarea rows="4" maxlength="150" name="info" id="info" required>${dto.info}</textarea>
 						<sec:authorize access="isAuthenticated()">
 							<c:set var="user_no"><sec:authentication property="user_no"></sec:authentication></c:set>
 							<c:when test="${not empty user_no}">
@@ -214,30 +188,30 @@
 					<div>
 						<input class="visually-hidden" id="imgInput" name="files" type="file" multiple accept="image/*" onchange="readImage()">
 						<div id="canvas" class="row flex-nowrap mx-0 mt-3" style="overflow-x: scroll">
-							<c:forEach var="i" begin="1" end="10">
+							<c:forEach var="i" begin="0" end="${10}">
 								<c:choose>
-									<c:when test="${i eq 1}">
+									<c:when test="${i < dto.imgList.size()}">
 										<div class="card col-3 p-0">
-											<img src="/image/icon/480px-Solid_white.png" alt="" id="img_${i}" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
-											<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
-												<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_${i}"
+											<img src="${dto.imgList.get(i).img_url}" alt="" id="img_${(i + 1)}" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
+											<div class="d-flex justify-content-center card-img-overlay visually-hidden" style="align-items: center">
+												<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_${(i + 1)}"
 													 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
 											</div>
-											<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
-												<img class="btn btn-lg align-middle p-0" id="imgDel_${i}" onclick="deleteImage(this)"
+											<div class="d-flex justify-content-end card-img-overlay p-0" style="align-items: flex-start">
+												<img class="btn btn-lg align-middle p-0" id="img_Del_${(i + 1)}" onclick="deleteImage(this)"
 													 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
 											</div>
 										</div>
 									</c:when>
 									<c:otherwise>
-										<div class="card col-3 p-0 visually-hidden">
-											<img src="/image/icon/480px-Solid_white.png" alt="" id="img_${i}" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
+										<div class="card col-3 p-0">
+											<img src="/image/icon/480px-Solid_white.png" alt="" id="img_${(i + 1)}" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
 											<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
-												<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_${i}"
+												<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_${(i + 1)}"
 													 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
 											</div>
 											<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
-												<img class="btn btn-lg align-middle p-0" id="imgDel_${i}" onclick="deleteImage(this)"
+												<img class="btn btn-lg align-middle p-0" id="img_Del_${(i + 1)}" onclick="deleteImage(this)"
 													 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
 											</div>
 										</div>
@@ -322,6 +296,7 @@
     let isBuffered = false;
 
 	function onClickAddImage() {
+	    isBuffered = true;
         $('#imgInput').trigger('click');
     }
 
@@ -351,26 +326,20 @@
             // console.log(i + "번 째 아이템이 등록되었습니다.");
 			let item = document.getElementById("img_" + (index+1));
 			reader.onload= e => {
+			    // item.className = "col-3 visible";
 			    item.src = e.target.result;
-			    item.parentElement.setAttribute("class", "card col-3 p-0");
-			}
-			if (index != 9) {
-                document.getElementById("img_" + (index+2)).parentElement.setAttribute("class", "card col-3 p-0");
 			}
             reader.readAsDataURL(file);
             console.log(item);
         })
 
-		// // 기존에 있던 이미지 지우기
-        for (let i = fileList.length + 1; i <= 10; i++) {
-            if (i === (fileList.length + 1)) {
-                document.getElementById("img_" + i).parentElement.setAttribute("class", "card col-3 p-0");
-			} else {
-                document.getElementById("img_" + i).parentElement.setAttribute("class", "card col-3 p-0 visually-hidden");
-			}
-
-            document.getElementById("img_" + i).src = "/image/icon/480px-Solid_white.png";
-        }
+		// 기존에 있던 이미지 지우기
+		if (isBuffered) {
+            for (let i = 0; i < fileList.length; i++) {
+                let img = document.getElementById("img_" + (i+1));
+                img.src = "/image/icon/480px-Solid_white.png";
+            }
+		}
         toggleAddDelBtn(fileList.length);
     }
 
@@ -395,10 +364,6 @@
                } else {
 		           document.getElementById("img_"+i).src = "/image/icon/480px-Solid_white.png";
 			   }
-			}
-
-		    if (dt.items.length+1 < i) {
-		        document.getElementById("img_"+i).parentElement.setAttribute("class", "card col-3 p-0 visually-hidden");
 			}
 		}
 
