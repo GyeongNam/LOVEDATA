@@ -62,7 +62,7 @@
 		<h1>장소 수정</h1>
 		<c:set var="dto" value="${dto}"/>
 		<div class="container-fluid">
-			<form action="/service/loc_registration/regData" method="post" enctype="multipart/form-data">
+			<form action="/service/loc_edit/regData" method="post" enctype="multipart/form-data">
 				<div class="user-details basic-style">
 					<div class="input-box">
 						<span class="details">이름</span>
@@ -183,6 +183,9 @@
 								<input type="hidden" name="user_no" id="user_no" value="${user_no}">
 							</c:when>
 						</sec:authorize>
+						<input type="hidden" name="loc_no" id="loc_no" value="${dto.loc_no}">
+						<input type="hidden" name="loc_uuid" id="loc_uuid" value="${dto.loc_uuid}">
+<%--						Todo 추후 수정할 것들--%>
 						<input type="hidden" name="user_no_debug" id="user_no_debug" value="0">
 					</div>
 					<div>
@@ -198,12 +201,12 @@
 													 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
 											</div>
 											<div class="d-flex justify-content-end card-img-overlay p-0" style="align-items: flex-start">
-												<img class="btn btn-lg align-middle p-0" id="img_Del_${(i + 1)}" onclick="deleteImage(this)"
+												<img class="btn btn-lg align-middle p-0" id="imgDel_${(i + 1)}" onclick="deleteImage(this)"
 													 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
 											</div>
 										</div>
 									</c:when>
-									<c:otherwise>
+									<c:when test="${i eq dto.imgList.size()}">
 										<div class="card col-3 p-0">
 											<img src="/image/icon/480px-Solid_white.png" alt="" id="img_${(i + 1)}" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
 											<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
@@ -211,7 +214,20 @@
 													 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
 											</div>
 											<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
-												<img class="btn btn-lg align-middle p-0" id="img_Del_${(i + 1)}" onclick="deleteImage(this)"
+												<img class="btn btn-lg align-middle p-0" id="imgDel_${(i + 1)}" onclick="deleteImage(this)"
+													 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
+											</div>
+										</div>
+									</c:when>
+									<c:otherwise>
+										<div class="card col-3 p-0 visually-hidden">
+											<img src="/image/icon/480px-Solid_white.png" alt="" id="img_${(i + 1)}" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
+											<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
+												<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_${(i + 1)}"
+													 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
+											</div>
+											<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
+												<img class="btn btn-lg align-middle p-0" id="imgDel_${(i + 1)}" onclick="deleteImage(this)"
 													 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
 											</div>
 										</div>
@@ -295,25 +311,24 @@
     let input = document.getElementById("imgInput");
     let isBuffered = false;
 
-	function onClickAddImage() {
-	    isBuffered = true;
+    function onClickAddImage() {
         $('#imgInput').trigger('click');
     }
 
     function toggleAddDelBtn(offset) {
-	    for (let i = 1; i <= 10; i++) {
+        for (let i = 1; i <= 10; i++) {
             let btnAddParent = document.getElementById("imgAdd_" + i).parentElement;
             let btnDelParent = document.getElementById("imgDel_" + i).parentElement;
 
-	        if (offset < i) {
+            if (offset < i) {
                 btnAddParent.setAttribute('class', 'd-flex justify-content-center card-img-overlay');
                 btnDelParent.setAttribute('class', 'd-flex justify-content-end card-img-overlay p-0 visually-hidden');
-			} else {
+            } else {
                 btnAddParent.setAttribute('class', 'd-flex justify-content-center card-img-overlay visually-hidden');
                 btnDelParent.setAttribute('class', 'd-flex justify-content-end card-img-overlay p-0');
-			}
-		}
-	}
+            }
+        }
+    }
 
     <%--						http://yoonbumtae.com/?p=3304 --%>
     function readImage() {
@@ -324,50 +339,65 @@
         fileList.forEach((file, index) => {
             let reader = new FileReader();
             // console.log(i + "번 째 아이템이 등록되었습니다.");
-			let item = document.getElementById("img_" + (index+1));
-			reader.onload= e => {
-			    // item.className = "col-3 visible";
-			    item.src = e.target.result;
-			}
+            let item = document.getElementById("img_" + (index+1));
+            reader.onload= e => {
+                item.src = e.target.result;
+                item.parentElement.setAttribute("class", "card col-3 p-0");
+            }
+            if (index != 9) {
+                document.getElementById("img_" + (index+2)).parentElement.setAttribute("class", "card col-3 p-0");
+            }
             reader.readAsDataURL(file);
             console.log(item);
         })
 
-		// 기존에 있던 이미지 지우기
-		if (isBuffered) {
-            for (let i = 0; i < fileList.length; i++) {
-                let img = document.getElementById("img_" + (i+1));
-                img.src = "/image/icon/480px-Solid_white.png";
+        // // 기존에 있던 이미지 지우기
+        for (let i = fileList.length + 1; i <= 10; i++) {
+            if (i === (fileList.length + 1)) {
+                document.getElementById("img_" + i).parentElement.setAttribute("class", "card col-3 p-0");
+            } else {
+                document.getElementById("img_" + i).parentElement.setAttribute("class", "card col-3 p-0 visually-hidden");
             }
-		}
+
+            document.getElementById("img_" + i).src = "/image/icon/480px-Solid_white.png";
+        }
         toggleAddDelBtn(fileList.length);
     }
 
     function deleteImage(obj) {
         <%-- https://stackoverflow.com/questions/16943605/remove-a-filelist-item-from-a-multiple-inputfile  --%>
-		let dt = new DataTransfer();
-		dt.files = input.files;
+        let dt = new DataTransfer();
+        dt.files = input.files;
 
-		let objId = obj.id.split('_');
-		let index = objId[objId.length - 1];
+        let objId = obj.id.split('_');
+        let index = objId[objId.length - 1];
         console.log(index);
-		for (let file of input.files){
-		    if (file !== input.files[index - 1]){
-		        dt.items.add(file);
-			}
-		}
+        for (let file of input.files){
+            if (file !== input.files[index - 1]){
+                dt.items.add(file);
+            }
+        }
 
-		for (let i = 1; i <= 10; i++) {
-		    if (i >= index) {
-		       if (i !== 10) {
-                   document.getElementById("img_"+i).src = document.getElementById("img_"+(i+1)).src;
-               } else {
-		           document.getElementById("img_"+i).src = "/image/icon/480px-Solid_white.png";
-			   }
-			}
-		}
+        for (let i = 1; i <= 10; i++) {
+            if (i >= index) {
+                if (i !== 10) {
+                    document.getElementById("img_"+i).src = document.getElementById("img_"+(i+1)).src;
+                } else {
+                    document.getElementById("img_"+i).src = "/image/icon/480px-Solid_white.png";
+                }
+            }
 
-		input.files = dt.files;
+            // if (dt.items.length+1 == i) {
+            //     document.getElementById("imgAdd_"+i).parentElement.setAttribute("class", "d-flex justify-content-center card-img-overlay");
+            //     document.getElementById("imgDel_"+i).parentElement.setAttribute("class", "d-flex justify-content-end card-img-overlay p-0 visually-hidden");
+			// }
+
+            if (dt.items.length+1 < i) {
+                document.getElementById("img_"+i).parentElement.setAttribute("class", "card col-3 p-0 visually-hidden");
+            }
+        }
+
+        input.files = dt.files;
         console.log(dt.files);
         console.log(input.files);
 
@@ -377,7 +407,7 @@
         }
 
         toggleAddDelBtn(input.files.length);
-	}
+    }
 
     function onClickRegister() {
         console.log("submit butten clicked");
@@ -416,7 +446,7 @@
                             success: function (response) {
                                 // do something ...
                                 console.log("장소 등록 성공");
-								alert("장소 등록 성공");
+                                alert("장소 등록 성공");
                             },
                             error: function (e) {
                                 console.log("태그 등록 실패");
@@ -424,21 +454,48 @@
                         });
                         formData.submit();
                     }
-				}
+                }
                 else {
                     alert("장소 등록 실패 : 로그인을 해주세요");
                     console.log("장소 등록 실패 : 로그인을 해주세요");
-				}
+                }
             },error: function (e) {
                 // console.log("Login Check Failed")
                 // alert("장소 등록 실패");
                 // console.log("장소 등록 실패");
-				// onClickRegister();
-				console.log(e);
+                // onClickRegister();
+                console.log(e);
             }
 
         });
     }
+
+    function getLocTag() {
+        console.log("${dto.tagSet}");
+    }
+
+    function getLocImg() {
+        let dtoImgURLList = [];
+        let dt = new DataTransfer();
+
+        <c:forEach items="${dto.imgList}" var="id">
+        dtoImgURLList.push("${id.img_url}");
+        </c:forEach>
+
+        console.log(dtoImgURLList);
+
+        for (let i = 0; i < dtoImgURLList.length; i++){
+            let temp = dtoImgURLList[i].split('/');
+            let uuid = temp[temp.length - 1];
+            let mediaType = "image/" + uuid.split('.')[1];
+			dt.items.add(new File([dtoImgURLList[i]], uuid, {type : mediaType, lastModified : Date.now()}));
+        }
+
+		input.files = dt.files;
+    }
+
+    window.addEventListener('onload', getLocTag());
+	window.addEventListener('onload', getLocImg());
 </script>
 <%--<script defer src="/js/JusoAPI.js"></script>--%>
 </body>

@@ -18,6 +18,23 @@ public class ImageTest {
     @Autowired
     ImageService imgService;
 
+    @Test
+    public void ImageGetTest() {
+        Image img1 = imgService.getImage(1L);
+        Image img2 = imgService.getImage("44ae4245-25da-470e-9260-0ff59e29eb95.jpg");
+
+        if (img1 != null) {
+            System.out.println(img1);
+        } else {
+            System.out.println("img1 is null");
+        }
+
+        if (img2 != null) {
+            System.out.println(img2);
+        } else {
+            System.out.println("img2 is null");
+        }
+    }
 
     @Test
     public void ImageInsertTest() {

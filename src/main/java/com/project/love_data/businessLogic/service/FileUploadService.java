@@ -1,6 +1,8 @@
 package com.project.love_data.businessLogic.service;
 
+import com.project.love_data.model.resource.Image;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,6 +17,9 @@ import java.util.*;
 @Service
 @Log4j2
 public class FileUploadService {
+    @Autowired
+    ImageService imageService;
+
     public void execute(List<MultipartFile> fileList,
                         UploadFileType fileType,
                         HttpServletRequest request) {
@@ -83,6 +88,14 @@ public class FileUploadService {
             return result;
         }
 
+        if (!isDuplicated(file.getOriginalFilename())) {
+            log.info("파일이 이미 등록되어 있습니다.");
+            log.info("fileName : " + file.getOriginalFilename());
+            result.add(URIPath);
+            result.add(file.getOriginalFilename());
+            return result;
+        }
+
         fileName = getFileName(file, FileNamingType.UUID);
 
         if (fileName == null) {
@@ -147,18 +160,28 @@ public class FileUploadService {
 
             if (!checkFileType(fileType, file)) {
                 log.warn("잘못된 형식의 파일 입니다.");
+                count--;
                 continue;
             }
+
+           if (isDuplicated(file.getOriginalFilename())) {
+               log.info("파일이 이미 등록되어 있습니다.");
+               log.info("fileName : " + file.getOriginalFilename());
+               result.add(file.getOriginalFilename());
+               continue;
+           }
 
             fileName = getFileName(file, FileNamingType.UUID);
 
             if (fileName == null) {
                 log.warn("파일 이름이 지정되지 않았습니다.");
+                count--;
                 continue;
             }
 
             if (!saveFile(filePath, fileName, file)) {
                 log.warn("파일을 저장하는 중에 오류가 발생하였습니다.");
+                count--;
                 continue;
             }
 
@@ -255,5 +278,11 @@ public class FileUploadService {
         }
 
         return true;
+    }
+
+    private boolean isDuplicated(String fileName) {
+        Image item = imageService.getImage(fileName);
+
+        return item != null;
     }
 }

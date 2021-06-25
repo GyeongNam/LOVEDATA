@@ -310,4 +310,47 @@ public class LocationService {
 
         update(entity);
     }
+
+    public Location edit(Map<String, String> reqParam, List<String> tagList, List<String> filePath) {
+        List<Image> imgList = new ArrayList<>();
+        Location entity = selectLoc(reqParam.get("loc_uuid"));
+
+        // 업데이트 된 태그 정보 삽입
+        entity.setTagSet(new HashSet<>());
+        for (String item : tagList) {
+            entity.addLocTag(item);
+        }
+
+        LocationDTO dto = entityToDto(entity);
+//        boolean flag = false;
+        // Todo 기존에 장소에 등록된 이미지가 업데이트 된 장소와 연결이 끊여졌을 때 어떻게 동작할 지
+
+        for (int i = 1; i < filePath.size(); i++) {
+            // filePath.get(0)  ==  Parent Folder (URI)
+            // filePath.get(i)  ==  fileNames
+            if (dto.getImgList().size() > i) {
+                for (int j = 0; j < dto.getImgList().size(); j++) {
+                    if (dto.getImgList().get(j-1).getImg_uuid().equals(filePath.get(i))){
+                        imgList.add(imgService.editImageEntity(filePath.get(i), (long) (i - 1)));
+//                        flag = true;
+                        continue;
+                    }
+                }
+            }
+            imgList.add(imgService.getImageEntity(reqParam.get("user_no"), filePath.get(0), filePath.get(i), entity, i-1));
+        }
+
+        entity.setImgSet(new HashSet<>(imgList));
+        entity.setThumbnail(imgList.get(0).getImg_url());
+
+        repository.save(entity);
+
+        for (Image image : imgList) {
+            imgRepository.save(image);
+        }
+
+        log.info("entity : " + entity);
+
+        return entity;
+    }
 }

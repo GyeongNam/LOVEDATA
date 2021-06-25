@@ -3,6 +3,7 @@ package com.project.love_data.controller;
 import com.project.love_data.businessLogic.service.*;
 import com.project.love_data.dto.*;
 import com.project.love_data.model.service.Comment;
+import com.project.love_data.model.service.Location;
 import com.project.love_data.security.model.AuthUserModel;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -157,5 +158,58 @@ public class ServiceController {
         }
 
         return "/service/loc_recommend";
+    }
+
+    @PostMapping("/service/loc_edit/regData")
+    public String locEditData(@RequestParam("files") List<MultipartFile> fileList,
+                                      HttpServletRequest request,
+                                      RedirectAttributes redirectAttributes) {
+        List<String> filePath = null;
+        Map<String, String> reqParam = new HashMap<>();
+
+        reqParam.put("loc_no", request.getParameter("loc_no"));
+        reqParam.put("loc_uuid", request.getParameter("loc_uuid"));
+        reqParam.put("name", request.getParameter("name"));
+        reqParam.put("tel", request.getParameter("tel"));
+        reqParam.put("info", request.getParameter("info"));
+        reqParam.put("zipNo", request.getParameter("zipNo"));
+        reqParam.put("roadAddr", request.getParameter("roadAddrPart1"));
+        reqParam.put("addrDetail", request.getParameter("addrDetail"));
+        reqParam.put("siDoName", request.getParameter("siNm"));
+        reqParam.put("siGunGuName", request.getParameter("sggNm"));
+//        // Todo Debug 목적용 코드 나중에 삭제할 것
+        if (request.getParameter("user_no") != null) {
+            reqParam.put("user_no", (request.getParameter("user_no")));
+        } else {
+            reqParam.put("user_no", (request.getParameter("user_no_debug")));
+        }
+
+        Location loc_no_Test = locService.selectLoc(Long.valueOf(reqParam.get("loc_no")));
+        Location loc_uuid_Test = locService.selectLoc(reqParam.get("loc_uuid"));
+
+        // 장소 수정 정보에 입력된 장소가 맞는지 확인하는 과정 (Validating)
+        if (loc_no_Test == null || loc_uuid_Test == null || !loc_uuid_Test.equals(loc_no_Test)){
+            log.warn("Given Location Edit Information doesn't match with DB");
+            log.info("Please Check the Value");
+            return "redirect:/service/loc_recommend";
+        }
+
+        if (tagList.isEmpty()) {
+            log.warn("No Location Tag Found (Must add tag before submit location)");
+            return "redirect:/service/loc_recommend";
+        }
+
+        filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE,
+                UploadFileCount.MULTIPLE, MIN_UPLOAD_COUNT, MAX_UPLOAD_COUNT, request);
+
+        if (filePath == null) {
+            log.warn("파일이 제대로 저장되지 않았습니다.");
+            return "redirect:/service/loc_recommend";
+        }
+
+        LocationDTO dto = locService.entityToDto(locService.edit(reqParam, tagList, filePath));
+//        redirectAttributes.addFlashAttribute("dto", dto);
+
+        return "redirect:/service/loc_recommend";
     }
 }
