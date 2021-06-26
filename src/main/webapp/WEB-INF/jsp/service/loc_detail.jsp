@@ -1,9 +1,8 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="java.util.Date" %>
 <%@ page session="false" %>
 
 <html>
@@ -228,110 +227,7 @@
 											</c:forEach>
 										</c:when>
 										<c:otherwise>
-											<div class="bg-white p-2">
-												<div class="d-flex flex-row align-items-center"><img
-														src="/image/icon/user/user.png"
-														class="loc_comment-profile-image-wh">
-													<div class="flex-column">
-                                        <span class="d-block font-weight-bold name">
-                                            유저 닉네임
-                                            <button class="btn btn-primary">수정</button>
-                                            <button class="btn btn-primary">삭제</button>
-                                        </span>
-														<span class="date text-black-50 ml-5">(2021/05/02 00:39)</span>
-													</div>
-												</div>
-												<div class="mt-2">
-													<p class="comment-text">Lorem ipsum dolor sit amet, consectetur
-														adipiscing
-														elit, sed
-														do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-														Ut enim
-														ad minim
-														veniam, quis nostrud exercitation ullamco laboris nisi ut
-														aliquip ex ea
-														commodo
-														consequat.</p>
-												</div>
-											</div>
-											<div class="bg-white p-2">
-												<div class="d-flex flex-row align-items-center"><img
-														src="/image/icon/user/user.png"
-														class="loc_comment-profile-image-wh">
-													<div class="flex-column">
-                                        <span class="d-block font-weight-bold name">
-                                            유저 닉네임
-                                            <button class="btn btn-primary">수정</button>
-                                            <button class="btn btn-primary">삭제</button>
-                                        </span>
-														<span class="date text-black-50 ml-5">(2021/05/02 00:39)</span>
-													</div>
-												</div>
-												<div class="mt-2">
-													<p class="comment-text">Lorem ipsum dolor sit amet, consectetur
-														adipiscing
-														elit, sed
-														do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-														Ut enim
-														ad minim
-														veniam, quis nostrud exercitation ullamco laboris nisi ut
-														aliquip ex ea
-														commodo
-														consequat.</p>
-												</div>
-											</div>
-											<div class="bg-white p-2">
-												<div class="d-flex flex-row align-items-center"><img
-														src="/image/icon/user/user.png"
-														class="loc_comment-profile-image-wh">
-													<div class="flex-column">
-                                        <span class="d-block font-weight-bold name">
-                                            유저 닉네임
-                                            <button class="btn btn-primary">수정</button>
-                                            <button class="btn btn-primary">삭제</button>
-                                        </span>
-														<span class="date text-black-50 ml-5">(2021/05/02 00:39)</span>
-													</div>
-												</div>
-												<div class="mt-2">
-													<p class="comment-text">Lorem ipsum dolor sit amet, consectetur
-														adipiscing
-														elit, sed
-														do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-														Ut enim
-														ad minim
-														veniam, quis nostrud exercitation ullamco laboris nisi ut
-														aliquip ex ea
-														commodo
-														consequat.</p>
-												</div>
-											</div>
-											<div class="bg-white p-2">
-												<div class="d-flex flex-row align-items-center"><img
-														src="/image/icon/user/user.png"
-														class="loc_comment-profile-image-wh">
-													<div class="flex-column">
-                                        <span class="d-block font-weight-bold name">
-                                            유저 닉네임
-                                            <button class="btn btn-primary">수정</button>
-                                            <button class="btn btn-primary">삭제</button>
-                                        </span>
-														<span class="date text-black-50 ml-5">(2021/05/02 00:39)</span>
-													</div>
-												</div>
-												<div class="mt-2">
-													<p class="comment-text">Lorem ipsum dolor sit amet, consectetur
-														adipiscing
-														elit, sed
-														do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-														Ut enim
-														ad minim
-														veniam, quis nostrud exercitation ullamco laboris nisi ut
-														aliquip ex ea
-														commodo
-														consequat.</p>
-												</div>
-											</div>
+											<p>등록된 댓글이 없습니다.</p>
 										</c:otherwise>
 									</c:choose>
 								</div>
@@ -390,18 +286,33 @@
 							</nav>
 						</div>
 					</div>
-
+					<%-- 댓글 작성--%>
+					<sec:authorize access="isAnonymous()">
+						<div class="d-flex justify-content-start" id="comment">
+							<div class="bg-light p-2 col-10">
+								<div class="d-flex flex-row align-items-start">
+									<img class="rounded-circle m-3" src="https://i.imgur.com/RpzrMR2.jpg" width="60">
+									<textarea class="form-control ml-1 shadow-none textarea" placeholder="isAnonymous()"></textarea>
+								</div>
+								<div class="mt-2 text-end">
+									<button class="btn btn-primary btn shadow-none" type="button">Post comment</button>
+								</div>
+							</div>
+						</div>
+					</sec:authorize>
+					<sec:authorize access="isAuthenticated()">
 					<div class="d-flex justify-content-start" id="comment">
 						<div class="bg-light p-2 col-10">
 							<div class="d-flex flex-row align-items-start">
 								<img class="rounded-circle m-3" src="https://i.imgur.com/RpzrMR2.jpg" width="60">
-								<textarea class="form-control ml-1 shadow-none textarea"></textarea>
+								<textarea class="form-control ml-1 shadow-none textarea" placeholder="isAuthenticated()"></textarea>
 							</div>
 							<div class="mt-2 text-end">
 								<button class="btn btn-primary btn shadow-none" type="button">Post comment</button>
 							</div>
 						</div>
 					</div>
+					</sec:authorize>
 				</div>
 				<%--    설명--%>
 				<div class="tab-pane fade" id="location-info" role="tabpanel" aria-labelledby="location-info-tab">

@@ -217,7 +217,7 @@ public class OAuthController {
         return "redirect:/";
     }
 
-    @PostMapping("/logout_kakao")
+    @RequestMapping(value = "/logout_kakao", method = {RequestMethod.GET, RequestMethod.POST})
     public String kakaoLogout(
             HttpServletRequest request,
             HttpSessionCsrfTokenRepository csrfTokenRepository

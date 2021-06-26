@@ -330,7 +330,7 @@ public class LocationService {
             // filePath.get(i)  ==  fileNames
             if (dto.getImgList().size() > i) {
                 for (int j = 0; j < dto.getImgList().size(); j++) {
-                    if (dto.getImgList().get(j-1).getImg_uuid().equals(filePath.get(i))){
+                    if (dto.getImgList().get(j).getImg_uuid().equals(filePath.get(i))){
                         imgList.add(imgService.editImageEntity(filePath.get(i), (long) (i - 1)));
 //                        flag = true;
                         continue;
