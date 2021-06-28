@@ -30,11 +30,6 @@ public class LocationController {
     ImageService imgService;
     @Autowired
     CommentService comService;
-
-//    final static int MAX_LOC_LIST_SIZE = 4;
-//    final static int MAX_COM_COUNT = 5;
-//    final static int MAX_UPLOAD_COUNT = 10;
-//    final static int MIN_UPLOAD_COUNT = 3;
     List<String> tagList = new ArrayList<>();
 
     @RequestMapping("/service/loc_registration")
