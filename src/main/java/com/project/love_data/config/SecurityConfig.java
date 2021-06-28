@@ -1,6 +1,7 @@
 package com.project.love_data.config;
 
 import com.project.love_data.security.service.AuthenticationFailure;
+import com.project.love_data.security.service.AuthenticationSuccess;
 import com.project.love_data.security.service.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -24,7 +25,10 @@ import java.util.regex.Pattern;
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Autowired
     private UserDetailsService userDetailsService;
+    @Autowired
     private AuthenticationFailure authenticationFailure;
+    @Autowired
+    private AuthenticationSuccess authenticationSuccess;
 
     @Override
   protected void configure(HttpSecurity http) throws Exception {
@@ -43,6 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
       http.httpBasic().disable();
       http.rememberMe().tokenValiditySeconds(60 * 60 * 24 * 7).userDetailsService(userDetailsService);
       http.formLogin().loginPage("/login");
+      http.formLogin().successHandler(authenticationSuccess);
       http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/");
       http.formLogin().failureHandler(authenticationFailure);
       http.formLogin().failureUrl("/login");

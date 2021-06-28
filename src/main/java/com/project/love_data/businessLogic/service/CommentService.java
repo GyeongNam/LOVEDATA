@@ -6,6 +6,7 @@ import com.project.love_data.dto.PageResultDTO;
 import com.project.love_data.model.service.Comment;
 import com.project.love_data.model.service.Location;
 import com.project.love_data.model.service.QComment;
+import com.project.love_data.model.user.User;
 import com.project.love_data.repository.CommentRepository;
 import com.project.love_data.repository.LocationRepository;
 import com.project.love_data.repository.UserRepository;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.*;
 import java.util.function.Function;
 
@@ -54,6 +56,24 @@ public class CommentService {
                 .build();
 
         return dto;
+    }
+
+    public Comment createCmtEntity(Long locNo, Long userNo, String cmtContent) {
+        Optional<Location> loc = locRepository.findLocByLoc_no(locNo);
+        Optional<User> user = userRepository.findById(userNo);
+
+        if (loc.isPresent() && user.isPresent()) {
+            Comment entity = Comment.builder()
+                    .location(loc.get())
+                    .cmtUuid(UUID.randomUUID().toString())
+                    .user(user.get())
+                    .cmtIdx((long) loc.get().getCmtSet().size())
+                    .cmtContent(cmtContent).build();
+
+            return entity;
+        }
+
+        return null;
     }
 
     public PageResultDTO<CommentDTO, Comment> getCmtPage(PageRequestDTO requestDTO,

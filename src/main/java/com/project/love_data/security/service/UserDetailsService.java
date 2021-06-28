@@ -48,6 +48,8 @@ public class UserDetailsService implements org.springframework.security.core.use
         );
 
          // 유저 패스워드 설정시 로그에 출력됨
+        authUserModel.setUser_regDate(user.getRegDate());
+        authUserModel.setUser_no(user.getUser_no());
         authUserModel.setUser_pw(user.getUser_pw());
         authUserModel.setUser_name(user.getUser_name());
         authUserModel.setUser_birth(user.getUser_birth());

@@ -45,10 +45,7 @@
 
 				<%--					일반 로그인으로 로그인 되어 있을 경우--%>
 				<c:when test="${user_social ne true}">
-					<form action="/logout" method="post">
-						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-						<button id="hd-btn" type="submit">로그아웃</button>
-					</form>
+					<button id="hd-btn" onclick="location.href='/logout'">로그아웃</button>
 				</c:when>
 			</c:choose>
 		</sec:authorize>

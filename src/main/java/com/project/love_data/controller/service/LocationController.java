@@ -138,7 +138,7 @@ public class LocationController {
 
         if(authentication != null) {
             AuthUserModel authUser = (AuthUserModel) authentication.getPrincipal();
-            log.info(authUser.getUser_no());
+//            log.info(authUser.getUser_no());
         }
 
         return "/service/loc_recommend";
