@@ -3,6 +3,8 @@ package com.project.love_data.businessLogic.oauth.login;
 import com.google.gson.Gson;
 import com.project.love_data.model.oauth.KakaoAuthToken;
 import com.project.love_data.model.oauth.OAuthToken;
+import com.project.love_data.util.ServerDomain;
+import com.project.love_data.util.ServerHostHandler;
 import com.project.love_data.util.URISetter;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.io.IOUtils;
@@ -55,12 +57,8 @@ public class TokenRequestKakao implements TokenRequest{
             return null;
         }
 
-        // 서버를 로컬로 돌리는 경우와 서버에서 돌리는 경우 분리
-        if ("localhost".equals(request.getServerName())) {
-            uri = URISetter.getKaKao_Token_Local(code);
-        } else {
-            uri = URISetter.getKaKao_Token(code);
-        }
+        ServerDomain currentDom = ServerHostHandler.getServerHost(request);
+        uri = URISetter.getKaKao_Token(code, currentDom);
 
         if (uri == null) {
             log.info("URI NULL");

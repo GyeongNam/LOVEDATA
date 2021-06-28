@@ -1,5 +1,7 @@
 package com.project.love_data.businessLogic.oauth.logout;
 
+import com.project.love_data.util.ServerDomain;
+import com.project.love_data.util.ServerHostHandler;
 import com.project.love_data.util.URISetter;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
@@ -15,11 +17,8 @@ import java.net.URLDecoder;
 public class LogoutUserKakao implements LogoutUser {
 
     private URI setURI(String csrf, HttpServletRequest request) {
-        if ("localhost".equals(request.getServerName())){
-            return  URISetter.getKakao_Logout_Local(csrf);
-        } else{
-            return  URISetter.getKakao_Logout(csrf);
-        }
+        ServerDomain currentDom = ServerHostHandler.getServerHost(request);
+        return  URISetter.getKakao_Logout(csrf, currentDom);
     }
 
     @Override

@@ -144,6 +144,7 @@ public class OAuthController {
         log.info("## naverLogin Called!!");
 
         decodedURL = acessCodeRequest.excute(request, csrfTokenRepository);
+//        log.info("/login_naver : " + decodedURL);
 
         if (decodedURL == null) {
             log.info("AcessCodeRequestNaver Failed");

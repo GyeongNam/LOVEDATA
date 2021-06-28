@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
     <title>All</title>
@@ -17,7 +18,17 @@
 <body>
     <form>
         <h1>All test....</h1>
-        <sec:csrfInput/>
+        <%
+            String serverName = request.getServerName();
+            String serverLocalName = request.getLocalName();
+            String serverRemoteAddr = request.getRemoteAddr();
+            String serverRemoteHost = request.getRemoteHost();
+
+            out.println("<h3>" + serverName + "</h3>");
+            out.println("<h3>" + serverLocalName + "</h3>");
+            out.println("<h3>" + serverRemoteAddr + "</h3>");
+            out.println("<h3>" + serverRemoteHost + "</h3>");
+        %>
     </form>
 </body>
 </html>
