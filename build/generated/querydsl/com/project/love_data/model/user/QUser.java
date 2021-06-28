@@ -20,7 +20,21 @@ public class QUser extends EntityPathBase<User> {
 
     public static final QUser user = new QUser("user");
 
+    public final com.project.love_data.model.base.QTimeEntity _super = new com.project.love_data.model.base.QTimeEntity(this);
+
+    public final SetPath<com.project.love_data.model.service.Comment, com.project.love_data.model.service.QComment> cmtSet = this.<com.project.love_data.model.service.Comment, com.project.love_data.model.service.QComment>createSet("cmtSet", com.project.love_data.model.service.Comment.class, com.project.love_data.model.service.QComment.class, PathInits.DIRECT2);
+
+    public final ListPath<com.project.love_data.model.service.Location, com.project.love_data.model.service.QLocation> likeLoc = this.<com.project.love_data.model.service.Location, com.project.love_data.model.service.QLocation>createList("likeLoc", com.project.love_data.model.service.Location.class, com.project.love_data.model.service.QLocation.class, PathInits.DIRECT2);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modDate = _super.modDate;
+
     public final StringPath profile_pic = createString("profile_pic");
+
+    public final ListPath<com.project.love_data.model.service.Location, com.project.love_data.model.service.QLocation> recentLoc = this.<com.project.love_data.model.service.Location, com.project.love_data.model.service.QLocation>createList("recentLoc", com.project.love_data.model.service.Location.class, com.project.love_data.model.service.QLocation.class, PathInits.DIRECT2);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> regDate = _super.regDate;
 
     public final SetPath<String, StringPath> roleSet = this.<String, StringPath>createSet("roleSet", String.class, StringPath.class, PathInits.DIRECT2);
 
@@ -47,8 +61,6 @@ public class QUser extends EntityPathBase<User> {
     public final BooleanPath user_sex = createBoolean("user_sex");
 
     public final BooleanPath user_social = createBoolean("user_social");
-
-    public final DateTimePath<java.time.LocalDateTime> user_time = createDateTime("user_time", java.time.LocalDateTime.class);
 
     public QUser(String variable) {
         super(User.class, forVariable(variable));

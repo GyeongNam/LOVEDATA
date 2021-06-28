@@ -26,7 +26,6 @@ public class AuthUserModel extends User {
     private boolean user_social;
     private boolean user_emil_re;
     private boolean user_Activation;
-    private LocalDateTime user_time;
 
     public AuthUserModel(String user_email, String password, boolean social, Collection<? extends GrantedAuthority> authorities) {
         super(user_email, password, authorities);

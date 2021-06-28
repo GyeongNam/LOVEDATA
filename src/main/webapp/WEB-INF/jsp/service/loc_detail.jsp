@@ -1,8 +1,8 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="java.util.Date" %>
 <%@ page session="false" %>
 
 <html>
@@ -89,14 +89,43 @@
 					<c:set var="imgList" value="${dto.imgList}"></c:set>
 					<c:choose>
 						<c:when test="${!empty imgList}">
-							<svg class="bd-placeholder-img card-img-top" width="100%" height="400"
-								 xmlns="http://www.w3.org/2000/svg" role="img"
-								 aria-label="Placeholder: Thumbnail"
-								 preserveAspectRatio="xMidYMid slice" focusable="false">
-								<rect width="100%" height="100%" fill="#55595c">
-									<image height="100%" width="100%" href="${imgList.get(i).img_url}"></image>
-								</rect>
-							</svg>
+							<div class="d-flex justify-content-center">
+								<img class="bd-placeholder-img card-img" width="100%"
+									 height="400"
+									 alt="${dto.loc_name}"
+									 src="${dto.imgList.get(0).img_url}"
+									 id="imgDisplay"
+									 name="imgDisplay"
+									 preserveAspectRatio="xMidYMid slice" focusable="false">
+								<div class="d-flex justify-content-between h-25 card-img-overlay" style="top: 40%">
+									<button class="btn btn-sm" id="imgPrev" name="imgPrev" onclick="clickImgPrev()">
+										<img src="/image/icon/left-arrow.png" width="30px" height="30px" alt="imgPrev">
+									</button>
+									<button class="btn btn-sm" id="imgNext" name="imgNext" onclick="clickImgNext()">
+										<img src="/image/icon/right-arrow.png" width="30px" height="30px" alt="imgNext">
+									</button>
+										<%--									<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor"--%>
+										<%--										 class="bi bi-arrow-right-circle" viewBox="0 0 100 100">--%>
+										<%--										<path fill-rule="evenodd"--%>
+										<%--											  d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>--%>
+										<%--									</svg>--%>
+								</div>
+								<div class="d-flex justify-content-end h-25 card-img-overlay" style="top : 75%">
+									<div class="badge bg-dark d-flex justify-content-center" style="width: 6rem">
+										<p class="text-center fs-3 align-self-center mb-0" id="indexIndicator"
+										   name="indexIndicator">
+											1/${imgList.size()}
+										</p>
+									</div>
+								</div>
+								</img>
+								<span class="visually-hidden" id="imgListSize"
+									  name="imgListSize">${imgList.size()}</span>
+								<span class="visually-hidden" id="dtoImgListSize"
+									  name="dtoImgListSize">${dto.imgList.size()}</span>
+								<span class="visually-hidden" id="imgListIndex" name="imgListIndex">0</span>
+								<input type="hidden" id="imgList" name="imgList" value="${dto.imgList}"></input>
+							</div>
 						</c:when>
 						<c:otherwise>
 							<svg class="bd-placeholder-img card-img-top" width="100%" height="400"
@@ -114,23 +143,31 @@
 			<div class="col-md-5 justify-content-md-center">
 				<div class="row d-flex">
 					<div class="row d-flex justify-content-between p-1">
-						<span class="h1 col-5">${dto.loc_name}</span>
-						<button class="btn btn-outline-danger col-2" style="max-height: 56px" onclick="">공유</button>
+						<span class="h2">${dto.loc_name}</span>
 					</div>
 					<div class="row d-flex">
-						<h3>지역 : ${dto.siDo} ${dto.siGunGu}</h3>
+						<h5>지역 : ${dto.siDo} ${dto.siGunGu}</h5>
 					</div>
 					<div class="row d-flex">
-						<h3>해시태그 : ${dto.tagSet}</h3>
+						<h5>해시태그 : ${dto.tagSet}</h5>
 					</div>
 					<div class="row d-flex">
-						<h3 class="text-truncate">설명 : ${dto.info}</h3>
+						<h5 class="text-truncate">설명 : ${dto.info}</h5>
 					</div>
 				</div>
 				<div class="row d-flex">
 				</div>
-				<img src="/image/icon/like/love_black.png" class="loc_icon" alt="찜하기"
-					 onclick="onClickLike(this)">
+
+				<div class="d-flex align-content-end flex-wrap">
+					<img src="/image/icon/like/love_black.png" class="loc_icon_big me-2" alt="찜하기"
+						 onclick="onClickLike(this)">
+					<span class="text-center align-middle fs-3 me-4" id="likeCount">${dto.likeCount}</span>
+					<img src="/image/icon/comment.png" class="loc_icon_big me-2" alt="댓글">
+					<span class="text-center align-middle fs-3 me-4">${dto.cmtList.size()}</span>
+					<button class="btn btn-outline-danger col-3" style="max-height: 56px" onclick="copyURL()">공유</button>
+					<button class="btn btn-outline-danger col-3" style="max-height: 56px;" onclick="location.href='/service/loc_edit?locNo=${dto.loc_no}'">수정</button>
+				</div>
+
 				<span class="d-none" id="loc_no">${dto.loc_no}</span>
 			</div>
 		</div>
@@ -158,88 +195,130 @@
 						<div class="d-flex justify-content-start row">
 							<div class="col-md-10">
 								<div class="d-flex flex-column">
-									<div class="bg-white p-2">
-										<div class="d-flex flex-row align-items-center"><img
-												src="/image/icon/user/user.png"
-												class="loc_comment-profile-image-wh">
-											<div class="flex-column">
+									<c:set var="cmtDTO" value="${resComDTO.dtoList}"></c:set>
+									<c:choose>
+										<c:when test="${0 != cmtDTO.size()}">
+											<c:forEach var="c" begin="0" end="${cmtDTO.size()-1}">
+												<div class="bg-white p-2">
+													<div class="d-flex flex-row align-items-center"><img
+															src="/image/icon/user/user.png"
+															class="loc_comment-profile-image-wh">
+														<div class="flex-column">
                                         <span class="d-block font-weight-bold name">
-                                            유저 닉네임
-                                            <button class="btn btn-primary">수정</button>
-                                            <button class="btn btn-primary">삭제</button>
+                                            ${cmtDTO.get(c).user.user_no}
+											<sec:authorize access="isAuthenticated()">
+												<c:set var="user_no"><sec:authentication
+														property="principal.user_no"/></c:set>
+												<c:choose>
+													<c:when test="${user_no eq cmtDTO.get(c).user.user_no}">
+														<button class="btn btn-primary">수정</button>
+														<button class="btn btn-primary">삭제</button>
+													</c:when>
+												</c:choose>
+											</sec:authorize>
                                         </span>
-												<span class="date text-black-50 ml-5">(2021/05/02 00:39)</span>
-											</div>
-										</div>
-										<div class="mt-2">
-											<p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipiscing
-												elit, sed
-												do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-												ad minim
-												veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-												commodo
-												consequat.</p>
-										</div>
-									</div>
+															<span class="date text-black-50 ml-5">${cmtDTO.get(c).regDate}</span>
+														</div>
+													</div>
+													<div class="mt-2">
+														<p class="comment-text">${cmtDTO.get(c).cmtContent}</p>
+													</div>
+												</div>
+											</c:forEach>
+										</c:when>
+										<c:otherwise>
+											<p>등록된 댓글이 없습니다.</p>
+										</c:otherwise>
+									</c:choose>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="container d-flex" id="pagination">
+
+
+					<%--	PageNumber	--%>
+					<div class="container d-flex" id="">
 						<div class="col" id="page_number">
 							<nav aria-label="Page navigation example">
 								<ul class="pagination justify-content-center">
+									<c:if test="${resComDTO.prev eq true}">
+										<li class="page-item">
+											<a class="page-link" href="/service/loc_detail?locNo=${dto.loc_no}&page=${resComDTO.start - 1}"
+											   aria-label="Previous">
+												<span aria-hidden="true">&laquo;</span>
+											</a>
+										</li>
+									</c:if>
+									<c:choose>
+										<c:when test="${resComDTO.start < 10}">
+											<c:set var="power" value="${0}"/>
+										</c:when>
+										<c:otherwise>
+											<c:set var="power" value="${resComDTO.start - (resComDTO.start mod 10)}"/>
+										</c:otherwise>
+									</c:choose>
+									<c:forEach var="j" begin="${1}" end="${resComDTO.end - resComDTO.start + 1}">
+									<c:choose>
+									<c:when test="${resComDTO.page eq j + power}">
+									<li class="page-item active">
+										<a class="page-link"
+<%--										   pageList에는 현재 8개의 리스트 밖에 없지만 반복문 j는 11에서부터 시작하므로 인덱스 오류가 발생함--%>
+										   href="/service/loc_detail?locNo=${dto.loc_no}&page=${resComDTO.pageList.get(j - 1)}">${resComDTO.pageList.get(j - 1)}</a>
+<%--										   href="/service/loc_detail?locNo=${dto.loc_no}&page=${resComDTO.pageList.get(j)}">${resComDTO.pageList.get(j)}</a>--%>
+										</c:when>
+										<c:otherwise>
 									<li class="page-item">
-										<a class="page-link" href="#" aria-label="Previous">
-											<span aria-hidden="true">&laquo;</span>
-										</a>
+										<a class="page-link"
+										   href="/service/loc_detail?locNo=${dto.loc_no}&page=${resComDTO.pageList.get(j-1)}">${resComDTO.pageList.get(j-1)}</a>
+										</c:otherwise>
+										</c:choose>
+										</c:forEach>
 									</li>
-									<li class="page-item">
-										<a class="page-link" href="#" aria-label="Previous">
-											<span aria-hidden="true">&lt;</span>
-										</a>
-									</li>
-									<%--                          Todo  댓글 어떻게 화면 전환 없이 가져올 수 있을지 생각해보기        --%>
-									<li class="page-item disabled"><a class="page-link" href="#">1</a></li>
-									<li class="page-item"><a class="page-link" href="#">2</a></li>
-									<li class="page-item"><a class="page-link" href="#">3</a></li>
-									<li class="page-item"><a class="page-link" href="#">4</a></li>
-									<li class="page-item"><a class="page-link" href="#">5</a></li>
-									<li class="page-item">
-										<a class="page-link" href="#" aria-label="Previous">
-											<span aria-hidden="true">&gt;</span>
-										</a>
-									</li>
-									<li class="page-item">
-										<a class="page-link" href="#" aria-label="Next">
-											<span aria-hidden="true">&raquo;</span>
-										</a>
-									</li>
+									<c:if test="${resComDTO.next eq true}">
+										<li class="page-item">
+											<a class="page-link" href="/service/loc_detail?locNo=${dto.loc_no}&page=${resComDTO.end + 1}"
+											   aria-label="Previous">
+												<span aria-hidden="true">&raquo;</span>
+											</a>
+										</li>
+									</c:if>
 								</ul>
 							</nav>
 						</div>
 					</div>
-					<%--                    Todo 추후에 comment 섹션을 안에다 넣으면, 로그인 한 사람만 댓글 작성 가능--%>
-					<%--                    <sec:authorize access="isAuthenticated()">--%>
-					<%--                        --%>
-					<%--                    </sec:authorize>--%>
+					<%-- 댓글 작성--%>
+					<sec:authorize access="isAnonymous()">
+						<div class="d-flex justify-content-start" id="comment">
+							<div class="bg-light p-2 col-10">
+								<div class="d-flex flex-row align-items-start">
+									<img class="rounded-circle m-3" src="https://i.imgur.com/RpzrMR2.jpg" width="60">
+									<textarea class="form-control ml-1 shadow-none textarea" placeholder="isAnonymous()"></textarea>
+								</div>
+								<div class="mt-2 text-end">
+									<button class="btn btn-primary btn shadow-none" type="button">Post comment</button>
+								</div>
+							</div>
+						</div>
+					</sec:authorize>
+					<sec:authorize access="isAuthenticated()">
 					<div class="d-flex justify-content-start" id="comment">
 						<div class="bg-light p-2 col-10">
 							<div class="d-flex flex-row align-items-start">
 								<img class="rounded-circle m-3" src="https://i.imgur.com/RpzrMR2.jpg" width="60">
-								<textarea class="form-control ml-1 shadow-none textarea"></textarea>
+								<textarea class="form-control ml-1 shadow-none textarea" placeholder="isAuthenticated()"></textarea>
 							</div>
 							<div class="mt-2 text-end">
 								<button class="btn btn-primary btn shadow-none" type="button">Post comment</button>
 							</div>
 						</div>
 					</div>
+					</sec:authorize>
 				</div>
 				<%--    설명--%>
 				<div class="tab-pane fade" id="location-info" role="tabpanel" aria-labelledby="location-info-tab">
 					<div class="container">
 						<div class="d-flex mt-3">
-							<span class="h3">${dto.info}</span>
+							<span class="fs-5" style="white-space: pre-wrap;">${dto.info}</span>
 						</div>
 					</div>
 				</div>
@@ -258,6 +337,39 @@
 <script defer src="/js/bootstrap.js"></script>
 <script defer src="/js/loc_detail.js"></script>
 <script defer src="/js/loc_common.js"></script>
+<script defer>
+    function clickImgNext() {
+        var imgDisplay = document.getElementById("imgDisplay");
+        var index = document.getElementById("imgListIndex");
+        var temp = '<c:out value="${dto.printImgURLS()}"/>';
+        var imgList = temp.split('_');
+        var tempIndex = parseInt(index.innerText);
+        var indexIndicator = document.getElementById("indexIndicator");
+
+        if (imgList.length > tempIndex + 1) {
+            index.innerText = tempIndex + 1;
+            tempIndex += 1;
+            imgDisplay.src = imgList[tempIndex];
+            indexIndicator.innerText = (tempIndex + 1) + "/" + imgList.length;
+        }
+    }
+
+    function clickImgPrev() {
+        var imgDisplay = document.getElementById("imgDisplay");
+        var index = document.getElementById("imgListIndex");
+        var temp = '<c:out value="${dto.printImgURLS()}"/>';
+        var imgList = temp.split('_');
+        var tempIndex = parseInt(index.innerText);
+        var indexIndicator = document.getElementById("indexIndicator");
+
+        if (0 <= tempIndex - 1) {
+            index.innerText = tempIndex - 1;
+            tempIndex -= 1;
+            imgDisplay.src = imgList[tempIndex];
+            indexIndicator.innerText = (tempIndex + 1) + "/" + imgList.length;
+        }
+    }
+</script>
 </body>
 <%--<%@ include file="../layout/footer.jsp" %>--%>
 </html>

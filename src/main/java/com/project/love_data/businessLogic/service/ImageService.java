@@ -1,28 +1,41 @@
 package com.project.love_data.businessLogic.service;
 
 import com.project.love_data.dto.ImageDTO;
-import com.project.love_data.dto.LocationDTO;
 import com.project.love_data.model.resource.Image;
 import com.project.love_data.model.service.Location;
 import com.project.love_data.repository.ImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.io.File;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class ImageService {
     private final ImageRepository repository;
 
-    public Image getImageEntity(String user_no, String fileRootPath, String fileName, Location location) {
+    public Image getImage(Long imgId) {
+        Optional<Image> item = repository.findById(imgId);
+
+        return item.isPresent() ? item.get() : null;
+    }
+
+    public Image getImage(String uuid) {
+        Optional<Image> item = repository.findImageByImg_uuid(uuid);
+
+        return item.isPresent() ? item.get() : null;
+    }
+
+    public Image getImageEntity(String user_no, String fileRootPath, String fileName, Location location, long img_index) {
 //        ImageDTO dto = getImageDTO(user_no, fileRootPath, fileName, location);
 //        Image entity = dtoToEntity(dto);
 
         Image entity = Image.builder()
                 .location(location)
                 .img_uuid(fileName)
-                .img_url(fileRootPath+File.separator+fileName)
+                .img_url(fileRootPath+"/"+fileName)
                 .user_no(Long.valueOf(user_no))
+                .idx(img_index)
                 .build();
 
 //        repository.save(entity);
@@ -74,5 +87,13 @@ public class ImageService {
 
     public void delete(Image img) {
         repository.deleteByImg_uuid(img.getImg_uuid());
+    }
+
+    public Image editImageEntity(String uuid, Long img_Index) {
+        Image img = getImage(uuid);
+
+        img.setIdx(img_Index);
+
+        return img;
     }
 }

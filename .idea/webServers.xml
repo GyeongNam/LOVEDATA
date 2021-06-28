@@ -16,6 +16,13 @@
           </advancedOptions>
         </fileTransfer>
       </webServer>
+      <webServer id="9e633ed9-00b3-4570-b7af-37e68a1e4a7b" name="PI_Tomcat">
+        <fileTransfer accessType="SFTP" host="mon0mon.iptime.org" port="11122" sshConfigId="e41b4474-56d3-4e7a-913a-d4784d5a6ee5" sshConfig="tomcat@mon0mon.iptime.org:11122 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
     </option>
   </component>
 </project>

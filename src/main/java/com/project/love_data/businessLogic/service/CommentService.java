@@ -1,7 +1,6 @@
 package com.project.love_data.businessLogic.service;
 
 import com.project.love_data.dto.CommentDTO;
-import com.project.love_data.dto.CommentPageType;
 import com.project.love_data.dto.PageRequestDTO;
 import com.project.love_data.dto.PageResultDTO;
 import com.project.love_data.model.service.Comment;
@@ -9,6 +8,7 @@ import com.project.love_data.model.service.Location;
 import com.project.love_data.model.service.QComment;
 import com.project.love_data.repository.CommentRepository;
 import com.project.love_data.repository.LocationRepository;
+import com.project.love_data.repository.UserRepository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +27,7 @@ import java.util.function.Function;
 public class CommentService {
     private final CommentRepository cmtRepository;
     private final LocationRepository locRepository;
+    private final UserRepository userRepository;
 
     public Comment dtoToEntity(CommentDTO dto){
         Comment entity = Comment.builder()
@@ -34,7 +35,7 @@ public class CommentService {
                 .cmtIdx(dto.getCmtIdx())
                 .cmtUuid(dto.getCmtUuid())
                 .cmtContent(dto.getCmtContent())
-                .userNo(dto.getUserNo())
+                .user(userRepository.findById(dto.getUser().getUser_no()).get())
                 .build();
 
         return entity;
@@ -46,7 +47,7 @@ public class CommentService {
                 .cmtIdx(cmt.getCmtIdx())
                 .cmtUuid(cmt.getCmtUuid())
                 .cmtContent(cmt.getCmtContent())
-                .userNo(cmt.getUserNo())
+                .user(cmt.getUser())
                 .location(cmt.getLocation())
                 .regDate(cmt.getRegDate())
                 .modDate(cmt.getModDate())
@@ -55,12 +56,28 @@ public class CommentService {
         return dto;
     }
 
-    public PageResultDTO<CommentDTO, Comment> getCmtPage(PageRequestDTO requestDTO, CommentPageType pageType) {
-        Pageable pageable = requestDTO.getPageable(Sort.by("cmtIdx").descending());
+    public PageResultDTO<CommentDTO, Comment> getCmtPage(PageRequestDTO requestDTO,
+                                                         CommentPageType commentType) {
+       return getCmtPage(requestDTO, commentType, CommentSortType.IDX_ASC);
+    }
+
+    public PageResultDTO<CommentDTO, Comment> getCmtPage(PageRequestDTO requestDTO,
+                                                         CommentPageType commentType,
+                                                         CommentSortType commentSortType) {
+        Pageable pageable;
+        switch (commentSortType) {
+            case IDX_DES:
+                pageable = requestDTO.getPageable(Sort.by("cmtIdx").descending());
+                break;
+            case IDX_ASC:
+            default:
+                pageable = requestDTO.getPageable(Sort.by("cmtIdx").ascending());
+                break;
+        }
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
 
-        switch (pageType) {
+        switch (commentType) {
             case LOCATION:
                 booleanBuilder = getCmtPage_Loc(requestDTO);
                 break;

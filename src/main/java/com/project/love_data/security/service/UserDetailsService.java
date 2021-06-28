@@ -55,7 +55,6 @@ public class UserDetailsService implements org.springframework.security.core.use
         authUserModel.setUser_Activation(user.isUser_Activation());
         authUserModel.setUser_sex(user.isUser_sex());
         authUserModel.setUser_nic(user.getUser_nic());
-        authUserModel.setUser_time(user.getUser_time());
         authUserModel.setUser_emil_re(user.isUser_email_re());
         authUserModel.setUser_phone(user.getUser_phone());
         authUserModel.setSocial_info(user.getSocial_info());

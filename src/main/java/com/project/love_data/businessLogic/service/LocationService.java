@@ -32,11 +32,14 @@ public class LocationService {
         List<Image> imgList = new ArrayList<>();
         Location entity = dtoToEntity(dto);
 
-        for (int i = 1; i < filePath.size() - 1; i++) {
-            imgList.add(imgService.getImageEntity(reqParam.get("user_no"), filePath.get(0), filePath.get(i), entity));
+        for (int i = 1; i < filePath.size(); i++) {
+            // filePath.get(0)  ==  Parent Folder (URI)
+            // filePath.get(i)  ==  fileNames
+            imgList.add(imgService.getImageEntity(reqParam.get("user_no"), filePath.get(0), filePath.get(i), entity, i-1));
         }
 
-        entity.setImgList(imgList);
+        entity.setImgSet(new HashSet<>(imgList));
+        entity.setThumbnail(imgList.get(0).getImg_url());
 
         repository.save(entity);
 
@@ -63,15 +66,17 @@ public class LocationService {
                 .tel(dto.getTel())
                 .zipNo(dto.getZipNo())
                 .tagSet(dto.getTagSet())
-                .imgList(dto.getImgList())
-                .cmtSet(dto.getCmdSet())
+                .imgSet(new HashSet<>(dto.getImgList()))
+                .cmtSet(new HashSet<>(dto.getCmtList()))
                 .likeCount(dto.getLikeCount())
+                .thumbnail(dto.getThumbnail())
+                .viewCount(dto.getViewCount())
                 .build();
 
         return entity;
     }
 
-    public LocationDTO entityToDto(Location entity){
+    public LocationDTO entityToDto(Location entity) {
         LocationDTO dto = LocationDTO.builder()
                 .loc_no(entity.getLoc_no())
                 .loc_name(entity.getLoc_name())
@@ -87,10 +92,79 @@ public class LocationService {
                 .tagSet(entity.getTagSet())
                 .regDate(entity.getRegDate())
                 .modDate(entity.getModDate())
-                .imgList(entity.getImgList())
-                .cmdSet(entity.getCmtSet())
                 .likeCount(entity.getLikeCount())
+                .thumbnail(entity.getThumbnail())
+                .viewCount(entity.getViewCount())
                 .build();
+
+        // Image List 변환 및 정렬
+        // idx 기준 정렬
+        List<Image> tempList = new ArrayList<>();
+        List<Image> imgList = new ArrayList<>();
+        boolean sortedFlag = false;
+        int count = 0;
+
+        for (Image img :
+                entity.getImgSet()) {
+            tempList.add(img);
+        }
+
+//        for (int i = 0; i < tempList.size(); i++) {
+//            for (int j = 0; j < tempList.size(); j++) {
+//                if (tempList.get(j).getIdx() == i) {
+//                    imgList.add(tempList.get(j));
+//                    break;
+//                }
+//            }
+//        }
+
+        // idx가 전부 0일 경우 정리가 되지 않은 것이므로
+        for (int i = 0; i < tempList.size(); i++) {
+            if (tempList.get(i).getIdx() == 0) {
+                count++;
+            }
+        }
+
+        // 플래그 설정
+        if (count > 1) {
+            sortedFlag = false;
+        } else {
+            sortedFlag = true;
+        }
+
+        if (!sortedFlag) {
+            for (int i = 0; i < tempList.size(); i++) {
+                tempList.get(i).setIdx((long) i);
+                imgList.add(tempList.get(i));
+            }
+        } else {
+            for (int i = 0; i < tempList.size(); i++) {
+                for (int j = 0; j < tempList.size(); j++) {
+                    if (tempList.get(j).getIdx() == i) {
+                        imgList.add(tempList.get(j));
+                        break;
+                    }
+                }
+            }
+        }
+
+
+        // Comment List 변환 및 정렬
+        // cmd_idx 기준 정렬
+        List<Comment> tempCmtList = new ArrayList<>(entity.getCmtSet());
+        List<Comment> cmtList = new ArrayList<>();
+
+        for (int i = 0; i < tempCmtList.size(); i++) {
+            for (int j = 0; j < tempCmtList.size(); j++) {
+                if (tempCmtList.get(j).getCmtIdx() == i) {
+                    cmtList.add(tempCmtList.get(j));
+                    break;
+                }
+            }
+        }
+
+        dto.setImgList(imgList);
+        dto.setCmtList(cmtList);
 
         return dto;
     }
@@ -148,7 +222,7 @@ public class LocationService {
         return repository.findByLoc_nameContaining(sb.toString());
     }
 
-    public Location selectLoc(Long loc_no){
+    public Location selectLoc(Long loc_no) {
         Optional<Location> result = repository.findById(loc_no);
 
         return result.isPresent() ? result.get() : null;
@@ -177,7 +251,7 @@ public class LocationService {
     }
 
     public void delete(Location loc) {
-        List<Image> list = loc.getImgList();
+        List<Image> list = (List<Image>) loc.getImgSet();
         Set<Comment> cmtSet = loc.getCmtSet();
 
         for (Image image : list) {
@@ -192,7 +266,7 @@ public class LocationService {
             cmtService.delete(cmt);
         }
 
-        loc.setImgList(null);
+        loc.setImgSet(null);
 
         update(loc);
 
@@ -216,7 +290,7 @@ public class LocationService {
     public boolean onClickLikeUndo(Long loc_no) {
         Location entity = selectLoc(loc_no);
 
-        if(entity == null) {
+        if (entity == null) {
             return false;
         }
 
@@ -225,5 +299,58 @@ public class LocationService {
         update(entity);
 
         return true;
+    }
+
+    public void incViewCount(Long loc_no) {
+        LocationDTO dto = selectLocDTO(loc_no);
+
+        dto.setViewCount(dto.getViewCount() + 1);
+
+        Location entity = dtoToEntity(dto);
+
+        update(entity);
+    }
+
+    public Location edit(Map<String, String> reqParam, List<String> tagList, List<String> filePath) {
+        List<Image> imgList = new ArrayList<>();
+        Location entity = selectLoc(reqParam.get("loc_uuid"));
+
+        // 업데이트 된 태그 정보 삽입
+        entity.setTagSet(new HashSet<>());
+        for (String item : tagList) {
+            entity.addLocTag(item);
+        }
+
+        LocationDTO dto = entityToDto(entity);
+//        boolean flag = false;
+        // Todo 기존에 장소에 등록된 이미지가 업데이트 된 장소와 연결이 끊여졌을 때 어떻게 동작할 지
+
+        for (int i = 1; i < filePath.size(); i++) {
+            // filePath.get(0)  ==  Parent Folder (URI)
+            // filePath.get(i)  ==  fileNames
+            if (dto.getImgList().size() > i) {
+                for (int j = 0; j < dto.getImgList().size(); j++) {
+                    if (dto.getImgList().get(j).getImg_uuid().equals(filePath.get(i))){
+                        imgList.add(imgService.editImageEntity(filePath.get(i), (long) (i - 1)));
+//                        flag = true;
+                        continue;
+                    }
+                }
+            }
+            imgList.add(imgService.getImageEntity(reqParam.get("user_no"), filePath.get(0), filePath.get(i), entity, i-1));
+        }
+
+        entity.setImgSet(new HashSet<>(imgList));
+        entity.setThumbnail(imgList.get(0).getImg_url());
+
+        repository.save(entity);
+
+        for (Image image : imgList) {
+            imgRepository.save(image);
+        }
+
+        log.info("entity : " + entity);
+
+        return entity;
     }
 }

@@ -212,9 +212,39 @@
 						<input type="hidden" name="user_no_debug" id="user_no_debug" value="0">
 					</div>
 					<div>
-						<input name="files" type="file" multiple accept="image/*">
-						<%--						@Todo 이미지 업로드시 미리 보기 추가--%>
-						<%--						http://yoonbumtae.com/?p=3304 --%>
+						<input class="visually-hidden" id="imgInput" name="files" type="file" multiple accept="image/*" onchange="readImage()">
+						<div id="canvas" class="row flex-nowrap mx-0 mt-3" style="overflow-x: scroll">
+							<c:forEach var="i" begin="1" end="10">
+								<c:choose>
+									<c:when test="${i eq 1}">
+										<div class="card col-3 p-0">
+											<img src="/image/icon/480px-Solid_white.png" alt="" id="img_${i}" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
+											<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
+												<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_${i}"
+													 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
+											</div>
+											<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
+												<img class="btn btn-lg align-middle p-0" id="imgDel_${i}" onclick="deleteImage(this)"
+													 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
+											</div>
+										</div>
+									</c:when>
+									<c:otherwise>
+										<div class="card col-3 p-0 visually-hidden">
+											<img src="/image/icon/480px-Solid_white.png" alt="" id="img_${i}" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
+											<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
+												<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_${i}"
+													 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
+											</div>
+											<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
+												<img class="btn btn-lg align-middle p-0" id="imgDel_${i}" onclick="deleteImage(this)"
+													 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
+											</div>
+										</div>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+						</div>
 					</div>
 				</div>
 				<button type="submit" id="register" name="register" onclick="onClickRegister()">Register</button>
@@ -241,12 +271,11 @@
     document.domain = "localhost:8080"
 
     function goPopup() {
-        //
-        // 주소검색을 수행할 팝업 페이지를 호출합니다.
-        // 호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(https://www.juso.go.kr/addrlink/addrLinkUrl.do)를 호출하게 됩니다.
+<%--        // 주소검색을 수행할 팝업 페이지를 호출합니다.
+        // 호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(https://www.juso.go.kr/addrlink/addrLinkUrl.do)를 호출하게 됩니다. --%>
         var pop = window.open("/popup/jusoPopup", "pop", "width=570,height=420, scrollbars=yes, resizable=yes");
 
-        // 모바일 웹인 경우, 호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(https://www.juso.go.kr/addrlink/addrMobileLinkUrl.do)를 호출하게 됩니다.
+        <%-- // 모바일 웹인 경우, 호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(https://www.juso.go.kr/addrlink/addrMobileLinkUrl.do)를 호출하게 됩니다. --%>
         //var pop = window.open("/popup/jusoPopup.jsp","pop","scrollbars=yes, resizable=yes");
     }
 
@@ -259,7 +288,7 @@
         document.getElementById("zipNo").value = zipNo;
         document.getElementById("siNm").value = siNm;
         document.getElementById("sggNm").value = sggNm;
-        // document.form.roadFullAddr.value = roadFullAddr;
+        <%--// document.form.roadFullAddr.value = roadFullAddr;
         // document.form.roadAddrPart1.value = roadAddrPart1;
         // document.form.roadAddrPart2.value = roadAddrPart2;
         // document.form.addrDetail.value = addrDetail;
@@ -285,10 +314,106 @@
         // document.form.lnbrMnnm.value = lnbrMnnm;
         // document.form.lnbrSlno.value = lnbrSlno;
         /** 2017년 3월 추가제공 **/
-        // document.form.emdNo.value = emdNo;
+        // document.form.emdNo.value = emdNo; --%>
     }
 </script>
 <script>
+    let input = document.getElementById("imgInput");
+    let isBuffered = false;
+
+	function onClickAddImage() {
+        $('#imgInput').trigger('click');
+    }
+
+    function toggleAddDelBtn(offset) {
+	    for (let i = 1; i <= 10; i++) {
+            let btnAddParent = document.getElementById("imgAdd_" + i).parentElement;
+            let btnDelParent = document.getElementById("imgDel_" + i).parentElement;
+
+	        if (offset < i) {
+                btnAddParent.setAttribute('class', 'd-flex justify-content-center card-img-overlay');
+                btnDelParent.setAttribute('class', 'd-flex justify-content-end card-img-overlay p-0 visually-hidden');
+			} else {
+                btnAddParent.setAttribute('class', 'd-flex justify-content-center card-img-overlay visually-hidden');
+                btnDelParent.setAttribute('class', 'd-flex justify-content-end card-img-overlay p-0');
+			}
+		}
+	}
+
+    <%--						http://yoonbumtae.com/?p=3304 --%>
+    function readImage() {
+        let fileList = Array.from(input.files);
+
+        console.log(input.files);
+        console.log(fileList);
+        fileList.forEach((file, index) => {
+            let reader = new FileReader();
+            // console.log(i + "번 째 아이템이 등록되었습니다.");
+			let item = document.getElementById("img_" + (index+1));
+			reader.onload= e => {
+			    item.src = e.target.result;
+			    item.parentElement.setAttribute("class", "card col-3 p-0");
+			}
+			if (index != 9) {
+                document.getElementById("img_" + (index+2)).parentElement.setAttribute("class", "card col-3 p-0");
+			}
+            reader.readAsDataURL(file);
+            console.log(item);
+        })
+
+		// // 기존에 있던 이미지 지우기
+        for (let i = fileList.length + 1; i <= 10; i++) {
+            if (i === (fileList.length + 1)) {
+                document.getElementById("img_" + i).parentElement.setAttribute("class", "card col-3 p-0");
+			} else {
+                document.getElementById("img_" + i).parentElement.setAttribute("class", "card col-3 p-0 visually-hidden");
+			}
+
+            document.getElementById("img_" + i).src = "/image/icon/480px-Solid_white.png";
+        }
+        toggleAddDelBtn(fileList.length);
+    }
+
+    function deleteImage(obj) {
+        <%-- https://stackoverflow.com/questions/16943605/remove-a-filelist-item-from-a-multiple-inputfile  --%>
+		let dt = new DataTransfer();
+		dt.files = input.files;
+
+		let objId = obj.id.split('_');
+		let index = objId[objId.length - 1];
+        console.log(index);
+		for (let file of input.files){
+		    if (file !== input.files[index - 1]){
+		        dt.items.add(file);
+			}
+		}
+
+		for (let i = 1; i <= 10; i++) {
+		    if (i >= index) {
+		       if (i !== 10) {
+                   document.getElementById("img_"+i).src = document.getElementById("img_"+(i+1)).src;
+               } else {
+		           document.getElementById("img_"+i).src = "/image/icon/480px-Solid_white.png";
+			   }
+			}
+
+		    if (dt.items.length+1 < i) {
+		        document.getElementById("img_"+i).parentElement.setAttribute("class", "card col-3 p-0 visually-hidden");
+			}
+		}
+
+		input.files = dt.files;
+        console.log(dt.files);
+        console.log(input.files);
+
+        for (let i = input.files.length + 1; i <= 10; i++) {
+            let img = document.getElementById("img_" + i);
+            img.src = "/image/icon/480px-Solid_white.png";
+        }
+
+        toggleAddDelBtn(input.files.length);
+	}
+
     function onClickRegister() {
         console.log("submit butten clicked");
         var $fileUpload = $("input[type='file']");
@@ -339,12 +464,14 @@
                     alert("장소 등록 실패 : 로그인을 해주세요");
                     console.log("장소 등록 실패 : 로그인을 해주세요");
 				}
-            },
-            error: function (e) {
-                console.log("Login Check Failed")
-                alert("장소 등록 실패");
-                console.log("장소 등록 실패");
+            },error: function (e) {
+                // console.log("Login Check Failed")
+                // alert("장소 등록 실패");
+                // console.log("장소 등록 실패");
+				// onClickRegister();
+				console.log(e);
             }
+
         });
     }
 </script>

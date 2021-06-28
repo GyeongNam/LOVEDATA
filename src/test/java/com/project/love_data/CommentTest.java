@@ -1,15 +1,12 @@
 package com.project.love_data;
 
-import com.project.love_data.businessLogic.service.CommentService;
-import com.project.love_data.businessLogic.service.LocationService;
-import com.project.love_data.businessLogic.service.SearchOption;
-import com.project.love_data.dto.CommentDTO;
-import com.project.love_data.dto.CommentPageType;
-import com.project.love_data.dto.PageRequestDTO;
-import com.project.love_data.dto.PageResultDTO;
+import com.project.love_data.businessLogic.service.*;
+import com.project.love_data.dto.*;
 import com.project.love_data.model.service.Comment;
 import com.project.love_data.model.service.Location;
 import com.project.love_data.repository.CommentRepository;
+import com.project.love_data.repository.UserRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,9 +18,51 @@ public class CommentTest {
     @Autowired
     CommentRepository cmtRepository;
     @Autowired
+    UserRepository userRepository;
+    @Autowired
     LocationService locService;
     @Autowired
     CommentService cmtService;
+
+    @Test
+    public void InsertCommentInit() {
+        Location loc = locService.locationNameSearch("중부대학교 충청", SearchOption.CONTAIN).get(0);
+
+        Comment entity = new Comment();
+        for (int i = 0; i < 45; i++) {
+            entity = new Comment();
+            entity = Comment.builder()
+                    .cmtContent("Comment Content " + i)
+                    .user(userRepository.findById(loc.getUser_no()).get())
+                    .location(loc).build();
+
+            cmtRepository.save(entity);
+
+            entity = cmtRepository.findByCmt_uuid(entity.getCmtUuid()).get();
+
+            loc.addCmt(entity);
+
+            locService.update(loc);
+        }
+
+        loc = locService.locationNameSearch("중부대학교 고양", SearchOption.CONTAIN).get(0);
+
+        for (int i = 0; i < 45; i++) {
+            entity = new Comment();
+            entity = Comment.builder()
+                    .cmtContent("Comment Content " + i)
+                    .user(userRepository.findById(loc.getUser_no()).get())
+                    .location(loc).build();
+
+            cmtRepository.save(entity);
+
+            entity = cmtRepository.findByCmt_uuid(entity.getCmtUuid()).get();
+
+            loc.addCmt(entity);
+
+            locService.update(loc);
+        }
+    }
 
     @Test
     public void InsertComment() {
@@ -31,7 +70,7 @@ public class CommentTest {
             Location loc = locService.locationNameSearch(String.valueOf(i), SearchOption.CONTAIN).get(0);
             Comment entity = Comment.builder()
                     .cmtContent("Comment Content " + i)
-                    .userNo(loc.getUser_no())
+                    .user(userRepository.findById(loc.getUser_no()).get())
                     .location(loc).build();
 
             cmtRepository.save(entity);
@@ -53,19 +92,25 @@ public class CommentTest {
             locService.update(loc);
         }
 
+        LocationDTO dto = locService.selectLocDTO(1L);
+
         Comment cmt = Comment.builder()
-                .userNo(0L)
+                .user(userRepository.findById(0L).get())
                 .cmtContent("Temp")
-                .location(locService.dtoToEntity(locService.selectLocDTO(1L))).build();
+                .location(locService.dtoToEntity(dto)).build();
 
         cmtRepository.save(cmt);
 
+        dto.addCmt(cmt);
+        Location entity = locService.dtoToEntity(dto);
 
+        locService.update(entity);
     }
 
     @Test
     public void readComment(){
-        Location loc = locService.locationNameSearch(String.valueOf(0), SearchOption.CONTAIN).get(0);
+        Location loc = locService.locationNameSearch("중부대학교 충청캠퍼스", SearchOption.CONTAIN).get(0);
+//        Location loc = locService.locationNameSearch(String.valueOf(0), SearchOption.CONTAIN).get(0);
 
         System.out.println("loc Comment Set");
         for (Comment comment : loc.getCmtSet()) {
@@ -121,7 +166,8 @@ public class CommentTest {
                 .size(10)
                 .build();
 
-        PageResultDTO<CommentDTO, Comment> resultDTO = cmtService.getCmtPage(pageRequestDTO, CommentPageType.ALL);
+        PageResultDTO<CommentDTO, Comment> resultDTO
+                = cmtService.getCmtPage(pageRequestDTO, CommentPageType.ALL, CommentSortType.IDX_ASC);
 
         System.out.println("PREV = " + resultDTO.isPrev());
         System.out.println("NEXT = " + resultDTO.isNext());
@@ -145,7 +191,8 @@ public class CommentTest {
                 .locNo(1L)
                 .build();
 
-        PageResultDTO<CommentDTO, Comment> resultDTO = cmtService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION);
+        PageResultDTO<CommentDTO, Comment> resultDTO
+                = cmtService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION, CommentSortType.IDX_ASC);
 
         System.out.println("PREV = " + resultDTO.isPrev());
         System.out.println("NEXT = " + resultDTO.isNext());

@@ -29,6 +29,167 @@ public class LocationTest {
     LocationService locService;
 
     @Test
+    public void InsertInitLocation() {
+        List<LocationTag> tagSet = new ArrayList<>();
+        tagSet.add(LocationTag.ACTION_A);
+        tagSet.add(LocationTag.ACTION_B);
+
+        Long user_no = (long) new Random().nextInt(4) + 1L;
+
+        Location loc = Location.builder()
+                .loc_name("중부대학교 충청캠퍼스")
+                .user_no(user_no)
+                .roadAddr("충청남도 금산군 추부면 대학로 201")
+                .addrDetail("충청캠퍼스")
+                .siDo("충청남도")
+                .siGunGu("금산군")
+                .info("중부대학교는 학생성장을 학교 발전을 위한 최고의 비전으로 추구하고 있습니다.\n" +
+                        " 학생성장은 인공지능과 융복합 시대의 전공역량을 충분히 획득한 전문인재, 올바른 인성과 균형 잡힌 교양을 갖춘 바른 인재, 그리고 창의적인 문제해결력을 갖춘 창의인재로의 발전을 지향합니다")
+                .loc_uuid(UUID.randomUUID().toString())
+                .tel("041-750-6500")
+                .zipNo("32713")
+                .build();
+
+        loc.addLocTag(String.valueOf(LocationTag.학교));
+        loc.addLocTag(String.valueOf(LocationTag.야외));
+
+        locationRepository.save(loc);
+
+        Image img;
+        for (int i = 0; i < 3; i++) {
+            img = Image.builder()
+                    .location(loc)
+                    .img_uuid("Jungbu_Chungnam_" + i + ".jpg")
+                    .user_no(user_no)
+                    .img_url("/image/init/Jungbu-Chungnam-" + i + ".jpg")
+                    .build();
+            img.setLocation(loc);
+
+            imageRepository.save(img);
+
+            loc.addImg(img);
+
+            if ("".equals(loc.getThumbnail())) {
+                loc.setThumbnail(img.getImg_url());
+            }
+        }
+
+        locationRepository.save(loc);
+
+        user_no = (long) (Math.random() * 10)+1;
+
+        loc = null;
+
+        loc = Location.builder()
+                .loc_name("중부대학교 고양캠퍼스")
+                .user_no(user_no)
+                .roadAddr("경기도 고양시 덕양구 동헌로 305")
+                .addrDetail("고양캠퍼스")
+                .siDo("경기도")
+                .siGunGu("고양시")
+                .info("중부대학교는 학생성장을 학교 발전을 위한 최고의 비전으로 추구하고 있습니다.\n" +
+                        " 학생성장은 인공지능과 융복합 시대의 전공역량을 충분히 획득한 전문인재, 올바른 인성과 균형 잡힌 교양을 갖춘 바른 인재, 그리고 창의적인 문제해결력을 갖춘 창의인재로의 발전을 지향합니다")
+                .loc_uuid(UUID.randomUUID().toString())
+                .tel("031-8075-1000")
+                .zipNo("10279")
+                .build();
+
+        loc.addLocTag(String.valueOf(LocationTag.학교));
+        loc.addLocTag(String.valueOf(LocationTag.야외));
+
+        locationRepository.save(loc);
+
+        img = null;
+        for (int i = 0; i < 3; i++) {
+            img = Image.builder()
+                    .location(loc)
+                    .img_uuid("Jungbu-Goyang-" + i + ".jpg")
+                    .user_no(user_no)
+                    .img_url("/image/init/Jungbu-Goyang-" + i + ".jpg")
+                    .build();
+            img.setLocation(loc);
+
+            imageRepository.save(img);
+
+            loc.addImg(img);
+
+            if ("".equals(loc.getThumbnail())) {
+                loc.setThumbnail(img.getImg_url());
+            }
+        }
+
+        locationRepository.save(loc);
+
+        user_no = (long) (Math.random() * 10)+1;
+
+        loc = null;
+
+        loc = Location.builder()
+                .loc_name("서울숲")
+                .user_no(user_no)
+                .roadAddr("서울특별시 성동구 뚝섬로 273")
+                .addrDetail("서울숲")
+                .siDo("서울특별시")
+                .siGunGu("성동구")
+                .info("서울숲은 문화예술공원, 체험학습원, 생태숲, 습지생태원 네 가지의 특색 있는 공간들로 구성되어 있으며, 한강과 맞닿아 있어 다양한 문화여가공간을 제공합니다.\n" +
+                        "또한 서울숲공원은 조성부터 프로그램 운영까지 시민의 참여로 이루어진 최초의 공원입니다.")
+                .loc_uuid(UUID.randomUUID().toString())
+                .tel("02-460-2905")
+                .zipNo("04770")
+                .build();
+
+        loc.addLocTag(String.valueOf(LocationTag.공원));
+        loc.addLocTag(String.valueOf(LocationTag.야외));
+        loc.addLocTag(String.valueOf(LocationTag.숲));
+
+        locationRepository.save(loc);
+
+        img = null;
+        for (int i = 0; i < 4; i++) {
+            img = Image.builder()
+                    .location(loc)
+                    .img_uuid("Seoul-Forest-0" + i + ".jpg")
+                    .user_no(user_no)
+                    .img_url("/image/init/Seoul-Forest-0" + i + ".jpg")
+                    .build();
+            img.setLocation(loc);
+
+            imageRepository.save(img);
+
+            loc.addImg(img);
+
+            if ("".equals(loc.getThumbnail())) {
+                loc.setThumbnail(img.getImg_url());
+            }
+        }
+
+        locationRepository.save(loc);
+
+        Optional<Location> temp = locationRepository.findLocByUUID(loc.getLoc_uuid());
+
+        if(temp.isPresent()){
+            Location item = temp.get();
+
+            img = null;
+            img = Image.builder()
+                    .location(item)
+                    .img_uuid("Seoul-Forest-03.jpg")
+                    .user_no(user_no)
+                    .img_url("/image/init/Seoul-Forest-03.jpg")
+                    .build();
+            img.setLocation(item);
+
+            imageRepository.save(img);
+
+            item.addImg(img);
+
+            locService.update(item);
+        }
+
+        System.out.println("Location 저장 완료");
+    }
+
+    @Test
     public void InsertLocation() {
         List<LocationTag> tagSet = new ArrayList<>();
         tagSet.add(LocationTag.TYPE_ODD);
@@ -72,6 +233,10 @@ public class LocationTest {
 
             loc.addImg(img);
 
+            if ("".equals(loc.getThumbnail())){
+                loc.setThumbnail(img.getImg_url());
+            }
+
             locationRepository.save(loc);
         }
 
@@ -103,7 +268,7 @@ public class LocationTest {
         Location temp = loc.get();
 
         System.out.println(temp);
-        System.out.println(temp.getImgList());
+        System.out.println(temp.getImgSet());
     }
 
     @Test
@@ -112,7 +277,7 @@ public class LocationTest {
 
         for (Location location : list) {
             System.out.println("location = " + location);
-            System.out.println(location.getImgList());
+            System.out.println(location.getImgSet());
         }
     }
 
@@ -123,7 +288,7 @@ public class LocationTest {
         Location temp = loc.get();
 
         System.out.println("temp = " + temp);
-        System.out.println(temp.getImgList());
+        System.out.println(temp.getImgSet());
 
         temp.setLoc_name("Updated Loc_0");
         temp.setInfo("Updated Location Info");
@@ -142,7 +307,7 @@ public class LocationTest {
 
         Optional<Location> box = locationRepository.findLocByUUID(temp.getLoc_uuid());
         System.out.println(box.get());
-        System.out.println(box.get().getImgList());
+        System.out.println(box.get().getImgSet());
     }
 
     @Test
@@ -150,7 +315,7 @@ public class LocationTest {
         Optional<Location> item = locationRepository.findLocByUUID("UUID_1");
 
         System.out.println("item = " + item.get());
-        System.out.println(item.get().getImgList());
+        System.out.println(item.get().getImgSet());
     }
 
     @Test
@@ -233,7 +398,7 @@ public class LocationTest {
 
         for (Location location : list) {
             System.out.println("location = " + location);
-            System.out.println(location.getImgList());
+            System.out.println(location.getImgSet());
         }
     }
 
@@ -268,7 +433,7 @@ public class LocationTest {
 
         for (Location location : list) {
             System.out.println("location = " + location);
-            System.out.println(location.getImgList());
+            System.out.println(location.getImgSet());
         }
     }
 }

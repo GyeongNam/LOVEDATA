@@ -40,7 +40,13 @@ public class LocationDTO {
     @Builder.Default
     private List<Image> imgList = new ArrayList<>();
     @Builder.Default
-    private Set<Comment> cmdSet = new HashSet<>();
+    private List<Comment> cmtList = new ArrayList<>();
+    @Builder.Default
+    private List<Location> likeLocList = new ArrayList<>();
+    @Builder.Default
+    private List<Location> recentLocList = new ArrayList<>();
+    @Builder.Default
+    private String thumbnail = "";
 
     // Todo 여기에 댓글 칼럼도 추가
 
@@ -75,8 +81,9 @@ public class LocationDTO {
                         .tel(this.getTel())
                         .zipNo(this.getZipNo())
                         .tagSet(this.getTagSet())
-                        .imgList(this.getImgList())
-                        .cmtSet(this.getCmdSet())
+                        .imgSet(new HashSet<>(this.getImgList()))
+                        .cmtSet(new HashSet<>(getCmtList()))
+                        .thumbnail(this.getThumbnail())
                         .build());
         imgList.add(img);
     }
@@ -88,7 +95,7 @@ public class LocationDTO {
     }
 
     public void addCmt(Comment cmt) {
-        cmt.setCmtNo((long) imgList.size());
+        cmt.setCmtIdx((long) imgList.size());
         cmt.setLocation(
                 Location.builder()
                         .loc_no(this.getLoc_no())
@@ -103,10 +110,11 @@ public class LocationDTO {
                         .tel(this.getTel())
                         .zipNo(this.getZipNo())
                         .tagSet(this.getTagSet())
-                        .imgList(this.getImgList())
-                        .cmtSet(this.getCmdSet())
+                        .imgSet(new HashSet<>(this.getImgList()))
+                        .cmtSet(new HashSet<>(getCmtList()))
+                        .thumbnail(this.getThumbnail())
                         .build());
-        cmdSet.add(cmt);
+        cmtList.add(cmt);
     }
 
     public void addCmt(List<Comment> cmt) {
@@ -122,5 +130,20 @@ public class LocationDTO {
         }
 
         return String.valueOf(item);
+    }
+
+    public String printImgURLS() {
+        StringBuilder sb = new StringBuilder();
+
+        if(imgList == null) {
+            return null;
+        }
+
+        for (Image img : imgList) {
+            sb.append(img.getImg_url());
+            sb.append("_");
+        }
+
+        return sb.toString().substring(0, sb.toString().length()-1);
     }
 }

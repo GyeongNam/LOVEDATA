@@ -26,7 +26,7 @@ public class QLocation extends EntityPathBase<Location> {
 
     public final SetPath<Comment, QComment> cmtSet = this.<Comment, QComment>createSet("cmtSet", Comment.class, QComment.class, PathInits.DIRECT2);
 
-    public final ListPath<com.project.love_data.model.resource.Image, com.project.love_data.model.resource.QImage> imgList = this.<com.project.love_data.model.resource.Image, com.project.love_data.model.resource.QImage>createList("imgList", com.project.love_data.model.resource.Image.class, com.project.love_data.model.resource.QImage.class, PathInits.DIRECT2);
+    public final SetPath<com.project.love_data.model.resource.Image, com.project.love_data.model.resource.QImage> imgSet = this.<com.project.love_data.model.resource.Image, com.project.love_data.model.resource.QImage>createSet("imgSet", com.project.love_data.model.resource.Image.class, com.project.love_data.model.resource.QImage.class, PathInits.DIRECT2);
 
     public final StringPath info = createString("info");
 
@@ -53,6 +53,8 @@ public class QLocation extends EntityPathBase<Location> {
     public final SetPath<String, StringPath> tagSet = this.<String, StringPath>createSet("tagSet", String.class, StringPath.class, PathInits.DIRECT2);
 
     public final StringPath tel = createString("tel");
+
+    public final StringPath thumbnail = createString("thumbnail");
 
     public final NumberPath<Long> user_no = createNumber("user_no", Long.class);
 

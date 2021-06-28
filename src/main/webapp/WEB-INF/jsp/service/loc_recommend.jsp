@@ -200,20 +200,15 @@
 							<div class="card mb-4 shadow-sm">
 								<c:url var="loc_detail" value="/service/loc_detail">
 									<c:param name="locNo" value="${result.dtoList.get(i).loc_no}"/>
-									<c:param name="page" value="${result.page}"/>
 								</c:url>
 								<a class="container p-0 btn" href="${loc_detail}">
 									<c:set var="imgList" value="${result.dtoList.get(i).imgList}"></c:set>
 									<c:choose>
 										<c:when test="${!empty imgList}">
-											<svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-												 xmlns="http://www.w3.org/2000/svg" role="img"
-												 aria-label="Placeholder: Thumbnail"
-												 preserveAspectRatio="xMidYMid slice" focusable="false">
-												<rect width="100%" height="100%" fill="#55595c">
-													<image height="100%" width="100%" href="${imgList.get(0).img_url}"></image>
-												</rect>
-											</svg>
+									<img class="bd-placeholder-img card-img-top" width="100%" height="225"
+										 alt="${result.dtoList.get(i).loc_name}"
+										 src="${result.dtoList.get(i).thumbnail}"
+										 preserveAspectRatio="xMidYMid slice" focusable="false">
 										</c:when>
 										<c:otherwise>
 											<svg class="bd-placeholder-img card-img-top" width="100%" height="225"
@@ -236,9 +231,11 @@
 											   id="title_${i+0}">${result.dtoList.get(i).loc_name}</a>
 										</div>
 										<div class="d-flex align-items-center">
+											<img src="/image/icon/view.png" class="loc_icon" alt="조회수">
+											<span class="align-middle">${result.dtoList.get(i).viewCount}</span>
 											<img src="/image/icon/comment.png" class="loc_icon" alt="댓글">
 												<%--									Todo 댓글 항목 Location Entity에 추가하기--%>
-											<span class="align-middle">${result.dtoList.get(i).cmdSet.size()}</span>
+											<span class="align-middle">${result.dtoList.get(i).cmtList.size()}</span>
 											<img src="/image/icon/like/love_black.png" class="loc_icon" alt="찜하기"
 												 onclick="onClickLike(this)">
 											<span class="align-middle" id="loc_like_count" name="loc_like_count">${result.dtoList.get(i).likeCount}</span>

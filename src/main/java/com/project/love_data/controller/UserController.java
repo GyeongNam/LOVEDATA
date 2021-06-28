@@ -55,9 +55,7 @@ public class UserController {
 				.user_birth(birthday)
 				.user_sex(gender)
 				.user_email_re(recv_email)
-				.user_time(LocalDateTime.now())
 				.user_social(social)
-				.user_Activation(true)
 				.social_info(social_info)
 				.build();
 		user.addUserRole(UserRole.USER);

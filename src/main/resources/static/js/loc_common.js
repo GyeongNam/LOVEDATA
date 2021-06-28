@@ -61,9 +61,18 @@ function onClickLike(Like) {
     var path_noparm = location.pathname;
 
     console.log(path_noparm);
-    if (path_noparm ===  "/service/loc_detail" || path_noparm === "/service/loc_detail/ex") {
-        countChangeFlag = false;
+    if (path_noparm === "/service/loc_detail/ex") {
+       if (Like.src === "/image/icon/like/love_black.png") {
+           Like.src = "/image/icon/like/love_color.png"
+       } else {
+           Like.src = "/image/icon/like/love_black.png";
+       }
+    }
+    else if (path_noparm ===  "/service/loc_detail") {
+        countChangeFlag = true;
         loc = document.getElementById("loc_no");
+        loc_no = parseInt(loc.innerText);
+        likeCount = document.getElementById("likeCount");
     } else {
         likeCount = Like.nextElementSibling.innerText;
         loc_no = Like.nextElementSibling.nextElementSibling.innerText;
@@ -150,10 +159,16 @@ function onClickLikeAction(map) {
 
                 like.src = "/image/icon/like/love_color.png";
                 if (countChangeFlag) {
-                    console.log(parseInt(likeCount));
-                    console.log(parseInt(likeCount) + 1);
-                    console.log(typeof (likeCount) + "\t" + likeCount);
-                    loc.innerText = parseInt(likeCount) + 1;
+                    if (location.pathname === "/service/loc_detail") {
+                    var temp = parseInt(likeCount.innerText);
+                    likeCount.innerText = temp + 1;
+                    }
+                    else {
+                        console.log(parseInt(likeCount));
+                        console.log(parseInt(likeCount) + 1);
+                        console.log(typeof (likeCount) + "\t" + likeCount);
+                        loc.innerText = parseInt(likeCount) + 1;
+                    }
                 }
                 lastLikeLocId = loc_no;
             },
@@ -177,10 +192,15 @@ function onClickLikeAction(map) {
 
                 like.src = "/image/icon/like/love_black.png";
                 if (countChangeFlag) {
-                    console.log(parseInt(likeCount));
-                    console.log(parseInt(likeCount) - 1);
-                    console.log(typeof (likeCount) + "\t" + likeCount);
-                    loc.innerText = parseInt(likeCount) - 1;
+                    if (location.pathname === "/service/loc_detail") {
+                        var temp = parseInt(likeCount.innerText);
+                        likeCount.innerText = temp - 1;
+                    } else {
+                        console.log(parseInt(likeCount));
+                        console.log(parseInt(likeCount) - 1);
+                        console.log(typeof (likeCount) + "\t" + likeCount);
+                        loc.innerText = parseInt(likeCount) - 1;
+                    }
                 }
 
                 lastLikeLocId = loc_no;
@@ -216,6 +236,18 @@ function LoginCheck() {
             return false;
         }
     });
+}
+
+function copyURL() {
+    var dummy   = document.createElement("input");
+    var text    = location.href;
+
+    document.body.appendChild(dummy);
+    dummy.value = text;
+    dummy.select();
+    document.execCommand("copy");
+    document.body.removeChild(dummy);
+    alert("URL이 클립보드에 복사되었습니다");
 }
 
 function ajaxCall() {

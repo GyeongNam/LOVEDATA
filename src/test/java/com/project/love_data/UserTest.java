@@ -29,9 +29,8 @@ public class UserTest {
             user.setUser_nic("User" + StringUtils.leftPad(Integer.toString(i), 4, '0'));
             user.setUser_name("User" + StringUtils.leftPad(Integer.toString(i), 4, '0'));
             user.setUser_phone("010-0000-0000");
-            user.setUser_birth("");
+            user.setUser_birth(LocalDateTime.now().toString());
             user.setUser_sex(true);
-            user.setUser_time(LocalDateTime.now());
             user.setUser_Activation(true);
             user.setUser_email_re(false);
             user.setUser_social(false);
@@ -47,9 +46,8 @@ public class UserTest {
         user.setUser_nic("User" + StringUtils.leftPad(Integer.toString(101), 4, '0'));
         user.setUser_name("User" + StringUtils.leftPad(Integer.toString(101), 4, '0'));
         user.setUser_phone("010-0000-0000");
-        user.setUser_birth("");
+        user.setUser_birth(LocalDateTime.now().toString());
         user.setUser_sex(true);
-        user.setUser_time(LocalDateTime.now());
         user.setUser_Activation(true);
         user.setUser_email_re(false);
         user.setUser_social(true);
@@ -84,7 +82,7 @@ public class UserTest {
             System.out.println("phone : " + temp.getUser_phone());
             System.out.println("birth : " + temp.getUser_birth());
             System.out.println("gender : " + temp.isUser_sex());
-            System.out.println("registered date : " + temp.getUser_time());
+            System.out.println("registered date : " + temp.getRegDate());
             System.out.println("Complete");
             System.out.println("########################################");
         }
@@ -123,7 +121,7 @@ public class UserTest {
             System.out.println("phone : " + temp.getUser_phone());
             System.out.println("birth : " + temp.getUser_birth());
             System.out.println("gender : " + temp.isUser_sex());
-            System.out.println("registered date : " + temp.getUser_time());
+            System.out.println("registered date : " + temp.getRegDate());
             System.out.println("Complete");
             System.out.println("########################################");
         }
@@ -155,7 +153,7 @@ public class UserTest {
             System.out.println("phone : " + temp.getUser_phone());
             System.out.println("birth : " + temp.getUser_birth());
             System.out.println("gender : " + temp.isUser_sex());
-            System.out.println("registered date : " + temp.getUser_time());
+            System.out.println("registered date : " + temp.getRegDate());
             System.out.println("Complete");
             System.out.println("########################################");
         }
@@ -183,7 +181,7 @@ public class UserTest {
             System.out.println("phone : " + temp.getUser_phone());
             System.out.println("birth : " + temp.getUser_birth());
             System.out.println("gender : " + temp.isUser_sex());
-            System.out.println("registered date : " + temp.getUser_time());
+            System.out.println("registered date : " + temp.getRegDate());
             System.out.println("Complete");
             System.out.println("########################################");
         }
@@ -199,7 +197,6 @@ public class UserTest {
         user1.setUser_phone("010-0000-0000");
         user1.setUser_birth("");
         user1.setUser_sex(true);
-        user1.setUser_time(LocalDateTime.now());
         user1.setUser_Activation(true);
         user1.setUser_email_re(false);
         user1.setUser_social(true);
