@@ -89,7 +89,7 @@ public class ImageService {
         repository.deleteByImg_uuid(img.getImg_uuid());
     }
 
-    public Image editImageEntity(String uuid, Long img_Index) {
+    public Image editImageEntityIndex(String uuid, Long img_Index) {
         Image img = getImage(uuid);
 
         img.setIdx(img_Index);

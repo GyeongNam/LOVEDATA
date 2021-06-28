@@ -2,6 +2,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="Sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page session="false" %>
 
@@ -288,30 +289,19 @@
 					</div>
 					<%-- 댓글 작성--%>
 					<sec:authorize access="isAnonymous()">
+					</sec:authorize>
+					<sec:authorize access="isAuthenticated()">
 						<div class="d-flex justify-content-start" id="comment">
 							<div class="bg-light p-2 col-10">
 								<div class="d-flex flex-row align-items-start">
 									<img class="rounded-circle m-3" src="https://i.imgur.com/RpzrMR2.jpg" width="60">
-									<textarea class="form-control ml-1 shadow-none textarea" placeholder="isAnonymous()"></textarea>
+									<textarea id="commentArea" rows="6" maxlength="300" class="form-control ml-1 shadow-none textarea" placeholder="postCommentTest"></textarea>
 								</div>
 								<div class="mt-2 text-end">
-									<button class="btn btn-primary btn shadow-none" type="button">Post comment</button>
+									<button id="postCommentBtn" onclick="onClickPostComment()" class="btn btn-primary btn shadow-none" type="button">Post comment</button>
 								</div>
 							</div>
 						</div>
-					</sec:authorize>
-					<sec:authorize access="isAuthenticated()">
-					<div class="d-flex justify-content-start" id="comment">
-						<div class="bg-light p-2 col-10">
-							<div class="d-flex flex-row align-items-start">
-								<img class="rounded-circle m-3" src="https://i.imgur.com/RpzrMR2.jpg" width="60">
-								<textarea class="form-control ml-1 shadow-none textarea" placeholder="isAuthenticated()"></textarea>
-							</div>
-							<div class="mt-2 text-end">
-								<button class="btn btn-primary btn shadow-none" type="button">Post comment</button>
-							</div>
-						</div>
-					</div>
 					</sec:authorize>
 				</div>
 				<%--    설명--%>
@@ -369,6 +359,41 @@
             indexIndicator.innerText = (tempIndex + 1) + "/" + imgList.length;
         }
     }
+
+    function onClickPostComment() {
+        let form;
+        let cmt = document.getElementById("commentArea");
+
+        form = document.createElement("form");
+        form.method = "post";
+        form.action="/service/com_registration"
+
+		let input = [];
+		for (let i = 0; i < 3; i++) {
+		    input[i] = document.createElement("input");
+		    $(input[i]).attr("type", "hidden");
+
+		    if (i === 0)
+                $(input[0]).attr("name", "locNo");
+				$(input[0]).attr("value", "${dto.loc_no}");
+		    if (i === 1)
+                $(input[1]).attr("name", "userNo");
+		    	<sec:authorize access="isAuthenticated()">
+            	$(input[1]).attr("value", "<sec:authentication property="principal.user_no"/>");
+				</sec:authorize>
+				<sec:authorize access="isAnonymous()">
+				$(input[1]).attr("value", null);
+				</sec:authorize>
+		    if (i === 2)
+                $(input[2]).attr("name", "cmtContent");
+				$(input[2]).attr("value", cmt.value);
+
+		    form.appendChild(input[i]);
+		}
+
+		document.body.appendChild(form);
+		form.submit();
+	}
 </script>
 </body>
 <%--<%@ include file="../layout/footer.jsp" %>--%>
