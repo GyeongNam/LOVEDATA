@@ -19,6 +19,21 @@ public class ImageTest {
     ImageService imgService;
 
     @Test
+    public void ImageDelete() {
+        Image img1 = imgService.getImage(4L);
+
+        imgService.delete(img1.getImg_uuid());
+
+        Image tempImg1 = imgService.getImage(4L);
+
+        if (tempImg1 != null) {
+            System.out.println("지워지지 않음");
+        } else{
+            System.out.println("지워짐");
+        }
+    }
+
+    @Test
     public void ImageGetTest() {
         Image img1 = imgService.getImage(1L);
         Image img2 = imgService.getImage("44ae4245-25da-470e-9260-0ff59e29eb95.jpg");
