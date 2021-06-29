@@ -4,6 +4,7 @@ import com.project.love_data.businessLogic.service.*;
 import com.project.love_data.dto.*;
 import com.project.love_data.model.service.Comment;
 import com.project.love_data.model.service.Location;
+import com.project.love_data.model.service.LocationTag;
 import com.project.love_data.security.model.AuthUserModel;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -144,7 +145,10 @@ public class LocationController {
         if (locNo != null){
             LocationDTO dto = locService.selectLocDTO(locNo);
 
+            List<LocationTag> tagList = Arrays.asList(LocationTag.values());
+
             model.addAttribute("dto", dto);
+            model.addAttribute("tagList", tagList);
 
             return "/service/loc_edit";
         }

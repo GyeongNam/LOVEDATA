@@ -85,8 +85,8 @@ public class ImageService {
         return dto;
     }
 
-    public void delete(Image img) {
-        repository.deleteByImg_uuid(img.getImg_uuid());
+    public void delete(String img_uuid) {
+        repository.deleteByImg_uuid(img_uuid);
     }
 
     public Image editImageEntityIndex(String uuid, Long img_Index) {
