@@ -17,6 +17,7 @@
 <body>
 <div class="header" class="fixed-top">
 	<div id="hd-logo">
+		<img id="logo-icon"src="/image/icon/hartdot.png">
 		<a id="hd-name" href="/">LOVEDATA</a>
 	</div>
 	<div id="hd-btn-box">

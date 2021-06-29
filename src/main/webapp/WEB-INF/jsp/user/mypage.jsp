@@ -13,7 +13,6 @@
 <%@ include file="../layout/header.jsp"%>
 <body>
 <div id="jb-container">
-<<<<<<< HEAD
 	<div id="jb-header">
 		<h1>마이페이지</h1>
 	</div>
@@ -271,7 +270,6 @@
 			* 최근 본 8개 장소만 표시됩니다.
 		</div>
 	</div>
-=======
     <div id="jb-header">
         <h1>마이페이지</h1>
     </div>
@@ -521,7 +519,6 @@
             * 최근 본 8개 장소만 표시됩니다.
         </div>
     </div>
->>>>>>> 403d70d59b285bbef9b09a35cc0bee938e084372
 </div>
 </body>
 <!--   부트스트랩 js 사용  -->

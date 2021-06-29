@@ -84,8 +84,8 @@ com/project/love_data/businessLogic/oauth/login/TokenRequest.java
  com.project.love_data.businessLogic.oauth.login.TokenRequest
 com/project/love_data/security/service/UserDetailsService.java
  com.project.love_data.security.service.UserDetailsService
-com/project/love_data/controller/RestController.java
- com.project.love_data.controller.RestController
+com/project/love_data/controller/OAuthController.java
+ com.project.love_data.controller.OAuthController
 com/project/love_data/dto/CommentDTO.java
  com.project.love_data.dto.CommentDTO
  com.project.love_data.dto.CommentDTO$CommentDTOBuilder
@@ -163,5 +163,5 @@ com/project/love_data/businessLogic/oauth/login/TokenRequestKakao.java
  com.project.love_data.businessLogic.oauth.login.TokenRequestKakao
 com/project/love_data/security/converter/UserRoleConverter.java
  com.project.love_data.security.converter.UserRoleConverter
-com/project/love_data/controller/OAuthController.java
- com.project.love_data.controller.OAuthController
+com/project/love_data/controller/RestController.java
+ com.project.love_data.controller.RestController

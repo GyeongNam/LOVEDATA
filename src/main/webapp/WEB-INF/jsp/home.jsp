@@ -6,17 +6,42 @@
 
 <html>
 <head>
-	<link href="\main\resources\static\css" rel="stylesheet">
+	<link href="/css/home.css" rel="stylesheet">
 	<title>Home</title>
 </head>
 <%@ include file="layout/header.jsp" %>
 <body>
 
 <div class="container">
-	<h1>
-		Hello world!
-	</h1>
 	<div class="flex-container">
+		<div class="main-content">
+			<!-- Slideshow container -->
+			<div class="slideshow-container">
+				<!-- Full-width images with number and caption text -->
+				<div class="mySlides fade">
+					<!-- The dots/circles -->
+					<div style="text-align:center">
+						<span class="dot" onclick="currentSlide(1)"></span>
+						<span class="dot" onclick="currentSlide(2)"></span>
+						<span class="dot" onclick="currentSlide(3)"></span>
+					</div>
+					<img src="/image/datapg1.png" style="width:60%">
+				</div>
+
+				<div class="mySlides fade">
+					<img src="/image/datapg2.png" style="width:60%">
+				</div>
+
+				<div class="mySlides fade">
+					<img src="/image/datepg3.jpg" style="width:60%">
+				</div>
+
+				<!-- Next and previous buttons -->
+				<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+				<a class="next" onclick="plusSlides(1)">&#10095;</a>
+			</div>
+			<br>
+		</div>
 		<div class="class1">
 			<P> The time on the server is ${serverTime}. </P>
 			<a href="/infoFind">아이디/비밀번호 찾기</a>
@@ -89,6 +114,7 @@
 </body>
 <%@ include file="layout/footer.jsp" %>
 <!--  부트스트랩 js 사용 -->
+<script defer src="/js/home.js"></script>
 <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script defer type="text/javascript" src="/resource/js/bootstrap.js"></script>
 </html>
