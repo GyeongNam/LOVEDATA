@@ -10,86 +10,89 @@ import java.net.URLEncoder;
 @Log4j2
 public class URISetter {
     private static final String kakao_REST = "0b7965078037392ee3569b5979ad1d16";
-    private static final String kakao_Redirect = "http://lovedata.kr/login_kakao/process";
-    private static final String kakao_Redirect_local = "http://localhost:8080/login_kakao/process";
-    private static final String kakao_LogoutRedirect = "http://lovedata.kr/logout";
-    private static final String kakao_LogoutRedirect_Local = "http://localhost:8080/logout";
+    private static final String kakao_Redirect = "/login_kakao/process";
+    private static final  String kakao_LogoutRedirect = "/login_kakao/process";
+    private static final String local_host = "http://localhost:8080";
+    private static final String mon0mon_iptime = "http://mon0mon.iptime.org:18080";
+    private static final String loveData_kr = "https://lovedata.kr";
+    private static final String loveData_ddns = "https://lovedata.ddns.net";
+    private static final String loveData_duck = "https://lovedata.duckdns.org";
     private static final String naver_ClientID = "GsitFCDRzSFJYx73nqfz";
     private static final String naver_ClientSecret= "piOPrC_WRe";
-    private static final String naver_Redirect = "http://lovedata.kr/login_naver/process";
-    private static final String naver_Redirect_local = "http://localhost:8080/login_naver/process";
+    private static final String naver_Redirect = "/login_naver/process";
 
-    // https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#request-code
-    public static URI getKaKao_Code(String csrf){
-        try {
-            URI uri = new URIBuilder()
-                    .setScheme("https")
-                    .setHost("kauth.kakao.com")
-                    .setPath("oauth/authorize")
-                    .setParameter("client_id", kakao_REST)
-                    .setParameter("redirect_uri", kakao_Redirect)
-//                    .setParameter("redirect_uri", kakao_Redirect_local)
-                    .setParameter("response_type", "code")
-                    .setParameter("state", csrf)
-                    .build();
-            return uri;
-        } catch (Exception e) {
-            log.info("getKaKao_Code URI 생성 과정 중 예외 발생");
-            log.info(e.getStackTrace());
-            return null;
+    private static String setURL(ServerDomain domain) {
+        String URL = "";
+
+        switch (domain){
+            case LOCALHOST:
+                URL += local_host;
+                return URL;
+            case MON_IPTIME:
+                URL += mon0mon_iptime;
+                return URL;
+            case LOVEDATA_DDNS:
+                URL += loveData_ddns;
+                return URL;
+            case LOVEDATA_DUCK:
+                URL += loveData_duck;
+                return URL;
+            case LOVEDATA_KR:
+                URL += loveData_kr;
+                return URL;
+            default:
+                URL = null;
+                log.warn("Current Domain is not listed in the ServerDomain.java");
+                log.warn("Please Add Current Domain ServerDomain.java or Access by another listed domain");
+                return URL;
         }
     }
 
-    public static URI getKaKao_Code_Local(String csrf){
+    public static URI getKakao_Code(String csrf, ServerDomain domain) {
+        String URL = setURL(domain);
+
+        if (URL == null) {
+            log.warn("(getKakao_Code) Kakao 로그인 redirect_url을 설정하지 못했습니다.");
+            return null;
+        }
+
         try {
+            URL += kakao_Redirect;
             URI uri = new URIBuilder()
                     .setScheme("https")
                     .setHost("kauth.kakao.com")
                     .setPath("oauth/authorize")
                     .setParameter("client_id", kakao_REST)
-                    .setParameter("redirect_uri", kakao_Redirect_local)
+                    .setParameter("redirect_uri", URL)
                     .setParameter("response_type", "code")
                     .setParameter("state", csrf)
                     .build();
             return uri;
         } catch (Exception e) {
-            log.info("getKaKao_Code URI 생성 과정 중 예외 발생");
-            log.info(e.getStackTrace());
+            log.warn("getKaKao_Code URI 생성 과정 중 예외 발생");
+            log.warn(e.getStackTrace());
             return null;
         }
     }
 
     // https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#request-token
-    public static URI getKaKao_Token(String code){
-        try {
-            URI uri = new URIBuilder()
-                    .setScheme("https")
-                    .setHost("kauth.kakao.com")
-                    .setPath("oauth/token")
-                    .setParameter("grant_type", "authorization_code")
-                    .setParameter("client_id", kakao_REST)
-                    .setParameter("redirect_uri", kakao_Redirect)
-//                    .setParameter("redirect_uri", kakao_Redirect_local)
-                    .setParameter("code", code)
-                    .build();
-            return uri;
-        } catch (Exception e) {
-            log.info("getKaKao_Token URI 생성 과정 중 예외 발생");
-            log.info(e.getStackTrace());
+    public static URI getKaKao_Token(String code, ServerDomain domain){
+        String URL = setURL(domain);
+
+        if (URL == null) {
+            log.warn("(getKaKao_Token) Kakao 로그인 redirect_url을 설정하지 못했습니다.");
             return null;
         }
-    }
 
-    public static URI getKaKao_Token_Local(String code){
         try {
+            URL += kakao_Redirect;
             URI uri = new URIBuilder()
                     .setScheme("https")
                     .setHost("kauth.kakao.com")
                     .setPath("oauth/token")
                     .setParameter("grant_type", "authorization_code")
                     .setParameter("client_id", kakao_REST)
-//                    .setParameter("redirect_uri", kakao_Redirect)
-                    .setParameter("redirect_uri", kakao_Redirect_local)
+                    .setParameter("redirect_uri", URL)
                     .setParameter("code", code)
                     .build();
             return uri;
@@ -119,14 +122,22 @@ public class URISetter {
         }
     }
 
-    public static URI getKakao_Logout(String csrf) {
+    public static URI getKakao_Logout(String csrf, ServerDomain domain) {
+        String URL = setURL(domain);
+
+        if (URL == null) {
+            log.warn("(getKakao_Logout) Kakao 로그아웃 redirect_url을 설정하지 못했습니다.");
+            return null;
+        }
+
         try {
+            URL += kakao_LogoutRedirect;
             URI uri = new URIBuilder()
                     .setScheme("https")
                     .setHost("kauth.kakao.com")
                     .setPath("oauth/logout")
                     .setParameter("client_id", kakao_REST)
-                    .setParameter("logout_redirect_uri", kakao_LogoutRedirect)
+                    .setParameter("logout_redirect_uri", URL)
                     .setParameter("state", csrf)
                     .build();
             return uri;
@@ -137,54 +148,25 @@ public class URISetter {
         }
     }
 
-    public static URI getKakao_Logout_Local(String csrf) {
-        try {
-            URI uri = new URIBuilder()
-                    .setScheme("https")
-                    .setHost("kauth.kakao.com")
-                    .setPath("oauth/logout")
-                    .setParameter("client_id", kakao_REST)
-                    .setParameter("logout_redirect_uri", kakao_LogoutRedirect_Local)
-                    .setParameter("state", csrf)
-                    .build();
-            return uri;
-        } catch (Exception e) {
-            log.info("getKakao_Logout_Local 생성 과정 중 예외 발생");
-            log.info(e.getStackTrace());
-            return null;
-        }
-    }
-
 //    https://developers.naver.com/docs/login/api/api.md
-    public static URI getNaver_Code(String csrf) {
-        try {
-            URI uri = new URIBuilder()
-                    .setScheme("https")
-                    .setHost("nid.naver.com")
-                    .setPath("oauth2.0/authorize")
-                    .setParameter("response_type", "code")
-                    .setParameter("client_id", naver_ClientID)
-                    .setParameter("redirect_uri", naver_Redirect)
-//                    .setParameter("redirect_uri", naver_Redirect_local)
-                    .setParameter("state", csrf)
-                    .build();
-            return uri;
-        } catch (Exception e) {
-            log.info("getNaver_Code URI 생성 과정 중 예외 발생");
-            log.info(e.getStackTrace());
+    public static URI getNaver_Code(String csrf, ServerDomain domain) {
+        String URL = setURL(domain);
+
+        if (URL == null) {
+            log.warn("(getNaver_Code) Naver 로그인 redirect_url을 설정하지 못했습니다.");
             return null;
         }
-    }
 
-    public static URI getNaver_Code_Local(String csrf) {
         try {
+            URL += naver_Redirect;
+            log.info(URL);
             URI uri = new URIBuilder()
                     .setScheme("https")
                     .setHost("nid.naver.com")
                     .setPath("oauth2.0/authorize")
                     .setParameter("response_type", "code")
                     .setParameter("client_id", naver_ClientID)
-                    .setParameter("redirect_uri", naver_Redirect_local)
+                    .setParameter("redirect_uri", URL)
                     .setParameter("state", csrf)
                     .build();
             return uri;

@@ -107,47 +107,47 @@
 											</div>
 										</li>
 									</ul>
-									<div id="tag_list">
+									<div id="tag_list" class="btn-toolbar">
 										<%--						@Todo display:inline으로 변경할때마다 빈공간 생기는 문제 수정하기--%>
-										<div class="btn-group mx-2 my-0" role="group" style="display: none">
+										<div class="btn-group ms-2 my-0" role="group" style="display: none">
 											<button type="button" class="btn btn-primary" value="">태그1</button>
-											<button type="button" class="btn btn-outline-danger btn-sm"
+											<button type="button" class="btn btn-outline-danger btn"
 													onclick="removeTag(this)">X
 											</button>
 										</div>
 										<div class="btn-group mx-2 my-0" role="group" style="display: none">
 											<button type="button" class="btn btn-primary" value="">태그2</button>
-											<button type="button" class="btn btn-outline-danger btn-sm"
+											<button type="button" class="btn btn-outline-danger"
 													onclick="removeTag(this)">X
 											</button>
 										</div>
 										<div class="btn-group mx-2 my-0" role="group" style="display: none">
 											<button type="button" class="btn btn-primary" value="">태그3</button>
-											<button type="button" class="btn btn-outline-danger btn-sm"
+											<button type="button" class="btn btn-outline-danger"
 													onclick="removeTag(this)">X
 											</button>
 										</div>
 										<div class="btn-group mx-2 my-0" role="group" style="display: none">
 											<button type="button" class="btn btn-primary" value="">태그4</button>
-											<button type="button" class="btn btn-outline-danger btn-sm"
+											<button type="button" class="btn btn-outline-danger"
 													onclick="removeTag(this)">X
 											</button>
 										</div>
 										<div class="btn-group mx-2 my-0" role="group" style="display: none">
 											<button type="button" class="btn btn-primary" value="">태그5</button>
-											<button type="button" class="btn btn-outline-danger btn-sm"
+											<button type="button" class="btn btn-outline-danger"
 													onclick="removeTag(this)">X
 											</button>
 										</div>
 										<div class="btn-group mx-2 my-0" role="group" style="display: none">
 											<button type="button" class="btn btn-primary" value="">태그6</button>
-											<button type="button" class="btn btn-outline-danger btn-sm"
+											<button type="button" class="btn btn-outline-danger"
 													onclick="removeTag(this)">X
 											</button>
 										</div>
 										<div class="btn-group mx-2 my-0" role="group" style="display: none">
 											<button type="button" class="btn btn-primary" value="">태그7</button>
-											<button type="button" class="btn btn-outline-danger btn-sm"
+											<button type="button" class="btn btn-outline-danger"
 													onclick="removeTag(this)">X
 											</button>
 										</div>

@@ -21,10 +21,10 @@ import java.util.*;
 @AllArgsConstructor
 @Log4j2
 public class Comment extends TimeEntity {
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
-    @Column(insertable = false, updatable = false, columnDefinition="serial")
     private Long cmtNo;
 
     @ManyToOne(optional = true, fetch = FetchType.EAGER)
@@ -34,13 +34,12 @@ public class Comment extends TimeEntity {
     @Builder.Default
     private Long cmtIdx = 0L;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 300, nullable = false)
     private String cmtContent;
 
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private User user;
 
-    @Id
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
     @Column(length = 60, nullable = false)

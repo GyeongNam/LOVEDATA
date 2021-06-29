@@ -144,6 +144,7 @@ public class OAuthController {
         log.info("## naverLogin Called!!");
 
         decodedURL = acessCodeRequest.excute(request, csrfTokenRepository);
+//        log.info("/login_naver : " + decodedURL);
 
         if (decodedURL == null) {
             log.info("AcessCodeRequestNaver Failed");
@@ -163,6 +164,7 @@ public class OAuthController {
         TokenRequestNaver tokenRequest = new TokenRequestNaver();
         RequestUserInfoNaver infoNaver = new RequestUserInfoNaver();
         NaverUserInfo naverUserInfo = null;
+        Authentication authentication = null;
         List<String> email = null;
 
         // naver REST API Documentation
@@ -182,7 +184,7 @@ public class OAuthController {
             // https://cusonar.tistory.com/17
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                     naverUserInfo.getEmail(), naverUserInfo.getId());
-            Authentication authentication = authenticationManager.authenticate(token);
+            authentication = authenticationManager.authenticate(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
                     SecurityContextHolder.getContext());
