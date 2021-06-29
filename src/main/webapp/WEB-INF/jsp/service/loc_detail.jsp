@@ -54,33 +54,6 @@
 					</div>
 				</div>
 			</div>
-			<%--            <div class="accordion text-center" id="course">--%>
-			<%--                <div class="card">--%>
-			<%--                    <div class="card-header" id="headingCourse">--%>
-			<%--                        <h2 class="mb-0">--%>
-			<%--                            <form action="/" method="get" class="form-label">--%>
-			<%--                                <button type="submit" class="btn btn-link btn-block"--%>
-			<%--                                        style="text-decoration: none; color: #9448C3">코스--%>
-			<%--                                </button>--%>
-			<%--                            </form>--%>
-			<%--                        </h2>--%>
-			<%--                    </div>--%>
-			<%--                </div>--%>
-			<%--            </div>--%>
-			<%--            <div class="accordion text-center" id="calendar">--%>
-			<%--                <div class="card">--%>
-			<%--                    <div class="card-header" id="headingCalendar">--%>
-			<%--                        <h2 class="mb-0">--%>
-			<%--                            <form action="/" method="get" class="form-label">--%>
-			<%--                                <button type="submit" class="btn btn-link btn-block"--%>
-			<%--                                        style="text-decoration: none; color: #9448C3">캘린더--%>
-			<%--                                </button>--%>
-			<%--                            </form>--%>
-			<%--                        </h2>--%>
-			<%--                    </div>--%>
-			<%--                </div>--%>
-			<%--                <hr>--%>
-			<%--            </div>--%>
 		</ul>
 	</div>
 	<div class="container m-5" id="display_center" style="margin-right: 30px; margin-top: 30px">
@@ -205,19 +178,19 @@
 															src="/image/icon/user/user.png"
 															class="loc_comment-profile-image-wh">
 														<div class="flex-column">
-                                        <span class="d-block font-weight-bold name">
-                                            ${cmtDTO.get(c).user.user_no}
-											<sec:authorize access="isAuthenticated()">
-												<c:set var="user_no"><sec:authentication
-														property="principal.user_no"/></c:set>
-												<c:choose>
-													<c:when test="${user_no eq cmtDTO.get(c).user.user_no}">
-														<button class="btn btn-primary">수정</button>
-														<button class="btn btn-primary">삭제</button>
-													</c:when>
-												</c:choose>
-											</sec:authorize>
-                                        </span>
+															<p class="visually-hidden" id="cmt_id_${c}">${cmtDTO.get(c).cmtUuid}</p>
+															<span class="d-block font-weight-bold name">
+																	${cmtDTO.get(c).user.user_nic}
+																		<sec:authorize access="isAuthenticated()">
+																			<c:set var="user_no"><sec:authentication property="principal.user_no"/></c:set>
+																			<c:choose>
+																				<c:when test="${user_no eq cmtDTO.get(c).user.user_no}">
+																					<button class="btn btn-primary" onclick="onClickUpdateComment(${c})">수정</button>
+																					<button class="btn btn-primary" onclick="">삭제</button>
+																				</c:when>
+																			</c:choose>
+																		</sec:authorize>
+															</span>
 															<span class="date text-black-50 ml-5">${cmtDTO.get(c).regDate}</span>
 														</div>
 													</div>
@@ -294,7 +267,8 @@
 						<div class="d-flex justify-content-start" id="comment">
 							<div class="bg-light p-2 col-10">
 								<div class="d-flex flex-row align-items-start">
-									<img class="rounded-circle m-3" src="https://i.imgur.com/RpzrMR2.jpg" width="60">
+									<c:set var="currentUserPic"><sec:authentication property="principal.user_profilePic"></sec:authentication></c:set>
+									<img class="rounded-circle m-3" src="${currentUserPic}" width="60">
 									<textarea id="commentArea" rows="6" maxlength="300" class="form-control ml-1 shadow-none textarea" placeholder="postCommentTest"></textarea>
 								</div>
 								<div class="mt-2 text-end">
@@ -393,6 +367,12 @@
 
 		document.body.appendChild(form);
 		form.submit();
+	}
+
+	function onClickUpdateComment(index) {
+        let commnet_uuid = document.getElementById("cmt_id_" + index).innerText;
+
+        console.log("comment_uuid : " + commnet_uuid);
 	}
 </script>
 </body>

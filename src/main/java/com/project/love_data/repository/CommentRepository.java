@@ -15,7 +15,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long>,
     @Query(value = "SELECT * FROM comment c WHERE c.location_loc_no = :loc_no", nativeQuery = true)
     List<Comment> findAllByLoc_no(@Param("loc_no") Long locNo);
 
-    @Query(value = "SELECT * FROM comment c WHERE c.user_no = :user_no", nativeQuery = true)
+    @Query(value = "SELECT * FROM comment c WHERE c.user_user_no = :user_no", nativeQuery = true)
     List<Comment> findAllByUser_no(@Param("user_no") Long userNo);
 
     @Query(value = "SELECT * FROM comment c WHERE c.cmt_uuid = :cmt_uuid", nativeQuery = true)
@@ -23,6 +23,11 @@ public interface CommentRepository extends JpaRepository<Comment, Long>,
 
     @Query(value = "SELECT * FROM comment c WHERE c.cmt_no = :cmt_no", nativeQuery = true)
     Optional<Comment> findByCmt_no(@Param("cmt_no") Long cmtNo);
+
+    @Modifying
+    @Query(value = "DELETE FROM comment WHERE cmt_no = :cmt_no", nativeQuery = true)
+    @Transactional
+    void deleteByCmt_no(@Param("cmt_no") String cmt_no);
 
     @Modifying
     @Query(value = "DELETE FROM comment WHERE cmt_uuid = :cmt_uuid", nativeQuery = true)

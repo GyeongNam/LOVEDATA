@@ -8,7 +8,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -60,6 +59,7 @@ public class UserDetailsService implements org.springframework.security.core.use
         authUserModel.setUser_emil_re(user.isUser_email_re());
         authUserModel.setUser_phone(user.getUser_phone());
         authUserModel.setSocial_info(user.getSocial_info());
+        authUserModel.setUser_profilePic(user.getProfile_pic());
 //        log.info("UserDetailService_authUserModel : " + authUserModel);
         log.info("Login Successful  :  " + authUserModel.getUser_email());
         return authUserModel;
