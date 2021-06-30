@@ -154,41 +154,54 @@
 							<c:forEach var="i" begin="0" end="${10}">
 								<c:choose>
 									<c:when test="${i < dto.imgList.size()}">
-										<div class="card col-3 p-0">
-											<img src="${dto.imgList.get(i).img_url}" alt="" id="img_${(i + 1)}" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
-											<div class="d-flex justify-content-center card-img-overlay visually-hidden" style="align-items: center">
+										<div class="card col-3 p-0 m-2">
+<%--											<button class="w-25" onclick="console.log('clicked!')"></button>--%>
+											<img src="${dto.imgList.get(i).img_url}" alt="" id="img_${(i + 1)}" class="visible bd-place card-img w-100 h-100">
+											<div class="d-flex justify-content-center card-img-overlay visually-hidden" style="align-items: center;">
 												<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_${(i + 1)}"
-													 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
+													 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%; z-index: 2">
 											</div>
 											<div class="d-flex justify-content-end card-img-overlay p-0" style="align-items: flex-start">
 												<img class="btn btn-lg align-middle p-0" id="imgDel_${(i + 1)}" onclick="deleteImage(this)"
-													 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
+													 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png" style="z-index: 2">
+											</div>
+											<div class="d-flex justify-content-center card-img-overlay p-0" style="align-items: center">
+												<img class="w-100 h-100" id="imgSel_${i+1}" onclick="onSelectImage(${i + 1})" src="/image/icon/480px-Solid_white.png"
+													 style="opacity : 0.0; z-index: 1;">
 											</div>
 										</div>
 									</c:when>
 									<c:when test="${i eq dto.imgList.size()}">
-										<div class="card col-3 p-0">
+										<div class="card col-3 p-0 m-2">
 											<img src="/image/icon/480px-Solid_white.png" alt="" id="img_${(i + 1)}" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
 											<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
 												<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_${(i + 1)}"
-													 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
+													 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%; z-index: 2">
 											</div>
 											<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
 												<img class="btn btn-lg align-middle p-0" id="imgDel_${(i + 1)}" onclick="deleteImage(this)"
-													 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
+													 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png" style="z-index: 2">
+											</div>
+											<div class="d-flex justify-content-center card-img-overlay p-0 visually-hidden" style="align-items: center">
+												<img class="w-100 h-100" id="imgSel_${i+1}" onclick="onSelectImage(${i + 1})" src="/image/icon/480px-Solid_white.png"
+													 style="opacity : 0.0; z-index: 1;">
 											</div>
 										</div>
 									</c:when>
 									<c:otherwise>
-										<div class="card col-3 p-0 visually-hidden">
+										<div class="card col-3 p-0 m-2 visually-hidden">
 											<img src="/image/icon/480px-Solid_white.png" alt="" id="img_${(i + 1)}" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
 											<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
 												<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_${(i + 1)}"
-													 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
+													 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%; z-index: 2">
 											</div>
 											<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
 												<img class="btn btn-lg align-middle p-0" id="imgDel_${(i + 1)}" onclick="deleteImage(this)"
-													 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
+													 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png" style="z-index: 2">
+											</div>
+											<div class="d-flex justify-content-center card-img-overlay p-0 visually-hidden" style="align-items: center">
+												<img class="w-100 h-100" id="imgSel_${i+1}" onclick="onSelectImage(${i + 1})" src="/image/icon/480px-Solid_white.png"
+													 style="opacity : 0.0; z-index: 1;">
 											</div>
 										</div>
 									</c:otherwise>
@@ -217,7 +230,7 @@
 <script defer src="/js/loc_detail.js"></script>
 <%--<script defer src="/js/loc_common.js"></script>--%>
 <script defer src="/js/loc_registration.js"></script>
-<script>
+<script defer>
     document.domain = "localhost:8080"
 
     function goPopup() {
@@ -267,7 +280,7 @@
         // document.form.emdNo.value = emdNo; --%>
     }
 </script>
-<script>
+<script defer>
     let input = document.getElementById("imgInput");
     let isBuffered = false;
 
@@ -279,13 +292,16 @@
         for (let i = 1; i <= 10; i++) {
             let btnAddParent = document.getElementById("imgAdd_" + i).parentElement;
             let btnDelParent = document.getElementById("imgDel_" + i).parentElement;
+            let btnSelParent = document.getElementById("imgSel_" + i).parentElement;
 
             if (offset < i) {
                 btnAddParent.setAttribute('class', 'd-flex justify-content-center card-img-overlay');
                 btnDelParent.setAttribute('class', 'd-flex justify-content-end card-img-overlay p-0 visually-hidden');
+                btnSelParent.setAttribute('class', 'd-flex justify-content-center card-img-overlay p-0 visually-hidden');
             } else {
                 btnAddParent.setAttribute('class', 'd-flex justify-content-center card-img-overlay visually-hidden');
                 btnDelParent.setAttribute('class', 'd-flex justify-content-end card-img-overlay p-0');
+                btnSelParent.setAttribute('class', 'd-flex justify-content-center card-img-overlay p-0');
             }
         }
     }
@@ -302,10 +318,10 @@
             let item = document.getElementById("img_" + (index+1));
             reader.onload= e => {
                 item.src = e.target.result;
-                item.parentElement.setAttribute("class", "card col-3 p-0");
+                item.parentElement.setAttribute("class", "card col-3 p-0 m-2");
             }
             if (index != 9) {
-                document.getElementById("img_" + (index+2)).parentElement.setAttribute("class", "card col-3 p-0");
+                document.getElementById("img_" + (index+2)).parentElement.setAttribute("class", "card col-3 p-0 m-2");
             }
             reader.readAsDataURL(file);
             console.log(item);
@@ -314,14 +330,15 @@
         // // 기존에 있던 이미지 지우기
         for (let i = fileList.length + 1; i <= 10; i++) {
             if (i === (fileList.length + 1)) {
-                document.getElementById("img_" + i).parentElement.setAttribute("class", "card col-3 p-0");
+                document.getElementById("img_" + i).parentElement.setAttribute("class", "card col-3 p-0 m-2");
             } else {
-                document.getElementById("img_" + i).parentElement.setAttribute("class", "card col-3 p-0 visually-hidden");
+                document.getElementById("img_" + i).parentElement.setAttribute("class", "card col-3 p-0 m-2 visually-hidden");
             }
 
             document.getElementById("img_" + i).src = "/image/icon/480px-Solid_white.png";
         }
         toggleAddDelBtn(fileList.length);
+        // onSelectImage(selectedImageIndex + 1);
     }
 
     function deleteImage(obj) {
@@ -338,6 +355,19 @@
             }
         }
 
+        if (selectedImage !== null) {
+            if (selectedImageIndex < index) {
+                onSelectImage(selectedImageIndex);
+            } else {
+                if (Number(index) + 1 == selectedImageIndex) {
+                    onSelectImage(index);
+				} else {
+                    onClearSelecteImage();
+				}
+                // onClearSelecteImage();
+			}
+		}
+
         for (let i = 1; i <= 10; i++) {
             if (i >= index) {
                 if (i !== 10) {
@@ -353,7 +383,7 @@
 			// }
 
             if (dt.items.length+1 < i) {
-                document.getElementById("img_"+i).parentElement.setAttribute("class", "card col-3 p-0 visually-hidden");
+                document.getElementById("img_"+i).parentElement.setAttribute("class", "card col-3 p-0 m-2 visually-hidden");
             }
         }
 
@@ -515,6 +545,32 @@
         // console.log("list count : " + (--index));
         // console.log(tagList);
     }
+</script>
+<script defer>
+	let selectedImage = null;
+	let selectedImageIndex = null;
+
+	function onClearSelecteImage() {
+        selectedImage.style.outline = 'none';
+        selectedImage = null;
+        selectedImageIndex = null;
+	}
+
+	function onSelectImage(index) {
+        console.log('Clicked!');
+        selectedImageIndex = index;
+
+        if (selectedImage !== null) {
+            // selectedImage.style.opacity = 0.0;
+            selectedImage.style.outline = 'none';
+        }
+
+        console.log(document.getElementById("img_" + index));
+        selectedImage = document.getElementById("img_" + index).parentElement;
+
+        // selectedImage.style.opacity = 0.3;
+        selectedImage.style.outline = 'solid thick red'
+	}
 </script>
 <%--<script defer src="/js/JusoAPI.js"></script>--%>
 </body>

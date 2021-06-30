@@ -127,15 +127,16 @@ public class LocationController {
                                    PageRequestDTO pageRequestDTO,
                                    Authentication authentication,
                                    Model model) {
-        // 최대 4개의 장소 표시
+        List<LocationTag> tagList = Arrays.asList(LocationTag.values());
         pageRequestDTO.setSize(MAX_LOC_LIST_SIZE);
         PageResultDTO<LocationDTO, com.project.love_data.model.service.Location> resultDTO = locService.getList(pageRequestDTO);
         model.addAttribute("result", resultDTO);
+        model.addAttribute("tagList", tagList);
 
-        if(authentication != null) {
-            AuthUserModel authUser = (AuthUserModel) authentication.getPrincipal();
-//            log.info(authUser.getUser_no());
-        }
+//        if(authentication != null) {
+//            AuthUserModel authUser = (AuthUserModel) authentication.getPrincipal();
+////            log.info(authUser.getUser_no());
+//        }
 
         return "/service/loc_recommend";
     }

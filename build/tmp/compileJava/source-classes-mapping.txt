@@ -170,7 +170,7 @@ com/project/love_data/controller/RestController.java
 com/project/love_data/businessLogic/service/LocationService.java
  com.project.love_data.businessLogic.service.LocationService
  com.project.love_data.businessLogic.service.LocationService$1
-com/project/love_data/controller/service/LocationController.java
- com.project.love_data.controller.service.LocationController
 com/project/love_data/controller/service/CommentController.java
  com.project.love_data.controller.service.CommentController
+com/project/love_data/controller/service/LocationController.java
+ com.project.love_data.controller.service.LocationController
