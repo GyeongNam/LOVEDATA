@@ -4,6 +4,7 @@ import com.project.love_data.businessLogic.service.*;
 import com.project.love_data.dto.*;
 import com.project.love_data.model.service.Comment;
 import com.project.love_data.model.service.Location;
+import com.project.love_data.model.service.LocationTag;
 import com.project.love_data.security.model.AuthUserModel;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -126,15 +127,16 @@ public class LocationController {
                                    PageRequestDTO pageRequestDTO,
                                    Authentication authentication,
                                    Model model) {
-        // 최대 4개의 장소 표시
+        List<LocationTag> tagList = Arrays.asList(LocationTag.values());
         pageRequestDTO.setSize(MAX_LOC_LIST_SIZE);
         PageResultDTO<LocationDTO, com.project.love_data.model.service.Location> resultDTO = locService.getList(pageRequestDTO);
         model.addAttribute("result", resultDTO);
+        model.addAttribute("tagList", tagList);
 
-        if(authentication != null) {
-            AuthUserModel authUser = (AuthUserModel) authentication.getPrincipal();
-//            log.info(authUser.getUser_no());
-        }
+//        if(authentication != null) {
+//            AuthUserModel authUser = (AuthUserModel) authentication.getPrincipal();
+////            log.info(authUser.getUser_no());
+//        }
 
         return "/service/loc_recommend";
     }
@@ -144,7 +146,10 @@ public class LocationController {
         if (locNo != null){
             LocationDTO dto = locService.selectLocDTO(locNo);
 
+            List<LocationTag> tagList = Arrays.asList(LocationTag.values());
+
             model.addAttribute("dto", dto);
+            model.addAttribute("tagList", tagList);
 
             return "/service/loc_edit";
         }

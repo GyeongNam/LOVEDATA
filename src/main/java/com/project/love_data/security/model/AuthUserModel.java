@@ -22,6 +22,7 @@ public class AuthUserModel extends User {
     private String user_phone;
     private String user_birth;
     private String social_info;
+    private String user_profilePic;
     private LocalDateTime user_regDate;
     private boolean user_sex;
     private boolean user_social;

@@ -225,7 +225,7 @@ public class LocationService {
     public Location selectLoc(Long loc_no) {
         Optional<Location> result = repository.findById(loc_no);
 
-        return result.isPresent() ? result.get() : null;
+        return result.orElse(null);
     }
 
     public LocationDTO selectLocDTO(Long loc_no) {
@@ -259,7 +259,7 @@ public class LocationService {
 
             imgService.update(image);
 
-            imgService.delete(image);
+            imgService.delete(image.getImg_uuid());
         }
 
         for (Comment cmt : cmtSet) {
@@ -328,15 +328,19 @@ public class LocationService {
         for (int i = 1; i < filePath.size(); i++) {
             // filePath.get(0)  ==  Parent Folder (URI)
             // filePath.get(i)  ==  fileNames
-            if (dto.getImgList().size() > i) {
-                for (int j = 0; j < dto.getImgList().size(); j++) {
-                    if (dto.getImgList().get(j).getImg_uuid().equals(filePath.get(i))){
-                        imgList.add(imgService.editImageEntityIndex(filePath.get(i), (long) (i - 1)));
-//                        flag = true;
-                        continue;
-                    }
-                }
-            }
+//            if (dto.getImgList().size() > i) {
+//                for (int j = 0; j < dto.getImgList().size(); j++) {
+//                    if (dto.getImgList().get(j).getImg_uuid().equals(filePath.get(i))){
+//                        imgList.add(imgService.editImageEntityIndex(filePath.get(i), (long) (i - 1)));
+////                        flag = true;
+//                        continue;
+//                    }
+//                }
+//            }
+            log.info(filePath.get(i));
+            // Todo 현재는 기존에 이미 등록되어 있던 이미지는 삭제하고, 새로 등록하도록 했음
+            // 나중에는 기존에 이미  등록되어 있던 이미지를 삭제하지 않고, 업데이트해서 등록하도록 바꿀것
+            imgService.delete(filePath.get(i));
             imgList.add(imgService.getImageEntity(reqParam.get("user_no"), filePath.get(0), filePath.get(i), entity, i-1));
         }
 
@@ -345,11 +349,7 @@ public class LocationService {
 
         repository.save(entity);
 
-        for (Image image : imgList) {
-            imgRepository.save(image);
-        }
-
-        log.info("entity : " + entity);
+//        log.info("entity : " + entity);
 
         return entity;
     }

@@ -80,77 +80,37 @@
 											</button>
 											<%--                            https://www.w3schools.com/jsref/event_onclick.asp--%>
 											<div class="dropdown-menu" aria-labelledby="tagDropdownMenuLink">
-												<button type="button" class="dropdown-item" onclick="addTag(this)"
-														value="Action A">Action A
-												</button>
-												<button type="button" class="dropdown-item" onclick="addTag(this)"
-														value="Action B">Action B
-												</button>
-												<button type="button" class="dropdown-item" onclick="addTag(this)"
-														value="Action C">Action C
-												</button>
-												<button type="button" class="dropdown-item" onclick="addTag(this)"
-														value="Action D">Action D
-												</button>
-												<button type="button" class="dropdown-item" onclick="addTag(this)"
-														value="Action E">Action E
-												</button>
-												<button type="button" class="dropdown-item" onclick="addTag(this)"
-														value="Action F">Action F
-												</button>
-												<button type="button" class="dropdown-item" onclick="addTag(this)"
-														value="Action G">Action G
-												</button>
-												<button type="button" class="dropdown-item" onclick="addTag(this)"
-														value="Action H">Action H
-												</button>
+												<c:forEach var="i" begin="0" end="${tagList.size()-1}">
+													<button type="button" class="dropdown-item" onclick="addTag(this)" value="${tagList.get(i)}">
+														${tagList.get(i)}
+													</button>
+												</c:forEach>
 											</div>
 										</li>
 									</ul>
 									<div id="tag_list" class="btn-toolbar">
 										<%--						@Todo display:inline으로 변경할때마다 빈공간 생기는 문제 수정하기--%>
-										<div class="btn-group ms-2 my-0" role="group" style="display: none">
-											<button type="button" class="btn btn-primary" value="">태그1</button>
-											<button type="button" class="btn btn-outline-danger btn"
-													onclick="removeTag(this)">X
-											</button>
-										</div>
-										<div class="btn-group mx-2 my-0" role="group" style="display: none">
-											<button type="button" class="btn btn-primary" value="">태그2</button>
-											<button type="button" class="btn btn-outline-danger"
-													onclick="removeTag(this)">X
-											</button>
-										</div>
-										<div class="btn-group mx-2 my-0" role="group" style="display: none">
-											<button type="button" class="btn btn-primary" value="">태그3</button>
-											<button type="button" class="btn btn-outline-danger"
-													onclick="removeTag(this)">X
-											</button>
-										</div>
-										<div class="btn-group mx-2 my-0" role="group" style="display: none">
-											<button type="button" class="btn btn-primary" value="">태그4</button>
-											<button type="button" class="btn btn-outline-danger"
-													onclick="removeTag(this)">X
-											</button>
-										</div>
-										<div class="btn-group mx-2 my-0" role="group" style="display: none">
-											<button type="button" class="btn btn-primary" value="">태그5</button>
-											<button type="button" class="btn btn-outline-danger"
-													onclick="removeTag(this)">X
-											</button>
-										</div>
-										<div class="btn-group mx-2 my-0" role="group" style="display: none">
-											<button type="button" class="btn btn-primary" value="">태그6</button>
-											<button type="button" class="btn btn-outline-danger"
-													onclick="removeTag(this)">X
-											</button>
-										</div>
-										<div class="btn-group mx-2 my-0" role="group" style="display: none">
-											<button type="button" class="btn btn-primary" value="">태그7</button>
-											<button type="button" class="btn btn-outline-danger"
-													onclick="removeTag(this)">X
-											</button>
-										</div>
+										<c:set var="tagSet" value="${dto.tagSet}"></c:set>
+										<c:forEach var="i" begin="0" end="${tagList.size()-1}">
+											<c:choose>
+												<c:when test="${tagSet.contains(tagList.get(i).name())}">
+													<div class="btn-group ms-4 my-0" role="group" style="display: inline">
+														<button type="button" class="btn btn-primary" value="${tagList.get(i)}">${tagList.get(i)}</button>
+														<button type="button" class="btn btn-outline-danger btn"
+																onclick="removeTag(this)">X
+														</button>
+													</div>
+												</c:when>
+												<c:otherwise>
+													<div class="btn-group ms-4 my-0" role="group" style="display: none">
+														<button type="button" class="btn btn-primary" value="">${tagList.get(i)}</button>
+														<button type="button" class="btn btn-outline-danger btn"
+																onclick="removeTag(this)">X
+														</button>
+													</div>
+												</c:otherwise>
+											</c:choose>
+										</c:forEach>
 									</div>
 								</div>
 							</nav>
@@ -194,41 +154,54 @@
 							<c:forEach var="i" begin="0" end="${10}">
 								<c:choose>
 									<c:when test="${i < dto.imgList.size()}">
-										<div class="card col-3 p-0">
-											<img src="${dto.imgList.get(i).img_url}" alt="" id="img_${(i + 1)}" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
-											<div class="d-flex justify-content-center card-img-overlay visually-hidden" style="align-items: center">
+										<div class="card col-3 p-0 m-2">
+<%--											<button class="w-25" onclick="console.log('clicked!')"></button>--%>
+											<img src="${dto.imgList.get(i).img_url}" alt="" id="img_${(i + 1)}" class="visible bd-place card-img w-100 h-100">
+											<div class="d-flex justify-content-center card-img-overlay visually-hidden" style="align-items: center;">
 												<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_${(i + 1)}"
-													 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
+													 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%; z-index: 2">
 											</div>
 											<div class="d-flex justify-content-end card-img-overlay p-0" style="align-items: flex-start">
 												<img class="btn btn-lg align-middle p-0" id="imgDel_${(i + 1)}" onclick="deleteImage(this)"
-													 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
+													 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png" style="z-index: 2">
+											</div>
+											<div class="d-flex justify-content-center card-img-overlay p-0" style="align-items: center">
+												<img class="w-100 h-100" id="imgSel_${i+1}" onclick="onSelectImage(${i + 1})" src="/image/icon/480px-Solid_white.png"
+													 style="opacity : 0.0; z-index: 1;">
 											</div>
 										</div>
 									</c:when>
 									<c:when test="${i eq dto.imgList.size()}">
-										<div class="card col-3 p-0">
+										<div class="card col-3 p-0 m-2">
 											<img src="/image/icon/480px-Solid_white.png" alt="" id="img_${(i + 1)}" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
 											<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
 												<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_${(i + 1)}"
-													 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
+													 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%; z-index: 2">
 											</div>
 											<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
 												<img class="btn btn-lg align-middle p-0" id="imgDel_${(i + 1)}" onclick="deleteImage(this)"
-													 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
+													 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png" style="z-index: 2">
+											</div>
+											<div class="d-flex justify-content-center card-img-overlay p-0 visually-hidden" style="align-items: center">
+												<img class="w-100 h-100" id="imgSel_${i+1}" onclick="onSelectImage(${i + 1})" src="/image/icon/480px-Solid_white.png"
+													 style="opacity : 0.0; z-index: 1;">
 											</div>
 										</div>
 									</c:when>
 									<c:otherwise>
-										<div class="card col-3 p-0 visually-hidden">
+										<div class="card col-3 p-0 m-2 visually-hidden">
 											<img src="/image/icon/480px-Solid_white.png" alt="" id="img_${(i + 1)}" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
 											<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
 												<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_${(i + 1)}"
-													 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
+													 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%; z-index: 2">
 											</div>
 											<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
 												<img class="btn btn-lg align-middle p-0" id="imgDel_${(i + 1)}" onclick="deleteImage(this)"
-													 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
+													 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png" style="z-index: 2">
+											</div>
+											<div class="d-flex justify-content-center card-img-overlay p-0 visually-hidden" style="align-items: center">
+												<img class="w-100 h-100" id="imgSel_${i+1}" onclick="onSelectImage(${i + 1})" src="/image/icon/480px-Solid_white.png"
+													 style="opacity : 0.0; z-index: 1;">
 											</div>
 										</div>
 									</c:otherwise>
@@ -255,9 +228,9 @@
 		crossorigin="anonymous"></script>
 <%--<script defer src="/js/bootstrap.js"></script>--%>
 <script defer src="/js/loc_detail.js"></script>
-<script defer src="/js/loc_common.js"></script>
+<%--<script defer src="/js/loc_common.js"></script>--%>
 <script defer src="/js/loc_registration.js"></script>
-<script>
+<script defer>
     document.domain = "localhost:8080"
 
     function goPopup() {
@@ -307,7 +280,7 @@
         // document.form.emdNo.value = emdNo; --%>
     }
 </script>
-<script>
+<script defer>
     let input = document.getElementById("imgInput");
     let isBuffered = false;
 
@@ -319,13 +292,16 @@
         for (let i = 1; i <= 10; i++) {
             let btnAddParent = document.getElementById("imgAdd_" + i).parentElement;
             let btnDelParent = document.getElementById("imgDel_" + i).parentElement;
+            let btnSelParent = document.getElementById("imgSel_" + i).parentElement;
 
             if (offset < i) {
                 btnAddParent.setAttribute('class', 'd-flex justify-content-center card-img-overlay');
                 btnDelParent.setAttribute('class', 'd-flex justify-content-end card-img-overlay p-0 visually-hidden');
+                btnSelParent.setAttribute('class', 'd-flex justify-content-center card-img-overlay p-0 visually-hidden');
             } else {
                 btnAddParent.setAttribute('class', 'd-flex justify-content-center card-img-overlay visually-hidden');
                 btnDelParent.setAttribute('class', 'd-flex justify-content-end card-img-overlay p-0');
+                btnSelParent.setAttribute('class', 'd-flex justify-content-center card-img-overlay p-0');
             }
         }
     }
@@ -342,10 +318,10 @@
             let item = document.getElementById("img_" + (index+1));
             reader.onload= e => {
                 item.src = e.target.result;
-                item.parentElement.setAttribute("class", "card col-3 p-0");
+                item.parentElement.setAttribute("class", "card col-3 p-0 m-2");
             }
             if (index != 9) {
-                document.getElementById("img_" + (index+2)).parentElement.setAttribute("class", "card col-3 p-0");
+                document.getElementById("img_" + (index+2)).parentElement.setAttribute("class", "card col-3 p-0 m-2");
             }
             reader.readAsDataURL(file);
             console.log(item);
@@ -354,14 +330,15 @@
         // // 기존에 있던 이미지 지우기
         for (let i = fileList.length + 1; i <= 10; i++) {
             if (i === (fileList.length + 1)) {
-                document.getElementById("img_" + i).parentElement.setAttribute("class", "card col-3 p-0");
+                document.getElementById("img_" + i).parentElement.setAttribute("class", "card col-3 p-0 m-2");
             } else {
-                document.getElementById("img_" + i).parentElement.setAttribute("class", "card col-3 p-0 visually-hidden");
+                document.getElementById("img_" + i).parentElement.setAttribute("class", "card col-3 p-0 m-2 visually-hidden");
             }
 
             document.getElementById("img_" + i).src = "/image/icon/480px-Solid_white.png";
         }
         toggleAddDelBtn(fileList.length);
+        // onSelectImage(selectedImageIndex + 1);
     }
 
     function deleteImage(obj) {
@@ -378,6 +355,19 @@
             }
         }
 
+        if (selectedImage !== null) {
+            if (selectedImageIndex < index) {
+                onSelectImage(selectedImageIndex);
+            } else {
+                if (Number(index) + 1 == selectedImageIndex) {
+                    onSelectImage(index);
+				} else {
+                    onClearSelecteImage();
+				}
+                // onClearSelecteImage();
+			}
+		}
+
         for (let i = 1; i <= 10; i++) {
             if (i >= index) {
                 if (i !== 10) {
@@ -393,7 +383,7 @@
 			// }
 
             if (dt.items.length+1 < i) {
-                document.getElementById("img_"+i).parentElement.setAttribute("class", "card col-3 p-0 visually-hidden");
+                document.getElementById("img_"+i).parentElement.setAttribute("class", "card col-3 p-0 m-2 visually-hidden");
             }
         }
 
@@ -414,6 +404,8 @@
         var $fileUpload = $("input[type='file']");
         var loginCheck = null;
         var debugCheck = {"debug": true}
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
 
         $.ajax({
             type: "POST",
@@ -470,10 +462,6 @@
         });
     }
 
-    function getLocTag() {
-        console.log("${dto.tagSet}");
-    }
-
     function getLocImg() {
         let dtoImgURLList = [];
         let dt = new DataTransfer();
@@ -494,8 +482,95 @@
 		input.files = dt.files;
     }
 
-    window.addEventListener('onload', getLocTag());
 	window.addEventListener('onload', getLocImg());
+</script>
+<script defer>
+    let tagList = [];
+    let index;
+    // var token = $("meta[name='_csrf']").attr("content");
+    // var header = $("meta[name='_csrf_header']").attr("content");
+
+    <c:forEach var="i" begin="0" end="${tagList.size()-1}">
+    	<c:choose>
+    		<c:when test="${tagSet.contains(tagList.get(i).name())}">
+				tagList.push("${tagList.get(i).name()}");
+    		</c:when>
+    	</c:choose>
+    </c:forEach>
+
+    function addTag(tag) {
+        // let navbar = document.getElementById("tag-navbar-collapse");
+        let list = document.getElementById("tag_list").children;
+        let isDuplicated = false;
+        const MAX_TAG_LIMIT = 7;
+
+        // console.log(list.item(0).className);
+        // console.log(list.item(0).valueOf());
+
+        if (tagList.length === MAX_TAG_LIMIT) {
+            alert("해시태그는 최대 7개까지 추가할 수 있습니다.");
+            return;
+        }
+
+        for (let i = 0; i < ${tagList.size()}; i++) {
+
+            if (list.item(i).children.item(0).getAttribute("value") === tag.value) {
+                isDuplicated = true;
+                break;
+            }
+
+            if (list.item(i).children.item(0).getAttribute("value") === "") {
+                list.item(i).children.item(0).setAttribute("value", tag.value);
+                list.item(i).children.item(0).innerHTML = tag.value;
+                list.item(i).style.display = "inline-block";
+                index = i + 1;
+                tagList.push(tag.value);
+                break;
+            }
+        }
+
+        if (isDuplicated) {
+            alert("중복된 해시태그가 있습니다.");
+            return;
+        }
+
+        // console.log("list count : " + index);
+        // console.log(tagList);
+    }
+
+    function removeTag(tag) {
+        tag.parentElement.style.display = "none";
+        tag.parentElement.firstElementChild.setAttribute("value", "");
+        tagList.pop();
+        // console.log("list count : " + (--index));
+        // console.log(tagList);
+    }
+</script>
+<script defer>
+	let selectedImage = null;
+	let selectedImageIndex = null;
+
+	function onClearSelecteImage() {
+        selectedImage.style.outline = 'none';
+        selectedImage = null;
+        selectedImageIndex = null;
+	}
+
+	function onSelectImage(index) {
+        console.log('Clicked!');
+        selectedImageIndex = index;
+
+        if (selectedImage !== null) {
+            // selectedImage.style.opacity = 0.0;
+            selectedImage.style.outline = 'none';
+        }
+
+        console.log(document.getElementById("img_" + index));
+        selectedImage = document.getElementById("img_" + index).parentElement;
+
+        // selectedImage.style.opacity = 0.3;
+        selectedImage.style.outline = 'solid thick red'
+	}
 </script>
 <%--<script defer src="/js/JusoAPI.js"></script>--%>
 </body>

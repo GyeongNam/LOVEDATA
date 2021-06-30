@@ -3,13 +3,13 @@ package com.project.love_data.util;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.*;
 
+import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.stream.StreamSupport;
 
 @Log4j2
 @Configuration
@@ -18,22 +18,25 @@ import java.util.stream.StreamSupport;
 public class TagPropertiesReader {
     @Autowired
     private final Environment environment;
+    @Value("${loc.tag_loc_list_kr}")
+    private List<String> tagUTFList = new ArrayList<>();
+    private List<String> tagList = new ArrayList<>();
 
-    public String getTag (String key){
+    public String getTagFromEnv (String key){
         return environment.getProperty(key);
     }
 
-    public Properties getTags() {
-        Map<String, Object> tagMap = new HashMap<>();
+    public List<String> getTagUTFList() {
+        return tagUTFList;
+    }
 
-        Properties props = new Properties();
-        MutablePropertySources propSrcs = ((AbstractEnvironment) environment).getPropertySources();
-        StreamSupport.stream(propSrcs.spliterator(), false)
-                .filter(ps -> ps instanceof EnumerablePropertySource)
-                .map(ps -> ((EnumerablePropertySource) ps).getPropertyNames())
-                .flatMap(Arrays::<String>stream)
-                .forEach(propName -> props.setProperty(propName, environment.getProperty(propName)));
+    public List<String> getTagList() {
+        for (String s : tagUTFList) {
+            byte[] utf8 = s.getBytes(StandardCharsets.UTF_8);
+            String str = new String(utf8, StandardCharsets.UTF_8);
+            tagList.add(str);
+        }
 
-        return props;
+        return tagList;
     }
 }
