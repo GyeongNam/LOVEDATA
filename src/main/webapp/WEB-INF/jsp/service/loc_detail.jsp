@@ -141,7 +141,6 @@
 					<button class="btn btn-outline-danger col-3" style="max-height: 56px" onclick="copyURL()">공유</button>
 					<button class="btn btn-outline-danger col-3" style="max-height: 56px;" onclick="location.href='/service/loc_edit?locNo=${dto.loc_no}'">수정</button>
 				</div>
-
 				<span class="d-none" id="loc_no">${dto.loc_no}</span>
 			</div>
 		</div>
@@ -185,8 +184,11 @@
 																			<c:set var="user_no"><sec:authentication property="principal.user_no"/></c:set>
 																			<c:choose>
 																				<c:when test="${user_no eq cmtDTO.get(c).user.user_no}">
-																					<button class="btn btn-primary" onclick="onClickUpdateComment(${c})">수정</button>
-																					<button class="btn btn-primary" onclick="">삭제</button>
+																					<span class="d-none" id="cmt_user_email_${c}">${cmtDTO.get(c).user.user_email}</span>
+																					<div>
+																						<button class="btn btn-primary" onclick="openCmtEditMenu(${c})">수정</button>
+																						<button class="btn btn-primary" onclick="onClickDeleteComment(${c})">삭제</button>
+																					</div>
 																				</c:when>
 																			</c:choose>
 																		</sec:authorize>
@@ -195,7 +197,16 @@
 														</div>
 													</div>
 													<div class="mt-2">
-														<p class="comment-text">${cmtDTO.get(c).cmtContent}</p>
+														<div id="cmt_content_${c}" class="visible">
+															<p class="comment-text">${cmtDTO.get(c).cmtContent}</p>
+														</div>
+														<div id="cmt_edit_${c}" class="row visually-hidden">
+															<textarea id="cmt_edit_content_${c}" rows="6" maxlength="300" class="form-control ml-1 shadow-none textarea">${cmtDTO.get(c).cmtContent}</textarea>
+															<div class="d-flex p-0 justify-content-end">
+															<button class="btn btn-primary mx-2" onclick="submitUpdateComment(${c})">등록</button>
+															<button class="btn btn-primary mx-2" onclick="closeCmtEditMenu(${c})">뒤로가기</button>
+															</div>
+														</div>
 													</div>
 												</div>
 											</c:forEach>
@@ -347,20 +358,22 @@
 		    input[i] = document.createElement("input");
 		    $(input[i]).attr("type", "hidden");
 
-		    if (i === 0)
+            if (i === 0) {
                 $(input[0]).attr("name", "locNo");
-				$(input[0]).attr("value", "${dto.loc_no}");
-		    if (i === 1)
+                $(input[0]).attr("value", "${dto.loc_no}");
+            }
+            else if (i === 1) {
                 $(input[1]).attr("name", "userNo");
-		    	<sec:authorize access="isAuthenticated()">
-            	$(input[1]).attr("value", "<sec:authentication property="principal.user_no"/>");
-				</sec:authorize>
-				<sec:authorize access="isAnonymous()">
-				$(input[1]).attr("value", null);
-				</sec:authorize>
-		    if (i === 2)
+                <sec:authorize access="isAuthenticated()">
+                $(input[1]).attr("value", "<sec:authentication property="principal.user_no"/>");
+                </sec:authorize>
+                <sec:authorize access="isAnonymous()">
+                $(input[1]).attr("value", null);
+                </sec:authorize>
+            } else if (i === 2) {
                 $(input[2]).attr("name", "cmtContent");
-				$(input[2]).attr("value", cmt.value);
+                $(input[2]).attr("value", cmt.value);
+            }
 
 		    form.appendChild(input[i]);
 		}
@@ -369,10 +382,110 @@
 		form.submit();
 	}
 
-	function onClickUpdateComment(index) {
-        let commnet_uuid = document.getElementById("cmt_id_" + index).innerText;
+	function openCmtEditMenu(index) {
+        let cmt_content = document.getElementById("cmt_content_" + index);
+        let cmt_edit_menu = document.getElementById("cmt_edit_" + index);
 
-        console.log("comment_uuid : " + commnet_uuid);
+        cmt_content.setAttribute("class", "visually-hidden");
+        cmt_edit_menu.setAttribute("class", "row visible");
+	}
+
+	function closeCmtEditMenu(index) {
+        let cmt_content = document.getElementById("cmt_content_" + index);
+        let cmt_edit_menu = document.getElementById("cmt_edit_" + index);
+
+        cmt_content.setAttribute("class", "visible");
+        cmt_edit_menu.setAttribute("class", "row visually-hidden");
+	}
+
+	function onClickDeleteComment(index) {
+        let delConfirm = confirm("댓글을 지우시겠습니까?");
+
+        if (!delConfirm){
+            return;
+		}
+
+        let cmt_uuid = document.getElementById("cmt_id_" + index).innerText;
+        let form;
+        form = document.createElement("form");
+        form.method = "post";
+        form.action="/service/com_del"
+
+        let input = [];
+        for (let i = 0; i < 3; i++) {
+            input[i] = document.createElement("input");
+            $(input[i]).attr("type", "hidden");
+
+            if (i === 0) {
+                $(input[0]).attr("name", "locNo");
+                $(input[0]).attr("value", "${dto.loc_no}");
+            }
+
+            if (i === 1) {
+                $(input[1]).attr("name", "userEmail");
+                <sec:authorize access="isAuthenticated()">
+                $(input[1]).attr("value", document.getElementById("cmt_user_email_" + index).innerText);
+                </sec:authorize>
+                <sec:authorize access="isAnonymous()">
+                $(input[1]).attr("value", null);
+                </sec:authorize>
+            }
+
+            if (i === 2) {
+                $(input[2]).attr("name", "cmt_uuid");
+                $(input[2]).attr("value", cmt_uuid);
+            }
+
+            form.appendChild(input[i]);
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+	}
+
+	function submitUpdateComment(index) {
+        let cmt_uuid = document.getElementById("cmt_id_" + index).innerText;
+        let cmt_content = document.getElementById("cmt_edit_content_" + index).value;
+        let form;
+        form = document.createElement("form");
+        form.method = "post";
+        form.action="/service/com_edit"
+
+        let input = [];
+        for (let i = 0; i < 4; i++) {
+            input[i] = document.createElement("input");
+            $(input[i]).attr("type", "hidden");
+
+            if (i === 0) {
+                $(input[0]).attr("name", "locNo");
+                $(input[0]).attr("value", "${dto.loc_no}");
+			}
+
+            if (i === 1) {
+                $(input[1]).attr("name", "userEmail");
+                <sec:authorize access="isAuthenticated()">
+                $(input[1]).attr("value", document.getElementById("cmt_user_email_" + index).innerText);
+                </sec:authorize>
+                <sec:authorize access="isAnonymous()">
+                $(input[1]).attr("value", null);
+                </sec:authorize>
+            }
+
+            if (i === 2) {
+                $(input[2]).attr("name", "cmt_uuid");
+                $(input[2]).attr("value", cmt_uuid);
+            }
+
+            if (i === 3) {
+                $(input[3]).attr("name", "cmtContent");
+                $(input[3]).attr("value", cmt_content);
+            }
+
+            form.appendChild(input[i]);
+        }
+
+        document.body.appendChild(form);
+        form.submit();
 	}
 </script>
 </body>

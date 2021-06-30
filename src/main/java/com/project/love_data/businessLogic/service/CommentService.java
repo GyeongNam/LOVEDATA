@@ -156,4 +156,9 @@ public class CommentService {
 
         cmtRepository.deleteByCmt_uuid(cmt.getCmtUuid());
     }
+
+    public Comment select(String cmt_uuid) {
+        Optional<Comment> item = cmtRepository.findByCmt_uuid(cmt_uuid);
+        return item.isPresent() ? item.get() : null;
+    }
 }

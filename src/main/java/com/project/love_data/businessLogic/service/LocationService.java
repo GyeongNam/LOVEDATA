@@ -225,7 +225,7 @@ public class LocationService {
     public Location selectLoc(Long loc_no) {
         Optional<Location> result = repository.findById(loc_no);
 
-        return result.isPresent() ? result.get() : null;
+        return result.orElse(null);
     }
 
     public LocationDTO selectLocDTO(Long loc_no) {
