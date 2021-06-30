@@ -1,3 +1,6 @@
+<%@ page import="org.springframework.security.core.annotation.AuthenticationPrincipal" %>
+<%@ page import="org.springframework.security.core.Authentication" %>
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -34,7 +37,7 @@
 				</tr>
 				<tr>
 					<td>이름</td>
-					<td id="sec_line"><span>최도비</span></td>
+					<td id="sec_line"><span><sec:authentication property="principal.user_name"/></span></td>
 				</tr>
 				<tr>
 					<td>프로필 사진</td>
@@ -55,17 +58,18 @@
 				</tr>
 				<tr>
 					<td>닉네임</td>
-					<td id="sec_line"><input type="text">
+					<td id="sec_line"><input type="text" value="<sec:authentication property="principal.user_nic"/>">
+
 						<button id="NickName">중복 확인</button>
 					</td>
 				</tr>
 				<tr>
 					<td>이메일</td>
-					<td id="sec_line"><span>272518@naver.com</span></td>
+					<td id="sec_line"><span><sec:authentication property="principal.user_email"/></span></td>
 				</tr>
 				<tr>
 					<td>기존 비밀번호 *</td>
-					<td id="sec_line"><input type="password"></td>
+					<td id="sec_line"><input type="password" value=""></td>
 				</tr>
 				<tr>
 					<td>새 비밀번호 *</td>
@@ -77,18 +81,20 @@
 				</tr>
 				<tr>
 					<td>휴대폰 번호 *</td>
-					<td id="sec_line"><select name="first-phone-number">
+					<td id="sec_line">
+						<input type="hidden" id="numnum" value="<sec:authentication property="principal.user_phone"/>">
+						<select name="first-phone-number" id="firnum" >
 						<option value="010">010</option>
 						<option value="011">011</option>
 						<option value="017">017</option>
 						<option value="018">018</option>
 					</select>
 						-
-						<input type="text"
+						<input type="text" id="twonum"
 							   oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
 							   maxlength="4"/>
 						-
-						<input type="text"
+						<input type="text" id="lastnum"
 							   oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
 							   maxlength="4"/>
 					</td>
