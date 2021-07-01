@@ -45,6 +45,14 @@ $('.preview-edit').click( function() {
 //생년월일 select box
 $(document).ready(function () {
     setDateBox();
+    var no = $("#numnum").val();
+    var fnum = no.substring(0,3);
+    var snum = no.substring(3,7);
+    var lnum = no.substring(7,11);
+    console.log(fnum +"  " + snum+"  " + lnum);
+    $("#firnum").val(fnum);
+    $("#twonum").val(snum);
+    $("#lastnum").val(lnum);
 });
 
 // select box 연도 , 월 표시
