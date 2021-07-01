@@ -102,6 +102,7 @@
 				<tr>
 					<td>생년월일 *</td>
 					<td id="sec_line">
+						<input type="hidden" id="mybir" value="<sec:authentication property="principal.user_birth"/>">
 						<select name="year" id="year" title="년도" class="custom-select"></select>
 						<select name="year" id="month" title="월" class="custom-select"></select>
 						<select name="year" id="day" title="일" class="custom-select"></select>

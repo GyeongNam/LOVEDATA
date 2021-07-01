@@ -42,7 +42,7 @@ $('.preview-edit').click( function() {
 
 
 
-//생년월일 select box
+//휴대폰번호 나누기
 $(document).ready(function () {
     setDateBox();
     var no = $("#numnum").val();
@@ -54,6 +54,20 @@ $(document).ready(function () {
     $("#twonum").val(snum);
     $("#lastnum").val(lnum);
 });
+
+//생년월일 나누기
+$(document).ready(function () {
+    setDateBox();
+    var mybusday = $("#mybir").val();
+    var myyear = mybusday.substring(0,4);
+    var mymon = mybusday.substring(5,7);
+    var myday = mybusday.substring(8,11);
+    console.log(myyear +"  " + mymon+"  " + myday);
+    $("#year").val(myyear);
+    $("#month").val(mymon);
+    $("#day").val(myday);
+});
+
 
 // select box 연도 , 월 표시
 function setDateBox() {
@@ -73,7 +87,7 @@ function setDateBox() {
     var month;
     $("#month").append("<option value=''>월</option>");
     for (var i = 1; i <= 12; i++) {
-        $("#month").append("<option value='" + i + "'>" + i + " 월" + "</option>");
+        $("#month").append("<option value='" + i + "'>" + i + "월" + "</option>");
     }
 
     // 일 뿌려주기(1일부터 31일)
@@ -82,5 +96,4 @@ function setDateBox() {
     for (var i = 1; i <= 31; i++) {
         $("#day").append("<option value='" + i + "'>" + i + " 일" + "</option>");
     }
-
 }
