@@ -58,6 +58,7 @@ function onClickLike(Like) {
     var likeCount = null;
     var loc_no = null;
     var loc = null;
+    var user_no = null;
     var path_noparm = location.pathname;
 
     console.log(path_noparm);
@@ -78,7 +79,9 @@ function onClickLike(Like) {
         loc_no = Like.nextElementSibling.nextElementSibling.innerText;
         loc = Like.nextElementSibling;
     }
-    var jsonData = {"loc_no": loc_no}
+    user_no = Like.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerText;
+
+    var jsonData = {"loc_no": loc_no, "user_no" : user_no}
     var isClicked = false;
     var map = new Map();
 
@@ -92,6 +95,7 @@ function onClickLike(Like) {
     map.set("likeCount", likeCount)
     map.set("listCount", likeCount);
     map.set("loc_no", loc_no);
+    map.set("user_no", user_no);
     map.set("jsonData", jsonData);
     map.set("isClicked", isClicked);
     map.set("like", Like);
@@ -102,7 +106,7 @@ function onClickLike(Like) {
 }
 
 function onLoginCheck(map) {
-    var debugCheck = {"debug": true}
+    var debugCheck = {"debug": false}
 
     $.ajax({
         type: "POST",
@@ -115,6 +119,11 @@ function onLoginCheck(map) {
         },
         success: function (response) {
             // do something ...
+            if (response == false ){
+                console.log("Login Check Failed")
+                alert("로그인을 해주세요")
+                return false;
+            }
             console.log("Login Check Success")
             console.log("is login : " + response)
             onClickLikeAction(map);
@@ -131,6 +140,7 @@ function onLoginCheck(map) {
 function onClickLikeAction(map) {
     var likeCount = map.get("likeCount");
     var loc_no = map.get("loc_no");
+    var user_no = map.get("user_no");
     var jsonData = map.get("jsonData");
     var isClicked = map.get("isClicked");
     var like = map.get("like");
@@ -138,6 +148,7 @@ function onClickLikeAction(map) {
     var countChangeFlag = map.get("countChangeFlag");
 
     console.log("loc_no : " + loc_no);
+    console.log("user_no : " + user_no);
 
     // Todo ajax를 인증용 하나와 db에 접속용 두번 보내기
     // 마지막으로 클릭한 loc_id를 저장하는 전역변수 만들고, 성공적으로 저장시 해당 변수에 값을 저장

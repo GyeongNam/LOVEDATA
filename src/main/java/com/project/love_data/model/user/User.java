@@ -17,8 +17,8 @@ import java.util.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "User")
-@ToString(exclude = {"likeLoc", "cmtSet", "recentLoc"})
+@Table(name = "user")
+@ToString(exclude = "cmtSet")
 @Setter
 @Getter
 @Builder
@@ -51,20 +51,27 @@ public class User extends TimeEntity {
     @Column(length = 30, nullable = false)
     private String user_birth;
 
-    // Todo 유저 테이블에 좋아요 누른 장소 목록 추가
-    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = false)
-    @JoinTable(name = "user_likeLoc",
-            joinColumns = @JoinColumn(name = "user_no"),
-            inverseJoinColumns = @JoinColumn(name = "loc_no"))
-    @Builder.Default
-    private List<Location> likeLoc = new ArrayList<>();
-
-    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = false)
-    @JoinTable(name = "user_recentLoc",
-            joinColumns = @JoinColumn(name = "user_no"),
-            inverseJoinColumns = @JoinColumn(name = "loc_no"))
-    @Builder.Default
-    private List<Location> recentLoc = new LinkedList<>();
+//    // Todo 유저 테이블에 좋아요 누른 장소 목록 추가
+//    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = false)
+//    @JoinTable(name = "user_likeLoc",
+//            joinColumns = @JoinColumn(name = "user_no"),
+//            inverseJoinColumns = @JoinColumn(name = "loc_no"))
+//    @Builder.Default
+//    private List<Location> likeLoc = new ArrayList<>();
+//
+//    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = false)
+//    @JoinTable(name = "user_recentLoc",
+//            joinColumns = @JoinColumn(name = "user_no"),
+//            inverseJoinColumns = @JoinColumn(name = "loc_no"))
+//    @Builder.Default
+//    private List<Location> recentLoc = new ArrayList<>();
+//
+//    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = false)
+//    @JoinTable(name = "user_uploadLoc",
+//            joinColumns = @JoinColumn(name = "user_no"),
+//            inverseJoinColumns = @JoinColumn(name = "loc_no"))
+//    @Builder.Default
+//    private List<Location> uploadLoc = new ArrayList<>();
 
     // 성별
     @Column(length = 1, nullable = true, columnDefinition = "TINYINT(1)")
@@ -102,7 +109,7 @@ public class User extends TimeEntity {
     private Set<Comment> cmtSet = new HashSet<>();
 
     @ElementCollection(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_user_no")
+    @JoinColumn(name = "user_no")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
     @Builder.Default
@@ -131,27 +138,39 @@ public class User extends TimeEntity {
         }
     }
 
-    public void addLikeLocation(Location loc) {
-        likeLoc.add(loc);
-    }
-
-    public void removeLikeLocation(Location loc){
-        likeLoc.remove(loc);
-    }
-
-    public void removeLikeLocation(int index) {
-        likeLoc.remove(index);
-    }
-
-    public void addRecentLocation(Location loc){
-        recentLoc.add(loc);
-    }
-
-    public void removeRecentLocation(Location loc){
-        recentLoc.remove(loc);
-    }
-
-    public void removeRecentLocation(int index) {
-        recentLoc.remove(index);
-    }
+//    public void addLikeLocation(Location loc) {
+//        likeLoc.add(loc);
+//    }
+//
+//    public void removeLikeLocation(Location loc){
+//        likeLoc.remove(loc);
+//    }
+//
+//    public void removeLikeLocation(int index) {
+//        likeLoc.remove(index);
+//    }
+//
+//    public void addRecentLocation(Location loc){
+//        recentLoc.add(loc);
+//    }
+//
+//    public void removeRecentLocation(Location loc){
+//        recentLoc.remove(loc);
+//    }
+//
+//    public void removeRecentLocation(int index) {
+//        recentLoc.remove(index);
+//    }
+//
+//    public void addUploadLocation(Location loc) {
+//        uploadLoc.add(loc);
+//    }
+//
+//    public void removeUploadLocation(Location loc){
+//        uploadLoc.remove(loc);
+//    }
+//
+//    public void removeUploadLocation(int index) {
+//        uploadLoc.remove(index);
+//    }
 }

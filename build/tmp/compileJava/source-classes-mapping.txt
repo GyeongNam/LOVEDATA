@@ -15,13 +15,16 @@ com/project/love_data/controller/TestController.java
  com.project.love_data.controller.TestController
 com/project/love_data/businessLogic/service/ImageService.java
  com.project.love_data.businessLogic.service.ImageService
+com/project/love_data/model/service/UserLikeLoc.java
+ com.project.love_data.model.service.UserLikeLoc
+ com.project.love_data.model.service.UserLikeLoc$UserLikeLocBuilder
 com/project/love_data/dto/UserDTO.java
  com.project.love_data.dto.UserDTO
  com.project.love_data.dto.UserDTO$UserDTOBuilder
 com/project/love_data/controller/UserController.java
  com.project.love_data.controller.UserController
-com/project/love_data/repository/CommentRepository.java
- com.project.love_data.repository.CommentRepository
+com/project/love_data/security/model/AuthUserModel.java
+ com.project.love_data.security.model.AuthUserModel
 com/project/love_data/businessLogic/oauth/login/SignupAutoFillupNaver.java
  com.project.love_data.businessLogic.oauth.login.SignupAutoFillupNaver
 com/project/love_data/security/model/UserRole.java
@@ -37,8 +40,8 @@ com/project/love_data/dto/PageResultDTO.java
  com.project.love_data.dto.PageResultDTO
 com/project/love_data/businessLogic/service/UserService.java
  com.project.love_data.businessLogic.service.UserService
-com/project/love_data/businessLogic/account/UserAccountDelete.java
- com.project.love_data.businessLogic.account.UserAccountDelete
+com/project/love_data/controller/service/LocationController.java
+ com.project.love_data.controller.service.LocationController
 com/project/love_data/model/base/TimeEntity.java
  com.project.love_data.model.base.TimeEntity
 com/project/love_data/businessLogic/service/CommentPageType.java
@@ -57,14 +60,21 @@ com/project/love_data/model/service/Location.java
  com.project.love_data.model.service.Location$LocationBuilder
 com/project/love_data/businessLogic/MailService.java
  com.project.love_data.businessLogic.MailService
+com/project/love_data/model/service/QUserRecentLoc.java
+ com.project.love_data.model.service.QUserRecentLoc
 com/project/love_data/businessLogic/oauth/logout/LogoutProcessKakao.java
  com.project.love_data.businessLogic.oauth.logout.LogoutProcessKakao
+com/project/love_data/businessLogic/oauth/login/TokenRequestKakao.java
+ com.project.love_data.businessLogic.oauth.login.TokenRequestKakao
 com/project/love_data/util/ConstantValues.java
  com.project.love_data.util.ConstantValues
 com/project/love_data/model/oauth/NaverAuthToken.java
  com.project.love_data.model.oauth.NaverAuthToken
 com/project/love_data/businessLogic/service/FileNamingType.java
  com.project.love_data.businessLogic.service.FileNamingType
+com/project/love_data/dto/UserRecentLocDTO.java
+ com.project.love_data.dto.UserRecentLocDTO
+ com.project.love_data.dto.UserRecentLocDTO$UserRecentLocDTOBuilder
 com/project/love_data/model/user/KakaoUserInfo.java
  com.project.love_data.model.user.KakaoUserInfo
 com/project/love_data/repository/LocationRepository.java
@@ -76,18 +86,22 @@ com/project/love_data/util/ServerDomain.java
  com.project.love_data.util.ServerDomain
 com/project/love_data/businessLogic/oauth/logout/LogoutProcess.java
  com.project.love_data.businessLogic.oauth.logout.LogoutProcess
-com/project/love_data/businessLogic/service/UploadFileType.java
- com.project.love_data.businessLogic.service.UploadFileType
-com/project/love_data/security/converter/UserRoleConverter.java
- com.project.love_data.security.converter.UserRoleConverter
+com/project/love_data/dto/UserLikeLocDTO.java
+ com.project.love_data.dto.UserLikeLocDTO
+ com.project.love_data.dto.UserLikeLocDTO$UserLikeLocDTOBuilder
+com/project/love_data/businessLogic/service/CommentService.java
+ com.project.love_data.businessLogic.service.CommentService
+ com.project.love_data.businessLogic.service.CommentService$1
+com/project/love_data/controller/service/CommentController.java
+ com.project.love_data.controller.service.CommentController
 com/project/love_data/repository/ImageRepository.java
  com.project.love_data.repository.ImageRepository
 com/project/love_data/LoveDataApplication.java
  com.project.love_data.LoveDataApplication
 com/project/love_data/businessLogic/oauth/login/TokenRequest.java
  com.project.love_data.businessLogic.oauth.login.TokenRequest
-com/project/love_data/security/model/AuthUserModel.java
- com.project.love_data.security.model.AuthUserModel
+com/project/love_data/security/service/UserDetailsService.java
+ com.project.love_data.security.service.UserDetailsService
 com/project/love_data/util/ServerHostHandler.java
  com.project.love_data.util.ServerHostHandler
 com/project/love_data/controller/OAuthController.java
@@ -101,8 +115,12 @@ com/project/love_data/security/service/AuthenticationSuccess.java
  com.project.love_data.security.service.AuthenticationSuccess
 com/project/love_data/model/service/LocationTag.java
  com.project.love_data.model.service.LocationTag
-com/project/love_data/businessLogic/oauth/login/TokenRequestKakao.java
- com.project.love_data.businessLogic.oauth.login.TokenRequestKakao
+com/project/love_data/model/service/UserRecentLoc.java
+ com.project.love_data.model.service.UserRecentLoc
+ com.project.love_data.model.service.UserRecentLoc$UserRecentLocBuilder
+com/project/love_data/businessLogic/service/LocationService.java
+ com.project.love_data.businessLogic.service.LocationService
+ com.project.love_data.businessLogic.service.LocationService$1
 com/project/love_data/model/oauth/KakaoAuthToken.java
  com.project.love_data.model.oauth.KakaoAuthToken
 com/project/love_data/dto/PageRequestDTO.java
@@ -110,10 +128,16 @@ com/project/love_data/dto/PageRequestDTO.java
  com.project.love_data.dto.PageRequestDTO$PageRequestDTOBuilder
 com/project/love_data/businessLogic/oauth/login/RequestUserInfoKakao.java
  com.project.love_data.businessLogic.oauth.login.RequestUserInfoKakao
+com/project/love_data/util/RecentLoc_Delete_Condition.java
+ com.project.love_data.util.RecentLoc_Delete_Condition
+com/project/love_data/security/converter/UserRoleConverter.java
+ com.project.love_data.security.converter.UserRoleConverter
 com/project/love_data/model/oauth/OAuthToken.java
  com.project.love_data.model.oauth.OAuthToken
 com/project/love_data/model/user/QUser.java
  com.project.love_data.model.user.QUser
+com/project/love_data/model/service/QUserLikeLoc.java
+ com.project.love_data.model.service.QUserLikeLoc
 com/project/love_data/model/user/NaverUserInfo.java
  com.project.love_data.model.user.NaverUserInfo
 com/project/love_data/businessLogic/service/UploadFileCount.java
@@ -128,8 +152,8 @@ com/project/love_data/businessLogic/oauth/login/AcessCodeRequest.java
 com/project/love_data/businessLogic/service/FileUploadService.java
  com.project.love_data.businessLogic.service.FileUploadService
  com.project.love_data.businessLogic.service.FileUploadService$1
-com/project/love_data/businessLogic/oauth/logout/LogoutUser.java
- com.project.love_data.businessLogic.oauth.logout.LogoutUser
+com/project/love_data/repository/CommentRepository.java
+ com.project.love_data.repository.CommentRepository
 com/project/love_data/businessLogic/oauth/login/RequestUserInfoNaver.java
  com.project.love_data.businessLogic.oauth.login.RequestUserInfoNaver
 com/project/love_data/businessLogic/oauth/login/TokenRequestNaver.java
@@ -153,24 +177,26 @@ com/project/love_data/model/base/QTimeEntity.java
  com.project.love_data.model.base.QTimeEntity
 com/project/love_data/businessLogic/oauth/login/AcessCodeRequestNaver.java
  com.project.love_data.businessLogic.oauth.login.AcessCodeRequestNaver
-com/project/love_data/security/service/UserDetailsService.java
- com.project.love_data.security.service.UserDetailsService
+com/project/love_data/config/SecurityConfig.java
+ com.project.love_data.config.AllExceptUrlsStartedWith
+ com.project.love_data.config.SecurityConfig
 com/project/love_data/config/WebConfig.java
  com.project.love_data.config.WebConfig
 com/project/love_data/controller/ApiController.java
  com.project.love_data.controller.ApiController
-com/project/love_data/config/SecurityConfig.java
- com.project.love_data.config.AllExceptUrlsStartedWith
- com.project.love_data.config.SecurityConfig
-com/project/love_data/businessLogic/service/CommentService.java
- com.project.love_data.businessLogic.service.CommentService
- com.project.love_data.businessLogic.service.CommentService$1
+com/project/love_data/businessLogic/oauth/logout/LogoutUser.java
+ com.project.love_data.businessLogic.oauth.logout.LogoutUser
+com/project/love_data/businessLogic/service/UploadFileType.java
+ com.project.love_data.businessLogic.service.UploadFileType
+com/project/love_data/businessLogic/account/UserAccountDelete.java
+ com.project.love_data.businessLogic.account.UserAccountDelete
+com/project/love_data/repository/UserLikeLocRepository.java
+ com.project.love_data.repository.UserLikeLocRepository
 com/project/love_data/controller/RestController.java
  com.project.love_data.controller.RestController
-com/project/love_data/businessLogic/service/LocationService.java
- com.project.love_data.businessLogic.service.LocationService
- com.project.love_data.businessLogic.service.LocationService$1
-com/project/love_data/controller/service/CommentController.java
- com.project.love_data.controller.service.CommentController
-com/project/love_data/controller/service/LocationController.java
- com.project.love_data.controller.service.LocationController
+com/project/love_data/businessLogic/service/UserLikeLocService.java
+ com.project.love_data.businessLogic.service.UserLikeLocService
+com/project/love_data/repository/UserRecentLocRepository.java
+ com.project.love_data.repository.UserRecentLocRepository
+com/project/love_data/businessLogic/service/UserRecentLocService.java
+ com.project.love_data.businessLogic.service.UserRecentLocService

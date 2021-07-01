@@ -5,6 +5,7 @@ import com.project.love_data.dto.*;
 import com.project.love_data.model.service.Comment;
 import com.project.love_data.model.service.Location;
 import com.project.love_data.model.service.LocationTag;
+import com.project.love_data.model.user.User;
 import com.project.love_data.security.model.AuthUserModel;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,8 @@ public class LocationController {
     ImageService imgService;
     @Autowired
     CommentService comService;
+    @Autowired
+    UserService userService;
     List<String> tagList = new ArrayList<>();
 
     @RequestMapping("/service/loc_registration")
@@ -90,7 +93,13 @@ public class LocationController {
             return "redirect:/service/loc_recommend";
         }
 
-        LocationDTO dto = locService.entityToDto(locService.register(reqParam, tagList, filePath));
+        Location entity = locService.register(reqParam, tagList, filePath);
+        User user = userService.select(Long.parseLong(reqParam.get("user_no")));
+        //Todo 업로드한 장소테이블에 정보 인서트 하기
+//        user.addUploadLocation(entity);
+        userService.update(user);
+        LocationDTO dto = locService.entityToDto(entity);
+
         redirectAttributes.addFlashAttribute("dto", dto);
 
         return "redirect:/service/loc_recommend";
@@ -105,13 +114,13 @@ public class LocationController {
     public String locDetail(Long locNo, @ModelAttribute("requestDTO") PageRequestDTO pageRequestDTO,
                             Model model,
                             HttpServletRequest request) {
-        if (locNo != null){
+        if (locNo != null) {
             locService.incViewCount(locNo);
             LocationDTO dto = locService.selectLocDTO(locNo);
             pageRequestDTO.setSize(MAX_COM_COUNT);
             PageResultDTO<CommentDTO, Comment> resultCommentDTO
 //                    = comService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION, CommentSortType.IDX_ASC);
-            = comService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION);
+                    = comService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION);
 
             model.addAttribute("dto", dto);
             model.addAttribute("resComDTO", resultCommentDTO);
@@ -143,7 +152,7 @@ public class LocationController {
 
     @GetMapping("/service/loc_edit")
     public String locEdit(Long locNo, Model model) {
-        if (locNo != null){
+        if (locNo != null) {
             LocationDTO dto = locService.selectLocDTO(locNo);
 
             List<LocationTag> tagList = Arrays.asList(LocationTag.values());
@@ -159,8 +168,8 @@ public class LocationController {
 
     @PostMapping("/service/loc_edit/regData")
     public String locEditData(@RequestParam("files") List<MultipartFile> fileList,
-                                      HttpServletRequest request,
-                                      RedirectAttributes redirectAttributes) {
+                              HttpServletRequest request,
+                              RedirectAttributes redirectAttributes) {
         List<String> filePath = null;
         Map<String, String> reqParam = new HashMap<>();
 
@@ -185,7 +194,7 @@ public class LocationController {
         Location loc_uuid_Test = locService.selectLoc(reqParam.get("loc_uuid"));
 
         // 장소 수정 정보에 입력된 장소가 맞는지 확인하는 과정 (Validating)
-        if (loc_no_Test == null || loc_uuid_Test == null || !loc_uuid_Test.equals(loc_no_Test)){
+        if (loc_no_Test == null || loc_uuid_Test == null || !loc_uuid_Test.equals(loc_no_Test)) {
             log.warn("Given Location Edit Information doesn't match with DB");
             log.info("Please Check the Value");
             return "redirect:/service/loc_recommend";

@@ -170,6 +170,13 @@
 											<span class="align-middle" id="loc_like_count" name="loc_like_count">${result.dtoList.get(i).likeCount}</span>
 											<span class="d-none">${result.dtoList.get(i).loc_no}</span>
 											<span class="d-none">${result.dtoList.get(i).loc_uuid}</span>
+											<sec:authorize access="isAuthenticated()">
+												<c:set var="user_no"><sec:authentication property="principal.user_no"></sec:authentication></c:set>
+												<span class="d-none">${user_no}</span>
+											</sec:authorize>
+											<sec:authorize access="isAnonymous()">
+												<span class="d-none">-1</span>
+											</sec:authorize>
 										</div>
 									</div>
 								</div>

@@ -353,4 +353,10 @@ public class LocationService {
 
         return entity;
     }
+
+    public List<Location> findLocOfUser (Long userNo) {
+        List<Location> locationList = repository.findByAllUser_no(userNo);
+
+        return locationList.isEmpty() ? null : locationList;
+    }
 }

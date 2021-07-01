@@ -45,4 +45,6 @@ public interface LocationRepository extends JpaRepository<Location, Long>
     @Query(value = "SELECT l from Location l WHERE  l.loc_name LIKE :loc_name")
     List<Location> findByLoc_nameContaining(@Param("loc_name") String loc_name);
 
+    @Query(value = "SELECT l FROM Location l WHERE l.user_no IN :user_no")
+    List<Location> findByAllUser_no(@Param("user_no")Long userNo);
 }

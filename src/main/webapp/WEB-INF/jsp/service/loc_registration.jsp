@@ -204,10 +204,8 @@
 						<span class="details">정보</span>
 						<textarea rows="4" maxlength="150" name="info" id="info" required></textarea>
 						<sec:authorize access="isAuthenticated()">
-							<c:set var="user_no"><sec:authentication property="user_no"></sec:authentication></c:set>
-							<c:when test="${not empty user_no}">
-								<input type="hidden" name="user_no" id="user_no" value="${user_no}">
-							</c:when>
+							<c:set var="user_no"><sec:authentication property="principal.user_no"/></c:set>
+							<input type="hidden" name="user_no" id="user_no" value="${user_no}">
 						</sec:authorize>
 						<input type="hidden" name="user_no_debug" id="user_no_debug" value="0">
 					</div>
