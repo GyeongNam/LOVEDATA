@@ -56,33 +56,6 @@
 					</div>
 				</div>
 			</div>
-			<%--            <div class="accordion text-center" id="course">--%>
-			<%--                <div class="card">--%>
-			<%--                    <div class="card-header" id="headingCourse">--%>
-			<%--                        <h2 class="mb-0">--%>
-			<%--                            <form action="/" method="get" class="form-label">--%>
-			<%--                                <button type="submit" class="btn btn-link btn-block"--%>
-			<%--                                        style="text-decoration: none; color: #9448C3">코스--%>
-			<%--                                </button>--%>
-			<%--                            </form>--%>
-			<%--                        </h2>--%>
-			<%--                    </div>--%>
-			<%--                </div>--%>
-			<%--            </div>--%>
-			<%--            <div class="accordion text-center" id="calendar">--%>
-			<%--                <div class="card">--%>
-			<%--                    <div class="card-header" id="headingCalendar">--%>
-			<%--                        <h2 class="mb-0">--%>
-			<%--                            <form action="/" method="get" class="form-label">--%>
-			<%--                                <button type="submit" class="btn btn-link btn-block"--%>
-			<%--                                        style="text-decoration: none; color: #9448C3">캘린더--%>
-			<%--                                </button>--%>
-			<%--                            </form>--%>
-			<%--                        </h2>--%>
-			<%--                    </div>--%>
-			<%--                </div>--%>
-			<%--                <hr>--%>
-			<%--            </div>--%>
 		</ul>
 	</div>
 	<div class="container m-5" id="display_center" style="margin-right: 30px; margin-top: 30px">
@@ -106,77 +79,22 @@
 											</button>
 											<%--                            https://www.w3schools.com/jsref/event_onclick.asp--%>
 											<div class="dropdown-menu" aria-labelledby="tagDropdownMenuLink">
-												<button type="button" class="dropdown-item" onclick="addTag(this)"
-														value="Action A">Action A
-												</button>
-												<button type="button" class="dropdown-item" onclick="addTag(this)"
-														value="Action B">Action B
-												</button>
-												<button type="button" class="dropdown-item" onclick="addTag(this)"
-														value="Action C">Action C
-												</button>
-												<button type="button" class="dropdown-item" onclick="addTag(this)"
-														value="Action D">Action D
-												</button>
-												<button type="button" class="dropdown-item" onclick="addTag(this)"
-														value="Action E">Action E
-												</button>
-												<button type="button" class="dropdown-item" onclick="addTag(this)"
-														value="Action F">Action F
-												</button>
-												<button type="button" class="dropdown-item" onclick="addTag(this)"
-														value="Action G">Action G
-												</button>
-												<button type="button" class="dropdown-item" onclick="addTag(this)"
-														value="Action H">Action H
-												</button>
+												<c:forEach var="i" begin="0" end="${tagList.size()-1}">
+													<button type="button" class="dropdown-item" onclick="addTag(this)" value="${tagList.get(i).name()}">
+															${tagList.get(i).name()}
+													</button>
+												</c:forEach>
 											</div>
 										</li>
 									</ul>
 									<div id="tag_list">
 										<%--						@Todo display:inline으로 변경할때마다 빈공간 생기는 문제 수정하기--%>
-										<div class="btn-group mx-2 my-0" role="group" style="display: none">
-											<button type="button" class="btn btn-primary" value="">태그1</button>
-											<button type="button" class="btn btn-outline-danger btn-sm"
-													onclick="removeTag(this)">X
-											</button>
-										</div>
-										<div class="btn-group mx-2 my-0" role="group" style="display: none">
-											<button type="button" class="btn btn-primary" value="">태그2</button>
-											<button type="button" class="btn btn-outline-danger btn-sm"
-													onclick="removeTag(this)">X
-											</button>
-										</div>
-										<div class="btn-group mx-2 my-0" role="group" style="display: none">
-											<button type="button" class="btn btn-primary" value="">태그3</button>
-											<button type="button" class="btn btn-outline-danger btn-sm"
-													onclick="removeTag(this)">X
-											</button>
-										</div>
-										<div class="btn-group mx-2 my-0" role="group" style="display: none">
-											<button type="button" class="btn btn-primary" value="">태그4</button>
-											<button type="button" class="btn btn-outline-danger btn-sm"
-													onclick="removeTag(this)">X
-											</button>
-										</div>
-										<div class="btn-group mx-2 my-0" role="group" style="display: none">
-											<button type="button" class="btn btn-primary" value="">태그5</button>
-											<button type="button" class="btn btn-outline-danger btn-sm"
-													onclick="removeTag(this)">X
-											</button>
-										</div>
-										<div class="btn-group mx-2 my-0" role="group" style="display: none">
-											<button type="button" class="btn btn-primary" value="">태그6</button>
-											<button type="button" class="btn btn-outline-danger btn-sm"
-													onclick="removeTag(this)">X
-											</button>
-										</div>
-										<div class="btn-group mx-2 my-0" role="group" style="display: none">
-											<button type="button" class="btn btn-primary" value="">태그7</button>
-											<button type="button" class="btn btn-outline-danger btn-sm"
-													onclick="removeTag(this)">X
-											</button>
-										</div>
+										<c:forEach var="i" begin="0" end="${tagList.size()-1}">
+											<div class="btn-group ms-4 my-0" role="group" style="display: none">
+												<button type="button" class="btn btn-primary" value="${tagList.get(i)}">${tagList.get(i)}</button>
+												<button type="button" class="btn btn-outline-danger btn" onclick="removeTag(this)">X</button>
+											</div>
+										</c:forEach>
 									</div>
 								</div>
 							</nav>
@@ -472,6 +390,63 @@
 
         });
     }
+</script>
+<script defer>
+    <%--let tagList = [];--%>
+    <%--var lastLikeLocId;--%>
+
+    <%--function addTag(tag) {--%>
+    <%--    // let navbar = document.getElementById("tag-navbar-collapse");--%>
+    <%--    let list = document.getElementById('tag_list').children;--%>
+    <%--    let isReachMaxNumber = true;--%>
+    <%--    let isDuplicated = false;--%>
+    <%--    const MAX_TAG_LIMIT = 7;--%>
+
+    <%--    if (tagList.length >= MAX_TAG_LIMIT) {--%>
+    <%--        isReachMaxNumber = true;--%>
+	<%--	} else {--%>
+    <%--        isReachMaxNumber = false;--%>
+	<%--	}--%>
+
+    <%--    if (isReachMaxNumber) {--%>
+    <%--        alert("해시태그는 최대 7개까지 추가할 수 있습니다.");--%>
+    <%--        return;--%>
+    <%--    }--%>
+
+    <%--    for (let i = 0; i < tagList.length; i++) {--%>
+    <%--        if (tagList[i] === tag.value) {--%>
+    <%--            isDuplicated = true;--%>
+    <%--            break;--%>
+	<%--		}--%>
+	<%--	}--%>
+
+    <%--    if (isDuplicated) {--%>
+    <%--        alert("중복된 해시태그가 있습니다.");--%>
+    <%--        return;--%>
+    <%--    }--%>
+
+    <%--    for (let i = 0; i < ${tagList.size()}; i++) {--%>
+    <%--        if (list.item(i).children.item(0).getAttribute("value") === tag.value) {--%>
+    <%--            // list.item(i).children.item(0).setAttribute("value", tag.value);--%>
+    <%--            // list.item(i).children.item(0).innerHTML = tag.value;--%>
+    <%--            list.item(i).style.display = "inline-block";--%>
+    <%--            isReachMaxNumber = false;--%>
+    <%--            tagList.push(tag.value);--%>
+    <%--            break;--%>
+    <%--        }--%>
+    <%--    }--%>
+    <%--    console.log(tagList);--%>
+    <%--}--%>
+
+    <%--function removeTag(tag) {--%>
+    <%--    let tagValue = tag.parentElement.firstElementChild.getAttribute("value");--%>
+    <%--    let tagIndex = tagList.indexOf(tagValue);--%>
+
+    <%--    tag.parentElement.style.display = "none";--%>
+    <%--    tagList.splice(tagIndex, 1);--%>
+    <%--    console.log("list count : " + (--index));--%>
+    <%--    console.log(tagList);--%>
+    <%--}--%>
 </script>
 <%--<script defer src="/js/JusoAPI.js"></script>--%>
 </body>

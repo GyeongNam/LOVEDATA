@@ -103,7 +103,7 @@
 												</c:when>
 												<c:otherwise>
 													<div class="btn-group ms-4 my-0" role="group" style="display: none">
-														<button type="button" class="btn btn-primary" value="">${tagList.get(i)}</button>
+														<button type="button" class="btn btn-primary" value="${tagList.get(i)}">${tagList.get(i)}</button>
 														<button type="button" class="btn btn-outline-danger btn"
 																onclick="removeTag(this)">X
 														</button>
@@ -486,9 +486,6 @@
 </script>
 <script defer>
     let tagList = [];
-    let index;
-    // var token = $("meta[name='_csrf']").attr("content");
-    // var header = $("meta[name='_csrf_header']").attr("content");
 
     <c:forEach var="i" begin="0" end="${tagList.size()-1}">
     	<c:choose>
@@ -500,31 +497,28 @@
 
     function addTag(tag) {
         // let navbar = document.getElementById("tag-navbar-collapse");
-        let list = document.getElementById("tag_list").children;
+        let list = document.getElementById('tag_list').children;
+        let isReachMaxNumber = true;
         let isDuplicated = false;
         const MAX_TAG_LIMIT = 7;
 
-        // console.log(list.item(0).className);
-        // console.log(list.item(0).valueOf());
+        console.log(list.item(0).className);
+        console.log(list.item(0).valueOf());
 
-        if (tagList.length === MAX_TAG_LIMIT) {
+        if (tagList.length >= MAX_TAG_LIMIT) {
+            isReachMaxNumber = true;
+        } else {
+            isReachMaxNumber = false;
+        }
+
+        if (isReachMaxNumber) {
             alert("해시태그는 최대 7개까지 추가할 수 있습니다.");
             return;
         }
 
-        for (let i = 0; i < ${tagList.size()}; i++) {
-
-            if (list.item(i).children.item(0).getAttribute("value") === tag.value) {
+        for (let i = 0; i < tagList.length; i++) {
+            if (tagList[i] === tag.value) {
                 isDuplicated = true;
-                break;
-            }
-
-            if (list.item(i).children.item(0).getAttribute("value") === "") {
-                list.item(i).children.item(0).setAttribute("value", tag.value);
-                list.item(i).children.item(0).innerHTML = tag.value;
-                list.item(i).style.display = "inline-block";
-                index = i + 1;
-                tagList.push(tag.value);
                 break;
             }
         }
@@ -534,16 +528,28 @@
             return;
         }
 
-        // console.log("list count : " + index);
-        // console.log(tagList);
+        for (let i = 0; i < ${tagList.size()}; i++) {
+            if (list.item(i).children.item(0).getAttribute("value") === tag.value) {
+                // list.item(i).children.item(0).setAttribute("value", tag.value);
+                // list.item(i).children.item(0).innerHTML = tag.value;
+                list.item(i).style.display = "inline-block";
+                isReachMaxNumber = false;
+                tagList.push(tag.value);
+                break;
+            }
+        }
+
+        console.log("list count : " + index);
+        console.log(tagList);
     }
 
     function removeTag(tag) {
+        let tagValue = tag.parentElement.firstElementChild.getAttribute("value");
+        let tagIndex = tagList.indexOf(tagValue);
+
         tag.parentElement.style.display = "none";
-        tag.parentElement.firstElementChild.setAttribute("value", "");
-        tagList.pop();
-        // console.log("list count : " + (--index));
-        // console.log(tagList);
+        tagList.splice(tagIndex, 1);
+        console.log(tagList);
     }
 </script>
 <script defer>

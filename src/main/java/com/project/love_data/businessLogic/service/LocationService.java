@@ -219,7 +219,9 @@ public class LocationService {
                 return null;
         }
 
-        return repository.findByLoc_nameContaining(sb.toString());
+        Optional<List<Location>> lists = repository.findByLoc_nameContaining(sb.toString());
+
+        return lists.orElse(new ArrayList<>());
     }
 
     public Location selectLoc(Long loc_no) {

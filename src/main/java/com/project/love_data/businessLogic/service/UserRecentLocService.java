@@ -23,7 +23,7 @@ public class UserRecentLocService {
     UserService userService;
 
     public UserRecentLoc register(Long locNo, Long userNo) {
-        if (keepMaxHistoryCount(userNo) && !isDuplicated(locNo, userNo)) {
+        if (!isDuplicated(locNo, userNo) && keepMaxHistoryCount(userNo)) {
             UserRecentLoc UserRecentLoc = insert(locNo, userNo);
             UserRecentLoc entity = update(UserRecentLoc);
 

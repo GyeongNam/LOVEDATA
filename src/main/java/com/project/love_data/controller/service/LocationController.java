@@ -5,11 +5,15 @@ import com.project.love_data.dto.*;
 import com.project.love_data.model.service.Comment;
 import com.project.love_data.model.service.Location;
 import com.project.love_data.model.service.LocationTag;
+import com.project.love_data.model.service.UserRecentLoc;
 import com.project.love_data.model.user.User;
 import com.project.love_data.security.model.AuthUserModel;
+import com.project.love_data.security.service.UserDetailsService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.*;
 
 import static com.project.love_data.util.ConstantValues.*;
@@ -34,10 +39,17 @@ public class LocationController {
     CommentService comService;
     @Autowired
     UserService userService;
+    @Autowired
+    UserRecentLocService userRecentLocService;
+    @Autowired
+    UserDetailsService userDetailsService;
     List<String> tagList = new ArrayList<>();
 
     @RequestMapping("/service/loc_registration")
-    public String loc_Reg() {
+    public String loc_Reg(Model model) {
+        List<LocationTag> tagList = Arrays.asList(LocationTag.values());
+        model.addAttribute("tagList", tagList);
+
         return "/service/loc_registration";
     }
 
@@ -111,9 +123,8 @@ public class LocationController {
     }
 
     @GetMapping(value = "/service/loc_detail")
-    public String locDetail(Long locNo, @ModelAttribute("requestDTO") PageRequestDTO pageRequestDTO,
-                            Model model,
-                            HttpServletRequest request) {
+    public String locDetail(Long locNo, @ModelAttribute("requestDTO") PageRequestDTO pageRequestDTO, Authentication authentication,
+                            Model model, HttpServletRequest request) {
         if (locNo != null) {
             locService.incViewCount(locNo);
             LocationDTO dto = locService.selectLocDTO(locNo);
@@ -121,6 +132,21 @@ public class LocationController {
             PageResultDTO<CommentDTO, Comment> resultCommentDTO
 //                    = comService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION, CommentSortType.IDX_ASC);
                     = comService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION);
+
+//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication != null) {
+                if (authentication.isAuthenticated()) {
+                    AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
+                    UserRecentLoc item = userRecentLocService.register(locNo, authUserModel.getUser_no());
+                    if (item == null) {
+                        log.warn(authUserModel.getUser_no() + "의 최근 접속한 기록을 추가하는 과정에서 문제가 발생하였습니다.");
+                        log.warn("장소 번호 (" + locNo + ")");
+                    } else {
+                        log.info("기록 추가 성공");
+                    }
+                    log.info("temp");
+                }
+            }
 
             model.addAttribute("dto", dto);
             model.addAttribute("resComDTO", resultCommentDTO);
