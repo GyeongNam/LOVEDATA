@@ -51,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
       http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/");
       http.formLogin().failureHandler(authenticationFailure);
       http.formLogin().failureUrl("/login");
+//      http.anonymous().disable();
   }
 
   @Bean

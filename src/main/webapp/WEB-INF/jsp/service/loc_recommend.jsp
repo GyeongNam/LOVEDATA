@@ -110,7 +110,7 @@
 						<%--						@Todo display:inline으로 변경할때마다 빈공간 생기는 문제 수정하기--%>
 						<c:forEach var="i" begin="0" end="${tagList.size()-1}">
 							<div class="btn-group ms-4 my-0" role="group" style="display: none">
-								<button type="button" class="btn btn-primary" value="">${tagList.get(i)}</button>
+								<button type="button" class="btn btn-primary" value="${tagList.get(i)}">${tagList.get(i)}</button>
 								<button type="button" class="btn btn-outline-danger btn" onclick="removeTag(this)">X</button>
 							</div>
 						</c:forEach>
@@ -170,6 +170,13 @@
 											<span class="align-middle" id="loc_like_count" name="loc_like_count">${result.dtoList.get(i).likeCount}</span>
 											<span class="d-none">${result.dtoList.get(i).loc_no}</span>
 											<span class="d-none">${result.dtoList.get(i).loc_uuid}</span>
+											<sec:authorize access="isAuthenticated()">
+												<c:set var="user_no"><sec:authentication property="principal.user_no"></sec:authentication></c:set>
+												<span class="d-none">${user_no}</span>
+											</sec:authorize>
+											<sec:authorize access="isAnonymous()">
+												<span class="d-none">-1</span>
+											</sec:authorize>
 										</div>
 									</div>
 								</div>
@@ -258,6 +265,9 @@
 <%--<script defer src="/js/bootstrap.js"></script>--%>
 <script defer src="/js/loc_recommend.js"></script>
 <script defer src="/js/loc_common.js"></script>
+<script defer>
+
+</script>
 </body>
 <%--<%@ include file="../layout/footer.jsp" %>--%>
 </html>

@@ -24,14 +24,10 @@ public class QUser extends EntityPathBase<User> {
 
     public final SetPath<com.project.love_data.model.service.Comment, com.project.love_data.model.service.QComment> cmtSet = this.<com.project.love_data.model.service.Comment, com.project.love_data.model.service.QComment>createSet("cmtSet", com.project.love_data.model.service.Comment.class, com.project.love_data.model.service.QComment.class, PathInits.DIRECT2);
 
-    public final ListPath<com.project.love_data.model.service.Location, com.project.love_data.model.service.QLocation> likeLoc = this.<com.project.love_data.model.service.Location, com.project.love_data.model.service.QLocation>createList("likeLoc", com.project.love_data.model.service.Location.class, com.project.love_data.model.service.QLocation.class, PathInits.DIRECT2);
-
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modDate = _super.modDate;
 
     public final StringPath profile_pic = createString("profile_pic");
-
-    public final ListPath<com.project.love_data.model.service.Location, com.project.love_data.model.service.QLocation> recentLoc = this.<com.project.love_data.model.service.Location, com.project.love_data.model.service.QLocation>createList("recentLoc", com.project.love_data.model.service.Location.class, com.project.love_data.model.service.QLocation.class, PathInits.DIRECT2);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> regDate = _super.regDate;
