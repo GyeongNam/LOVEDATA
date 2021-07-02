@@ -147,3 +147,5 @@ fabric.properties
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij
 *.war
+build/resources/main/static/image/upload/
+src/main/resources/static/image/upload/
