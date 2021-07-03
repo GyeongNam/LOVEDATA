@@ -1,5 +1,7 @@
 package com.project.love_data.dto;
 
+import com.project.love_data.businessLogic.service.SearchType;
+import com.project.love_data.model.service.LocationTag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +20,8 @@ public class PageRequestDTO {
     private List<String> tagList;
     private String keyword;
     private Long locNo;
+    private SearchType searchType;
+    private String userNo;
 
     public PageRequestDTO() {
         this.page = 1;

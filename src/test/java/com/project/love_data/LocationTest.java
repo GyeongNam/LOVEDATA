@@ -1,7 +1,7 @@
 package com.project.love_data;
 
 import com.project.love_data.businessLogic.service.LocationService;
-import com.project.love_data.businessLogic.service.SearchOption;
+import com.project.love_data.businessLogic.service.MatchOption;
 import com.project.love_data.dto.LocationDTO;
 import com.project.love_data.dto.PageRequestDTO;
 import com.project.love_data.dto.PageResultDTO;
@@ -31,8 +31,8 @@ public class LocationTest {
     @Test
     public void InsertInitLocation() {
         List<LocationTag> tagSet = new ArrayList<>();
-        tagSet.add(LocationTag.ACTION_A);
-        tagSet.add(LocationTag.ACTION_B);
+        tagSet.add(LocationTag.도서관);
+        tagSet.add(LocationTag.백화점);
 
         Long user_no = (long) new Random().nextInt(4) + 1L;
 
@@ -192,10 +192,10 @@ public class LocationTest {
     @Test
     public void InsertLocation() {
         List<LocationTag> tagSet = new ArrayList<>();
-        tagSet.add(LocationTag.TYPE_ODD);
-        tagSet.add(LocationTag.TYPE_EVEN);
-        tagSet.add(LocationTag.ACTION_A);
-        tagSet.add(LocationTag.ACTION_B);
+        tagSet.add(LocationTag.공원);
+        tagSet.add(LocationTag.학교);
+        tagSet.add(LocationTag.한옥);
+        tagSet.add(LocationTag.겨울);
 
         for (int i = 0; i < 10; i++) {
             String pad = StringUtils.leftPad(Integer.toString(i), 4, '0');
@@ -337,7 +337,7 @@ public class LocationTest {
 
     @Test
     public void testLocContaining() {
-        List<com.project.love_data.model.service.Location> list = locService.locationNameSearch("Loc", SearchOption.CONTAIN);
+        List<com.project.love_data.model.service.Location> list = locService.locationNameSearch("Loc", MatchOption.CONTAIN);
         int i = 0;
 
         for (com.project.love_data.model.service.Location location : list) {
@@ -440,7 +440,7 @@ public class LocationTest {
     @Test
     public void nameSearchTest() {
         String keyword = "중부대";
-        List<Location> list = locService.locationNameSearch(keyword, SearchOption.CONTAIN);
+        List<Location> list = locService.locationNameSearch(keyword, MatchOption.CONTAIN);
 
         if (list.isEmpty()) {
             System.out.println(keyword + "에 대한 검색 결과가 없습니다!");
@@ -450,4 +450,22 @@ public class LocationTest {
             }
         }
     }
+
+//    @Test
+//    public void tagSearchTest() {
+//        Set<String> tagSet = new HashSet<>();
+//
+//        tagSet.add(LocationTag.야외.name());
+//
+//        Optional<List<Location>> items = locationRepository.findLocationByTag(tagSet);
+//
+//        if (items.isPresent()){
+//            for (Location location : items.get()) {
+//                System.out.println(location);
+//            }
+//            System.out.println("성공");
+//        } else {
+//            System.out.println("실패");
+//        }
+//    }
 }

@@ -190,7 +190,57 @@ public class LocationService {
     }
 
     public PageResultDTO<LocationDTO, Location> getList(PageRequestDTO requestDTO) {
-        Pageable pageable = requestDTO.getPageable(Sort.by("viewCount").descending());
+        return getList(requestDTO, SearchType.NONE,
+                MatchOption.NONE, SortCriterion.VIEW, SortingOrder.DES);
+    }
+
+    public PageResultDTO<LocationDTO, Location> getList(PageRequestDTO requestDTO, SearchType searchType, MatchOption matchOption,
+                                                        SortCriterion sortCriterion, SortingOrder sortingOrder) {
+//        Pageable pageable = requestDTO.getPageable(Sort.by("viewCount").descending());
+        boolean flag = false;
+
+        Pageable pageable;
+        switch (sortingOrder){
+            case ASC:
+                flag = false;
+                break;
+            default:
+                flag = true;
+                break;
+        }
+
+        switch (sortCriterion){
+            case DATE:
+                if (flag) {
+                    pageable = requestDTO.getPageable(Sort.by("regDate").ascending());
+                } else {
+                    pageable =  requestDTO.getPageable(Sort.by("regDate").descending());
+                }
+                break;
+            case LIKE:
+                if (flag) {
+                    pageable = requestDTO.getPageable(Sort.by("likeCount").ascending());
+                } else {
+                    pageable =  requestDTO.getPageable(Sort.by("likeCount").descending());
+                }
+                break;
+            case VIEW:
+//                if (flag) {
+//                    pageable = requestDTO.getPageable(Sort.by("viewCount").ascending());
+//                } else {
+//                    pageable = requestDTO.getPageable(Sort.by("viewCount").descending());
+//                }
+//                break;
+            default:
+                if (flag) {
+                    pageable = requestDTO.getPageable(Sort.by("viewCount").ascending());
+                } else {
+                    pageable = requestDTO.getPageable(Sort.by("viewCount").descending());
+                }
+                break;
+        }
+
+        // switch 문 추가해서
 
         Page<com.project.love_data.model.service.Location> result = repository.findAll(pageable);
 
@@ -199,9 +249,9 @@ public class LocationService {
         return new PageResultDTO<>(result, fn);
     }
 
-    public List<Location> locationNameSearch(String loc_name, SearchOption searchOption) {
+    public List<Location> locationNameSearch(String loc_name, MatchOption matchOption) {
         StringBuilder sb = new StringBuilder();
-        switch (searchOption) {
+        switch (matchOption) {
             case START_WITH:
                 sb.append(loc_name);
                 sb.insert(0, "%");
@@ -356,9 +406,9 @@ public class LocationService {
         return entity;
     }
 
-    public List<Location> findLocOfUser (Long userNo) {
-        List<Location> locationList = repository.findByAllUser_no(userNo);
+    public List<Location> findLocByUserNo(Long userNo) {
+        Optional<List<Location>> locationList = repository.findByAllUser_no(userNo);
 
-        return locationList.isEmpty() ? null : locationList;
+        return locationList.orElse(null);
     }
 }
