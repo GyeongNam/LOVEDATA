@@ -59,6 +59,8 @@
 		</ul>
 	</div>
 	<div class="container m-5" id="display_center" style="margin-right: 30px; margin-top: 30px">
+<%--		TODO 로그인 확인 후 장소 등록한 유저가 맞는지 확인절차를 거치기--%>
+<%--		<c:set var="user_no"><sec:authentication property="principal.user_no"/></c:set>--%>
 		<h1>장소 수정</h1>
 		<c:set var="dto" value="${dto}"/>
 		<div class="container-fluid">
@@ -138,14 +140,11 @@
 						<span class="details">정보</span>
 						<textarea rows="4" maxlength="150" name="info" id="info" required>${dto.info}</textarea>
 						<sec:authorize access="isAuthenticated()">
-							<c:set var="user_no"><sec:authentication property="principal.user_no"/></c:set>
-							<c:when test="${not empty user_no}">
-								<input type="hidden" name="user_no" id="user_no" value="${user_no}">
-							</c:when>
+							<input type="hidden" name="user_no" id="user_no" value="${user_no}">
 						</sec:authorize>
 						<input type="hidden" name="loc_no" id="loc_no" value="${dto.loc_no}">
 						<input type="hidden" name="loc_uuid" id="loc_uuid" value="${dto.loc_uuid}">
-<%--						Todo 추후 수정할 것들--%>
+<%--						TODO 추후 수정할 것들--%>
 						<input type="hidden" name="user_no_debug" id="user_no_debug" value="0">
 					</div>
 					<div>
@@ -209,6 +208,12 @@
 							</c:forEach>
 						</div>
 					</div>
+				</div>
+				<div class="m-2">
+					<image type="button" id="img_move_left" name="img_move_left"
+						   src="/image/icon/left-arrow.png" onclick="onClickImgMoveLeft()" style="height: 30px"></image>
+					<image type="button" id="img_move_right" name="img_move_right"
+						   src="/image/icon/right-arrow.png" onclick="onClickImgMoveRight()" style="height: 30px"></image>
 				</div>
 				<button type="submit" id="register" name="register" onclick="onClickRegister()">Register</button>
 			</form>
@@ -355,7 +360,7 @@
             }
         }
 
-        if (selectedImage !== null) {
+        if (selectedImageParent !== null) {
             if (selectedImageIndex < index) {
                 onSelectImage(selectedImageIndex);
             } else {
@@ -553,30 +558,108 @@
     }
 </script>
 <script defer>
-	let selectedImage = null;
+	let selectedImageParent = null;
 	let selectedImageIndex = null;
+	let selectedImage = null;
 
 	function onClearSelecteImage() {
-        selectedImage.style.outline = 'none';
-        selectedImage = null;
+        selectedImageParent.style.outline = 'none';
+        selectedImageParent = null;
         selectedImageIndex = null;
 	}
 
 	function onSelectImage(index) {
-        console.log('Clicked!');
+	    if (selectedImageIndex === index) {
+	        onClearSelecteImage();
+	        return;
+		}
+
         selectedImageIndex = index;
 
-        if (selectedImage !== null) {
+        if (selectedImageParent !== null) {
             // selectedImage.style.opacity = 0.0;
-            selectedImage.style.outline = 'none';
+            selectedImageParent.style.outline = 'none';
         }
 
-        console.log(document.getElementById("img_" + index));
-        selectedImage = document.getElementById("img_" + index).parentElement;
+        // console.log(document.getElementById("img_" + index));
+        console.log("index : " + index);
+        selectedImage = document.getElementById("img_" + index);
+        selectedImageParent = selectedImage.parentElement;
 
         // selectedImage.style.opacity = 0.3;
-        selectedImage.style.outline = 'solid thick red'
+        selectedImageParent.style.outline = 'solid thick red'
 	}
+
+	function onClickImgMoveLeft() {
+        let dt = new DataTransfer();
+        dt.files = input.files;
+
+        if (selectedImageIndex === null) {
+            return;
+		}
+
+        let leftObj = input.files.item(selectedImageIndex-2);
+        let selectedObj = input.files.item(selectedImageIndex-1);
+        let leftObjImg = document.getElementById("img_" + (selectedImageIndex-1)).src;
+        let selectedObjImg = document.getElementById("img_" + (selectedImageIndex)).src;
+
+        console.log(selectedImageIndex);
+        for (let i = 0; i < input.files.length; i++) {
+            if (selectedImageIndex -1 === i) {
+                dt.items.add(leftObj);
+                document.getElementById("img_" + (i+1)).src = leftObjImg;
+                continue;
+            }
+
+			if (selectedImageIndex -2 === i) {
+			    dt.items.add(selectedObj);
+                document.getElementById("img_" + (i+1)).src = selectedObjImg;
+                continue;
+			}
+
+            dt.items.add(input.files.item(i));
+        }
+
+        input.files = dt.files;
+        console.log(input.files);
+        onSelectImage(selectedImageIndex - 1);
+	}
+
+    function onClickImgMoveRight() {
+        let dt = new DataTransfer();
+        dt.files = input.files;
+
+        if (selectedImageIndex === null) {
+            return;
+        }
+
+        let rightObj = input.files.item(selectedImageIndex);
+        let selectedObj = input.files.item(selectedImageIndex-1);
+        let rightObjImg = document.getElementById("img_" + (selectedImageIndex+1)).src;
+        let selectedObjImg = document.getElementById("img_" + (selectedImageIndex)).src;
+
+        console.log(selectedImageIndex);
+        for (let i = 0; i < input.files.length; i++) {
+            if (selectedImageIndex -1 === i) {
+                dt.items.add(rightObj);
+                document.getElementById("img_" + (i+1)).src = rightObjImg;
+                continue;
+            }
+
+            if (selectedImageIndex === i) {
+                dt.items.add(selectedObj);
+                document.getElementById("img_" + (i+1)).src = selectedObjImg;
+                continue;
+            }
+
+            dt.items.add(input.files.item(i));
+        }
+
+        input.files = dt.files;
+        console.log(input.files);
+        onSelectImage(selectedImageIndex + 1);
+    }
+
 </script>
 <%--<script defer src="/js/JusoAPI.js"></script>--%>
 </body>
