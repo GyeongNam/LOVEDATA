@@ -65,10 +65,37 @@
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="navbar-nav col-9">
 						<li class="nav-item dropdown">
-							<button class="nav-link dropdown-toggle" role="button" id="navbarDropdownMenuLink"
-									data-toggle="dropdown" value="mostViewed">
-								조회순
-							</button>
+<%--							<c:set var="sortOrder" value="${sortOrder}"></c:set>--%>
+							<c:choose>
+								<c:when test="${'VIEW_DES'.equals(sortOrder)}">
+									<button class="nav-link dropdown-toggle" role="button" id="navbarDropdownMenuLink"
+											data-toggle="dropdown" value="mostViewed">
+										조회순
+									</button>
+								</c:when>
+								<c:when test="${'LIKE_DES'.equals(sortOrder)}">
+									<button class="nav-link dropdown-toggle" role="button" id="navbarDropdownMenuLink"
+											data-toggle="dropdown" value="mostLiked">
+										좋아요 순
+									</button>
+								</c:when>
+								<c:when test="${'DATE_DES'.equals(sortOrder)}">
+									<button class="nav-link dropdown-toggle" role="button" id="navbarDropdownMenuLink"
+											data-toggle="dropdown" value="mostRecent">
+										최신 등록순
+									</button>
+								</c:when>
+								<c:when test="${'DATE_ASC'.equals(sortOrder)}">
+									<button class="nav-link dropdown-toggle" role="button" id="navbarDropdownMenuLink"
+											data-toggle="dropdown" value="mostOldest">
+										오래된 등록순
+									</button>
+								</c:when>
+							</c:choose>
+<%--							<button class="nav-link dropdown-toggle" role="button" id="navbarDropdownMenuLink"--%>
+<%--									data-toggle="dropdown" value="mostViewed">--%>
+<%--								조회순--%>
+<%--							</button>--%>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 								<button class="dropdown-item" value="mostViewed" onclick="changeSort(this)">조회순</button>
 								<button class="dropdown-item" value="mostRecent" onclick="changeSort(this)">최신 등록순
@@ -82,7 +109,7 @@
 					</ul>
 					<%--					@Todo 인풋 값이 ""일 경우 버튼 활성화 x--%>
 <%--					<form action="/service/loc_recommend/search" method="get">--%>
-						<input type="text" placeholder="장소 검색" id="keyword" name="keyword"/>
+						<input type="text" placeholder="장소 검색" id="keyword" name="keyword" value="${keyword}"/>
 						<button class="btn btn-primary mx-2" type="button" id="searchBtn" onclick="onClickSearch()">Search</button>
 <%--					</form>--%>
 				</div>
@@ -108,11 +135,31 @@
 					</ul>
 					<div id="tag_list">
 						<%--						@Todo display:inline으로 변경할때마다 빈공간 생기는 문제 수정하기--%>
+							<c:set var="tagSet" value="${activeTags}"></c:set>
 						<c:forEach var="i" begin="0" end="${tagList.size()-1}">
-							<div class="btn-group ms-4 my-0" role="group" style="display: none">
-								<button type="button" class="btn btn-primary" value="${tagList.get(i)}">${tagList.get(i)}</button>
-								<button type="button" class="btn btn-outline-danger btn" onclick="removeTag(this)">X</button>
-							</div>
+<%--							<div class="btn-group ms-4 my-0" role="group" style="display: none">--%>
+<%--								<button type="button" class="btn btn-primary" value="${tagList.get(i)}">${tagList.get(i)}</button>--%>
+<%--								<button type="button" class="btn btn-outline-danger btn" onclick="removeTag(this)">X</button>--%>
+<%--							</div>--%>
+
+							<c:choose>
+								<c:when test="${tagSet.contains(tagList.get(i).name())}">
+									<div class="btn-group ms-4 my-0" role="group" style="display: inline">
+										<button type="button" class="btn btn-primary" value="${tagList.get(i)}">${tagList.get(i)}</button>
+										<button type="button" class="btn btn-outline-danger btn"
+												onclick="removeTag(this)">X
+										</button>
+									</div>
+								</c:when>
+								<c:otherwise>
+									<div class="btn-group ms-4 my-0" role="group" style="display: none">
+										<button type="button" class="btn btn-primary" value="${tagList.get(i)}">${tagList.get(i)}</button>
+										<button type="button" class="btn btn-outline-danger btn"
+												onclick="removeTag(this)">X
+										</button>
+									</div>
+								</c:otherwise>
+							</c:choose>
 						</c:forEach>
 					</div>
 				</div>

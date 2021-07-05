@@ -21,12 +21,6 @@ public class TestController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping(value = "/service/locRoc_searchValue")
-    public String printTestValue(HttpServletRequest request){
-        log.info("locRoc search Value : " + request.getParameter("text"));
-        return "redirect:/service/loc_recommend";
-    }
-
     @GetMapping(value = "/sample/model_addattributes")
     public String model_addattribute_test(HttpServletRequest request, Model model) {
         Iterator<String> queryIterator = null;

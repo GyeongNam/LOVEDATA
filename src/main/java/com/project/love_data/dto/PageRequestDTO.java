@@ -1,6 +1,8 @@
 package com.project.love_data.dto;
 
 import com.project.love_data.businessLogic.service.SearchType;
+import com.project.love_data.businessLogic.service.SortCriterion;
+import com.project.love_data.businessLogic.service.SortingOrder;
 import com.project.love_data.model.service.LocationTag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,17 +17,26 @@ import java.util.*;
 @AllArgsConstructor
 @Data
 public class PageRequestDTO {
-    private int page;
-    private int size;
+    @Builder.Default
+    private int page = 1;
+    @Builder.Default
+    private int size = 10;
     private List<String> tagList;
     private String keyword;
     private Long locNo;
-    private SearchType searchType;
-    private String userNo;
+    private Long userNo;
+    @Builder.Default
+    private SearchType searchType = SearchType.NONE;
+    @Builder.Default
+    private SortCriterion sortCriterion = SortCriterion.VIEW;
+    @Builder.Default
+    private SortingOrder sortingOrder = SortingOrder.DES;
+
 
     public PageRequestDTO() {
         this.page = 1;
         this.size = 10;
+        this.sortCriterion = SortCriterion.VIEW;
     }
 
     public Pageable getPageable(Sort sort){

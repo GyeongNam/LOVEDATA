@@ -2,6 +2,7 @@ package com.project.love_data;
 
 import com.project.love_data.businessLogic.service.LocationService;
 import com.project.love_data.businessLogic.service.MatchOption;
+import com.project.love_data.businessLogic.service.SearchType;
 import com.project.love_data.dto.LocationDTO;
 import com.project.love_data.dto.PageRequestDTO;
 import com.project.love_data.dto.PageResultDTO;
@@ -30,10 +31,6 @@ public class LocationTest {
 
     @Test
     public void InsertInitLocation() {
-        List<LocationTag> tagSet = new ArrayList<>();
-        tagSet.add(LocationTag.도서관);
-        tagSet.add(LocationTag.백화점);
-
         Long user_no = (long) new Random().nextInt(4) + 1L;
 
         Location loc = Location.builder()
@@ -439,33 +436,55 @@ public class LocationTest {
 
     @Test
     public void nameSearchTest() {
-        String keyword = "중부대";
-        List<Location> list = locService.locationNameSearch(keyword, MatchOption.CONTAIN);
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+                .page(1)
+                .size(4)
+                .searchType(SearchType.TITLE)
+                .keyword("중부대")
+                .build();
 
-        if (list.isEmpty()) {
-            System.out.println(keyword + "에 대한 검색 결과가 없습니다!");
-        }else {
-            for (int i = 0; i < list.size(); i++) {
-                System.out.println(i + " 번째 검색결과 : " + list.get(i).getLoc_name());
-            }
+        PageResultDTO<LocationDTO, com.project.love_data.model.service.Location> resultDTO = locService.getList(pageRequestDTO);
+
+        System.out.println("PREV = " + resultDTO.isPrev());
+        System.out.println("NEXT = " + resultDTO.isNext());
+        System.out.println("TOTAL : " + resultDTO.getTotalPage());
+
+        System.out.println("-------------------------------------------------");
+        for (LocationDTO locationDTO : resultDTO.getDtoList()) {
+            System.out.println(locationDTO.getLoc_no() + "\tlocationDTO = " + locationDTO);
         }
+
+        System.out.println("=================================================");
+        List<Integer> temp = resultDTO.getPageList();
+        resultDTO.getPageList().forEach(i -> System.out.println(i));
     }
 
-//    @Test
-//    public void tagSearchTest() {
-//        Set<String> tagSet = new HashSet<>();
-//
-//        tagSet.add(LocationTag.야외.name());
-//
-//        Optional<List<Location>> items = locationRepository.findLocationByTag(tagSet);
-//
-//        if (items.isPresent()){
-//            for (Location location : items.get()) {
-//                System.out.println(location);
-//            }
-//            System.out.println("성공");
-//        } else {
-//            System.out.println("실패");
-//        }
-//    }
+    @Test
+    public void tagSearchTest() {
+        List<String> tagList = new ArrayList<>();
+        tagList.add(LocationTag.야외.name());
+        tagList.add(LocationTag.숲.name());
+
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+                .page(1)
+                .size(4)
+                .searchType(SearchType.TAG)
+                .tagList(tagList)
+                .build();
+
+        PageResultDTO<LocationDTO, com.project.love_data.model.service.Location> resultDTO = locService.getList(pageRequestDTO);
+
+        System.out.println("PREV = " + resultDTO.isPrev());
+        System.out.println("NEXT = " + resultDTO.isNext());
+        System.out.println("TOTAL : " + resultDTO.getTotalPage());
+
+        System.out.println("-------------------------------------------------");
+        for (LocationDTO locationDTO : resultDTO.getDtoList()) {
+            System.out.println(locationDTO.getLoc_no() + "\tlocationDTO = " + locationDTO);
+        }
+
+        System.out.println("=================================================");
+        List<Integer> temp = resultDTO.getPageList();
+        resultDTO.getPageList().forEach(i -> System.out.println(i));
+    }
 }
