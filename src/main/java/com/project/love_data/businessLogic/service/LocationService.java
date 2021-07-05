@@ -219,7 +219,9 @@ public class LocationService {
                 return null;
         }
 
-        return repository.findByLoc_nameContaining(sb.toString());
+        Optional<List<Location>> lists = repository.findByLoc_nameContaining(sb.toString());
+
+        return lists.orElse(new ArrayList<>());
     }
 
     public Location selectLoc(Long loc_no) {
@@ -352,5 +354,11 @@ public class LocationService {
 //        log.info("entity : " + entity);
 
         return entity;
+    }
+
+    public List<Location> findLocOfUser (Long userNo) {
+        List<Location> locationList = repository.findByAllUser_no(userNo);
+
+        return locationList.isEmpty() ? null : locationList;
     }
 }

@@ -9,24 +9,22 @@ function addTag(tag) {
     let list = document.getElementById('tag_list').children;
     let isReachMaxNumber = true;
     let isDuplicated = false;
+    const MAX_TAG_LIMIT = 7;
 
-    console.log(list.item(0).className);
-    console.log(list.item(0).valueOf());
+    if (tagList.length >= MAX_TAG_LIMIT) {
+        isReachMaxNumber = true;
+    } else {
+        isReachMaxNumber = false;
+    }
 
-    for (let i = 0; i < 7; i++) {
+    if (isReachMaxNumber) {
+        alert("해시태그는 최대 7개까지 추가할 수 있습니다.");
+        return;
+    }
 
-        if (list.item(i).children.item(0).getAttribute("value") === tag.value) {
+    for (let i = 0; i < tagList.length; i++) {
+        if (tagList[i] === tag.value) {
             isDuplicated = true;
-            break;
-        }
-
-        if (list.item(i).children.item(0).getAttribute("value") === "") {
-            list.item(i).children.item(0).setAttribute("value", tag.value);
-            list.item(i).children.item(0).innerHTML = tag.value;
-            list.item(i).style.display = "inline-block";
-            isReachMaxNumber = false;
-            index = i + 1;
-            tagList.push(tag.value);
             break;
         }
     }
@@ -36,20 +34,25 @@ function addTag(tag) {
         return;
     }
 
-    if (isReachMaxNumber) {
-        alert("해시태그는 최대 7개까지 추가할 수 있습니다.");
-        return;
+    for (let i = 0; i < list.length; i++) {
+        if (list.item(i).children.item(0).getAttribute("value") === tag.value) {
+            // list.item(i).children.item(0).setAttribute("value", tag.value);
+            // list.item(i).children.item(0).innerHTML = tag.value;
+            list.item(i).style.display = "inline-block";
+            isReachMaxNumber = false;
+            tagList.push(tag.value);
+            break;
+        }
     }
-
-    console.log("list count : " + index);
     console.log(tagList);
 }
 
 function removeTag(tag) {
+    let tagValue = tag.parentElement.firstElementChild.getAttribute("value");
+    let tagIndex = tagList.indexOf(tagValue);
+
     tag.parentElement.style.display = "none";
-    tag.parentElement.firstElementChild.setAttribute("value", "");
-    tagList.pop();
-    console.log("list count : " + (--index));
+    tagList.splice(tagIndex, 1);
     console.log(tagList);
 }
 
@@ -58,6 +61,7 @@ function onClickLike(Like) {
     var likeCount = null;
     var loc_no = null;
     var loc = null;
+    var user_no = null;
     var path_noparm = location.pathname;
 
     console.log(path_noparm);
@@ -78,7 +82,9 @@ function onClickLike(Like) {
         loc_no = Like.nextElementSibling.nextElementSibling.innerText;
         loc = Like.nextElementSibling;
     }
-    var jsonData = {"loc_no": loc_no}
+    user_no = Like.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerText;
+
+    var jsonData = {"loc_no": loc_no, "user_no" : user_no}
     var isClicked = false;
     var map = new Map();
 
@@ -92,6 +98,7 @@ function onClickLike(Like) {
     map.set("likeCount", likeCount)
     map.set("listCount", likeCount);
     map.set("loc_no", loc_no);
+    map.set("user_no", user_no);
     map.set("jsonData", jsonData);
     map.set("isClicked", isClicked);
     map.set("like", Like);
@@ -102,7 +109,7 @@ function onClickLike(Like) {
 }
 
 function onLoginCheck(map) {
-    var debugCheck = {"debug": true}
+    var debugCheck = {"debug": false}
 
     $.ajax({
         type: "POST",
@@ -115,6 +122,11 @@ function onLoginCheck(map) {
         },
         success: function (response) {
             // do something ...
+            if (response == false ){
+                console.log("Login Check Failed")
+                alert("로그인을 해주세요")
+                return false;
+            }
             console.log("Login Check Success")
             console.log("is login : " + response)
             onClickLikeAction(map);
@@ -131,6 +143,7 @@ function onLoginCheck(map) {
 function onClickLikeAction(map) {
     var likeCount = map.get("likeCount");
     var loc_no = map.get("loc_no");
+    var user_no = map.get("user_no");
     var jsonData = map.get("jsonData");
     var isClicked = map.get("isClicked");
     var like = map.get("like");
@@ -138,6 +151,7 @@ function onClickLikeAction(map) {
     var countChangeFlag = map.get("countChangeFlag");
 
     console.log("loc_no : " + loc_no);
+    console.log("user_no : " + user_no);
 
     // Todo ajax를 인증용 하나와 db에 접속용 두번 보내기
     // 마지막으로 클릭한 loc_id를 저장하는 전역변수 만들고, 성공적으로 저장시 해당 변수에 값을 저장

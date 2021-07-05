@@ -436,4 +436,18 @@ public class LocationTest {
             System.out.println(location.getImgSet());
         }
     }
+
+    @Test
+    public void nameSearchTest() {
+        String keyword = "중부대";
+        List<Location> list = locService.locationNameSearch(keyword, SearchOption.CONTAIN);
+
+        if (list.isEmpty()) {
+            System.out.println(keyword + "에 대한 검색 결과가 없습니다!");
+        }else {
+            for (int i = 0; i < list.size(); i++) {
+                System.out.println(i + " 번째 검색결과 : " + list.get(i).getLoc_name());
+            }
+        }
+    }
 }

@@ -39,10 +39,12 @@ public class UserDTO {
     private List<Comment> cmtList = new ArrayList<>();
     @Builder.Default
     private Set<String> roleSet = new HashSet<>();
-    @Builder.Default
-    private List<Location> likeLoc = new ArrayList<>();
-    @Builder.Default
-    private List<Location> recentLoc = new LinkedList<>();
+//    @Builder.Default
+//    private List<Location> likeLoc = new ArrayList<>();
+//    @Builder.Default
+//    private List<Location> recentLoc = new LinkedList<>();
+//    @Builder.Default
+//    private List<Location> uploadLoc = new LinkedList<>();
     @Builder.Default
     private boolean user_Activation = true;
     @Builder.Default
@@ -73,27 +75,39 @@ public class UserDTO {
         }
     }
 
-    public void addLikeLocation(Location loc) {
-        likeLoc.add(loc);
-    }
-
-    public void removeLikeLocation(Location loc){
-        likeLoc.remove(loc);
-    }
-
-    public void removeLikeLocation(int index) {
-        likeLoc.remove(index);
-    }
-
-    public void addRecentLocation(Location loc){
-        recentLoc.add(loc);
-    }
-
-    public void removeRecentLocation(Location loc){
-        recentLoc.remove(loc);
-    }
-
-    public void removeRecentLocation(int index) {
-        recentLoc.remove(index);
-    }
+//    public void addLikeLocation(Location loc) {
+//        likeLoc.add(loc);
+//    }
+//
+//    public void removeLikeLocation(Location loc){
+//        likeLoc.remove(loc);
+//    }
+//
+//    public void removeLikeLocation(int index) {
+//        likeLoc.remove(index);
+//    }
+//
+//    public void addRecentLocation(Location loc){
+//        recentLoc.add(loc);
+//    }
+//
+//    public void removeRecentLocation(Location loc){
+//        recentLoc.remove(loc);
+//    }
+//
+//    public void removeRecentLocation(int index) {
+//        recentLoc.remove(index);
+//    }
+//
+//    public void addUploadLocation(Location loc) {
+//        uploadLoc.add(loc);
+//    }
+//
+//    public void removeUploadLocation(Location loc){
+//        uploadLoc.remove(loc);
+//    }
+//
+//    public void removeUploadLocation(int index) {
+//        uploadLoc.remove(index);
+//    }
 }

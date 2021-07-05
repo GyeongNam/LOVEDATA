@@ -32,8 +32,8 @@ public class UserService {
                 .profile_pic(dto.getProfile_pic())
                 .cmtSet(new HashSet<>(dto.getCmtList()))
                 .roleSet(dto.getRoleSet())
-                .likeLoc(dto.getLikeLoc())
-                .recentLoc(dto.getRecentLoc())
+//                .likeLoc(dto.getLikeLoc())
+//                .recentLoc(dto.getRecentLoc())
                 .user_no(dto.getUser_no())
                 .social_info(dto.getSocial_info())
                 .build();
@@ -55,8 +55,8 @@ public class UserService {
                 .user_Activation(entity.isUser_Activation())
                 .profile_pic(entity.getProfile_pic())
                 .roleSet(entity.getRoleSet())
-                .likeLoc(entity.getLikeLoc())
-                .recentLoc(entity.getRecentLoc())
+//                .likeLoc(entity.getLikeLoc())
+//                .recentLoc(entity.getRecentLoc())
                 .user_no(entity.getUser_no())
                 .social_info(entity.getSocial_info())
                 .regDate(entity.getRegDate())
@@ -98,39 +98,66 @@ public class UserService {
         userRepository.delete(user);
     }
 
-    public void addLikeLocation(User user, Location location) {
-        user.addLikeLocation(location);
+//    public void addLikeLocation(User user, Location location) {
+//        user.addLikeLocation(location);
+//
+//        update(user);
+//    }
+//
+//    public void removeLikeLocation(User user, Location location) {
+//        user.removeLikeLocation(location);
+//
+//        update(user);
+//    }
+//
+//    public void removeLikeLocation(User user, int index) {
+//        user.removeLikeLocation(index);
+//
+//        update(user);
+//    }
+//
+//    public void addRecentLocation(User user, Location location){
+//        user.addRecentLocation(location);
+//
+//        update(user);
+//    }
+//
+//    public void removeRecentLocation(User user, Location location){
+//        user.removeRecentLocation(location);
+//
+//        update(user);
+//    }
+//
+//    public void removeRecentLocation(User user, int index){
+//        user.removeRecentLocation(index);
+//
+//        update(user);
+//    }
 
-        update(user);
+    // Todo UserService에 추가하기
+    public void addLikeLocation(Long userNo, Long locNo) {
+//        dto.addLikeLocation(location);
+
+        // locService에서 업데이트 해주는 식으로
+//        update(user);
     }
 
-    public void removeLikeLocation(User user, Location location) {
-        user.removeLikeLocation(location);
+    public void removeLikeLocation(Long userNo, Long locNo) {
+//        dto.removeLikeLocation(location);
 
-        update(user);
+//        update(dto);
     }
 
-    public void removeLikeLocation(User user, int index) {
-        user.removeLikeLocation(index);
+    public void addRecentLocation(Long userNo, Long locNo){
+//        dto.addRecentLocation(location);
 
-        update(user);
+//        update(dto);
     }
 
-    public void addRecentLocation(User user, Location location){
-        user.addRecentLocation(location);
+    public void removeRecentLocation(Long userNo, Long locNo){
+//        dto.removeRecentLocation(location);
 
-        update(user);
+//        update(dto);
     }
 
-    public void removeRecentLocation(User user, Location location){
-        user.removeRecentLocation(location);
-
-        update(user);
-    }
-
-    public void removeRecentLocation(User user, int index){
-        user.removeRecentLocation(index);
-
-        update(user);
-    }
 }

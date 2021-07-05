@@ -1360,72 +1360,74 @@ lovedata|schema||lovedatauser|localhost|UPDATE|G</Grants>
       <ColNames>user_no</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="400" parent="333" name="user_no">
+    <column id="400" parent="333" name="user_like_loc_no">
       <Position>1</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
+      <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="401" parent="333" name="loc_no">
+    <column id="401" parent="333" name="moddate">
       <Position>2</Position>
+      <DataType>datetime|0s</DataType>
+    </column>
+    <column id="402" parent="333" name="regdate">
+      <Position>3</Position>
+      <DataType>datetime|0s</DataType>
+    </column>
+    <column id="403" parent="333" name="loc_no">
+      <Position>4</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="402" parent="333" name="UK_5bn0b65luhi1gskpc8e5398d1">
-      <ColNames>loc_no</ColNames>
-      <Unique>1</Unique>
-      <Type>btree</Type>
-    </index>
-    <index id="403" parent="333" name="FK61pqmqnncrphvl16jcu2lw40d">
-      <ColNames>user_no</ColNames>
-      <Type>btree</Type>
-    </index>
-    <key id="404" parent="333" name="UK_5bn0b65luhi1gskpc8e5398d1">
-      <ColNames>loc_no</ColNames>
-      <UnderlyingIndexName>UK_5bn0b65luhi1gskpc8e5398d1</UnderlyingIndexName>
+    <column id="404" parent="333" name="user_no">
+      <Position>5</Position>
+      <DataType>bigint(20)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="405" parent="333" name="uuid">
+      <Position>6</Position>
+      <DataType>varchar(45)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <key id="406" parent="333" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>user_like_loc_no</ColNames>
+      <Primary>1</Primary>
     </key>
-    <foreign-key id="405" parent="333" name="FK61pqmqnncrphvl16jcu2lw40d">
-      <ColNames>user_no</ColNames>
-      <RefTableName>user</RefTableName>
-      <RefColNames>user_no</RefColNames>
-    </foreign-key>
-    <foreign-key id="406" parent="333" name="FKg818b8fmp7cryym2ydnc6d1kp">
-      <ColNames>loc_no</ColNames>
-      <RefTableName>location</RefTableName>
-      <RefColNames>loc_no</RefColNames>
-    </foreign-key>
-    <column id="407" parent="334" name="user_no">
+    <column id="407" parent="334" name="user_recent_loc_no">
       <Position>1</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
+      <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="408" parent="334" name="loc_no">
+    <column id="408" parent="334" name="moddate">
       <Position>2</Position>
+      <DataType>datetime|0s</DataType>
+    </column>
+    <column id="409" parent="334" name="regdate">
+      <Position>3</Position>
+      <DataType>datetime|0s</DataType>
+    </column>
+    <column id="410" parent="334" name="loc_no">
+      <Position>4</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="409" parent="334" name="UK_f2489olt8h1opahwe26yr0fy2">
-      <ColNames>loc_no</ColNames>
-      <Unique>1</Unique>
-      <Type>btree</Type>
-    </index>
-    <index id="410" parent="334" name="FK37am0m4rjjk3kuork0q0ybt92">
-      <ColNames>user_no</ColNames>
-      <Type>btree</Type>
-    </index>
-    <key id="411" parent="334" name="UK_f2489olt8h1opahwe26yr0fy2">
-      <ColNames>loc_no</ColNames>
-      <UnderlyingIndexName>UK_f2489olt8h1opahwe26yr0fy2</UnderlyingIndexName>
+    <column id="411" parent="334" name="user_no">
+      <Position>5</Position>
+      <DataType>bigint(20)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="412" parent="334" name="uuid">
+      <Position>6</Position>
+      <DataType>varchar(45)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <key id="413" parent="334" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>user_recent_loc_no</ColNames>
+      <Primary>1</Primary>
     </key>
-    <foreign-key id="412" parent="334" name="FK37am0m4rjjk3kuork0q0ybt92">
-      <ColNames>user_no</ColNames>
-      <RefTableName>user</RefTableName>
-      <RefColNames>user_no</RefColNames>
-    </foreign-key>
-    <foreign-key id="413" parent="334" name="FK2f7jtpkmgo0oyco7dwov67lrs">
-      <ColNames>loc_no</ColNames>
-      <RefTableName>location</RefTableName>
-      <RefColNames>loc_no</RefColNames>
-    </foreign-key>
     <column id="414" parent="335" name="user_user_no">
       <Position>1</Position>
       <DataType>bigint(20)|0s</DataType>

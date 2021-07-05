@@ -43,6 +43,8 @@ public interface LocationRepository extends JpaRepository<Location, Long>
     List<Location> findAllByRoadAddrAndAddrDetail(@Param("roadaddr") String roadaddr, @Param("addrdetail") String addrdetail);
 
     @Query(value = "SELECT l from Location l WHERE  l.loc_name LIKE :loc_name")
-    List<Location> findByLoc_nameContaining(@Param("loc_name") String loc_name);
+    Optional<List<Location>> findByLoc_nameContaining(@Param("loc_name") String loc_name);
 
+    @Query(value = "SELECT l FROM Location l WHERE l.user_no IN :user_no")
+    List<Location> findByAllUser_no(@Param("user_no")Long userNo);
 }
