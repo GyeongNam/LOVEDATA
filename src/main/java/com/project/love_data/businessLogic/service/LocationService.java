@@ -6,8 +6,10 @@ import com.project.love_data.dto.PageResultDTO;
 import com.project.love_data.model.resource.Image;
 import com.project.love_data.model.service.Comment;
 import com.project.love_data.model.service.Location;
+import com.project.love_data.model.service.QLocation;
 import com.project.love_data.repository.ImageRepository;
 import com.project.love_data.repository.LocationRepository;
+import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -189,19 +191,121 @@ public class LocationService {
         return loc;
     }
 
-    public PageResultDTO<LocationDTO, Location> getList(PageRequestDTO requestDTO) {
-        Pageable pageable = requestDTO.getPageable(Sort.by("viewCount").descending());
+//    public PageResultDTO<LocationDTO, Location> getList(PageRequestDTO requestDTO) {
+//        return getList(requestDTO, SearchType.NONE,
+//                SortCriterion.VIEW, SortingOrder.DES);
+//    }
 
-        Page<com.project.love_data.model.service.Location> result = repository.findAll(pageable);
+    public PageResultDTO<LocationDTO, Location> getList(PageRequestDTO requestDTO) {
+//        Pageable pageable = requestDTO.getPageable(Sort.by("viewCount").descending());
+        boolean flagASC = false;
+
+        Pageable pageable;
+        switch (requestDTO.getSortingOrder()){
+            case ASC:
+                flagASC = true;
+                break;
+            default:
+                flagASC = false;
+                break;
+        }
+
+        switch (requestDTO.getSortCriterion()){
+            case DATE:
+                if (flagASC) {
+                    pageable = requestDTO.getPageable(Sort.by("regDate").ascending());
+                } else {
+                    pageable =  requestDTO.getPageable(Sort.by("regDate").descending());
+                }
+                break;
+            case LIKE:
+                if (flagASC) {
+                    pageable = requestDTO.getPageable(Sort.by("likeCount").ascending());
+                } else {
+                    pageable =  requestDTO.getPageable(Sort.by("likeCount").descending());
+                }
+                break;
+            case VIEW:
+//                if (flagASC) {
+//                    pageable = requestDTO.getPageable(Sort.by("viewCount").ascending());
+//                } else {
+//                    pageable = requestDTO.getPageable(Sort.by("viewCount").descending());
+//                }
+//                break;
+            default:
+                if (flagASC) {
+                    pageable = requestDTO.getPageable(Sort.by("viewCount").ascending());
+                } else {
+                    pageable = requestDTO.getPageable(Sort.by("viewCount").descending());
+                }
+                break;
+        }
+
+        BooleanBuilder booleanBuilder = getSearch(requestDTO);
+        Page<com.project.love_data.model.service.Location> result = repository.findAll(booleanBuilder, pageable);
+
+//        switch (requestDTO.getSearchType()){
+//            case USER:
+//                booleanBuilder =
+////                result = repository.findByAllUser_no(pageable);
+//                break;
+//            case TITLE:
+//                result = repository.findAll(pageable);
+//                break;
+//            case NONE:
+//            default:
+//                result = repository.findAll(pageable);
+//                break;
+//        }
 
         Function<com.project.love_data.model.service.Location, LocationDTO> fn = (entity -> entityToDto(entity));
 
         return new PageResultDTO<>(result, fn);
     }
 
-    public List<Location> locationNameSearch(String loc_name, SearchOption searchOption) {
+    public BooleanBuilder getSearch(PageRequestDTO requestDTO) {
+        Long userNo = requestDTO.getUserNo();
+        Long locNo = requestDTO.getLocNo();
+        String keyword = requestDTO.getKeyword();
+        List<String> tagList = requestDTO.getTagList();
+        BooleanBuilder conditionBuilder = new BooleanBuilder();
+        QLocation qLocation = QLocation.location;
+
+        switch (requestDTO.getSearchType()){
+            case USER:
+                conditionBuilder.and(qLocation.loc_no.eq(userNo));
+                break;
+            case USER_TAG:
+                conditionBuilder.and(qLocation.loc_no.eq(userNo));
+                for (String s : tagList) {
+                    conditionBuilder.and(qLocation.tagSet.contains(s));
+                }
+                break;
+            case TITLE:
+                conditionBuilder.and(qLocation.loc_name.contains(keyword));
+                break;
+            case TITLE_TAG:
+                conditionBuilder.and(qLocation.loc_name.contains(keyword));
+                for (String s : tagList) {
+                    conditionBuilder.and(qLocation.tagSet.contains(s));
+                }
+                break;
+            case TAG:
+                for (String s : tagList) {
+                    conditionBuilder.and(qLocation.tagSet.contains(s));
+                }
+                break;
+            case NONE:
+            default:
+                return conditionBuilder;
+        }
+
+        return conditionBuilder;
+    }
+
+    public List<Location> locationNameSearch(String loc_name, MatchOption matchOption) {
         StringBuilder sb = new StringBuilder();
-        switch (searchOption) {
+        switch (matchOption) {
             case START_WITH:
                 sb.append(loc_name);
                 sb.insert(0, "%");
@@ -356,9 +460,9 @@ public class LocationService {
         return entity;
     }
 
-    public List<Location> findLocOfUser (Long userNo) {
-        List<Location> locationList = repository.findByAllUser_no(userNo);
+    public List<Location> findLocByUserNo(Long userNo) {
+        Optional<List<Location>> locationList = repository.findByAllUser_no(userNo);
 
-        return locationList.isEmpty() ? null : locationList;
+        return locationList.orElse(null);
     }
 }

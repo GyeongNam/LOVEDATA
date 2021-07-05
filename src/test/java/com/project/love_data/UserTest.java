@@ -2,7 +2,6 @@ package com.project.love_data;
 
 import com.project.love_data.businessLogic.service.LocationService;
 import com.project.love_data.businessLogic.service.UserService;
-import com.project.love_data.dto.UserDTO;
 import com.project.love_data.model.service.Location;
 import com.project.love_data.repository.UserRepository;
 import com.project.love_data.model.user.User;
@@ -219,7 +218,7 @@ public class UserTest {
 
     @Test
     public void userUploadLocationList() {
-        List<Location> loc = locService.findLocOfUser(1L);
+        List<Location> loc = locService.findLocByUserNo(1L);
 
         System.out.println(loc);
     }

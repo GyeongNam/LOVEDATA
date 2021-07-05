@@ -81,10 +81,10 @@
 						</li>
 					</ul>
 					<%--					@Todo 인풋 값이 ""일 경우 버튼 활성화 x--%>
-					<form action="/service/locRoc_searchValue" method="get">
-						<input type="text" placeholder="장소 검색" id="text" name="text"/>
-						<button class="btn btn-primary" type="submit">Search</button>
-					</form>
+<%--					<form action="/service/loc_recommend/search" method="get">--%>
+						<input type="text" placeholder="장소 검색" id="keyword" name="keyword"/>
+						<button class="btn btn-primary mx-2" type="button" id="searchBtn" onclick="onClickSearch()">Search</button>
+<%--					</form>--%>
 				</div>
 			</nav>
 		</div>
@@ -265,9 +265,6 @@
 <%--<script defer src="/js/bootstrap.js"></script>--%>
 <script defer src="/js/loc_recommend.js"></script>
 <script defer src="/js/loc_common.js"></script>
-<script defer>
-
-</script>
 </body>
 <%--<%@ include file="../layout/footer.jsp" %>--%>
 </html>

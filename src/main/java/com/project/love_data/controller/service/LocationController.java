@@ -159,11 +159,14 @@ public class LocationController {
 
     @GetMapping(value = "/service/loc_recommend/list")
     public String locRecommendList(HttpServletRequest request,
-                                   PageRequestDTO pageRequestDTO,
+//                                   PageRequestDTO pageRequestDTO,
                                    Authentication authentication,
                                    Model model) {
         List<LocationTag> tagList = Arrays.asList(LocationTag.values());
-        pageRequestDTO.setSize(MAX_LOC_LIST_SIZE);
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+                .size(MAX_LOC_LIST_SIZE)
+                .sortCriterion(SortCriterion.VIEW)
+                .build();
         PageResultDTO<LocationDTO, com.project.love_data.model.service.Location> resultDTO = locService.getList(pageRequestDTO);
         model.addAttribute("result", resultDTO);
         model.addAttribute("tagList", tagList);
@@ -243,5 +246,71 @@ public class LocationController {
 //        redirectAttributes.addFlashAttribute("dto", dto);
 
         return "redirect:/service/loc_recommend";
+    }
+
+    @PostMapping(value = "/service/loc_recommend/search")
+    public String getSearchValue(HttpServletRequest request, Model model){
+        String keyword = request.getParameter("keyword");
+        String order = request.getParameter("sortOrder");
+        String tagString = request.getParameter("tags");
+        String type = request.getParameter("searchType");
+        SortingOrder sortingOrder = null;
+        SortCriterion sortCriterion = null;
+        SearchType searchType = SearchType.valueOf(type);
+        List<String> tempList = Arrays.asList(tagString.split(","));
+        tagList.clear();
+        for (String s : tempList) {
+            if ("".equals(s)) {
+                continue;
+            } else {
+                tagList.add(s);
+            }
+        }
+
+        switch (order){
+            case "LIKE_DES" :
+                // 좋아요 순
+                sortCriterion = SortCriterion.LIKE;
+                sortingOrder = SortingOrder.DES;
+                break;
+            case "DATE_DES" :
+                // 최신 등록순
+                sortCriterion = SortCriterion.DATE;
+                sortingOrder = SortingOrder.DES;
+                break;
+            case "DATE_ASC" :
+                // 오래된 등록순
+                sortCriterion = SortCriterion.DATE;
+                sortingOrder = SortingOrder.ASC;
+                break;
+            case "VIEW_DES" :
+                // 조회순
+            default:
+                sortCriterion = SortCriterion.VIEW;
+                sortingOrder = SortingOrder.DES;
+                break;
+        }
+
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+                .size(MAX_LOC_LIST_SIZE)
+                .searchType(searchType)
+                .keyword(keyword)
+                .tagList(tagList)
+                .sortCriterion(sortCriterion)
+                .sortingOrder(sortingOrder)
+                .build();
+
+        PageResultDTO<LocationDTO, com.project.love_data.model.service.Location> resultDTO = locService.getList(pageRequestDTO);
+
+        List<LocationTag> tags = Arrays.asList(LocationTag.values());
+        List<String> activeTags = tagList;
+
+        model.addAttribute("result", resultDTO);
+        model.addAttribute("tagList", tags);
+        model.addAttribute("activeTags", activeTags);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("sortOrder", order);
+
+        return "/service/loc_recommend_search";
     }
 }

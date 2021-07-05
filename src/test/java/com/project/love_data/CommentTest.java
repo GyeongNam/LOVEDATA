@@ -6,7 +6,6 @@ import com.project.love_data.model.service.Comment;
 import com.project.love_data.model.service.Location;
 import com.project.love_data.repository.CommentRepository;
 import com.project.love_data.repository.UserRepository;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,7 +25,7 @@ public class CommentTest {
 
     @Test
     public void InsertCommentInit() {
-        Location loc = locService.locationNameSearch("중부대학교 충청", SearchOption.CONTAIN).get(0);
+        Location loc = locService.locationNameSearch("중부대학교 충청", MatchOption.CONTAIN).get(0);
 
         Comment entity = new Comment();
         for (int i = 0; i < 45; i++) {
@@ -45,7 +44,7 @@ public class CommentTest {
             locService.update(loc);
         }
 
-        loc = locService.locationNameSearch("중부대학교 고양", SearchOption.CONTAIN).get(0);
+        loc = locService.locationNameSearch("중부대학교 고양", MatchOption.CONTAIN).get(0);
 
         for (int i = 0; i < 45; i++) {
             entity = new Comment();
@@ -67,7 +66,7 @@ public class CommentTest {
     @Test
     public void InsertComment() {
         for (int i = 0; i < 10; i++) {
-            Location loc = locService.locationNameSearch(String.valueOf(i), SearchOption.CONTAIN).get(0);
+            Location loc = locService.locationNameSearch(String.valueOf(i), MatchOption.CONTAIN).get(0);
             Comment entity = Comment.builder()
                     .cmtContent("Comment Content " + i)
                     .user(userRepository.findById(loc.getUser_no()).get())
@@ -109,7 +108,7 @@ public class CommentTest {
 
     @Test
     public void readComment(){
-        Location loc = locService.locationNameSearch("중부대학교 충청캠퍼스", SearchOption.CONTAIN).get(0);
+        Location loc = locService.locationNameSearch("중부대학교 충청캠퍼스", MatchOption.CONTAIN).get(0);
 //        Location loc = locService.locationNameSearch(String.valueOf(0), SearchOption.CONTAIN).get(0);
 
         System.out.println("loc Comment Set");
@@ -120,7 +119,7 @@ public class CommentTest {
 
     @Test
     public void updateComment() {
-        Location loc = locService.locationNameSearch(String.valueOf(0), SearchOption.CONTAIN).get(0);
+        Location loc = locService.locationNameSearch(String.valueOf(0), MatchOption.CONTAIN).get(0);
 
         System.out.println("업데이트 전 댓글");
         System.out.println(loc.getLoc_no() + " : " + loc.getCmtSet());
@@ -136,7 +135,7 @@ public class CommentTest {
 
     @Test
     public void deleteComment() {
-        Location loc = locService.locationNameSearch(String.valueOf(0), SearchOption.CONTAIN).get(0);
+        Location loc = locService.locationNameSearch(String.valueOf(0), MatchOption.CONTAIN).get(0);
 
         System.out.println("삭제 전 댓글");
         System.out.println(loc.getLoc_no() + " : " + loc.getCmtSet());
