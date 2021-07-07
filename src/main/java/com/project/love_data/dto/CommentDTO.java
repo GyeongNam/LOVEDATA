@@ -17,6 +17,8 @@ import java.util.*;
 @Builder
 public class CommentDTO {
     private Long cmtNo;
+    @Builder.Default
+    private boolean is_deleted = false;
     @ToString.Exclude
     private Location location;
     private String cmtContent;

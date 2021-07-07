@@ -56,6 +56,23 @@
 			</div>
 		</ul>
 	</div>
+	<c:choose>
+		<c:when test="${dto._deleted eq true}">
+			<sec:authentication property="principal.authorities"></sec:authentication>
+			<sec:authorize access="hasAnyRole('USER')">
+				<span>현재 페이지는 삭제되었습니다.</span>
+				<%
+					if( true ) return;
+				%>
+			</sec:authorize>
+			<sec:authorize access="isAnonymous()">
+				<span>현재 페이지는 삭제되었습니다.</span>
+				<%
+					if( true ) return;
+				%>
+			</sec:authorize>
+		</c:when>
+	</c:choose>
 	<div class="container m-5" id="display_center" style="margin-right: 30px; margin-top: 30px">
 		<div class="row justify-content-md-center">
 			<div class="col-md-7">
@@ -133,8 +150,22 @@
 				</div>
 
 				<div class="d-flex align-content-end flex-wrap">
-					<img src="/image/icon/like/love_black.png" class="loc_icon_big me-2" alt="찜하기"
-						 onclick="onClickLike(this)">
+<%--					이미지 소스 바꾸는 로직 추가--%>
+					<sec:authorize access="isAuthenticated()">
+						<c:choose>
+							<c:when test="${isLiked eq true}">
+								<img src="/image/icon/like/love_color.png" class="loc_icon_big me-2" alt="찜하기"
+									 onclick="onClickLike(this, <sec:authentication property="principal.user_no"/>)">
+							</c:when>
+							<c:otherwise>
+								<img src="/image/icon/like/love_black.png" class="loc_icon_big me-2" alt="찜하기"
+									 onclick="onClickLike(this, <sec:authentication property="principal.user_no"/>)">
+							</c:otherwise>
+						</c:choose>
+					</sec:authorize>
+					<sec:authorize access="isAnonymous()">
+						<img src="/image/icon/like/love_black.png" class="loc_icon_big me-2" alt="찜하기">
+					</sec:authorize>
 					<span class="text-center align-middle fs-3 me-4" id="likeCount">${dto.likeCount}</span>
 					<img src="/image/icon/comment.png" class="loc_icon_big me-2" alt="댓글">
 					<span class="text-center align-middle fs-3 me-4">${dto.cmtList.size()}</span>

@@ -47,6 +47,8 @@ public class LocationDTO {
     private List<Location> recentLocList = new ArrayList<>();
     @Builder.Default
     private String thumbnail = "";
+    @Builder.Default
+    private boolean is_deleted = false;
 
     // Todo 여기에 댓글 칼럼도 추가
 

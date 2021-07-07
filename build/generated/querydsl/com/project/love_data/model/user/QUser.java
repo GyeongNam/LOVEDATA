@@ -24,6 +24,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final SetPath<com.project.love_data.model.service.Comment, com.project.love_data.model.service.QComment> cmtSet = this.<com.project.love_data.model.service.Comment, com.project.love_data.model.service.QComment>createSet("cmtSet", com.project.love_data.model.service.Comment.class, com.project.love_data.model.service.QComment.class, PathInits.DIRECT2);
 
+    public final BooleanPath is_deleted = createBoolean("is_deleted");
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modDate = _super.modDate;
 

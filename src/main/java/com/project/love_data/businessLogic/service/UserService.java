@@ -3,6 +3,7 @@ package com.project.love_data.businessLogic.service;
 import com.project.love_data.dto.UserDTO;
 import com.project.love_data.model.service.Comment;
 import com.project.love_data.model.service.Location;
+import com.project.love_data.model.service.UserLikeLoc;
 import com.project.love_data.model.user.User;
 import com.project.love_data.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,11 @@ import java.util.*;
 public class UserService {
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    UserLikeLocService likeLocService;
+    @Autowired
+    UserRecentLocService recentLocService;
+
 
     public User dtoToEntity(UserDTO dto){
         User entity = User.builder()
@@ -135,29 +141,20 @@ public class UserService {
 //    }
 
     // Todo UserService에 추가하기
-    public void addLikeLocation(Long userNo, Long locNo) {
+//    public UserLikeLoc addLikeLocation(Long userNo, Long locNo) {
+//        UserLikeLoc entity = likeLocService.register(userNo, locNo);
+//
+//        return entity;
 //        dto.addLikeLocation(location);
 
         // locService에서 업데이트 해주는 식으로
 //        update(user);
-    }
+//    }
 
-    public void removeLikeLocation(Long userNo, Long locNo) {
+//    public boolean removeLikeLocation(Long userNo, Long locNo) {
+//        return likeLocService.delete(userNo, locNo);
 //        dto.removeLikeLocation(location);
 
 //        update(dto);
-    }
-
-    public void addRecentLocation(Long userNo, Long locNo){
-//        dto.addRecentLocation(location);
-
-//        update(dto);
-    }
-
-    public void removeRecentLocation(Long userNo, Long locNo){
-//        dto.removeRecentLocation(location);
-
-//        update(dto);
-    }
-
+//    }
 }

@@ -69,7 +69,6 @@ $(document).ready(function () {
 //생년월일 나누기
 $(document).ready(function () {
     var jd = $("#jender").val();
-
     console.log(jd);
     $("#year").val(myyear);
 });

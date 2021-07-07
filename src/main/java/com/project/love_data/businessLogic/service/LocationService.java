@@ -73,6 +73,7 @@ public class LocationService {
                 .likeCount(dto.getLikeCount())
                 .thumbnail(dto.getThumbnail())
                 .viewCount(dto.getViewCount())
+                .is_deleted(dto.is_deleted())
                 .build();
 
         return entity;
@@ -97,6 +98,7 @@ public class LocationService {
                 .likeCount(entity.getLikeCount())
                 .thumbnail(entity.getThumbnail())
                 .viewCount(entity.getViewCount())
+                .is_deleted(entity.is_deleted())
                 .build();
 
         // Image List 변환 및 정렬
@@ -295,14 +297,18 @@ public class LocationService {
                     conditionBuilder.and(qLocation.tagSet.contains(s));
                 }
                 break;
+            case DISABLED:
+                conditionBuilder.and(qLocation.is_deleted.eq(true));
+                break;
             case NONE:
             default:
-                return conditionBuilder;
+                return conditionBuilder.and(qLocation.is_deleted.ne(true));
         }
 
-        return conditionBuilder;
+        return conditionBuilder.and(qLocation.is_deleted.ne(true));
     }
 
+    // TODO 안쓰는거 지워야할 거
     public List<Location> locationNameSearch(String loc_name, MatchOption matchOption) {
         StringBuilder sb = new StringBuilder();
         switch (matchOption) {
@@ -356,8 +362,8 @@ public class LocationService {
         repository.save(loc);
     }
 
-    public void delete(Location loc) {
-        List<Image> list = (List<Image>) loc.getImgSet();
+    public void permaDelete(Location loc) {
+        List<Image> list = new ArrayList<Image>(loc.getImgSet());
         Set<Comment> cmtSet = loc.getCmtSet();
 
         for (Image image : list) {
@@ -365,11 +371,11 @@ public class LocationService {
 
             imgService.update(image);
 
-            imgService.delete(image.getImg_uuid());
+            imgService.permaDelete(image.getImg_uuid());
         }
 
         for (Comment cmt : cmtSet) {
-            cmtService.delete(cmt);
+            cmtService.permaDelete(cmt);
         }
 
         loc.setImgSet(null);
@@ -377,6 +383,25 @@ public class LocationService {
         update(loc);
 
         repository.deleteByLoc_uuid(loc.getLoc_uuid());
+    }
+
+    public void delete(Long locNo) {
+        Location loc = selectLoc(locNo);
+
+        if (!loc.is_deleted()) {
+            disableLocation(loc);
+            for (Image image : loc.getImgSet()) {
+                imgService.delete(image.getImg_no());
+            }
+        }
+    }
+
+    public void delete(String uuid) {
+        Location loc = selectLoc(uuid);
+
+        if (!loc.is_deleted()) {
+            disableLocation(loc);
+        }
     }
 
     public boolean onClickLike(Long loc_no) {
@@ -446,7 +471,7 @@ public class LocationService {
             log.info(filePath.get(i));
             // Todo 현재는 기존에 이미 등록되어 있던 이미지는 삭제하고, 새로 등록하도록 했음
             // 나중에는 기존에 이미  등록되어 있던 이미지를 삭제하지 않고, 업데이트해서 등록하도록 바꿀것
-            imgService.delete(filePath.get(i));
+            imgService.permaDelete(filePath.get(i));
             imgList.add(imgService.getImageEntity(reqParam.get("user_no"), filePath.get(0), filePath.get(i), entity, i-1));
         }
 
@@ -464,5 +489,21 @@ public class LocationService {
         Optional<List<Location>> locationList = repository.findByAllUser_no(userNo);
 
         return locationList.orElse(null);
+    }
+
+    private Location disableLocation(Location loc) {
+        loc.set_deleted(true);
+
+        update(loc);
+
+        return selectLoc(loc.getLoc_no());
+    }
+
+    private Location enableLocation(Location loc) {
+        loc.set_deleted(false);
+
+        update(loc);
+
+        return selectLoc(loc.getLoc_no());
     }
 }

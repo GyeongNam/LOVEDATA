@@ -55,6 +55,7 @@ public class ImageService {
                 .location(dto.getLocation())
                 .img_uuid(dto.getImg_uuid())
                 .idx(dto.getIdx())
+                .is_deleted(dto.is_deleted())
                 .build();
 
         return entity;
@@ -69,6 +70,7 @@ public class ImageService {
                 .location(img.getLocation())
                 .regDate(img.getRegDate())
                 .modDate(img.getModDate())
+                .is_deleted(img.is_deleted())
                 .build();
 
         return dto;
@@ -85,7 +87,39 @@ public class ImageService {
         return dto;
     }
 
-    public void delete(String img_uuid) {
+    private Image disable(Image img) {
+        img.set_deleted(true);
+
+        update(img);
+
+        return getImage(img.getImg_no());
+    }
+
+    private Image enable(Image img) {
+        img.set_deleted(false);
+
+        update(img);
+
+        return getImage(img.getImg_no());
+    }
+
+    public void delete(Long imgNo) {
+        Image img = getImage(imgNo);
+
+        if (!img.is_deleted()) {
+            disable(img);
+        }
+    }
+
+    public void delete(String uuid) {
+        Image img = getImage(uuid);
+
+        if (!img.is_deleted()) {
+            disable(img);
+        }
+    }
+
+    public void permaDelete(String img_uuid) {
         repository.deleteByImg_uuid(img_uuid);
     }
 

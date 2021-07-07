@@ -77,7 +77,7 @@ public class UserRecentLocService {
         if (item == null) {
             return false;
         } else {
-            log.info("Duplicated Found!");
+//            log.info("Duplicated Found!");
             delete(locNo, userNo);
 
             item = UserRecentLoc.builder()

@@ -22,7 +22,7 @@ public class ImageTest {
     public void ImageDelete() {
         Image img1 = imgService.getImage(4L);
 
-        imgService.delete(img1.getImg_uuid());
+        imgService.permaDelete(img1.getImg_uuid());
 
         Image tempImg1 = imgService.getImage(4L);
 

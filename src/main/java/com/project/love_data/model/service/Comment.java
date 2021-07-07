@@ -37,6 +37,10 @@ public class Comment extends TimeEntity {
     @Column(length = 300, nullable = false)
     private String cmtContent;
 
+    @Column(name = "is_deleted", nullable = false)
+    @Builder.Default
+    private boolean is_deleted = false;
+
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private User user;
 

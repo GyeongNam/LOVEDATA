@@ -2,10 +2,7 @@ package com.project.love_data.controller.service;
 
 import com.project.love_data.businessLogic.service.*;
 import com.project.love_data.dto.*;
-import com.project.love_data.model.service.Comment;
-import com.project.love_data.model.service.Location;
-import com.project.love_data.model.service.LocationTag;
-import com.project.love_data.model.service.UserRecentLoc;
+import com.project.love_data.model.service.*;
 import com.project.love_data.model.user.User;
 import com.project.love_data.security.model.AuthUserModel;
 import com.project.love_data.security.service.UserDetailsService;
@@ -41,6 +38,8 @@ public class LocationController {
     UserService userService;
     @Autowired
     UserRecentLocService userRecentLocService;
+    @Autowired
+    UserLikeLocService userLikeLocService;
     @Autowired
     UserDetailsService userDetailsService;
     List<String> tagList = new ArrayList<>();
@@ -135,17 +134,23 @@ public class LocationController {
 
 //            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (authentication != null) {
+                AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
                 if (authentication.isAuthenticated()) {
-                    AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
                     UserRecentLoc item = userRecentLocService.register(locNo, authUserModel.getUser_no());
-                    if (item == null) {
-                        log.warn(authUserModel.getUser_no() + "의 최근 접속한 기록을 추가하는 과정에서 문제가 발생하였습니다.");
-                        log.warn("장소 번호 (" + locNo + ")");
+//                    if (item == null) {
+//                        log.warn(authUserModel.getUser_no() + "의 최근 접속한 기록을 추가하는 과정에서 문제가 발생하였습니다.");
+//                        log.warn("장소 번호 (" + locNo + ")");
+//                    } else {
+//                        log.info("기록 추가 성공");
+//                    }
+                    if (userLikeLocService.selectByLocNoAndUserNo(locNo, authUserModel.getUser_no()) != null) {
+                        model.addAttribute("isLiked", true);
                     } else {
-                        log.info("기록 추가 성공");
+                        model.addAttribute("isLiked", false);
                     }
-                    log.info("temp");
                 }
+            } else {
+                model.addAttribute("isLiked", false);
             }
 
             model.addAttribute("dto", dto);
@@ -168,8 +173,29 @@ public class LocationController {
                 .sortCriterion(SortCriterion.VIEW)
                 .build();
         PageResultDTO<LocationDTO, com.project.love_data.model.service.Location> resultDTO = locService.getList(pageRequestDTO);
+            List<Boolean> isLikedList = new ArrayList<>();
+
+        if (authentication == null) {
+            for (int i = 0; i < resultDTO.getSize()-1; i++) {
+                isLikedList.add(false);
+            }
+        } else {
+            AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
+            Long user_no = authUserModel.getUser_no();
+            for (int i = 0; i < resultDTO.getDtoList().size()-1; i++) {
+                Long loc_no = resultDTO.getDtoList().get(i).getLoc_no();
+                UserLikeLoc item = userLikeLocService.selectByLocNoAndUserNo(loc_no, user_no);
+                if (item != null){
+                    isLikedList.add(true);
+                } else {
+                    isLikedList.add(false);
+                }
+            }
+        }
+
         model.addAttribute("result", resultDTO);
         model.addAttribute("tagList", tagList);
+        model.addAttribute("isLikedList", isLikedList);
 
 //        if(authentication != null) {
 //            AuthUserModel authUser = (AuthUserModel) authentication.getPrincipal();
