@@ -58,14 +58,13 @@
 	</div>
 	<c:choose>
 		<c:when test="${dto._deleted eq true}">
-			<sec:authentication property="principal.authorities"></sec:authentication>
-			<sec:authorize access="hasAnyRole('USER')">
+			<sec:authorize access="isAnonymous()">
 				<span>현재 페이지는 삭제되었습니다.</span>
 				<%
 					if( true ) return;
 				%>
 			</sec:authorize>
-			<sec:authorize access="isAnonymous()">
+			<sec:authorize access="hasRole('USER')">
 				<span>현재 페이지는 삭제되었습니다.</span>
 				<%
 					if( true ) return;

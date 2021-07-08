@@ -366,6 +366,28 @@ public class LocationTest {
     }
 
     @Test
+    public void undeleteByID() {
+        long id = 1L;
+
+        Location loc = locService.selectLoc(id);
+
+        if (loc == null ) {
+            System.out.println("선택한 ID를 가진 장소가 없습니다.");
+            return;
+        }
+
+        locService.rollback(loc.getLoc_no());
+
+        loc = locService.selectLoc(loc.getLoc_no());
+
+        if (loc.is_deleted()) {
+            System.out.println("롤백 실패");
+        } else {
+            System.out.println("롤백 성공");
+        }
+    }
+
+    @Test
     public void deleteByID() {
         long id = 2L;
 

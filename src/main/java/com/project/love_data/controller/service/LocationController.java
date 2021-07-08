@@ -176,13 +176,13 @@ public class LocationController {
             List<Boolean> isLikedList = new ArrayList<>();
 
         if (authentication == null) {
-            for (int i = 0; i < resultDTO.getSize()-1; i++) {
+            for (int i = 0; i < resultDTO.getSize(); i++) {
                 isLikedList.add(false);
             }
         } else {
             AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
             Long user_no = authUserModel.getUser_no();
-            for (int i = 0; i < resultDTO.getDtoList().size()-1; i++) {
+            for (int i = 0; i < resultDTO.getDtoList().size(); i++) {
                 Long loc_no = resultDTO.getDtoList().get(i).getLoc_no();
                 UserLikeLoc item = userLikeLocService.selectByLocNoAndUserNo(loc_no, user_no);
                 if (item != null){

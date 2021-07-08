@@ -60,9 +60,29 @@
 	</div>
 	<div class="container m-5" id="display_center" style="margin-right: 30px; margin-top: 30px">
 <%--		TODO 로그인 확인 후 장소 등록한 유저가 맞는지 확인절차를 거치기--%>
-<%--		<c:set var="user_no"><sec:authentication property="principal.user_no"/></c:set>--%>
 		<h1>장소 수정</h1>
-		<c:set var="dto" value="${dto}"/>
+		<sec:authorize access="isAuthenticated()">
+<%--			<span><sec:authentication property="principal.authorities"></sec:authentication></span>--%>
+			<c:set var="dto" value="${dto}"/>
+			<c:set var="user_no"><sec:authentication property="principal.user_no"/></c:set>
+			<sec:authorize access="hasAnyRole('USER')">
+				<c:choose>
+					<c:when test="${user_no ne dto.user_no}">
+						<span>등록하지 않은 장소 입니다.</span>
+						<span>수정할 수 없습니다.</span>
+						<%
+							if(true) return;
+						%>
+					</c:when>
+				</c:choose>
+			</sec:authorize>
+		</sec:authorize>
+		<sec:authorize access="isAnonymous()">
+			<span>로그인을 하지 않아 장소를 수정할 수 없습니다.</span>
+			<%
+				if(true) return;
+			%>
+		</sec:authorize>
 		<div class="container-fluid">
 			<form action="/service/loc_edit/regData" method="post" enctype="multipart/form-data">
 				<div class="user-details basic-style">

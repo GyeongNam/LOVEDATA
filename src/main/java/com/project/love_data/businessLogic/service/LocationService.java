@@ -404,6 +404,22 @@ public class LocationService {
         }
     }
 
+    public void rollback(Long locNo) {
+        Location loc = selectLoc(locNo);
+
+        if (loc.is_deleted()){
+            enableLocation(loc);
+        }
+    }
+
+    public void rollback(String uuid) {
+        Location loc = selectLoc(uuid);
+
+        if (loc.is_deleted()){
+            enableLocation(loc);
+        }
+    }
+
     public boolean onClickLike(Long loc_no) {
         Location entity = selectLoc(loc_no);
 
