@@ -15,6 +15,7 @@
 </head>
 <%@ include file="../layout/header.jsp"%>
 <body>
+<%--<form class="mypageform" action="/mypage_modify" method="post">--%>
 <div id="jb-container">
 	<div id="jb-header">
 		<h1>마이페이지</h1>
@@ -37,7 +38,9 @@
 				</tr>
 				<tr>
 					<td>이름</td>
-					<td id="sec_line"><span><sec:authentication property="principal.user_name"/></span></td>
+					<td id="sec_line">
+						<span>${dto.user_name}</span>
+					</td>
 				</tr>
 				<tr>
 					<td>프로필 사진</td>
@@ -58,7 +61,7 @@
 				</tr>
 				<tr>
 					<td>닉네임</td>
-					<td id="sec_line"><input type="text" value="<sec:authentication property="principal.user_nic"/>">
+					<td id="sec_line"><input type="text" value="${dto.user_nic}">
 
 						<button id="NickName">중복 확인</button>
 					</td>
@@ -278,6 +281,7 @@
 		</div>
 	</div>
 </div>
+<%--</form>--%>
 </body>
 <!--   부트스트랩 js 사용  -->
 <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

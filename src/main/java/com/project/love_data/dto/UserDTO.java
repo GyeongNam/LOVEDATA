@@ -21,6 +21,7 @@ import java.util.*;
 @AllArgsConstructor
 @Data
 public class UserDTO {
+
     private Long user_no;
     private String user_email;
     private String user_pw;

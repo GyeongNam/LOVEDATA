@@ -40,13 +40,8 @@ com/project/love_data/dto/PageResultDTO.java
  com.project.love_data.dto.PageResultDTO
 com/project/love_data/businessLogic/service/UserService.java
  com.project.love_data.businessLogic.service.UserService
-<<<<<<< HEAD
 com/project/love_data/controller/service/LocationController.java
  com.project.love_data.controller.service.LocationController
-=======
-com/project/love_data/controller/RestController.java
- com.project.love_data.controller.RestController
->>>>>>> 7af0e64f5cc65c105e7497e8122b413fbc5bfa7d
 com/project/love_data/model/base/TimeEntity.java
  com.project.love_data.model.base.TimeEntity
 com/project/love_data/businessLogic/service/SortingOrder.java
@@ -99,11 +94,8 @@ com/project/love_data/dto/UserLikeLocDTO.java
 com/project/love_data/businessLogic/service/CommentService.java
  com.project.love_data.businessLogic.service.CommentService
  com.project.love_data.businessLogic.service.CommentService$1
-<<<<<<< HEAD
-=======
 com/project/love_data/businessLogic/service/SearchType.java
  com.project.love_data.businessLogic.service.SearchType
->>>>>>> 7af0e64f5cc65c105e7497e8122b413fbc5bfa7d
 com/project/love_data/controller/service/CommentController.java
  com.project.love_data.controller.service.CommentController
 com/project/love_data/repository/ImageRepository.java
@@ -212,10 +204,5 @@ com/project/love_data/businessLogic/oauth/login/TokenRequestKakao.java
  com.project.love_data.businessLogic.oauth.login.TokenRequestKakao
 com/project/love_data/security/converter/UserRoleConverter.java
  com.project.love_data.security.converter.UserRoleConverter
-<<<<<<< HEAD
 com/project/love_data/controller/RestController.java
  com.project.love_data.controller.RestController
-=======
-com/project/love_data/controller/service/LocationController.java
- com.project.love_data.controller.service.LocationController
->>>>>>> 7af0e64f5cc65c105e7497e8122b413fbc5bfa7d

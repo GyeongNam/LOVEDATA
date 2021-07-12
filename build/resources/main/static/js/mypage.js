@@ -69,10 +69,12 @@ $(document).ready(function () {
 //생년월일 나누기
 $(document).ready(function () {
     var jd = $("#jender").val();
-
     console.log(jd);
     $("#year").val(myyear);
 });
+
+//수정된 항목 저장
+
 
 // select box 연도 , 월 표시
 // function setDateBox() {

@@ -73,6 +73,9 @@ $(document).ready(function () {
     $("#year").val(myyear);
 });
 
+//수정된 항목 저장
+
+
 // select box 연도 , 월 표시
 // function setDateBox() {
 //     var dt = new Date();
