@@ -78,6 +78,11 @@ public class UserDTO {
         }
     }
 
+    //CHOI
+    public String myinfolod(String user_no) {
+
+        return "유저디티오";
+    }
 //    public void addLikeLocation(Location loc) {
 //        likeLoc.add(loc);
 //    }

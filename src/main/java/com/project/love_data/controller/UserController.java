@@ -1,5 +1,6 @@
 package com.project.love_data.controller;
 
+import com.project.love_data.businessLogic.service.UserService;
 import com.project.love_data.dto.UserDTO;
 import com.project.love_data.model.user.User;
 import com.project.love_data.repository.UserRepository;
@@ -32,6 +33,8 @@ public class UserController {
 	private SmsService smsService;
 	@Autowired
 	private UserAccountDelete accountDelete;
+	@Autowired
+	UserService userService;
 
     @RequestMapping(value="/signup_add",method = RequestMethod.POST)
     public String signup(
@@ -137,4 +140,16 @@ public class UserController {
 		redirectURL = accountDelete.execute(request,  principal, userRepository);
 		return redirectURL;
 	}
+	//CHOI
+	@GetMapping(value = "/mypage")
+	public String myinfo(HttpServletRequest request, Principal principal, Model model) {
+    	log.info("data : "+ request);
+    	log.info("data2 : "+ principal);
+		UserDTO userDTO = userService.DTOselect(principal.getName());
+		log.info("DTOLOG : "+ userDTO);
+		model.addAttribute("UserDTO", userDTO);
+
+    	return  "user/mypage";
+	}
+
 }

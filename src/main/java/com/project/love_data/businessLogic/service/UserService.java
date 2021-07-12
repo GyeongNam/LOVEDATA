@@ -92,7 +92,6 @@ public class UserService {
 
     public User select(String email){
         Optional<User> item = userRepository.findUserByEmail(email);
-
         return item.orElse(null);
     }
 
@@ -104,6 +103,13 @@ public class UserService {
         userRepository.delete(user);
     }
 
+    //CHOI
+    public UserDTO DTOselect(String email) {
+        Optional<User> item = userRepository.findUserByEmail(email);
+
+        return item.isPresent() ? entityToDto(item.get()) : null;
+//        return item.orElse(null);
+    }
 //    public void addLikeLocation(User user, Location location) {
 //        user.addLikeLocation(location);
 //

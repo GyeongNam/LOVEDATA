@@ -39,7 +39,7 @@
 				<tr>
 					<td>이름</td>
 					<td id="sec_line">
-						<span>${dto.user_name}</span>
+						<span>${UserDTO.user_name}</span>
 					</td>
 				</tr>
 				<tr>
@@ -61,14 +61,14 @@
 				</tr>
 				<tr>
 					<td>닉네임</td>
-					<td id="sec_line"><input type="text" value="${dto.user_nic}">
+					<td id="sec_line"><input type="text" value="${UserDTO.user_nic}">
 
 						<button id="NickName">중복 확인</button>
 					</td>
 				</tr>
 				<tr>
 					<td>이메일</td>
-					<td id="sec_line"><span><sec:authentication property="principal.user_email"/></span></td>
+					<td id="sec_line"><span>${UserDTO.user_email}</span></td>
 				</tr>
 				<tr>
 					<td>기존 비밀번호 *</td>
@@ -85,7 +85,7 @@
 				<tr>
 					<td>휴대폰 번호 *</td>
 					<td id="sec_line">
-						<input type="hidden" id="numnum" value="<sec:authentication property="principal.user_phone"/>">
+						<input type="hidden" id="numnum" value="${UserDTO.user_phone}">
 						<select name="first-phone-number" id="firnum" >
 						<option value="010">010</option>
 						<option value="011">011</option>
@@ -105,7 +105,7 @@
 				<tr>
 					<td>생년월일 *</td>
 					<td id="sec_line">
-						<input type="hidden" id="mybir" value="<sec:authentication property="principal.user_birth"/>">
+						<input type="hidden" id="mybir" value="${UserDTO.user_birth}">
 						<input type="date" id="birthday" name="birthday"
 							   value="<sec:authentication property="principal.user_birth"/>" min="1930-01-01" max="2050-12-31" required>
 					</td>
@@ -113,9 +113,9 @@
 				<tr>
 					<td>성별</td>
 					<td id="sec_line">
-						<input type="hidden" id="jender" value="<sec:authentication property="principal.user_sex"/>">
-						<input type="radio" name="chk_gender" value="남자" <% if("남자".equals(1)){%>checked<%}%>>남자</input>
-						<input type="radio" name="chk_gender" value="여자" <% if("여자".equals(0)){%>checked<%}%>>여자</input>
+						<input type="hidden" id="jender" value="${UserDTO.user_sex}">
+						<input type="radio" id="mann" name="chk_gender" value="" >남자</input>
+						<input type="radio" id="womann" name="chk_gender" value="" >여자</input>
 					</td>
 				</tr>
 			</table>

@@ -70,7 +70,12 @@ $(document).ready(function () {
 $(document).ready(function () {
     var jd = $("#jender").val();
     console.log(jd);
-    $("#year").val(myyear);
+    if(jd == "true"){
+        $("#mann").prop("checked", true);
+    }
+    else{
+        $("#womann").prop("checked", true);
+    }
 });
 
 //수정된 항목 저장
