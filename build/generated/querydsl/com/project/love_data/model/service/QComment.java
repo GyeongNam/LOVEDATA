@@ -32,6 +32,8 @@ public class QComment extends EntityPathBase<Comment> {
 
     public final StringPath cmtUuid = createString("cmtUuid");
 
+    public final BooleanPath is_deleted = createBoolean("is_deleted");
+
     public final QLocation location;
 
     //inherited

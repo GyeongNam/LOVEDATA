@@ -165,18 +165,31 @@
 											<img src="/image/icon/comment.png" class="loc_icon" alt="댓글">
 												<%--									Todo 댓글 항목 Location Entity에 추가하기--%>
 											<span class="align-middle">${result.dtoList.get(i).cmtList.size()}</span>
-											<img src="/image/icon/like/love_black.png" class="loc_icon" alt="찜하기"
-												 onclick="onClickLike(this)">
+											<sec:authorize access="isAuthenticated()">
+												<c:choose>
+													<c:when test="${isLikedList.get(i) eq true}">
+														<img src="/image/icon/like/love_color.png" class="loc_icon" alt="찜하기"
+															 onclick="onClickLike(this, <sec:authentication property="principal.user_no"/>)">
+													</c:when>
+													<c:otherwise>
+														<img src="/image/icon/like/love_black.png" class="loc_icon" alt="찜하기"
+															 onclick="onClickLike(this, <sec:authentication property="principal.user_no"/>)">
+													</c:otherwise>
+												</c:choose>
+											</sec:authorize>
+											<sec:authorize access="isAnonymous()">
+												<img src="/image/icon/like/love_black.png" class="loc_icon" alt="찜하기">
+											</sec:authorize>
 											<span class="align-middle" id="loc_like_count" name="loc_like_count">${result.dtoList.get(i).likeCount}</span>
 											<span class="d-none">${result.dtoList.get(i).loc_no}</span>
 											<span class="d-none">${result.dtoList.get(i).loc_uuid}</span>
-											<sec:authorize access="isAuthenticated()">
-												<c:set var="user_no"><sec:authentication property="principal.user_no"></sec:authentication></c:set>
-												<span class="d-none">${user_no}</span>
-											</sec:authorize>
-											<sec:authorize access="isAnonymous()">
-												<span class="d-none">-1</span>
-											</sec:authorize>
+<%--											<sec:authorize access="isAuthenticated()">--%>
+<%--												<c:set var="user_no"><sec:authentication property="principal.user_no"></sec:authentication></c:set>--%>
+<%--												<span class="d-none">${user_no}</span>--%>
+<%--											</sec:authorize>--%>
+<%--											<sec:authorize access="isAnonymous()">--%>
+<%--												<span class="d-none">-1</span>--%>
+<%--											</sec:authorize>--%>
 										</div>
 									</div>
 								</div>

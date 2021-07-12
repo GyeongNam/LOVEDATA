@@ -92,6 +92,10 @@ public class Location extends TimeEntity {
     @Builder.Default
     private String thumbnail = "";
 
+    @Column(name = "is_deleted", nullable = false)
+    @Builder.Default
+    private boolean is_deleted = false;
+
     // Todo 여기에 댓글 칼럼도 추가
 
     public void addLocTag(String str) {

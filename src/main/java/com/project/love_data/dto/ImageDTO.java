@@ -26,4 +26,6 @@ public class ImageDTO {
     private LocalDateTime regDate = LocalDateTime.now();
     @Builder.Default
     private LocalDateTime modDate = LocalDateTime.now();
+    @Builder.Default
+    private boolean is_deleted = false;
 }

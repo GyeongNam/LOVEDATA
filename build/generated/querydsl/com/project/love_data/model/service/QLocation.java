@@ -30,6 +30,8 @@ public class QLocation extends EntityPathBase<Location> {
 
     public final StringPath info = createString("info");
 
+    public final BooleanPath is_deleted = createBoolean("is_deleted");
+
     public final NumberPath<Integer> likeCount = createNumber("likeCount", Integer.class);
 
     public final StringPath loc_name = createString("loc_name");

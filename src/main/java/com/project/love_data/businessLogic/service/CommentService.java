@@ -19,7 +19,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.*;
 import java.util.function.Function;
 
@@ -38,6 +37,7 @@ public class CommentService {
                 .cmtUuid(dto.getCmtUuid())
                 .cmtContent(dto.getCmtContent())
                 .user(userRepository.findById(dto.getUser().getUser_no()).get())
+                .is_deleted(dto.is_deleted())
                 .build();
 
         return entity;
@@ -53,6 +53,7 @@ public class CommentService {
                 .location(cmt.getLocation())
                 .regDate(cmt.getRegDate())
                 .modDate(cmt.getModDate())
+                .is_deleted(cmt.is_deleted())
                 .build();
 
         return dto;
@@ -143,7 +144,31 @@ public class CommentService {
         cmtRepository.save(cmt);
     }
 
-    public void delete(Comment cmt) {
+    private Comment disable(Comment cmt) {
+        cmt.set_deleted(true);
+
+        update(cmt);
+
+        return select(cmt.getCmtNo());
+    }
+
+    private Comment enable(Comment cmt) {
+        cmt.set_deleted(false);
+
+        update(cmt);
+
+        return select(cmt.getCmtNo());
+    }
+
+    public void delete(Long cmtNo) {
+        Comment cmt = select(cmtNo);
+
+        if (!cmt.is_deleted()) {
+            disable(cmt);
+        }
+    }
+
+    public void permaDelete(Comment cmt) {
         Location loc = cmt.getLocation();
 
         Set<Comment> cmtSet = loc.getCmtSet();
@@ -157,8 +182,13 @@ public class CommentService {
         cmtRepository.deleteByCmt_uuid(cmt.getCmtUuid());
     }
 
-    public Comment select(String cmt_uuid) {
-        Optional<Comment> item = cmtRepository.findByCmt_uuid(cmt_uuid);
-        return item.isPresent() ? item.get() : null;
+    public Comment select(String uuid) {
+        Optional<Comment> item = cmtRepository.findByCmt_uuid(uuid);
+        return item.orElse(null);
+    }
+
+    public Comment select(Long cmtNo) {
+        Optional<Comment> item = cmtRepository.findByCmt_no(cmtNo);
+        return item.orElse(null);
     }
 }

@@ -141,7 +141,7 @@ public class CommentTest {
         System.out.println(loc.getLoc_no() + " : " + loc.getCmtSet());
 
         for (Comment cmt : loc.getCmtSet()) {
-            cmtService.delete(cmt);
+            cmtService.permaDelete(cmt);
         }
 
         System.out.println("삭제 후 댓글");

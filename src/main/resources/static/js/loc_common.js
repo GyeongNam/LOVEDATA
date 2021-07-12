@@ -1,6 +1,6 @@
 let tagList = [];
 let index;
-var lastLikeLocId;
+// var lastLikeLocId;
 var token = $("meta[name='_csrf']").attr("content");
 var header = $("meta[name='_csrf_header']").attr("content");
 
@@ -56,12 +56,11 @@ function removeTag(tag) {
     console.log(tagList);
 }
 
-function onClickLike(Like) {
+function onClickLike(Like, user_no) {
     var countChangeFlag = true;
     var likeCount = null;
     var loc_no = null;
     var loc = null;
-    var user_no = null;
     var path_noparm = location.pathname;
 
     console.log(path_noparm);
@@ -82,7 +81,6 @@ function onClickLike(Like) {
         loc_no = Like.nextElementSibling.nextElementSibling.innerText;
         loc = Like.nextElementSibling;
     }
-    user_no = Like.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerText;
 
     var jsonData = {"loc_no": loc_no, "user_no" : user_no}
     var isClicked = false;
@@ -169,25 +167,31 @@ function onClickLikeAction(map) {
             },
             success: function (response) {
                 // do something ...
-                console.log("Like Success")
 
-                like.src = "/image/icon/like/love_color.png";
-                if (countChangeFlag) {
-                    if (location.pathname === "/service/loc_detail") {
-                    var temp = parseInt(likeCount.innerText);
-                    likeCount.innerText = temp + 1;
+                if (response) {
+                    console.log("Like Success")
+
+                    like.src = "/image/icon/like/love_color.png";
+                    if (countChangeFlag) {
+                        if (location.pathname === "/service/loc_detail") {
+                            var temp = parseInt(likeCount.innerText);
+                            likeCount.innerText = temp + 1;
+                        }
+                        else {
+                            console.log(parseInt(likeCount));
+                            console.log(parseInt(likeCount) + 1);
+                            console.log(typeof (likeCount) + "\t" + likeCount);
+                            loc.innerText = parseInt(likeCount) + 1;
+                        }
                     }
-                    else {
-                        console.log(parseInt(likeCount));
-                        console.log(parseInt(likeCount) + 1);
-                        console.log(typeof (likeCount) + "\t" + likeCount);
-                        loc.innerText = parseInt(likeCount) + 1;
-                    }
+                    // lastLikeLocId = loc_no;
+                } else {
+                    alert("이미 좋아요를 누른 장소입니다.");
+                    console.log("Like Failed");
                 }
-                lastLikeLocId = loc_no;
             },
             error: function (e) {
-                console.log("Like Failed")
+                console.log("Like Error");
             }
         });
     } else {
@@ -202,25 +206,31 @@ function onClickLikeAction(map) {
             },
             success: function (response) {
                 // do something ...
-                console.log("Undo Success")
 
-                like.src = "/image/icon/like/love_black.png";
-                if (countChangeFlag) {
-                    if (location.pathname === "/service/loc_detail") {
-                        var temp = parseInt(likeCount.innerText);
-                        likeCount.innerText = temp - 1;
-                    } else {
-                        console.log(parseInt(likeCount));
-                        console.log(parseInt(likeCount) - 1);
-                        console.log(typeof (likeCount) + "\t" + likeCount);
-                        loc.innerText = parseInt(likeCount) - 1;
+                if (response) {
+                    console.log("Undo Success")
+
+                    like.src = "/image/icon/like/love_black.png";
+                    if (countChangeFlag) {
+                        if (location.pathname === "/service/loc_detail") {
+                            var temp = parseInt(likeCount.innerText);
+                            likeCount.innerText = temp - 1;
+                        } else {
+                            console.log(parseInt(likeCount));
+                            console.log(parseInt(likeCount) - 1);
+                            console.log(typeof (likeCount) + "\t" + likeCount);
+                            loc.innerText = parseInt(likeCount) - 1;
+                        }
                     }
+
+                    // lastLikeLocId = loc_no;
+                } else {
+                    console.log("Undo Failed");
                 }
 
-                lastLikeLocId = loc_no;
             },
             error: function (e) {
-                console.log("Undo Failed")
+                console.log("Undo Error");
             }
         });
     }

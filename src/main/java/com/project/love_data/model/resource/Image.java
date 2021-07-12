@@ -54,4 +54,8 @@ public class Image  extends TimeEntity {
 
     @Column(name = "img_uuid", nullable = false, length = 45)
     private String img_uuid;
+
+    @Column(name = "is_deleted", nullable = false)
+    @Builder.Default
+    private boolean is_deleted = false;
 }

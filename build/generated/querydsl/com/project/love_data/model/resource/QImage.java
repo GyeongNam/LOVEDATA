@@ -32,6 +32,8 @@ public class QImage extends EntityPathBase<Image> {
 
     public final StringPath img_uuid = createString("img_uuid");
 
+    public final BooleanPath is_deleted = createBoolean("is_deleted");
+
     public final com.project.love_data.model.service.QLocation location;
 
     //inherited

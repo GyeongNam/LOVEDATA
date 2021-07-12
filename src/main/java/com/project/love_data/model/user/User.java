@@ -102,6 +102,10 @@ public class User extends TimeEntity {
     @Builder.Default
     private String profile_pic = "/image/icon/user/user.png";
 
+    @Column(name = "is_deleted", nullable = false)
+    @Builder.Default
+    private boolean is_deleted = false;
+
     @OneToMany(orphanRemoval = true, mappedBy = "user", fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Cascade(value = org.hibernate.annotations.CascadeType.ALL)

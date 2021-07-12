@@ -68,7 +68,7 @@ public class RestController {
         UserLikeLoc item = likeLocService.selectByLocNoAndUserNo(loc_no, user_no);
 
         if (item != null){
-            log.warn(loc_no + " has been liked before!");
+            log.warn(loc_no + "(loc_no) has been liked before!");
             log.warn("Please Check");
             return false;
         }

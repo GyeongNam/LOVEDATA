@@ -366,8 +366,30 @@ public class LocationTest {
     }
 
     @Test
+    public void undeleteByID() {
+        long id = 1L;
+
+        Location loc = locService.selectLoc(id);
+
+        if (loc == null ) {
+            System.out.println("선택한 ID를 가진 장소가 없습니다.");
+            return;
+        }
+
+        locService.rollback(loc.getLoc_no());
+
+        loc = locService.selectLoc(loc.getLoc_no());
+
+        if (loc.is_deleted()) {
+            System.out.println("롤백 실패");
+        } else {
+            System.out.println("롤백 성공");
+        }
+    }
+
+    @Test
     public void deleteByID() {
-        long id = 14L;
+        long id = 2L;
 
         Optional<Location> box = locationRepository.findById(id);
 
@@ -381,14 +403,14 @@ public class LocationTest {
         System.out.println("삭제 전 데이터");
         System.out.println(loc);
 
-        locService.delete(loc);
+        locService.delete(loc.getLoc_no());
 
         box = locationRepository.findById(id);
 
-        if (box.isPresent()) {
-            System.out.println("삭제 실패");
-        } else {
+        if (box.get().is_deleted()) {
             System.out.println("삭제 성공");
+        } else {
+            System.out.println("삭제 실패");
         }
 
         List<Location> list = locationRepository.findAll();
@@ -416,14 +438,14 @@ public class LocationTest {
         System.out.println("삭제 전 데이터");
         System.out.println(loc);
 
-        locService.delete(loc);
+        locService.delete(loc.getLoc_uuid());
 
         box = locationRepository.findLocByUUID(uuid);
 
-        if (box.isPresent()) {
-            System.out.println("삭제 실패");
-        } else {
+        if (box.get().is_deleted()) {
             System.out.println("삭제 성공");
+        } else {
+            System.out.println("삭제 실패");
         }
 
         List<Location> list = locationRepository.findAll();

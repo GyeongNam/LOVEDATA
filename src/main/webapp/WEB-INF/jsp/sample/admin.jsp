@@ -26,8 +26,8 @@
         <p>사용자 생일 : <sec:authentication property="principal.user_birth"/></p>
         <p>사용자 성별 : <sec:authentication property="principal.user_sex"/></p>
         <p>사용자 연락처 : <sec:authentication property="principal.user_phone"/></p>
-        <p>사용자 계정 생성시간 : <sec:authentication property="principal.user_time"/></p>
-        <p>사용자 제제여부 : <sec:authentication property="principal.user_Activation"/></p>
+        <p>사용자 계정 생성시간 : <sec:authentication property="principal.user_regDate"/></p>
+        <p>사용자 활성화 : <sec:authentication property="principal.user_Activation"/></p>
         <p>사용자 이메일 수신 여부 : <sec:authentication property="principal.user_emil_re"/></p>
         <p>소셜 로그인 사용 여부 : <sec:authentication property="principal.user_social"/></p>
     </div>
