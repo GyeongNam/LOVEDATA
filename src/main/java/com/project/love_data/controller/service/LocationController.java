@@ -337,6 +337,8 @@ public class LocationController {
         model.addAttribute("keyword", keyword);
         model.addAttribute("sortOrder", order);
 
+//        log.info("active tags : " + activeTags);
+
         return "/service/loc_recommend_search";
     }
 }

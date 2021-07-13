@@ -47,7 +47,7 @@
 							<p><a href="/service/loc_recommend" class="loc_highlight-selected-text-menu">- 추천 장소</a></p>
 							<p><a href="/service/loc_registration" class="loc_highlight-not-selected-text-menu">- 장소
 								등록</a></p>
-							<p><a href="/service/loc_registration" class="loc_highlight-not-selected-text-menu">- 장소
+							<p><a href="" class="loc_highlight-not-selected-text-menu">- 장소
 								편집</a></p>
 						</div>
 					</div>
