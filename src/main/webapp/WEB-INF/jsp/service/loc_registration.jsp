@@ -133,7 +133,7 @@
 							<c:forEach var="i" begin="1" end="10">
 								<c:choose>
 									<c:when test="${i eq 1}">
-										<div class="card col-3 p-0">
+										<div class="card col-3 p-0 m-2">
 											<img src="/image/icon/480px-Solid_white.png" alt="" id="img_${i}" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
 											<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
 												<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_${i}"
@@ -142,11 +142,15 @@
 											<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
 												<img class="btn btn-lg align-middle p-0" id="imgDel_${i}" onclick="deleteImage(this)"
 													 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
+											</div>
+											<div class="d-flex justify-content-center card-img-overlay p-0 visually-hidden" style="align-items: center">
+												<img class="w-100 h-100" id="imgSel_${i}" onclick="onSelectImage(${i})" src="/image/icon/480px-Solid_white.png"
+													 style="opacity : 0.0; z-index: 1;">
 											</div>
 										</div>
 									</c:when>
 									<c:otherwise>
-										<div class="card col-3 p-0 visually-hidden">
+										<div class="card col-3 p-0 m-2 visually-hidden">
 											<img src="/image/icon/480px-Solid_white.png" alt="" id="img_${i}" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
 											<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
 												<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_${i}"
@@ -155,6 +159,10 @@
 											<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
 												<img class="btn btn-lg align-middle p-0" id="imgDel_${i}" onclick="deleteImage(this)"
 													 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
+											</div>
+											<div class="d-flex justify-content-center card-img-overlay p-0 visually-hidden" style="align-items: center">
+												<img class="w-100 h-100" id="imgSel_${i}" onclick="onSelectImage(${i})" src="/image/icon/480px-Solid_white.png"
+													 style="opacity : 0.0; z-index: 1;">
 											</div>
 										</div>
 									</c:otherwise>
@@ -162,6 +170,12 @@
 							</c:forEach>
 						</div>
 					</div>
+				</div>
+				<div class="m-2">
+					<image type="button" id="img_move_left" name="img_move_left"
+						   src="/image/icon/left-arrow.png" onclick="onClickImgMoveLeft()" style="height: 30px"></image>
+					<image type="button" id="img_move_right" name="img_move_right"
+						   src="/image/icon/right-arrow.png" onclick="onClickImgMoveRight()" style="height: 30px"></image>
 				</div>
 				<button type="submit" id="register" name="register" onclick="onClickRegister()">Register</button>
 			</form>
@@ -184,7 +198,7 @@
 <script defer src="/js/loc_common.js"></script>
 <script defer src="/js/loc_registration.js"></script>
 <script>
-    document.domain = "localhost:8080"
+    // document.domain = "localhost:8080"
 
     function goPopup() {
 <%--        // 주소검색을 수행할 팝업 페이지를 호출합니다.
@@ -242,19 +256,22 @@
     }
 
     function toggleAddDelBtn(offset) {
-	    for (let i = 1; i <= 10; i++) {
+        for (let i = 1; i <= 10; i++) {
             let btnAddParent = document.getElementById("imgAdd_" + i).parentElement;
             let btnDelParent = document.getElementById("imgDel_" + i).parentElement;
+            let btnSelParent = document.getElementById("imgSel_" + i).parentElement;
 
-	        if (offset < i) {
+            if (offset < i) {
                 btnAddParent.setAttribute('class', 'd-flex justify-content-center card-img-overlay');
                 btnDelParent.setAttribute('class', 'd-flex justify-content-end card-img-overlay p-0 visually-hidden');
-			} else {
+                btnSelParent.setAttribute('class', 'd-flex justify-content-center card-img-overlay p-0 visually-hidden');
+            } else {
                 btnAddParent.setAttribute('class', 'd-flex justify-content-center card-img-overlay visually-hidden');
                 btnDelParent.setAttribute('class', 'd-flex justify-content-end card-img-overlay p-0');
-			}
-		}
-	}
+                btnSelParent.setAttribute('class', 'd-flex justify-content-center card-img-overlay p-0');
+            }
+        }
+    }
 
     <%--						http://yoonbumtae.com/?p=3304 --%>
     function readImage() {
@@ -265,60 +282,79 @@
         fileList.forEach((file, index) => {
             let reader = new FileReader();
             // console.log(i + "번 째 아이템이 등록되었습니다.");
-			let item = document.getElementById("img_" + (index+1));
-			reader.onload= e => {
-			    item.src = e.target.result;
-			    item.parentElement.setAttribute("class", "card col-3 p-0");
-			}
-			if (index != 9) {
-                document.getElementById("img_" + (index+2)).parentElement.setAttribute("class", "card col-3 p-0");
-			}
+            let item = document.getElementById("img_" + (index+1));
+            reader.onload= e => {
+                item.src = e.target.result;
+                item.parentElement.setAttribute("class", "card col-3 p-0 m-2");
+            }
+            if (index != 9) {
+                document.getElementById("img_" + (index+2)).parentElement.setAttribute("class", "card col-3 p-0 m-2");
+            }
             reader.readAsDataURL(file);
             console.log(item);
         })
 
-		// // 기존에 있던 이미지 지우기
+        // // 기존에 있던 이미지 지우기
         for (let i = fileList.length + 1; i <= 10; i++) {
             if (i === (fileList.length + 1)) {
-                document.getElementById("img_" + i).parentElement.setAttribute("class", "card col-3 p-0");
-			} else {
-                document.getElementById("img_" + i).parentElement.setAttribute("class", "card col-3 p-0 visually-hidden");
-			}
+                document.getElementById("img_" + i).parentElement.setAttribute("class", "card col-3 p-0 m-2");
+            } else {
+                document.getElementById("img_" + i).parentElement.setAttribute("class", "card col-3 p-0 m-2 visually-hidden");
+            }
 
             document.getElementById("img_" + i).src = "/image/icon/480px-Solid_white.png";
         }
         toggleAddDelBtn(fileList.length);
+        // onSelectImage(selectedImageIndex + 1);
     }
 
     function deleteImage(obj) {
         <%-- https://stackoverflow.com/questions/16943605/remove-a-filelist-item-from-a-multiple-inputfile  --%>
-		let dt = new DataTransfer();
-		dt.files = input.files;
+        let dt = new DataTransfer();
+        dt.files = input.files;
 
-		let objId = obj.id.split('_');
-		let index = objId[objId.length - 1];
+        let objId = obj.id.split('_');
+        let index = objId[objId.length - 1];
         console.log(index);
-		for (let file of input.files){
-		    if (file !== input.files[index - 1]){
-		        dt.items.add(file);
-			}
-		}
+        for (let file of input.files){
+            if (file !== input.files[index - 1]){
+                dt.items.add(file);
+            }
+        }
 
-		for (let i = 1; i <= 10; i++) {
-		    if (i >= index) {
-		       if (i !== 10) {
-                   document.getElementById("img_"+i).src = document.getElementById("img_"+(i+1)).src;
-               } else {
-		           document.getElementById("img_"+i).src = "/image/icon/480px-Solid_white.png";
-			   }
-			}
+        if (selectedImageParent !== null) {
+            if (selectedImageIndex < index) {
+                onSelectImage(selectedImageIndex);
+            } else {
+                if (Number(index) + 1 == selectedImageIndex) {
+                    onSelectImage(index);
+                } else {
+                    onClearSelecteImage();
+                }
+                // onClearSelecteImage();
+            }
+        }
 
-		    if (dt.items.length+1 < i) {
-		        document.getElementById("img_"+i).parentElement.setAttribute("class", "card col-3 p-0 visually-hidden");
-			}
-		}
+        for (let i = 1; i <= 10; i++) {
+            if (i >= index) {
+                if (i !== 10) {
+                    document.getElementById("img_"+i).src = document.getElementById("img_"+(i+1)).src;
+                } else {
+                    document.getElementById("img_"+i).src = "/image/icon/480px-Solid_white.png";
+                }
+            }
 
-		input.files = dt.files;
+            // if (dt.items.length+1 == i) {
+            //     document.getElementById("imgAdd_"+i).parentElement.setAttribute("class", "d-flex justify-content-center card-img-overlay");
+            //     document.getElementById("imgDel_"+i).parentElement.setAttribute("class", "d-flex justify-content-end card-img-overlay p-0 visually-hidden");
+            // }
+
+            if (dt.items.length+1 < i) {
+                document.getElementById("img_"+i).parentElement.setAttribute("class", "card col-3 p-0 m-2 visually-hidden");
+            }
+        }
+
+        input.files = dt.files;
         console.log(dt.files);
         console.log(input.files);
 
@@ -328,7 +364,7 @@
         }
 
         toggleAddDelBtn(input.files.length);
-	}
+    }
 
     function onClickRegister() {
         console.log("submit butten clicked");
@@ -392,61 +428,108 @@
     }
 </script>
 <script defer>
-    <%--let tagList = [];--%>
-    <%--var lastLikeLocId;--%>
+    let selectedImageParent = null;
+    let selectedImageIndex = null;
+    let selectedImage = null;
 
-    <%--function addTag(tag) {--%>
-    <%--    // let navbar = document.getElementById("tag-navbar-collapse");--%>
-    <%--    let list = document.getElementById('tag_list').children;--%>
-    <%--    let isReachMaxNumber = true;--%>
-    <%--    let isDuplicated = false;--%>
-    <%--    const MAX_TAG_LIMIT = 7;--%>
+    function onClearSelecteImage() {
+        selectedImageParent.style.outline = 'none';
+        selectedImageParent = null;
+        selectedImageIndex = null;
+    }
 
-    <%--    if (tagList.length >= MAX_TAG_LIMIT) {--%>
-    <%--        isReachMaxNumber = true;--%>
-	<%--	} else {--%>
-    <%--        isReachMaxNumber = false;--%>
-	<%--	}--%>
+    function onSelectImage(index) {
+        if (selectedImageIndex === index) {
+            onClearSelecteImage();
+            return;
+        }
 
-    <%--    if (isReachMaxNumber) {--%>
-    <%--        alert("해시태그는 최대 7개까지 추가할 수 있습니다.");--%>
-    <%--        return;--%>
-    <%--    }--%>
+        selectedImageIndex = index;
 
-    <%--    for (let i = 0; i < tagList.length; i++) {--%>
-    <%--        if (tagList[i] === tag.value) {--%>
-    <%--            isDuplicated = true;--%>
-    <%--            break;--%>
-	<%--		}--%>
-	<%--	}--%>
+        if (selectedImageParent !== null) {
+            // selectedImage.style.opacity = 0.0;
+            selectedImageParent.style.outline = 'none';
+        }
 
-    <%--    if (isDuplicated) {--%>
-    <%--        alert("중복된 해시태그가 있습니다.");--%>
-    <%--        return;--%>
-    <%--    }--%>
+        // console.log(document.getElementById("img_" + index));
+        console.log("index : " + index);
+        selectedImage = document.getElementById("img_" + index);
+        selectedImageParent = selectedImage.parentElement;
 
-    <%--    for (let i = 0; i < ${tagList.size()}; i++) {--%>
-    <%--        if (list.item(i).children.item(0).getAttribute("value") === tag.value) {--%>
-    <%--            // list.item(i).children.item(0).setAttribute("value", tag.value);--%>
-    <%--            // list.item(i).children.item(0).innerHTML = tag.value;--%>
-    <%--            list.item(i).style.display = "inline-block";--%>
-    <%--            isReachMaxNumber = false;--%>
-    <%--            tagList.push(tag.value);--%>
-    <%--            break;--%>
-    <%--        }--%>
-    <%--    }--%>
-    <%--    console.log(tagList);--%>
-    <%--}--%>
+        // selectedImage.style.opacity = 0.3;
+        selectedImageParent.style.outline = 'solid thick red'
+    }
 
-    <%--function removeTag(tag) {--%>
-    <%--    let tagValue = tag.parentElement.firstElementChild.getAttribute("value");--%>
-    <%--    let tagIndex = tagList.indexOf(tagValue);--%>
+    function onClickImgMoveLeft() {
+        let dt = new DataTransfer();
+        dt.files = input.files;
 
-    <%--    tag.parentElement.style.display = "none";--%>
-    <%--    tagList.splice(tagIndex, 1);--%>
-    <%--    console.log("list count : " + (--index));--%>
-    <%--    console.log(tagList);--%>
-    <%--}--%>
+        if (selectedImageIndex === null) {
+            return;
+        }
+
+        let leftObj = input.files.item(selectedImageIndex-2);
+        let selectedObj = input.files.item(selectedImageIndex-1);
+        let leftObjImg = document.getElementById("img_" + (selectedImageIndex-1)).src;
+        let selectedObjImg = document.getElementById("img_" + (selectedImageIndex)).src;
+
+        console.log(selectedImageIndex);
+        for (let i = 0; i < input.files.length; i++) {
+            if (selectedImageIndex -1 === i) {
+                dt.items.add(leftObj);
+                document.getElementById("img_" + (i+1)).src = leftObjImg;
+                continue;
+            }
+
+            if (selectedImageIndex -2 === i) {
+                dt.items.add(selectedObj);
+                document.getElementById("img_" + (i+1)).src = selectedObjImg;
+                continue;
+            }
+
+            dt.items.add(input.files.item(i));
+        }
+
+        input.files = dt.files;
+        console.log(input.files);
+        onSelectImage(selectedImageIndex - 1);
+    }
+
+    function onClickImgMoveRight() {
+        let dt = new DataTransfer();
+        dt.files = input.files;
+
+        if (selectedImageIndex === null) {
+            return;
+        }
+
+        let rightObj = input.files.item(selectedImageIndex);
+        let selectedObj = input.files.item(selectedImageIndex-1);
+        let rightObjImg = document.getElementById("img_" + (selectedImageIndex+1)).src;
+        let selectedObjImg = document.getElementById("img_" + (selectedImageIndex)).src;
+
+        console.log(selectedImageIndex);
+        for (let i = 0; i < input.files.length; i++) {
+            if (selectedImageIndex -1 === i) {
+                dt.items.add(rightObj);
+                document.getElementById("img_" + (i+1)).src = rightObjImg;
+                continue;
+            }
+
+            if (selectedImageIndex === i) {
+                dt.items.add(selectedObj);
+                document.getElementById("img_" + (i+1)).src = selectedObjImg;
+                continue;
+            }
+
+            dt.items.add(input.files.item(i));
+        }
+
+        input.files = dt.files;
+        console.log(input.files);
+        onSelectImage(selectedImageIndex + 1);
+    }
+
 </script>
 <%--<script defer src="/js/JusoAPI.js"></script>--%>
 </body>

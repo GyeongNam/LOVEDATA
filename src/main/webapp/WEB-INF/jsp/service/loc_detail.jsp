@@ -2,9 +2,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="Sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page session="false" %>
+<jsp:useBean id="defaultDateTimeFormatter" class="com.project.love_data.util.DefaultLocalDateTimeFormatter"></jsp:useBean>
 
 <html>
 <head>
@@ -181,22 +181,29 @@
 			<ul class="nav nav-pills nav-fill col-5" id="pills-tab" role="tablist"
 				style="height:50px; padding-top: 5px; padding-bottom: 5px">
 				<li class="nav-item" role="presentation">
-					<button class="mw-100 mh-100 nav-link active" id="location-comment-tab" data-bs-toggle="pill"
-							data-bs-target="#location-comment" type="button" role="tab" aria-controls="location-comment"
-							aria-selected="true">댓글
+					<button class="nav-link active" id="location-info-tab" data-bs-toggle="pill"
+							data-bs-target="#location-info" type="button" role="tab" aria-controls="location-info"
+							aria-selected="true">설명
 					</button>
 				</li>
 				<li class="nav-item" role="presentation">
-					<button class="nav-link" id="location-info-tab" data-bs-toggle="pill"
-							data-bs-target="#location-info" type="button" role="tab" aria-controls="location-info"
-							aria-selected="false">설명
+					<button class="mw-100 mh-100 nav-link" id="location-comment-tab" data-bs-toggle="pill"
+							data-bs-target="#location-comment" type="button" role="tab" aria-controls="location-comment"
+							aria-selected="false">댓글
 					</button>
 				</li>
 			</ul>
 			<div class="tab-content" id="pills-tabContent">
-				<%--      댓글--%>
-				<div class="tab-pane fade show active" id="location-comment" role="tabpanel"
-					 aria-labelledby="location-comment-tab">
+				<%--      설명--%>
+				<div class="tab-pane fade show active" id="location-info" role="tabpanel" aria-labelledby="location-info-tab">
+					<div class="container">
+						<div class="d-flex mt-3">
+							<span class="fs-5" style="white-space: pre-wrap;">${dto.info}</span>
+						</div>
+					</div>
+				</div>
+				<%--    댓글--%>
+				<div class="tab-pane fade" id="location-comment" role="tabpanel" aria-labelledby="location-comment-tab">
 					<div class="container mt-0">
 						<div class="d-flex justify-content-start row">
 							<div class="col-md-10">
@@ -226,7 +233,12 @@
 																			</c:choose>
 																		</sec:authorize>
 															</span>
-															<span class="date text-black-50 ml-5">${cmtDTO.get(c).regDate}</span>
+															<span class="date text-black-50 ml-5">${cmtDTO.get(c).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}</span>
+															<c:choose>
+																<c:when test="${cmtDTO.get(c).regDate ne cmtDTO.get(c).modDate}">
+																	<span class="date text-black-50 ml-5">(수정됨)</span>
+																</c:when>
+															</c:choose>
 														</div>
 													</div>
 													<div class="mt-2">
@@ -236,8 +248,8 @@
 														<div id="cmt_edit_${c}" class="row visually-hidden">
 															<textarea id="cmt_edit_content_${c}" rows="6" maxlength="300" class="form-control ml-1 shadow-none textarea">${cmtDTO.get(c).cmtContent}</textarea>
 															<div class="d-flex p-0 justify-content-end">
-															<button class="btn btn-primary mx-2" onclick="submitUpdateComment(${c})">등록</button>
-															<button class="btn btn-primary mx-2" onclick="closeCmtEditMenu(${c})">뒤로가기</button>
+																<button class="btn btn-primary mx-2" onclick="submitUpdateComment(${c})">등록</button>
+																<button class="btn btn-primary mx-2" onclick="closeCmtEditMenu(${c})">뒤로가기</button>
 															</div>
 														</div>
 													</div>
@@ -280,9 +292,9 @@
 									<c:when test="${resComDTO.page eq j + power}">
 									<li class="page-item active">
 										<a class="page-link"
-<%--										   pageList에는 현재 8개의 리스트 밖에 없지만 반복문 j는 11에서부터 시작하므로 인덱스 오류가 발생함--%>
+											<%--										   pageList에는 현재 8개의 리스트 밖에 없지만 반복문 j는 11에서부터 시작하므로 인덱스 오류가 발생함--%>
 										   href="/service/loc_detail?locNo=${dto.loc_no}&page=${resComDTO.pageList.get(j - 1)}">${resComDTO.pageList.get(j - 1)}</a>
-<%--										   href="/service/loc_detail?locNo=${dto.loc_no}&page=${resComDTO.pageList.get(j)}">${resComDTO.pageList.get(j)}</a>--%>
+											<%--										   href="/service/loc_detail?locNo=${dto.loc_no}&page=${resComDTO.pageList.get(j)}">${resComDTO.pageList.get(j)}</a>--%>
 										</c:when>
 										<c:otherwise>
 									<li class="page-item">
@@ -321,14 +333,6 @@
 							</div>
 						</div>
 					</sec:authorize>
-				</div>
-				<%--    설명--%>
-				<div class="tab-pane fade" id="location-info" role="tabpanel" aria-labelledby="location-info-tab">
-					<div class="container">
-						<div class="d-flex mt-3">
-							<span class="fs-5" style="white-space: pre-wrap;">${dto.info}</span>
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>

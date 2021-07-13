@@ -47,7 +47,7 @@
 							<p><a href="/service/loc_recommend" class="loc_highlight-selected-text-menu">- 추천 장소</a></p>
 							<p><a href="/service/loc_registration" class="loc_highlight-not-selected-text-menu">- 장소
 								등록</a></p>
-							<p><a href="/service/loc_registration" class="loc_highlight-not-selected-text-menu">- 장소
+							<p><a href="" class="loc_highlight-not-selected-text-menu">- 장소
 								편집</a></p>
 						</div>
 					</div>
@@ -146,7 +146,7 @@
 								<c:when test="${tagSet.contains(tagList.get(i).name())}">
 									<div class="btn-group ms-4 my-0" role="group" style="display: inline">
 										<button type="button" class="btn btn-primary" value="${tagList.get(i)}">${tagList.get(i)}</button>
-										<button type="button" class="btn btn-outline-danger btn"
+										<button type="button" class="btn btn-outline-danger ms-0"
 												onclick="removeTag(this)">X
 										</button>
 									</div>
@@ -154,7 +154,7 @@
 								<c:otherwise>
 									<div class="btn-group ms-4 my-0" role="group" style="display: none">
 										<button type="button" class="btn btn-primary" value="${tagList.get(i)}">${tagList.get(i)}</button>
-										<button type="button" class="btn btn-outline-danger btn"
+										<button type="button" class="btn btn-outline-danger ms-0"
 												onclick="removeTag(this)">X
 										</button>
 									</div>
@@ -311,7 +311,19 @@
 		crossorigin="anonymous"></script>
 <%--<script defer src="/js/bootstrap.js"></script>--%>
 <script defer src="/js/loc_recommend.js"></script>
-<script defer src="/js/loc_common.js"></script>
+<script src="/js/loc_common.js"></script>
+<script defer>
+	let tempList = [];
+	<c:forEach var="i" begin="0" end="${tagList.size()-1}">
+		<c:choose>
+			<c:when test="${tagSet.contains(tagList.get(i).name())}">
+				tempList.push('${tagList.get(i).name()}');
+			</c:when>
+		</c:choose>
+	</c:forEach>
+    console.log(tempList);
+    setTagList(tempList);
+</script>
 </body>
 <%--<%@ include file="../layout/footer.jsp" %>--%>
 </html>

@@ -4,6 +4,14 @@ let index;
 var token = $("meta[name='_csrf']").attr("content");
 var header = $("meta[name='_csrf_header']").attr("content");
 
+function getTagList() {
+    return tagList;
+}
+
+function setTagList(value) {
+    tagList = value;
+}
+
 function addTag(tag) {
     // let navbar = document.getElementById("tag-navbar-collapse");
     let list = document.getElementById('tag_list').children;
