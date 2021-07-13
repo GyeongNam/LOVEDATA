@@ -142,13 +142,12 @@ public class UserController {
 	}
 	//CHOI
 	@GetMapping(value = "/mypage")
-	public String myinfo(HttpServletRequest request, Principal principal, Model model) {
-    	log.info("data : "+ request);
-    	log.info("data2 : "+ principal);
+	public String myinfo(Principal principal, Model model) {
 		UserDTO userDTO = userService.DTOselect(principal.getName());
-		log.info("DTOLOG : "+ userDTO);
 		model.addAttribute("UserDTO", userDTO);
-
+//    	log.info("data : "+ request);
+//    	log.info("data2 : "+ principal);
+//		log.info("DTOLOG : "+ userDTO);
     	return  "user/mypage";
 	}
 
