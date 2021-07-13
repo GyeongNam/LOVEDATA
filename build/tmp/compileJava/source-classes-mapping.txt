@@ -204,7 +204,7 @@ com/project/love_data/businessLogic/oauth/login/TokenRequestKakao.java
  com.project.love_data.businessLogic.oauth.login.TokenRequestKakao
 com/project/love_data/security/converter/UserRoleConverter.java
  com.project.love_data.security.converter.UserRoleConverter
-com/project/love_data/controller/RestController.java
- com.project.love_data.controller.RestController
 com/project/love_data/util/DefaultLocalDateTimeFormatter.java
  com.project.love_data.util.DefaultLocalDateTimeFormatter
+com/project/love_data/controller/RestController.java
+ com.project.love_data.controller.RestController

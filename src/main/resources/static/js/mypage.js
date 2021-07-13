@@ -78,6 +78,37 @@ $(document).ready(function () {
     }
 });
 
+//닉네임 중복확인 버튼
+function double_check(){
+
+}
+
+//기존 비밀번호 확인
+
+
+// 수정 된 비밀번호 확인
+function repasswordcheck(){
+    var pwd1 = $('#NewPassword').val();
+    var pwd2 = $('#NewPasswordre').val();
+    var p_chack = $('#password_check');
+    if (pwd1 == pwd2) {
+        if (pwd2 == 0) {
+            p_chack.text("");
+            mainrepwd = false;
+        }
+        else {
+            p_chack.css("color", "green");
+            p_chack.text('새로운 비밀번호가 일치합니다.');
+            mainrepwd = true;
+        }
+    }
+    else {
+        p_chack.css("color", "red");
+        p_chack.text('새로운 비밀번호가 일치하지 않습니다.');
+        mainrepwd = false;
+    }
+}
+
 //수정된 항목 저장
 
 

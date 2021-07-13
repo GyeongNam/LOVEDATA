@@ -63,7 +63,7 @@
 					<td>닉네임</td>
 					<td id="sec_line"><input type="text" value="${UserDTO.user_nic}">
 
-						<button id="NickName">중복 확인</button>
+						<button type="button" onclick="double_check()" id="NickName" name="nic_check">중복 확인</button>
 					</td>
 				</tr>
 				<tr>
@@ -72,15 +72,15 @@
 				</tr>
 				<tr>
 					<td>기존 비밀번호 *</td>
-					<td id="sec_line"><input type="password" value=""></td>
+					<td id="sec_line"><input type="password"  value=""></td>
 				</tr>
 				<tr>
 					<td>새 비밀번호 *</td>
-					<td id="sec_line"><input type="password"></td>
+					<td id="sec_line"><input type="password" id="NewPassword" onKeyup="passwordcheck()"></td>
 				</tr>
 				<tr>
 					<td>새 비밀번호 확인 *</td>
-					<td id="sec_line"><input type="password"></td>
+					<td id="sec_line"><input type="password" id="NewPasswordre"  onKeyup="repasswordcheck()"><spen class="spen" id="password_check"></spen></td>
 				</tr>
 				<tr>
 					<td>휴대폰 번호 *</td>
@@ -278,6 +278,16 @@
 				</tbody>
 			</table>
 			* 최근 본 8개 장소만 표시됩니다.
+		</div>
+	</div>
+	<div id="nic_modal" class="nic_modal">
+		<div class="nic_modal_content">
+			<div>사용하고자 하는 닉네임을 입력하세요!</div>
+			<input type="text" name="new_nic_check" id="nic_chk"
+				   placeholder="">
+			<button type="button" id="re_check" onclick="">중복확인</button>
+			<div id="nic_new_check">닉네임을 입력하세요!</div>
+			<button type="button" id="nic_modal_close_btn">닫기</button>
 		</div>
 	</div>
 </div>
