@@ -98,11 +98,15 @@
 							</button>
 							<%--                            https://www.w3schools.com/jsref/event_onclick.asp--%>
 							<div class="dropdown-menu" aria-labelledby="tagDropdownMenuLink">
-								<c:forEach var="i" begin="0" end="${tagList.size()-1}">
-									<button type="button" class="dropdown-item" onclick="addTag(this)" value="${tagList.get(i).name()}">
-										${tagList.get(i).name()}
-									</button>
-								</c:forEach>
+								<div class="container">
+									<div class="row">
+									<c:forEach var="i" begin="0" end="${tagList.size()-1}">
+										<button type="button" class="dropdown-item" onclick="addTag(this)" value="${tagList.get(i).name()}">
+												${tagList.get(i).name()}
+										</button>
+									</c:forEach>
+									</div>
+								</div>
 							</div>
 						</li>
 					</ul>

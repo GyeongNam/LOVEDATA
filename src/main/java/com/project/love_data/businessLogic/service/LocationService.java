@@ -343,7 +343,12 @@ public class LocationService {
     public LocationDTO selectLocDTO(Long loc_no) {
         Optional<Location> result = repository.findById(loc_no);
 
-        return result.isPresent() ? entityToDto(result.get()) : null;
+        if (result.isPresent()) {
+            Location item = result.get();
+            return entityToDto(item);
+        } else {
+            return null;
+        }
     }
 
     public Location selectLoc(String loc_uuid) {
@@ -449,11 +454,13 @@ public class LocationService {
     }
 
     public void incViewCount(Long loc_no) {
-        LocationDTO dto = selectLocDTO(loc_no);
+//        LocationDTO dto = selectLocDTO(loc_no);
+//
+//        dto.setViewCount(dto.getViewCount() + 1);
 
-        dto.setViewCount(dto.getViewCount() + 1);
+        Location entity = selectLoc(loc_no);
 
-        Location entity = dtoToEntity(dto);
+        entity.setViewCount(entity.getViewCount() + 1);
 
         update(entity);
     }

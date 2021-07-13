@@ -10,6 +10,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+	<link rel="stylesheet" href="css/dropdown.css">
 	<title>Home</title>
 </head>
 <%@ include file="../layout/header.jsp" %>
@@ -124,6 +125,92 @@
 <%--		</nav>--%>
 	</div>
 
+	<!--Navbar-->
+	<nav class="navbar navbar-toggleable-md navbar-dark bg-primary">
+		<div class="container">
+			<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav1" aria-controls="navbarNav1" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<a class="navbar-brand" href="#">
+				<strong>Navbar</strong>
+			</a>
+			<div class="collapse navbar-collapse" id="navbarNav1">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active">
+						<a class="nav-link">Home <span class="sr-only">(current)</span></a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link">Features</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link">Pricing</a>
+					</li>
+					<li class="nav-item dropdown btn-group">
+						<a class="nav-link dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+						<div class="dropdown-menu dropdown" aria-labelledby="dropdownMenu1">
+
+							<div class="container">
+
+								<div class="row">
+
+									<div class="col-md-2 offset-md-1">
+										<a class="dropdown-item" href="#">Link</a>
+										<a class="dropdown-item" href="#">Link</a>
+										<a class="dropdown-item" href="#">Link</a>
+										<a class="dropdown-item" href="#">Link</a>
+										<a class="dropdown-item" href="#">Link</a>
+										<a class="dropdown-item" href="#">Link</a>
+									</div>
+
+									<div class="col-md-2">
+										<a class="dropdown-item" href="#">Link</a>
+										<a class="dropdown-item" href="#">Link</a>
+										<a class="dropdown-item" href="#">Link</a>
+										<a class="dropdown-item" href="#">Link</a>
+										<a class="dropdown-item" href="#">Link</a>
+										<a class="dropdown-item" href="#">Link</a>
+									</div>
+
+									<div class="col-md-2">
+										<a class="dropdown-item" href="#">Link</a>
+										<a class="dropdown-item" href="#">Link</a>
+										<a class="dropdown-item" href="#">Link</a>
+										<a class="dropdown-item" href="#">Link</a>
+										<a class="dropdown-item" href="#">Link</a>
+										<a class="dropdown-item" href="#">Link</a>
+									</div>
+
+									<div class="col-md-2">
+										<a class="dropdown-item" href="#">Link</a>
+										<a class="dropdown-item" href="#">Link</a>
+										<a class="dropdown-item" href="#">Link</a>
+										<a class="dropdown-item" href="#">Link</a>
+										<a class="dropdown-item" href="#">Link</a>
+										<a class="dropdown-item" href="#">Link</a>
+									</div>
+
+									<div class="col-md-2">
+										<a class="dropdown-item" href="#">Link</a>
+										<a class="dropdown-item" href="#">Link</a>
+										<a class="dropdown-item" href="#">Link</a>
+										<a class="dropdown-item" href="#">Link</a>
+										<a class="dropdown-item" href="#">Link</a>
+										<a class="dropdown-item" href="#">Link</a>
+									</div>
+
+								</div>
+
+							</div>
+
+						</div>
+					</li>
+				</ul>
+				<form class="form-inline waves-effect waves-light">
+					<input class="form-control" type="text" placeholder="Search">
+				</form>
+			</div>
+		</div>
+	</nav>
 
 	<!--  부트스트랩 js 사용 -->
 	<script defer src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
