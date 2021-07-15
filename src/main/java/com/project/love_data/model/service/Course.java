@@ -1,5 +1,8 @@
 package com.project.love_data.model.service;
 
+import com.project.love_data.model.base.TimeEntity;
+import com.project.love_data.model.resource.CourseImage;
+import com.project.love_data.model.resource.LocationImage;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.OnDelete;
@@ -15,7 +18,7 @@ import java.util.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Course {
+public class Course extends TimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -52,6 +55,13 @@ public class Course {
     @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
     @Builder.Default
     private Set<String> tagSet = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "cor_no")
+    @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
+    @Builder.Default
+    private Set<CourseImage> imgSet = new HashSet<>();
 
     @Column(name = "likecount", nullable = false, columnDefinition = "int default 0")
     @Builder.Default

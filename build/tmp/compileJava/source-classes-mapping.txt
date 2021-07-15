@@ -190,9 +190,9 @@ com/project/love_data/model/resource/QLocationImage.java
 com/project/love_data/dto/LocationDTO.java
  com.project.love_data.dto.LocationDTO
  com.project.love_data.dto.LocationDTO$LocationDTOBuilder
-com/project/love_data/model/service/Course.java
- com.project.love_data.model.service.Course
- com.project.love_data.model.service.Course$CourseBuilder
+com/project/love_data/model/service/Review.java
+ com.project.love_data.model.service.Review
+ com.project.love_data.model.service.Review$ReviewBuilder
 com/project/love_data/model/service/QLocation.java
  com.project.love_data.model.service.QLocation
 com/project/love_data/model/resource/LocationImage.java
@@ -203,25 +203,23 @@ com/project/love_data/repository/LocationImageRepository.java
 com/project/love_data/dto/CommentDTO.java
  com.project.love_data.dto.CommentDTO
  com.project.love_data.dto.CommentDTO$CommentDTOBuilder
-com/project/love_data/model/service/QCourse.java
- com.project.love_data.model.service.QCourse
+com/project/love_data/controller/RestController.java
+ com.project.love_data.controller.RestController
 com/project/love_data/businessLogic/service/CommentService.java
  com.project.love_data.businessLogic.service.CommentService
  com.project.love_data.businessLogic.service.CommentService$1
 com/project/love_data/dto/LocationImageDTO.java
  com.project.love_data.dto.LocationImageDTO
  com.project.love_data.dto.LocationImageDTO$LocationImageDTOBuilder
-com/project/love_data/dto/CoruseImageDTO.java
- com.project.love_data.dto.CoruseImageDTO
- com.project.love_data.dto.CoruseImageDTO$CoruseImageDTOBuilder
+com/project/love_data/businessLogic/service/UserRecentCorService.java
+ com.project.love_data.businessLogic.service.UserRecentCorService
 com/project/love_data/businessLogic/service/LocationService.java
  com.project.love_data.businessLogic.service.LocationService
  com.project.love_data.businessLogic.service.LocationService$1
-com/project/love_data/model/service/Review.java
- com.project.love_data.model.service.Review
- com.project.love_data.model.service.Review$ReviewBuilder
-com/project/love_data/model/resource/QCourseImage.java
- com.project.love_data.model.resource.QCourseImage
+com/project/love_data/controller/service/LocationController.java
+ com.project.love_data.controller.service.LocationController
+com/project/love_data/repository/CourseRepository.java
+ com.project.love_data.repository.CourseRepository
 com/project/love_data/dto/UserRecentCorDTO.java
  com.project.love_data.dto.UserRecentCorDTO
  com.project.love_data.dto.UserRecentCorDTO$UserRecentCorDTOBuilder
@@ -234,25 +232,42 @@ com/project/love_data/dto/UserLikeCorDTO.java
  com.project.love_data.dto.UserLikeCorDTO$UserLikeCorDTOBuilder
 com/project/love_data/repository/CourseImageRepository.java
  com.project.love_data.repository.CourseImageRepository
-com/project/love_data/dto/CourseDTO.java
- com.project.love_data.dto.CourseDTO
- com.project.love_data.dto.CourseDTO$CourseDTOBuilder
-com/project/love_data/controller/service/CommentController.java
- com.project.love_data.controller.service.CommentController
 com/project/love_data/model/service/QReview.java
  com.project.love_data.model.service.QReview
+com/project/love_data/controller/service/CommentController.java
+ com.project.love_data.controller.service.CommentController
+com/project/love_data/businessLogic/service/UserLikeCorService.java
+ com.project.love_data.businessLogic.service.UserLikeCorService
 com/project/love_data/businessLogic/service/LocationImageService.java
  com.project.love_data.businessLogic.service.LocationImageService
 com/project/love_data/businessLogic/service/FileUploadService.java
  com.project.love_data.businessLogic.service.FileUploadService
  com.project.love_data.businessLogic.service.FileUploadService$1
-com/project/love_data/controller/RestController.java
- com.project.love_data.controller.RestController
+com/project/love_data/dto/CourseImageDTO.java
+ com.project.love_data.dto.CourseImageDTO
+ com.project.love_data.dto.CourseImageDTO$CourseImageDTOBuilder
+com/project/love_data/model/service/QCourse.java
+ com.project.love_data.model.service.QCourse
+com/project/love_data/repository/ReviewRepository.java
+ com.project.love_data.repository.ReviewRepository
+com/project/love_data/model/service/Course.java
+ com.project.love_data.model.service.Course
+ com.project.love_data.model.service.Course$CourseBuilder
+com/project/love_data/model/resource/QCourseImage.java
+ com.project.love_data.model.resource.QCourseImage
+com/project/love_data/businessLogic/service/CourseImageService.java
+ com.project.love_data.businessLogic.service.CourseImageService
 com/project/love_data/model/resource/CourseImage.java
  com.project.love_data.model.resource.CourseImage
  com.project.love_data.model.resource.CourseImage$CourseImageBuilder
+com/project/love_data/dto/CourseDTO.java
+ com.project.love_data.dto.CourseDTO
+ com.project.love_data.dto.CourseDTO$CourseDTOBuilder
 com/project/love_data/dto/ReviewDTO.java
  com.project.love_data.dto.ReviewDTO
  com.project.love_data.dto.ReviewDTO$ReviewDTOBuilder
-com/project/love_data/controller/service/LocationController.java
- com.project.love_data.controller.service.LocationController
+com/project/love_data/businessLogic/service/ReviewService.java
+ com.project.love_data.businessLogic.service.ReviewService
+com/project/love_data/businessLogic/service/CourseService.java
+ com.project.love_data.businessLogic.service.CourseService
+ com.project.love_data.businessLogic.service.CourseService$1

@@ -26,22 +26,12 @@ public class CourseImage extends TimeEntity {
     @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
     private Long img_no;
 
-//    @Column(name = "user_no", nullable = false)
-//    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_no")
-//    private User user;
-
     @Column(name = "img_idx", nullable = false)
     @Builder.Default
     private Long idx = 0L;
 
     @Column(name = "user_no", nullable = false)
     private Long user_no;
-
-//    @Column(name = "loc_no", nullable = true)
-//    @ManyToOne(targetEntity = Location.class, fetch = FetchType.LAZY)
-//    @JoinColumn(name = "loc_no")
-//    private Location location;
 
     @Column(name = "cor_no", nullable = false)
     private Long cor_no;

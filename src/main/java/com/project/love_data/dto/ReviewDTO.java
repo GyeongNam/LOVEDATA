@@ -15,7 +15,8 @@ import java.util.*;
 public class ReviewDTO {
     private Long revNo;
     private String revContent;
-    private Long user_no;
+    private Long userNo;
+    private Long corNo;
 
     @Builder.Default
     private Long revIdx = 0L;

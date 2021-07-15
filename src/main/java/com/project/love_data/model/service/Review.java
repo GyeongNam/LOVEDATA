@@ -23,6 +23,9 @@ public class Review {
     @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
     private Long revNo;
 
+    @Column(name = "cor_no", nullable = false)
+    private Long corNo;
+
     @Column(nullable = false)
     @Builder.Default
     private Long revIdx = 0L;

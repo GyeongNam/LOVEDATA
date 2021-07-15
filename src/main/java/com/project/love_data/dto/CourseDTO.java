@@ -1,11 +1,15 @@
 package com.project.love_data.dto;
 
+import com.project.love_data.model.resource.CourseImage;
+import com.project.love_data.model.resource.LocationImage;
+import com.project.love_data.model.service.Course;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Data
@@ -33,4 +37,10 @@ public class CourseDTO {
     private String thumbnail = "";
     @Builder.Default
     private boolean is_deleted = false;
+    @Builder.Default
+    private List<CourseImage> imgList = new ArrayList<>();
+    @Builder.Default
+    private LocalDateTime regDate = LocalDateTime.now();
+    @Builder.Default
+    private LocalDateTime modDate = LocalDateTime.now();
 }

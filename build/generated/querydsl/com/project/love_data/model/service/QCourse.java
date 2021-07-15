@@ -20,6 +20,8 @@ public class QCourse extends EntityPathBase<Course> {
 
     public static final QCourse course = new QCourse("course");
 
+    public final com.project.love_data.model.base.QTimeEntity _super = new com.project.love_data.model.base.QTimeEntity(this);
+
     public final StringPath cor_name = createString("cor_name");
 
     public final NumberPath<Long> cor_no = createNumber("cor_no", Long.class);
@@ -30,11 +32,19 @@ public class QCourse extends EntityPathBase<Course> {
 
     public final StringPath est_time = createString("est_time");
 
+    public final SetPath<com.project.love_data.model.resource.CourseImage, com.project.love_data.model.resource.QCourseImage> imgSet = this.<com.project.love_data.model.resource.CourseImage, com.project.love_data.model.resource.QCourseImage>createSet("imgSet", com.project.love_data.model.resource.CourseImage.class, com.project.love_data.model.resource.QCourseImage.class, PathInits.DIRECT2);
+
     public final StringPath info = createString("info");
 
     public final BooleanPath is_deleted = createBoolean("is_deleted");
 
     public final NumberPath<Integer> likeCount = createNumber("likeCount", Integer.class);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modDate = _super.modDate;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> regDate = _super.regDate;
 
     public final SetPath<String, StringPath> tagSet = this.<String, StringPath>createSet("tagSet", String.class, StringPath.class, PathInits.DIRECT2);
 

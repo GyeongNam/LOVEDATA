@@ -19,6 +19,8 @@ public class QReview extends EntityPathBase<Review> {
 
     public static final QReview review = new QReview("review");
 
+    public final NumberPath<Long> corNo = createNumber("corNo", Long.class);
+
     public final BooleanPath is_deleted = createBoolean("is_deleted");
 
     public final NumberPath<Float> rev_point = createNumber("rev_point", Float.class);
