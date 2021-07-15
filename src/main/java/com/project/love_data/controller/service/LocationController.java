@@ -9,8 +9,6 @@ import com.project.love_data.security.service.UserDetailsService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
 import java.util.*;
 
 import static com.project.love_data.util.ConstantValues.*;
@@ -31,7 +28,7 @@ public class LocationController {
     @Autowired
     LocationService locService;
     @Autowired
-    ImageService imgService;
+    LocationImageService imgService;
     @Autowired
     CommentService comService;
     @Autowired
@@ -274,7 +271,7 @@ public class LocationController {
         return "redirect:/service/loc_recommend";
     }
 
-    @PostMapping(value = "/service/loc_recommend/search")
+    @GetMapping(value = "/service/loc_recommend/search")
     public String getSearchValue(HttpServletRequest request, Model model){
         String keyword = request.getParameter("keyword");
         String order = request.getParameter("sortOrder");

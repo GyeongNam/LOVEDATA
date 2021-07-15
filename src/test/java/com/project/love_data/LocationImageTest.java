@@ -1,9 +1,9 @@
 package com.project.love_data;
 
-import com.project.love_data.businessLogic.service.ImageService;
-import com.project.love_data.dto.ImageDTO;
-import com.project.love_data.model.resource.Image;
-import com.project.love_data.repository.ImageRepository;
+import com.project.love_data.businessLogic.service.LocationImageService;
+import com.project.love_data.dto.LocationImageDTO;
+import com.project.love_data.model.resource.LocationImage;
+import com.project.love_data.repository.LocationImageRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,20 +11,20 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.*;
 
 @SpringBootTest
-public class ImageTest {
+public class LocationImageTest {
     @Autowired
-    ImageRepository imageRepository;
+    LocationImageRepository locationImageRepository;
 
     @Autowired
-    ImageService imgService;
+    LocationImageService imgService;
 
     @Test
     public void ImageDelete() {
-        Image img1 = imgService.getImage(4L);
+        LocationImage img1 = imgService.getImage(4L);
 
         imgService.permaDelete(img1.getImg_uuid());
 
-        Image tempImg1 = imgService.getImage(4L);
+        LocationImage tempImg1 = imgService.getImage(4L);
 
         if (tempImg1 != null) {
             System.out.println("지워지지 않음");
@@ -35,8 +35,8 @@ public class ImageTest {
 
     @Test
     public void ImageGetTest() {
-        Image img1 = imgService.getImage(1L);
-        Image img2 = imgService.getImage("44ae4245-25da-470e-9260-0ff59e29eb95.jpg");
+        LocationImage img1 = imgService.getImage(1L);
+        LocationImage img2 = imgService.getImage("44ae4245-25da-470e-9260-0ff59e29eb95.jpg");
 
         if (img1 != null) {
             System.out.println(img1);
@@ -54,38 +54,38 @@ public class ImageTest {
     @Test
     public void ImageInsertTest() {
         for (int i = 0; i < 10; i++) {
-            ImageDTO dto = ImageDTO.builder()
+            LocationImageDTO dto = LocationImageDTO.builder()
                     .img_url("path/" + i)
                     .user_no(Long.valueOf(i))
 //                    .loc_uuid("UUID_" + i)
                     .img_uuid("uuid_" + i)
                     .build();
 
-            imageRepository.save(imgService.dtoToEntity(dto));
+            locationImageRepository.save(imgService.dtoToEntity(dto));
         }
 
-        ImageDTO img = ImageDTO.builder()
+        LocationImageDTO img = LocationImageDTO.builder()
                 .img_url("test")
                 .user_no(0L)
 //                .loc_uuid("Random UUID")
                 .img_uuid("test.png")
                 .build();
 
-        imageRepository.save(imgService.dtoToEntity(img));
+        locationImageRepository.save(imgService.dtoToEntity(img));
     }
 
     @Test
     public void ImageReadByUserNo() {
-        List<Image> list = imageRepository.findAllByUser_no(0L);
+        List<LocationImage> list = locationImageRepository.findAllByUser_no(0L);
 
-        for (Image image : list) {
-            System.out.println("image = " + image);
+        for (LocationImage locationImage : list) {
+            System.out.println("image = " + locationImage);
         }
     }
 
     @Test
     public void ImageReadByUUID() {
-        Optional<Image> image = imageRepository.findImageByImg_uuid("test.png");
+        Optional<LocationImage> image = locationImageRepository.findImageByImg_uuid("test.png");
 
         image.ifPresent(value -> System.out.println("image = " + value.toString()));
     }

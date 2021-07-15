@@ -6,10 +6,10 @@ import com.project.love_data.businessLogic.service.SearchType;
 import com.project.love_data.dto.LocationDTO;
 import com.project.love_data.dto.PageRequestDTO;
 import com.project.love_data.dto.PageResultDTO;
-import com.project.love_data.model.resource.Image;
+import com.project.love_data.model.resource.LocationImage;
 import com.project.love_data.model.service.Location;
 import com.project.love_data.model.service.LocationTag;
-import com.project.love_data.repository.ImageRepository;
+import com.project.love_data.repository.LocationImageRepository;
 import com.project.love_data.repository.LocationRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ public class LocationTest {
     LocationRepository locationRepository;
 
     @Autowired
-    ImageRepository imageRepository;
+    LocationImageRepository locationImageRepository;
 
     @Autowired
     LocationService locService;
@@ -52,9 +52,9 @@ public class LocationTest {
 
         locationRepository.save(loc);
 
-        Image img;
+        LocationImage img;
         for (int i = 0; i < 3; i++) {
-            img = Image.builder()
+            img = LocationImage.builder()
                     .location(loc)
                     .img_uuid("Jungbu_Chungnam_" + i + ".jpg")
                     .user_no(user_no)
@@ -62,7 +62,7 @@ public class LocationTest {
                     .build();
             img.setLocation(loc);
 
-            imageRepository.save(img);
+            locationImageRepository.save(img);
 
             loc.addImg(img);
 
@@ -98,7 +98,7 @@ public class LocationTest {
 
         img = null;
         for (int i = 0; i < 3; i++) {
-            img = Image.builder()
+            img = LocationImage.builder()
                     .location(loc)
                     .img_uuid("Jungbu-Goyang-" + i + ".jpg")
                     .user_no(user_no)
@@ -106,7 +106,7 @@ public class LocationTest {
                     .build();
             img.setLocation(loc);
 
-            imageRepository.save(img);
+            locationImageRepository.save(img);
 
             loc.addImg(img);
 
@@ -143,7 +143,7 @@ public class LocationTest {
 
         img = null;
         for (int i = 0; i < 4; i++) {
-            img = Image.builder()
+            img = LocationImage.builder()
                     .location(loc)
                     .img_uuid("Seoul-Forest-0" + i + ".jpg")
                     .user_no(user_no)
@@ -151,7 +151,7 @@ public class LocationTest {
                     .build();
             img.setLocation(loc);
 
-            imageRepository.save(img);
+            locationImageRepository.save(img);
 
             loc.addImg(img);
 
@@ -168,7 +168,7 @@ public class LocationTest {
             Location item = temp.get();
 
             img = null;
-            img = Image.builder()
+            img = LocationImage.builder()
                     .location(item)
                     .img_uuid("Seoul-Forest-03.jpg")
                     .user_no(user_no)
@@ -176,7 +176,7 @@ public class LocationTest {
                     .build();
             img.setLocation(item);
 
-            imageRepository.save(img);
+            locationImageRepository.save(img);
 
             item.addImg(img);
 
@@ -219,14 +219,14 @@ public class LocationTest {
 
             locationRepository.save(loc);
 
-            Image img = Image.builder()
+            LocationImage img = LocationImage.builder()
                     .location(loc)
                     .img_uuid("UUID_"+i)
                     .user_no((long) i)
                     .img_url("path/" + i)
                     .build();
 
-            imageRepository.save(img);
+            locationImageRepository.save(img);
 
             loc.addImg(img);
 
@@ -289,14 +289,14 @@ public class LocationTest {
 
         temp.setLoc_name("Updated Loc_0");
         temp.setInfo("Updated Location Info");
-        Image img = Image.builder()
+        LocationImage img = LocationImage.builder()
                 .img_url("Path/10")
                 .img_uuid("UUID_0010.png")
                 .user_no(0L)
                 .location(temp)
                 .build();
 
-        imageRepository.save(img);
+        locationImageRepository.save(img);
 
         temp.addImg(img);
 

@@ -12,14 +12,13 @@ import org.springframework.data.util.Lazy;
 import javax.persistence.*;
 
 @Entity
-@Table (name = "image")
-@ToString (exclude = "location")
+@Table (name = "cor_image")
 @Setter
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Image  extends TimeEntity {
+public class CourseImage extends TimeEntity {
     @Id
     @Column(name = "img_no")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,10 +43,8 @@ public class Image  extends TimeEntity {
 //    @JoinColumn(name = "loc_no")
 //    private Location location;
 
-    @ManyToOne(optional = true, fetch = FetchType.LAZY)
-    private Location location;
-
-    // @Todo 코스, 리뷰 칼럼 추가
+    @Column(name = "cor_no", nullable = false)
+    private Long cor_no;
 
     @Column(name = "img_url", nullable = false, length = 200)
     private String img_url;

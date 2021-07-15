@@ -11,16 +11,16 @@ import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
- * QImage is a Querydsl query type for Image
+ * QLocationImage is a Querydsl query type for LocationImage
  */
 @Generated("com.querydsl.codegen.EntitySerializer")
-public class QImage extends EntityPathBase<Image> {
+public class QLocationImage extends EntityPathBase<LocationImage> {
 
-    private static final long serialVersionUID = -1969784711L;
+    private static final long serialVersionUID = 1913877444L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
-    public static final QImage image = new QImage("image");
+    public static final QLocationImage locationImage = new QLocationImage("locationImage");
 
     public final com.project.love_data.model.base.QTimeEntity _super = new com.project.love_data.model.base.QTimeEntity(this);
 
@@ -44,23 +44,23 @@ public class QImage extends EntityPathBase<Image> {
 
     public final NumberPath<Long> user_no = createNumber("user_no", Long.class);
 
-    public QImage(String variable) {
-        this(Image.class, forVariable(variable), INITS);
+    public QLocationImage(String variable) {
+        this(LocationImage.class, forVariable(variable), INITS);
     }
 
-    public QImage(Path<? extends Image> path) {
+    public QLocationImage(Path<? extends LocationImage> path) {
         this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
-    public QImage(PathMetadata metadata) {
+    public QLocationImage(PathMetadata metadata) {
         this(metadata, PathInits.getFor(metadata, INITS));
     }
 
-    public QImage(PathMetadata metadata, PathInits inits) {
-        this(Image.class, metadata, inits);
+    public QLocationImage(PathMetadata metadata, PathInits inits) {
+        this(LocationImage.class, metadata, inits);
     }
 
-    public QImage(Class<? extends Image> type, PathMetadata metadata, PathInits inits) {
+    public QLocationImage(Class<? extends LocationImage> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.location = inits.isInitialized("location") ? new com.project.love_data.model.service.QLocation(forProperty("location")) : null;
     }

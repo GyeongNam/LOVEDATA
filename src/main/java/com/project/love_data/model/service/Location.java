@@ -1,7 +1,7 @@
 package com.project.love_data.model.service;
 
 import com.project.love_data.model.base.TimeEntity;
-import com.project.love_data.model.resource.Image;
+import com.project.love_data.model.resource.LocationImage;
 import lombok.*;
 import lombok.extern.log4j.Log4j2;
 import org.hibernate.annotations.Cascade;
@@ -72,7 +72,7 @@ public class Location extends TimeEntity {
     @JoinColumn(name = "loc_no")
     @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
     @Builder.Default
-    private Set<Image> imgSet = new HashSet<>();
+    private Set<LocationImage> imgSet = new HashSet<>();
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "location")
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -113,15 +113,15 @@ public class Location extends TimeEntity {
         return this.roadAddr + this.addrDetail;
     }
 
-    public void addImg(Image img) {
+    public void addImg(LocationImage img) {
         img.setIdx((long) imgSet.size());
         img.setLocation(this);
         imgSet.add(img);
     }
 
-    public void addImg(List<Image> img) {
-        for (Image image : img) {
-            addImg(image);
+    public void addImg(List<LocationImage> img) {
+        for (LocationImage locationImage : img) {
+            addImg(locationImage);
         }
     }
 

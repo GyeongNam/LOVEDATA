@@ -1,9 +1,9 @@
 package com.project.love_data.businessLogic.service;
 
-import com.project.love_data.dto.ImageDTO;
-import com.project.love_data.model.resource.Image;
+import com.project.love_data.dto.LocationImageDTO;
+import com.project.love_data.model.resource.LocationImage;
 import com.project.love_data.model.service.Location;
-import com.project.love_data.repository.ImageRepository;
+import com.project.love_data.repository.LocationImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.io.File;
@@ -11,26 +11,26 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class ImageService {
-    private final ImageRepository repository;
+public class LocationImageService {
+    private final LocationImageRepository repository;
 
-    public Image getImage(Long imgId) {
-        Optional<Image> item = repository.findById(imgId);
-
-        return item.isPresent() ? item.get() : null;
-    }
-
-    public Image getImage(String uuid) {
-        Optional<Image> item = repository.findImageByImg_uuid(uuid);
+    public LocationImage getImage(Long imgId) {
+        Optional<LocationImage> item = repository.findById(imgId);
 
         return item.isPresent() ? item.get() : null;
     }
 
-    public Image getImageEntity(String user_no, String fileRootPath, String fileName, Location location, long img_index) {
+    public LocationImage getImage(String uuid) {
+        Optional<LocationImage> item = repository.findImageByImg_uuid(uuid);
+
+        return item.isPresent() ? item.get() : null;
+    }
+
+    public LocationImage getImageEntity(String user_no, String fileRootPath, String fileName, Location location, long img_index) {
 //        ImageDTO dto = getImageDTO(user_no, fileRootPath, fileName, location);
 //        Image entity = dtoToEntity(dto);
 
-        Image entity = Image.builder()
+        LocationImage entity = LocationImage.builder()
                 .location(location)
                 .img_uuid(fileName)
                 .img_url(fileRootPath+"/"+fileName)
@@ -43,12 +43,12 @@ public class ImageService {
         return entity;
     }
 
-    public void update(Image img) {
+    public void update(LocationImage img) {
         repository.save(img);
     }
 
-    public Image dtoToEntity(ImageDTO dto) {
-        Image entity = Image.builder()
+    public LocationImage dtoToEntity(LocationImageDTO dto) {
+        LocationImage entity = LocationImage.builder()
                 .img_url(dto.getImg_url())
                 .user_no(dto.getUser_no())
 //                .loc_uuid(dto.getLoc_uuid())
@@ -61,8 +61,8 @@ public class ImageService {
         return entity;
     }
 
-    public ImageDTO entityToDTO(Image img) {
-        ImageDTO dto = ImageDTO.builder()
+    public LocationImageDTO entityToDTO(LocationImage img) {
+        LocationImageDTO dto = LocationImageDTO.builder()
                 .idx(img.getIdx())
                 .img_no(img.getImg_no())
                 .img_url(img.getImg_url())
@@ -76,8 +76,8 @@ public class ImageService {
         return dto;
     }
 
-    private ImageDTO getImageDTO(String user_no, String fileRootPath, String fileName, Location location) {
-        ImageDTO dto = ImageDTO.builder()
+    private LocationImageDTO getImageDTO(String user_no, String fileRootPath, String fileName, Location location) {
+        LocationImageDTO dto = LocationImageDTO.builder()
                 .img_url(fileRootPath + File.separator + fileName)
                 .user_no(Long.valueOf(user_no))
                 .location(location)
@@ -87,7 +87,7 @@ public class ImageService {
         return dto;
     }
 
-    private Image disable(Image img) {
+    private LocationImage disable(LocationImage img) {
         img.set_deleted(true);
 
         update(img);
@@ -95,7 +95,7 @@ public class ImageService {
         return getImage(img.getImg_no());
     }
 
-    private Image enable(Image img) {
+    private LocationImage enable(LocationImage img) {
         img.set_deleted(false);
 
         update(img);
@@ -104,7 +104,7 @@ public class ImageService {
     }
 
     public void delete(Long imgNo) {
-        Image img = getImage(imgNo);
+        LocationImage img = getImage(imgNo);
 
         if (!img.is_deleted()) {
             disable(img);
@@ -112,7 +112,7 @@ public class ImageService {
     }
 
     public void delete(String uuid) {
-        Image img = getImage(uuid);
+        LocationImage img = getImage(uuid);
 
         if (!img.is_deleted()) {
             disable(img);
@@ -123,8 +123,8 @@ public class ImageService {
         repository.deleteByImg_uuid(img_uuid);
     }
 
-    public Image editImageEntityIndex(String uuid, Long img_Index) {
-        Image img = getImage(uuid);
+    public LocationImage editImageEntityIndex(String uuid, Long img_Index) {
+        LocationImage img = getImage(uuid);
 
         img.setIdx(img_Index);
 

@@ -1,6 +1,6 @@
 package com.project.love_data.dto;
 
-import com.project.love_data.model.resource.Image;
+import com.project.love_data.model.resource.LocationImage;
 import com.project.love_data.model.service.Comment;
 import com.project.love_data.model.service.Location;
 import com.project.love_data.model.service.LocationTag;
@@ -38,7 +38,7 @@ public class LocationDTO {
     @Builder.Default
     private int viewCount = 0;
     @Builder.Default
-    private List<Image> imgList = new ArrayList<>();
+    private List<LocationImage> imgList = new ArrayList<>();
     @Builder.Default
     private List<Comment> cmtList = new ArrayList<>();
     @Builder.Default
@@ -67,7 +67,7 @@ public class LocationDTO {
         return this.roadAddr + this.addrDetail;
     }
 
-    public void addImg(Image img) {
+    public void addImg(LocationImage img) {
         img.setIdx((long) imgList.size());
         img.setLocation(
                 Location.builder()
@@ -90,9 +90,9 @@ public class LocationDTO {
         imgList.add(img);
     }
 
-    public void addImg(List<Image> img) {
-        for (Image image : img) {
-            addImg(image);
+    public void addImg(List<LocationImage> img) {
+        for (LocationImage locationImage : img) {
+            addImg(locationImage);
         }
     }
 
@@ -141,7 +141,7 @@ public class LocationDTO {
             return null;
         }
 
-        for (Image img : imgList) {
+        for (LocationImage img : imgList) {
             sb.append(img.getImg_url());
             sb.append("_");
         }
