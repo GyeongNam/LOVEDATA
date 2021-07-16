@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.util.Date" %>
 <%@ page session="false" %>
@@ -235,17 +236,31 @@
 					<h1 class="text-center">등록된 정보가 없습니다.</h1>
 				</c:otherwise>
 			</c:choose>
-
 		</div>
 
 		<%--	PageNumber	--%>
+		<c:set var="tagHolderStr" value=""></c:set>
+		<c:forEach var="i" begin="0" end="${tagSet.size()-1}">
+			<c:set var="tag" value="${tagSet.get(i)}"></c:set>
+<%--			${tagHolderStr = tagHolderStr.concat(tagSet.get(i))}--%>
+<%--			${tagHolderStr = tagHolderStr.concat("%2C")}--%>
+			<%
+				String tag = (String) pageContext.getAttribute("tag");
+				String tagHolderStr = (String) pageContext.getAttribute("tagHolderStr");
+				tagHolderStr = tagHolderStr.concat(tag);
+				tagHolderStr = tagHolderStr.concat("%2C");
+				pageContext.setAttribute("tagHolderStr", tagHolderStr);
+			%>
+		</c:forEach>
+		<c:set var="tagStr" value="${tagHolderStr.substring(0, tagHolderStr.length()-3)}"></c:set>
 		<div class="container d-flex" id="">
 			<div class="col" id="page_number">
 				<nav aria-label="Page navigation example">
 					<ul class="pagination justify-content-center">
 						<c:if test="${result.next eq true}">
 							<li class="page-item">
-								<a class="page-link" href="/service/loc_recommend/list?page=${result.start - 1}"
+								<a class="page-link"
+								   href="/service/loc_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&page=${result.start - 1}"
 								   aria-label="Previous">
 									<span aria-hidden="true">&laquo;</span>
 								</a>
@@ -256,19 +271,21 @@
 						<c:when test="${result.page eq j}">
 						<li class="page-item active">
 							<a class="page-link"
-							   href="/service/loc_recommend/list?page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>
+							   href="/service/loc_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>
 							</c:when>
 							<c:otherwise>
 						<li class="page-item">
 							<a class="page-link"
-							   href="/service/loc_recommend/list?page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>
+							   href="/service/loc_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&page=${result.pageList.get(j-1)}">
+									${result.pageList.get(j-1)}</a>
 							</c:otherwise>
 							</c:choose>
 							</c:forEach>
 						</li>
 						<c:if test="${result.next eq true}">
 							<li class="page-item">
-								<a class="page-link" href="/service/loc_recommend/list?page=${result.end + 1}"
+								<a class="page-link"
+								   href="/service/loc_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&page=${result.end + 1}">
 								   aria-label="Previous">
 									<span aria-hidden="true">&raquo;</span>
 								</a>

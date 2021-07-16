@@ -164,10 +164,17 @@ public class LocationController {
 //                                   PageRequestDTO pageRequestDTO,
                                    Authentication authentication,
                                    Model model) {
+        String pageNumber = request.getParameter("page");
+        if (pageNumber == null){
+            pageNumber = "1";
+        }
+        int pageNum = Integer.parseInt(pageNumber);
+
         List<LocationTag> tagList = Arrays.asList(LocationTag.values());
         PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
                 .size(MAX_LOC_LIST_SIZE)
                 .sortCriterion(SortCriterion.VIEW)
+                .page(pageNum)
                 .build();
         PageResultDTO<LocationDTO, com.project.love_data.model.service.Location> resultDTO = locService.getList(pageRequestDTO);
             List<Boolean> isLikedList = new ArrayList<>();
@@ -277,6 +284,12 @@ public class LocationController {
         String order = request.getParameter("sortOrder");
         String tagString = request.getParameter("tags");
         String type = request.getParameter("searchType");
+        String pageNumber = request.getParameter("page");
+        if (pageNumber == null) {
+            pageNumber = "1";
+        }
+        int pageNum = Integer.parseInt(pageNumber);
+
         SortingOrder sortingOrder = null;
         SortCriterion sortCriterion = null;
         SearchType searchType = SearchType.valueOf(type);
@@ -321,6 +334,7 @@ public class LocationController {
                 .tagList(tagList)
                 .sortCriterion(sortCriterion)
                 .sortingOrder(sortingOrder)
+                .page(pageNum)
                 .build();
 
         PageResultDTO<LocationDTO, com.project.love_data.model.service.Location> resultDTO = locService.getList(pageRequestDTO);
@@ -333,6 +347,7 @@ public class LocationController {
         model.addAttribute("activeTags", activeTags);
         model.addAttribute("keyword", keyword);
         model.addAttribute("sortOrder", order);
+        model.addAttribute("searchType", searchType);
 
 //        log.info("active tags : " + activeTags);
 

@@ -31,7 +31,8 @@ public class LocationTest {
 
     @Test
     public void InsertInitLocation() {
-        Long user_no = (long) new Random().nextInt(4) + 1L;
+//        Long user_no = (long) new Random().nextInt(4) + 1L;
+        Long user_no = 0L;
 
         Location loc = Location.builder()
                 .loc_name("중부대학교 충청캠퍼스")
@@ -73,7 +74,7 @@ public class LocationTest {
 
         locationRepository.save(loc);
 
-        user_no = (long) (Math.random() * 10)+1;
+//        user_no = (long) (Math.random() * 10)+1;
 
         loc = null;
 
@@ -117,7 +118,7 @@ public class LocationTest {
 
         locationRepository.save(loc);
 
-        user_no = (long) (Math.random() * 10)+1;
+//        user_no = (long) (Math.random() * 10)+1;
 
         loc = null;
 
