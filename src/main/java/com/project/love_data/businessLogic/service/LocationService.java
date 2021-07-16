@@ -3,11 +3,11 @@ package com.project.love_data.businessLogic.service;
 import com.project.love_data.dto.LocationDTO;
 import com.project.love_data.dto.PageRequestDTO;
 import com.project.love_data.dto.PageResultDTO;
-import com.project.love_data.model.resource.Image;
+import com.project.love_data.model.resource.LocationImage;
 import com.project.love_data.model.service.Comment;
 import com.project.love_data.model.service.Location;
 import com.project.love_data.model.service.QLocation;
-import com.project.love_data.repository.ImageRepository;
+import com.project.love_data.repository.LocationImageRepository;
 import com.project.love_data.repository.LocationRepository;
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
@@ -25,13 +25,13 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class LocationService {
     private final LocationRepository repository;
-    private final ImageRepository imgRepository;
-    private final ImageService imgService;
+    private final LocationImageRepository imgRepository;
+    private final LocationImageService imgService;
     private final CommentService cmtService;
 
     public Location register(Map<String, String> reqParam, List<String> tagList, List<String> filePath) {
         LocationDTO dto = getLocationDto(reqParam, tagList);
-        List<Image> imgList = new ArrayList<>();
+        List<LocationImage> imgList = new ArrayList<>();
         Location entity = dtoToEntity(dto);
 
         for (int i = 1; i < filePath.size(); i++) {
@@ -45,8 +45,8 @@ public class LocationService {
 
         repository.save(entity);
 
-        for (Image image : imgList) {
-            imgRepository.save(image);
+        for (LocationImage locationImage : imgList) {
+            imgRepository.save(locationImage);
         }
 
         log.info("entity : " + entity);
@@ -103,12 +103,12 @@ public class LocationService {
 
         // Image List 변환 및 정렬
         // idx 기준 정렬
-        List<Image> tempList = new ArrayList<>();
-        List<Image> imgList = new ArrayList<>();
+        List<LocationImage> tempList = new ArrayList<>();
+        List<LocationImage> imgList = new ArrayList<>();
         boolean sortedFlag = false;
         int count = 0;
 
-        for (Image img :
+        for (LocationImage img :
                 entity.getImgSet()) {
             tempList.add(img);
         }
@@ -343,7 +343,12 @@ public class LocationService {
     public LocationDTO selectLocDTO(Long loc_no) {
         Optional<Location> result = repository.findById(loc_no);
 
-        return result.isPresent() ? entityToDto(result.get()) : null;
+        if (result.isPresent()) {
+            Location item = result.get();
+            return entityToDto(item);
+        } else {
+            return null;
+        }
     }
 
     public Location selectLoc(String loc_uuid) {
@@ -363,15 +368,15 @@ public class LocationService {
     }
 
     public void permaDelete(Location loc) {
-        List<Image> list = new ArrayList<Image>(loc.getImgSet());
+        List<LocationImage> list = new ArrayList<LocationImage>(loc.getImgSet());
         Set<Comment> cmtSet = loc.getCmtSet();
 
-        for (Image image : list) {
-            image.setLocation(null);
+        for (LocationImage locationImage : list) {
+            locationImage.setLocation(null);
 
-            imgService.update(image);
+            imgService.update(locationImage);
 
-            imgService.permaDelete(image.getImg_uuid());
+            imgService.permaDelete(locationImage.getImg_uuid());
         }
 
         for (Comment cmt : cmtSet) {
@@ -390,8 +395,8 @@ public class LocationService {
 
         if (!loc.is_deleted()) {
             disableLocation(loc);
-            for (Image image : loc.getImgSet()) {
-                imgService.delete(image.getImg_no());
+            for (LocationImage locationImage : loc.getImgSet()) {
+                imgService.delete(locationImage.getImg_no());
             }
         }
     }
@@ -449,17 +454,19 @@ public class LocationService {
     }
 
     public void incViewCount(Long loc_no) {
-        LocationDTO dto = selectLocDTO(loc_no);
+//        LocationDTO dto = selectLocDTO(loc_no);
+//
+//        dto.setViewCount(dto.getViewCount() + 1);
 
-        dto.setViewCount(dto.getViewCount() + 1);
+        Location entity = selectLoc(loc_no);
 
-        Location entity = dtoToEntity(dto);
+        entity.setViewCount(entity.getViewCount() + 1);
 
         update(entity);
     }
 
     public Location edit(Map<String, String> reqParam, List<String> tagList, List<String> filePath) {
-        List<Image> imgList = new ArrayList<>();
+        List<LocationImage> imgList = new ArrayList<>();
         Location entity = selectLoc(reqParam.get("loc_uuid"));
 
         // 업데이트 된 태그 정보 삽입

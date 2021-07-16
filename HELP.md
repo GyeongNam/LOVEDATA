@@ -5,7 +5,7 @@ For further reference, please consider the following sections:
 
 * [Official Gradle documentation](https://docs.gradle.org)
 * [Spring Boot Gradle Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.4.4/gradle-plugin/reference/html/)
-* [Create an OCI image](https://docs.spring.io/spring-boot/docs/2.4.4/gradle-plugin/reference/html/#build-image)
+* [Create an OCI locationImage](https://docs.spring.io/spring-boot/docs/2.4.4/gradle-plugin/reference/html/#build-locationImage)
 * [Spring Boot DevTools](https://docs.spring.io/spring-boot/docs/2.4.4/reference/htmlsingle/#using-boot-devtools)
 * [Java Mail Sender](https://docs.spring.io/spring-boot/docs/2.4.4/reference/htmlsingle/#boot-features-email)
 * [WebSocket](https://docs.spring.io/spring-boot/docs/2.4.4/reference/htmlsingle/#boot-features-websockets)

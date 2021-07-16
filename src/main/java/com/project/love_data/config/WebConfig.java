@@ -40,6 +40,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/member").setViewName("/sample/member");
         registry.addViewController("/all").setViewName("/sample/all");
         registry.addViewController("/admin").setViewName("/sample/admin");
+        registry.addViewController("/tmap").setViewName("/sample/tmapTest");
 //        registry.addViewController("/form_test").setViewName("/sample/form_test");
 
 
@@ -50,6 +51,7 @@ public class WebConfig implements WebMvcConfigurer {
 
         // Service
         registry.addViewController("/service/loc_index").setViewName("/service/loc_index");
+        registry.addViewController("/service/cor_index").setViewName("/service/cor_index");
 //        registry.addViewController("/service/loc_recommend").setViewName("/service/loc_recommend");
         registry.addViewController("/service/loc_detail/ex").setViewName("/service/loc_detail_example");
 //        registry.addViewController("/service/loc_registration").setViewName("/service/loc_registration");

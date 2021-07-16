@@ -9,8 +9,6 @@ import com.project.love_data.security.service.UserDetailsService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
 import java.util.*;
 
 import static com.project.love_data.util.ConstantValues.*;
@@ -31,7 +28,7 @@ public class LocationController {
     @Autowired
     LocationService locService;
     @Autowired
-    ImageService imgService;
+    LocationImageService imgService;
     @Autowired
     CommentService comService;
     @Autowired
@@ -64,7 +61,7 @@ public class LocationController {
     }
 
     @GetMapping("/service/loc_registration/regData")
-    public String locRegistartionDataNoAccess() {
+    public String locRegistrationDataNoAccess() {
         log.info("Access Invalid(Shouldn't Access with GET Method)");
         return "redirect:/service/loc_recommend";
     }
@@ -167,10 +164,17 @@ public class LocationController {
 //                                   PageRequestDTO pageRequestDTO,
                                    Authentication authentication,
                                    Model model) {
+        String pageNumber = request.getParameter("page");
+        if (pageNumber == null){
+            pageNumber = "1";
+        }
+        int pageNum = Integer.parseInt(pageNumber);
+
         List<LocationTag> tagList = Arrays.asList(LocationTag.values());
         PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
                 .size(MAX_LOC_LIST_SIZE)
                 .sortCriterion(SortCriterion.VIEW)
+                .page(pageNum)
                 .build();
         PageResultDTO<LocationDTO, com.project.love_data.model.service.Location> resultDTO = locService.getList(pageRequestDTO);
             List<Boolean> isLikedList = new ArrayList<>();
@@ -274,12 +278,18 @@ public class LocationController {
         return "redirect:/service/loc_recommend";
     }
 
-    @PostMapping(value = "/service/loc_recommend/search")
+    @GetMapping(value = "/service/loc_recommend/search")
     public String getSearchValue(HttpServletRequest request, Model model){
         String keyword = request.getParameter("keyword");
         String order = request.getParameter("sortOrder");
         String tagString = request.getParameter("tags");
         String type = request.getParameter("searchType");
+        String pageNumber = request.getParameter("page");
+        if (pageNumber == null) {
+            pageNumber = "1";
+        }
+        int pageNum = Integer.parseInt(pageNumber);
+
         SortingOrder sortingOrder = null;
         SortCriterion sortCriterion = null;
         SearchType searchType = SearchType.valueOf(type);
@@ -324,6 +334,7 @@ public class LocationController {
                 .tagList(tagList)
                 .sortCriterion(sortCriterion)
                 .sortingOrder(sortingOrder)
+                .page(pageNum)
                 .build();
 
         PageResultDTO<LocationDTO, com.project.love_data.model.service.Location> resultDTO = locService.getList(pageRequestDTO);
@@ -336,6 +347,7 @@ public class LocationController {
         model.addAttribute("activeTags", activeTags);
         model.addAttribute("keyword", keyword);
         model.addAttribute("sortOrder", order);
+        model.addAttribute("searchType", searchType);
 
 //        log.info("active tags : " + activeTags);
 
