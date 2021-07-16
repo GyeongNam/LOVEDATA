@@ -137,11 +137,11 @@
 											<img src="/image/icon/480px-Solid_white.png" alt="" id="img_${i}" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
 											<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
 												<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_${i}"
-													 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
+													 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%; z-index: 2">
 											</div>
 											<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
 												<img class="btn btn-lg align-middle p-0" id="imgDel_${i}" onclick="deleteImage(this)"
-													 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
+													 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png" style="z-index: 2">
 											</div>
 											<div class="d-flex justify-content-center card-img-overlay p-0 visually-hidden" style="align-items: center">
 												<img class="w-100 h-100" id="imgSel_${i}" onclick="onSelectImage(${i})" src="/image/icon/480px-Solid_white.png"
@@ -154,11 +154,11 @@
 											<img src="/image/icon/480px-Solid_white.png" alt="" id="img_${i}" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
 											<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
 												<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_${i}"
-													 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
+													 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%; z-index: 2">
 											</div>
 											<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
 												<img class="btn btn-lg align-middle p-0" id="imgDel_${i}" onclick="deleteImage(this)"
-													 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
+													 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png" style="z-index: 2">
 											</div>
 											<div class="d-flex justify-content-center card-img-overlay p-0 visually-hidden" style="align-items: center">
 												<img class="w-100 h-100" id="imgSel_${i}" onclick="onSelectImage(${i})" src="/image/icon/480px-Solid_white.png"

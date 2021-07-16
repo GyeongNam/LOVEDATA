@@ -61,7 +61,7 @@ public class LocationController {
     }
 
     @GetMapping("/service/loc_registration/regData")
-    public String locRegistartionDataNoAccess() {
+    public String locRegistrationDataNoAccess() {
         log.info("Access Invalid(Shouldn't Access with GET Method)");
         return "redirect:/service/loc_recommend";
     }
