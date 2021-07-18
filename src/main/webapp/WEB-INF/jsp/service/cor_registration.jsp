@@ -63,30 +63,9 @@
 		<div class="container-fluid">
 			<form action="/service/loc_registration/regData" method="post" enctype="multipart/form-data">
 				<div class="user-details basic-style">
-					<div class="input-box">
-						<span class="details">이름</span>
-						<input type="text" id="name" name="name" placeholder="Enter your name" required>
-					</div>
-					<div class="input-box">
-						<div class="row p-1">
-							<span class="details col-5">예상 소요시간</span>
-							<span class="details col-5">이동수단</span>
-						</div>
-						<div class="row p-2">
-<%--							Todo 레이아웃 변경하기--%>
-							<input type="text" id="est_time" name="est_time" placeholder="10분" required>
-							<input type="text" id="transportation" name="transportation" placeholder="자동차" required>
-						</div>
-<%--						<input class="col-5" type="text" id="est_time" name="est_time" placeholder="10분" required>--%>
-<%--						<input class="col-5" type="text" id="transportation" name="transportation" placeholder="자동차" required>--%>
-					</div>
-					<div class="input-box">
-						<span class="details">예상 비용</span>
-						<input type="text" id="cost" name="cost" placeholder="00 만원" required>
-					</div>
 					<div class="row">
 						<div class="col" id="top_hashtag">
-							<nav class="navbar navbar-expand-sm navbar-light bg-light static-top">
+							<nav class="navbar navbar-expand-sm navbar-light static-top">
 								<div class="collapse navbar-collapse" id="tag-navbar-collapse">
 									<ul class="navbar-nav">
 										<li class="nav-item dropdown">
@@ -118,9 +97,31 @@
 						</div>
 					</div>
 					<div class="input-box">
-						<span class="details">연락처</span>
-						<input type="tel" id="tel" name="tel" placeholder="010-0000-0000"
-							   pattern="[0-9]{3}-[0-9]{4}-[0-9]{3}" required>
+						<span class="details">이름</span>
+						<input type="text" id="name" name="name" placeholder="Enter your name" required>
+					</div>
+					<div class="input-box">
+						<div class="row" style="margin-left: 1px">
+							<div class="col-lg">
+								<div class="row">
+									<span class="details m-0 p-0">예상 소요시간</span>
+									<input type="text" id="est_time" name="est_time" placeholder="10분" style="width: auto" required>
+								</div>
+							</div>
+							<div class="col-lg">
+								<div class="row">
+									<%--							Todo 레이아웃 변경하기--%>
+									<span class="details m-0 p-0">이동수단</span>
+									<input type="text" id="transportation" name="transportation" placeholder="자동차" style="width: auto" required>
+								</div>
+							</div>
+						</div>
+<%--						<input class="col-5" type="text" id="est_time" name="est_time" placeholder="10분" required>--%>
+<%--						<input class="col-5" type="text" id="transportation" name="transportation" placeholder="자동차" required>--%>
+					</div>
+					<div class="input-box">
+						<span class="details">예상 비용</span>
+						<input type="text" id="cost" name="cost" placeholder="00 만원" required>
 					</div>
 					<div class="input-box">
 						<span class="details">정보</span>
@@ -131,9 +132,20 @@
 						</sec:authorize>
 						<input type="hidden" name="user_no_debug" id="user_no_debug" value="0">
 					</div>
+					<div class="row d-flex align-items-end">
+						<div class="col">
+							<span class="details">이미지</span>
+						</div>
+						<div class="col d-flex justify-content-end">
+							<image type="button" id="img_move_left" name="img_move_left"
+								   src="/image/icon/left-arrow.png" onclick="onClickImgMoveLeft()" style="height: 30px"></image>
+							<image type="button" id="img_move_right" name="img_move_right"
+								   src="/image/icon/right-arrow.png" onclick="onClickImgMoveRight()" style="height: 30px"></image>
+						</div>
+					</div>
 					<div>
+						<div id="canvas" class="row flex-nowrap mx-0 my-3" style="overflow-x: scroll; outline: blue thick solid;">
 						<input class="visually-hidden" id="imgInput" name="files" type="file" multiple accept="image/*" onchange="readImage()">
-						<div id="canvas" class="row flex-nowrap mx-0 mt-3" style="overflow-x: scroll">
 							<c:forEach var="i" begin="1" end="10">
 								<c:choose>
 									<c:when test="${i eq 1}">
@@ -141,11 +153,11 @@
 											<img src="/image/icon/480px-Solid_white.png" alt="" id="img_${i}" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
 											<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
 												<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_${i}"
-													 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
+													 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%; z-index: 2">
 											</div>
 											<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
 												<img class="btn btn-lg align-middle p-0" id="imgDel_${i}" onclick="deleteImage(this)"
-													 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
+													 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png" style="z-index: 2">
 											</div>
 											<div class="d-flex justify-content-center card-img-overlay p-0 visually-hidden" style="align-items: center">
 												<img class="w-100 h-100" id="imgSel_${i}" onclick="onSelectImage(${i})" src="/image/icon/480px-Solid_white.png"
@@ -158,11 +170,11 @@
 											<img src="/image/icon/480px-Solid_white.png" alt="" id="img_${i}" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
 											<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
 												<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_${i}"
-													 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%">
+													 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%; z-index: 2">
 											</div>
 											<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
 												<img class="btn btn-lg align-middle p-0" id="imgDel_${i}" onclick="deleteImage(this)"
-													 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png">
+													 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png" style="z-index: 2">
 											</div>
 											<div class="d-flex justify-content-center card-img-overlay p-0 visually-hidden" style="align-items: center">
 												<img class="w-100 h-100" id="imgSel_${i}" onclick="onSelectImage(${i})" src="/image/icon/480px-Solid_white.png"
@@ -174,12 +186,130 @@
 							</c:forEach>
 						</div>
 					</div>
-				</div>
-				<div class="m-2">
-					<image type="button" id="img_move_left" name="img_move_left"
-						   src="/image/icon/left-arrow.png" onclick="onClickImgMoveLeft()" style="height: 30px"></image>
-					<image type="button" id="img_move_right" name="img_move_right"
-						   src="/image/icon/right-arrow.png" onclick="onClickImgMoveRight()" style="height: 30px"></image>
+					<div class="row d-flex align-items-end mt-5">
+						<div class="col">
+							<span class="details align-middle">장소 추가 임시 화면</span>
+						</div>
+					</div>
+					<div>
+						<div class="card p-0 m-2">
+							<div class="row">
+								<span class="details fs-3">&lt;장소 1&gt;</span>
+								<div class="col-4">
+									<img src="/image/init/Gwanghwamun-01.jpg" alt="광화문" id="temp_img"
+										 class="visible bd-place card-img"
+										 style="height: 244px; width: 100%; outline: none">
+									<div class="d-flex justify-content-end card-img-overlay pe-4 pt-5 col-4" style="align-items: flex-start">
+										<img class="btn btn-lg align-middle p-0" id="imgDel_${i}" onclick="deleteImage(this)"
+											 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png" style="z-index: 2">
+									</div>
+									<div class="d-flex justify-content-center card-img-overlay p-0 visually-hidden"
+										 style="align-items: center">
+										<img class="w-100 h-100" id="temp_loc" onclick=""
+											 src="/image/icon/480px-Solid_white.png"
+											 style="opacity : 0.0; z-index: 1;">
+									</div>
+								</div>
+								<div class="col">
+									<div class="row d-flex my-2">
+										<div class="col-6 d-flex justify-content-between align-items-md-center">
+											<span class="details mx-2">이름</span>
+											<input type="text" name="temp_loc_name" id="temp_loc_name" value="광화문" readonly>
+										</div>
+									</div>
+									<div class="row d-flex my-2 align-items-md-center">
+										<div class="col-3">
+											<span class="details mx-2 align-middle">해시태그</span>
+										</div>
+										<div class="col d-flex justify-content-start ms-3 ps-2 pe-5">
+											<button type="button" class="btn btn-primary mx-1" value="놀이동산공원">놀이동산공원</button>
+											<button type="button" class="btn btn-primary mx-1" value="놀이동산공원">놀이동산공원</button>
+											<button type="button" class="btn btn-primary mx-1" value="놀이동산공원">놀이동산공원</button>
+											<button type="button" class="btn btn-primary mx-1" value="놀이동산공원">놀이동산공원</button>
+											<button type="button" class="btn btn-primary mx-1" value="놀이동산공원">놀이동산공원</button>
+											<button type="button" class="btn btn-primary mx-1" value="놀이동산공원">놀이동산공원</button>
+											<button type="button" class="btn btn-primary mx-1" value="놀이동산공원">놀이동산공원</button>
+										</div>
+									</div>
+									<div class="row d-flex my-2">
+										<div class="col-6 d-flex justify-content-between align-items-md-center">
+											<span class="details mx-2">주소</span>
+											<input type="text" name="temp_loc_addr" id="temp_loc_addr" value="서울 종로구 효자로 12 국립고궁박물관" readonly>
+										</div>
+									</div>
+									<div class="row d-flex my-2">
+										<div class="col-6 d-flex justify-content-between align-items-md-center">
+											<span class="details mx-2">전화번호</span>
+											<input type="text" name="temp_loc_tel" id="temp_loc_tel" value="02-3700-3901" readonly>
+										</div>
+									</div>
+									<div class="row d-flex my-2 align-items-md-center">
+										<div class="col-3">
+											<span class="details mx-2">상세설명</span>
+										</div>
+										<div class="col d-flex justify-content-start ms-1 ps-0">
+											<textarea class="col ms-4 me-lg-5" name="temp_loc_info" id="temp_loc_info" rows="4" maxlength="150" readonly>1395년(태조 4년) 9월에 창건되어 정도전(鄭道傳)에 의해 사정문(四正門)으로 명명되었고 오문(午門)으로 불리기도 하였다. 그러다가 1425년(세종 7년) 집현전 학사들이 광화문이라고 바꾸었다. 광화문은 석축기단(石築基壇)에 3개의 홍예문(虹霓門)를 만들고 그 위에 정면 3칸의 중층우진각 지붕으로 된 목조문루를 세웠다. 목조건축의 양식은 다포식(多包式)으로 상하층이 모두 외이출목(外二出目)·내삼출목(內三出目), 외부는 제공(諸工) 뿌리를 쇠서로 하고, 내부는 운공(雲工)을 만들었으며, 첨차(墅遮) 양측면에는 모두 파련초각(波蓮草刻)을 하였다. 이 건물은 섬세한 수법과 웅대한 구조를 보여주고, 전체적으로 균형과 조화를 이루어 장려한 외관을 지닌 가장 뛰어난 궐문(闕門)으로 평가되었다.
+											</textarea>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+<%--					Todo 팝업창 띄워서 장소 검색하는 ui 만들기--%>
+					<div class="row d-flex align-items-end mt-5">
+						<div class="col">
+							<span class="details align-middle">장소 추가</span>
+						</div>
+						<div class="col d-flex justify-content-end">
+							<image type="button" id="loc_move_left" name="loc_move_left"
+								   src="/image/icon/left-arrow.png" onclick="" style="height: 30px"></image>
+							<image type="button" id="loc_move_right" name="loc_move_right"
+								   src="/image/icon/right-arrow.png" onclick="" style="height: 30px"></image>
+						</div>
+					</div>
+					<div>
+						<input class="visually-hidden" id="imgInput" name="files" type="file" multiple accept="image/*" onchange="readImage()">
+						<c:forEach var="i" begin="1" end="10">
+							<c:choose>
+								<c:when test="${i eq 1}">
+									<div class="card p-0 m-2">
+										<img src="/image/icon/480px-Solid_white.png" alt="" id="img_${i}"
+											 class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
+										<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
+											<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_${i}"
+												 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%; z-index: 2">
+										</div>
+										<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden col-4" style="align-items: flex-start">
+											<img class="btn btn-lg align-middle p-0" id="imgDel_${i}" onclick="deleteImage(this)"
+												 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png" style="z-index: 2">
+										</div>
+										<div class="d-flex justify-content-center card-img-overlay p-0 visually-hidden col-4" style="align-items: center">
+											<img class="w-100 h-100" id="imgSel_${i}" onclick="onSelectImage(${i})" src="/image/icon/480px-Solid_white.png"
+												 style="opacity : 0.0; z-index: 1;">
+										</div>
+									</div>
+								</c:when>
+								<c:otherwise>
+									<div class="card col-3 p-0 m-2 visually-hidden">
+										<img src="/image/icon/480px-Solid_white.png" alt="" id="img_${i}" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
+										<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
+											<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_${i}"
+												 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%; z-index: 2">
+										</div>
+										<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
+											<img class="btn btn-lg align-middle p-0" id="imgDel_${i}" onclick="deleteImage(this)"
+												 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png" style="z-index: 2">
+										</div>
+										<div class="d-flex justify-content-center card-img-overlay p-0 visually-hidden" style="align-items: center">
+											<img class="w-100 h-100" id="imgSel_${i}" onclick="onSelectImage(${i})" src="/image/icon/480px-Solid_white.png"
+												 style="opacity : 0.0; z-index: 1;">
+										</div>
+									</div>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+					</div>
 				</div>
 				<button type="submit" id="register" name="register" onclick="onClickRegister()">Register</button>
 			</form>

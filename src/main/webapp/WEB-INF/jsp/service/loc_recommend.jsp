@@ -57,7 +57,7 @@
 	</div>
 	<div class="container-fluid" id="display_center" style="margin-right: 30px">
 		<div class="col" id="top_navbar">
-			<nav class="navbar navbar-expand-sm navbar-light bg-light static-top">
+			<nav class="navbar navbar-expand-sm navbar-light static-top">
 				<button class="navbar-toggler" type="button" data-toggle="collapse"
 						data-target="#bs-example-navbar-collapse-1">
 				</button>
@@ -89,7 +89,7 @@
 			</nav>
 		</div>
 		<div class="col" id="top_hashtag">
-			<nav class="navbar navbar-expand-sm navbar-light bg-light static-top">
+			<nav class="navbar navbar-expand-sm navbar-light static-top">
 				<div class="collapse navbar-collapse" id="tag-navbar-collapse">
 					<ul class="navbar-nav">
 						<li class="nav-item dropdown">

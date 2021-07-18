@@ -63,13 +63,9 @@
 		<div class="container-fluid">
 			<form action="/service/loc_registration/regData" method="post" enctype="multipart/form-data">
 				<div class="user-details basic-style">
-					<div class="input-box">
-						<span class="details">이름</span>
-						<input type="text" id="name" name="name" placeholder="Enter your name" required>
-					</div>
 					<div class="row">
 						<div class="col" id="top_hashtag">
-							<nav class="navbar navbar-expand-sm navbar-light bg-light static-top">
+							<nav class="navbar navbar-expand-sm navbar-light static-top">
 								<div class="collapse navbar-collapse" id="tag-navbar-collapse">
 									<ul class="navbar-nav">
 										<li class="nav-item dropdown">
@@ -101,6 +97,10 @@
 						</div>
 					</div>
 					<div class="input-box">
+						<span class="details">이름</span>
+						<input type="text" id="name" name="name" placeholder="Enter your name" required>
+					</div>
+					<div class="input-box">
 						<span class="details">위치</span>
 						<form method="post" name="form" id="form">
 							<input type="button" onclick="goPopup()" value="주소검색">
@@ -126,6 +126,17 @@
 							<input type="hidden" name="user_no" id="user_no" value="${user_no}">
 						</sec:authorize>
 						<input type="hidden" name="user_no_debug" id="user_no_debug" value="0">
+					</div>
+					<div class="row d-flex align-items-end">
+						<div class="col">
+							<span class="details">이미지</span>
+						</div>
+						<div class="col d-flex justify-content-end">
+							<image type="button" id="img_move_left" name="img_move_left"
+								   src="/image/icon/left-arrow.png" onclick="onClickImgMoveLeft()" style="height: 30px"></image>
+							<image type="button" id="img_move_right" name="img_move_right"
+								   src="/image/icon/right-arrow.png" onclick="onClickImgMoveRight()" style="height: 30px"></image>
+						</div>
 					</div>
 					<div>
 						<input class="visually-hidden" id="imgInput" name="files" type="file" multiple accept="image/*" onchange="readImage()">
@@ -170,12 +181,6 @@
 							</c:forEach>
 						</div>
 					</div>
-				</div>
-				<div class="m-2">
-					<image type="button" id="img_move_left" name="img_move_left"
-						   src="/image/icon/left-arrow.png" onclick="onClickImgMoveLeft()" style="height: 30px"></image>
-					<image type="button" id="img_move_right" name="img_move_right"
-						   src="/image/icon/right-arrow.png" onclick="onClickImgMoveRight()" style="height: 30px"></image>
 				</div>
 				<button type="submit" id="register" name="register" onclick="onClickRegister()">Register</button>
 			</form>
