@@ -2,6 +2,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ page session="false" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <script defer src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <link href="/css/signup.css" rel="stylesheet">
@@ -13,7 +16,9 @@
     <title>회원가입ㅣLOVEDATA</title>
 </head>
 <body>
+
 <%@ include file="../layout/header.jsp" %>
+<c:set var="set_user" value='<%=request.getAttribute("social") == null ? false : request.getAttribute("social")%>'></c:set>
 <form class="signupform" action="/signup_add" method="post">
     <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
     <div class="content">
@@ -26,28 +31,60 @@
                     *</strong></label></td>
                 <td>
                     <div class="emailcontent">
-                        <input type="text" name="str_email01" id="str_email01"
-                               required="required" onblur="email_check()"
-                               value="<%= request.getAttribute("str_email01") == null ? "" : request.getAttribute("str_email01") %>"> @ <input type="text"
-                                                                                    name="str_email02" id="str_email02"
-                                                                                    onblur="email_check()" required
-                                                                                    placeholder="" value="<%= request.getAttribute("str_email02") == null ? "" : request.getAttribute("str_email02") %>">
-                        <select name="str_email03" id="selectEmail" onblur="email_check()" required="required">
-                            <option value="1">직접입력</option>
-                            <option value="naver.com">naver.com</option>
-                            <option value="hanmail.net">hanmail.net</option>
-                            <option value="hotmail.com">hotmail.com</option>
-                            <option value="nate.com">nate.com</option>
-                            <option value="yahoo.co.kr">yahoo.co.kr</option>
-                            <option value="empas.com">empas.com</option>
-                            <option value="dreamwiz.com">dreamwiz.com</option>
-                            <option value="freechal.com">freechal.com</option>
-                            <option value="lycos.co.kr">lycos.co.kr</option>
-                            <option value="korea.com">korea.com</option>
-                            <option value="gmail.com">gmail.com</option>
-                            <option value="hanmir.com">hanmir.com</option>
-                            <option value="paran.com">paran.com</option>
-                        </select> <input class="checkbox11" type="checkbox" name="recv_email"/>
+                        <c:choose>
+                            <c:when test="${set_user eq false}">
+                                <input type="text" name="str_email01" id="str_email01"
+                                       required="required" onblur="email_check()"
+                                       value="<%= request.getAttribute("str_email01") == null ? "" : request.getAttribute("str_email01") %>">
+                                @ <input type="text"
+                                         name="str_email02" id="str_email02"
+                                         onblur="email_check()" required
+                                         placeholder="" value="<%= request.getAttribute("str_email02") == null ? "" : request.getAttribute("str_email02") %>">
+                                <select name="str_email03" id="selectEmail" onblur="email_check()" required="required">
+                                    <option value="1">직접입력</option>
+                                    <option value="naver.com">naver.com</option>
+                                    <option value="hanmail.net">hanmail.net</option>
+                                    <option value="hotmail.com">hotmail.com</option>
+                                    <option value="nate.com">nate.com</option>
+                                    <option value="yahoo.co.kr">yahoo.co.kr</option>
+                                    <option value="empas.com">empas.com</option>
+                                    <option value="dreamwiz.com">dreamwiz.com</option>
+                                    <option value="freechal.com">freechal.com</option>
+                                    <option value="lycos.co.kr">lycos.co.kr</option>
+                                    <option value="korea.com">korea.com</option>
+                                    <option value="gmail.com">gmail.com</option>
+                                    <option value="hanmir.com">hanmir.com</option>
+                                    <option value="paran.com">paran.com</option>
+                                </select>
+                            </c:when>
+                            <c:when test="${set_user eq true}">   <%--	소셜 로그인으로 들어올경우--%>
+                                <input type="text" name="str_email01" id="str_email01"
+                                       required="required"
+                                       value="<%= request.getAttribute("str_email01") == null ? "" : request.getAttribute("str_email01") %>" readonly>
+                                @ <input type="text"
+                                         name="str_email02" id="str_email02"
+                                         required
+                                         placeholder="" value="<%= request.getAttribute("str_email02") == null ? "" : request.getAttribute("str_email02") %> " readonly>
+                                <select name="str_email03" id="selectEmail" required="required" readonly>
+                                    <option value="1">직접입력</option>
+                                    <option value="naver.com">naver.com</option>
+                                    <option value="hanmail.net">hanmail.net</option>
+                                    <option value="hotmail.com">hotmail.com</option>
+                                    <option value="nate.com">nate.com</option>
+                                    <option value="yahoo.co.kr">yahoo.co.kr</option>
+                                    <option value="empas.com">empas.com</option>
+                                    <option value="dreamwiz.com">dreamwiz.com</option>
+                                    <option value="freechal.com">freechal.com</option>
+                                    <option value="lycos.co.kr">lycos.co.kr</option>
+                                    <option value="korea.com">korea.com</option>
+                                    <option value="gmail.com">gmail.com</option>
+                                    <option value="hanmir.com">hanmir.com</option>
+                                    <option value="paran.com">paran.com</option>
+                                </select >
+                            </c:when>
+                        </c:choose>
+
+                        <input class="checkbox11" type="checkbox" name="recv_email"/>
                         <input class="checkbox12" type="hidden" name="recv_email" value=false/>
                         <spen class="spen"> 이메일 수신에 동의합니다.</spen>
                     </div>
@@ -59,8 +96,17 @@
             <tr>
                 <td class="thead"><label class="label"><strong>비밀번호
                     *</strong> </label></td>
-                <td><input type="password" name="userPwd" id="pwd1"
-                           onKeyup="chkpw()" value="<%= request.getAttribute("pwd")  == null ? "" :  request.getAttribute("pwd")%>" class="form-control"  required>
+                <td>
+                    <c:choose>
+                        <c:when test="${set_user eq false}">
+                            <input type="password" name="userPwd" id="pwd1"
+                                   onKeyup="chkpw()" value="<%= request.getAttribute("pwd")  == null ? "" :  request.getAttribute("pwd")%>" class="form-control"  required>
+                        </c:when>
+                        <c:when test="${set_user eq true}">   <%--	소셜 로그인으로 들어올경우--%>
+                            <input type="password" name="userPwd" id="pwd1"
+                                   value="<%= request.getAttribute("pwd")  == null ? "" :  request.getAttribute("pwd")%>" class="form-control"  required readonly>
+                        </c:when>
+                    </c:choose>
                     <spen
                             class="spen" id=pwd_rule>영문 대소문자/숫자/특수문자 중 2가지 이상 조합,
                         10자~16자.
@@ -70,8 +116,17 @@
             <tr>
                 <td class="thead"><label class="label"><strong>비밀번호
                     확인 *</strong></label></td>
-                <td><input type="password" name="reuserPwd" id="pwd2"
-                           onKeyup="passwordcheck()" value="<%= request.getAttribute("pwd")  == null ? "" :  request.getAttribute("pwd")%>" class="form-control" required>
+                <td>
+                    <c:choose>
+                        <c:when test="${set_user eq false}">
+                            <input type="password" name="reuserPwd" id="pwd2"
+                                   onKeyup="passwordcheck()" value="<%= request.getAttribute("pwd")  == null ? "" :  request.getAttribute("pwd")%>" class="form-control" required>
+                        </c:when>
+                        <c:when test="${set_user eq true}">   <%--	소셜 로그인으로 들어올경우--%>
+                            <input type="password" name="reuserPwd" id="pwd2"
+                                   value="<%= request.getAttribute("pwd")  == null ? "" :  request.getAttribute("pwd")%>" class="form-control" required readonly>
+                        </c:when>
+                    </c:choose>
                     <spen
                             class="spen" id="pwd_check"></spen>
                 </td>
@@ -79,8 +134,17 @@
             <tr>
                 <td class="thead"><label class="label"><strong>닉네임
                     *</strong></label></td>
-                <td><input type="text" onblur="nick_check()" class="nickname" name="nickname"
-                           id="nickname" value="<%= request.getAttribute("nickname")  == null ? "" :  request.getAttribute("nickname")%>" minlength=3 required>
+                <td>
+                    <c:choose>
+                        <c:when test="${set_user eq false}">
+                            <input type="text" onblur="nick_check()" class="nickname" name="nickname"
+                                   id="nickname" value="<%= request.getAttribute("nickname")  == null ? "" :  request.getAttribute("nickname")%>" minlength=3 required>
+                        </c:when>
+                        <c:when test="${set_user eq true}">   <%--	소셜 로그인으로 들어올경우--%>
+                            <input type="text" class="nickname" name="nickname"
+                                   id="nickname" value="<%= request.getAttribute("nickname")  == null ? "" :  request.getAttribute("nickname")%>" minlength=3 required>
+                        </c:when>
+                    </c:choose>
                     <spen class="spen"
                           id="nickname_check"></spen>
                 </td>
@@ -88,7 +152,16 @@
             <tr>
                 <td class="thead"><label class="label"><strong>이름
                     *</strong></label></td>
-                <td><input type="text" name="userName" id="userName" onblur="name_check()" id="new_name" required>
+                <td>
+                    <c:choose>
+                        <c:when test="${set_user eq false}">
+                            <input type="text" name="userName" id="userName" onblur="name_check()" id="new_name" required>
+                        </c:when>
+                        <c:when test="${set_user eq true}">   <%--	소셜 로그인으로 들어올경우--%>
+                            <input type="text" name="userName" id="userName" id="new_name" required>
+                        </c:when>
+                    </c:choose>
+
                     <spen class="spen"
                           id="userName_check"></spen>
                 </td>
@@ -140,10 +213,20 @@
         <input type="hidden" name="social" value="<%= request.getAttribute("social")  == null ? false : request.getAttribute("social")%>">
         <input type="hidden" name="social_info" value="<%= request.getAttribute("social_info")  == null ? "" : request.getAttribute("social_info")%>">
         <div class="sand_back">
-            <button class="submit" type="submit" id="sub"
-                    onclick="return signup_check();">
-                <b>가입하기</b>
-            </button>
+            <c:choose>
+                <c:when test="${set_user eq false}">
+                    <button class="submit" type="submit" id="sub"
+                            onclick="return signup_check();">
+                        <b>가입하기</b>
+                    </button>
+                </c:when>
+                <c:when test="${set_user eq true}">   <%--	소셜 로그인으로 들어올경우--%>
+                    <button class="submit" type="submit" id="sub"
+                            onclick="return Ssignup_check();">
+                        <b>가입하기</b>
+                    </button>
+                </c:when>
+            </c:choose>
             <button class="back" onclick="location.href='/' " id="subcc">
                 <b>취소</b>
             </button>
@@ -160,7 +243,17 @@
             </div>
         </div>
     </div>
+
+    <c:choose>
+    <c:when test="${set_user eq false}">
+        기본 로그인 ${set_user}
+    </c:when>
+    <c:when test="${set_user eq true}">   <%--	소셜 로그인으로 들어올경우--%>
+        소셜 로그인 ${set_user}
+    </c:when>
+    </c:choose>
 </form>
+
 <%@ include file="../layout/footer.jsp" %>
 </body>
 </html>
