@@ -78,10 +78,16 @@ $(document).ready(function () {
     }
 });
 
+//닉네임 중복확인 버튼
+function double_check(){
 
-//수정된 비밀번호 확인
-// 비밀번호 확인
-function passwordcheck(){
+}
+
+//기존 비밀번호 확인
+
+
+// 수정 된 비밀번호 확인
+function repasswordcheck(){
     var pwd1 = $('#NewPassword').val();
     var pwd2 = $('#NewPasswordre').val();
     var p_chack = $('#password_check');
