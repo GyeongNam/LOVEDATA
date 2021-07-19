@@ -6,7 +6,7 @@
       <synchronize>true</synchronize>
       <remarks>lovedata_lovedatauser</remarks>
       <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mariadb://localhost:3306/lovedata</jdbc-url>
+      <jdbc-url>jdbc:mariadb://localhost:3306/lovedata?serverTimezone=Asia/Seoul</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
     <data-source source="LOCAL" name="RPI Server (LoveData)" uuid="7d1ce827-643a-4abc-ab55-c471c67a7c93">

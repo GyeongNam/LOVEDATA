@@ -141,8 +141,14 @@
 					<div class="row d-flex">
 						<h5>해시태그 : ${dto.tagSet}</h5>
 					</div>
+<%--					<div class="row d-flex">--%>
+<%--						<h5 class="text-truncate">설명 : ${dto.info}</h5>--%>
+<%--					</div>--%>
 					<div class="row d-flex">
-						<h5 class="text-truncate">설명 : ${dto.info}</h5>
+						<h5>등록일 : ${dto.regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}</h5>
+					</div>
+					<div class="row d-flex">
+						<h5>연락처 : ${dto.tel}</h5>
 					</div>
 				</div>
 				<div class="row d-flex">

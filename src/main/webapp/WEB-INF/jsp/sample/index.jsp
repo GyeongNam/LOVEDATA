@@ -17,5 +17,6 @@
     <button type="submit">response_body_value</button>
     <sec:csrfInput/>
 </form>
+<p><a href="/tmap">t맵</a></p>
 </body>
 </html>

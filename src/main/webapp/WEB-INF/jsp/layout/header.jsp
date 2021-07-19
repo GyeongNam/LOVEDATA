@@ -54,7 +54,7 @@
 		</sec:authorize>
 
 		<button id="hd-btn" onclick="location.href='/service/loc_recommend'">장소</button>
-		<button id="hd-btn" href="#">코스</button>
+		<button id="hd-btn" onclick="location.href='/service/cor_index'">코스</button>
 		<button id="hd-btn" onclick="location.href='/service/calender'">캘린더</button>
 	</div>
 </div>

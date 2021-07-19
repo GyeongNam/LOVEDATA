@@ -288,3 +288,9 @@ function signup_check(){
      return false;
    }
 }
+function Ssignup_check(){
+  if(mainphone == false){
+    alert("휴대폰을 인증하세요");
+    return false;
+  }
+}

@@ -1,6 +1,6 @@
 package com.project.love_data.businessLogic.service;
 
-import com.project.love_data.model.resource.Image;
+import com.project.love_data.model.resource.LocationImage;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import java.util.*;
 @Log4j2
 public class FileUploadService {
     @Autowired
-    ImageService imageService;
+    LocationImageService locationImageService;
 
     public void execute(List<MultipartFile> fileList,
                         UploadFileType fileType,
@@ -281,7 +281,7 @@ public class FileUploadService {
     }
 
     private boolean isDuplicated(String fileName) {
-        Image item = imageService.getImage(fileName);
+        LocationImage item = locationImageService.getImage(fileName);
 
         return item != null;
     }

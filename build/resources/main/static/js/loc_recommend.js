@@ -35,7 +35,7 @@ function changeSort(sortType) {
 function onClickSearch() {
     let form;
     form = document.createElement("form");
-    form.method = "post";
+    form.method = "get";
     form.action="/service/loc_recommend/search"
 
     let keyword = document.getElementById("keyword").value;
