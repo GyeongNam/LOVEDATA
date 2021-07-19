@@ -1,6 +1,12 @@
 var draggedEventIsAllDay;
 var activeInactiveWeekends = true;
 var newdate = new Date()
+
+// ajax token
+var token = $("meta[name='_csrf']").attr("content");
+var header = $("meta[name='_csrf_header']").attr("content");
+$(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
+
 var calendar = $('#calendar').fullCalendar({
 
  /** ******************
@@ -58,7 +64,6 @@ var calendar = $('#calendar').fullCalendar({
                                 }
                               },
 
-
   eventRender: function (event, element, view) {
 
     //일정에 hover시 요약
@@ -95,25 +100,54 @@ var calendar = $('#calendar').fullCalendar({
    * ************** */
   events: function (start, end, timezone, callback) {
     $.ajax({
-      type: "get",
-      url: "data.json",
+      type: "post",
+      url: "/user/cal_all",
       data: {
-        // 화면이 바뀌면 Date 객체인 start, end 가 들어옴
-        //startDate : moment(start).format('YYYY-MM-DD'),
-        //endDate   : moment(end).format('YYYY-MM-DD')
+          start: start.unix(),
+          end: end.unix()
       },
       success: function (response) {
-        var fixedDate = response.map(function (array) {
-          if (array.allDay && array.start !== array.end) {
-            array.end = moment(array.end).add(1, 'days'); // 이틀 이상 AllDay 일정인 경우 달력에 표기시 하루를 더해야 정상출력
-          }
-          return array;
-        });
-        callback(fixedDate);
+          console.log(response);
+          var arr = response;
+          // var events = [
+          //     {
+          //         "title"  : "event1",
+          //         "start"  : "2021-07-19",
+          //         "end"    : "2021-07-21"
+          //     }];
+          var events = [];
+
+          events.push({
+              title: response.title,
+              start: response.start,
+              end: response.end
+          });
+
+          callback(events);
+
+          // events.push({title:"item.title", start: "2021-07-19", end: "2021-07-21"});
+          // console.log(events);
+          //
+          // callback(events);
+          //
+          // $.each(arr, function(index, item){
+          //     var tstart = new Date(item.start);
+          //     var tend = new Date(item.end);
+          //     // events.push({title:item.title, start: tstart, end: tend});
+          //
+          // });
+
+
+      //   var fixedDate = item.map(function (array) {
+      //     if (array.allDay && array.start !== array.end) {
+      //       array.end = moment(array.end).add(1, 'days'); // 이틀 이상 AllDay 일정인 경우 달력에 표기시 하루를 더해야 정상출력
+      //     }
+      //     return array;
+      //   });
+      // callback(fixedDate);
       }
     });
   },
-
   eventAfterAllRender: function (view) {
     if (view.name == "month") $(".fc-content").css('height', 'auto');
   },
@@ -237,6 +271,7 @@ var calendar = $('#calendar').fullCalendar({
   }
 
 });
+calendar.render();
 
 function getDisplayEventDate(event) {
 
@@ -329,6 +364,7 @@ function calDateWhenDragnDrop(event) {
 
 // 추가
 
+
 var eventModal = $('#eventModal');
 
 var modalTitle = $('.modal-title');
@@ -380,7 +416,7 @@ var newEvent = function (start, end, eventType) {
             username: '사나', // 로그인 정보
             backgroundColor: editColor.val(),
             textColor: '#ffffff',
-            allDay: false
+            allDay: editAllDay.val()
         };
 
         if (eventData.start > eventData.end) {

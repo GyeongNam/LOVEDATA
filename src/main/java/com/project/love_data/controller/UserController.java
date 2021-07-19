@@ -1,6 +1,8 @@
 package com.project.love_data.controller;
 
+import com.project.love_data.businessLogic.service.CalenderService;
 import com.project.love_data.businessLogic.service.UserService;
+import com.project.love_data.dto.CalenderDTO;
 import com.project.love_data.dto.UserDTO;
 import com.project.love_data.model.user.User;
 import com.project.love_data.repository.UserRepository;
@@ -35,6 +37,8 @@ public class UserController {
 	private UserAccountDelete accountDelete;
 	@Autowired
 	UserService userService;
+	@Autowired
+	CalenderService calenderService;
 
     @RequestMapping(value="/signup_add",method = RequestMethod.POST)
     public String signup(
@@ -150,5 +154,14 @@ public class UserController {
 //		log.info("DTOLOG : "+ userDTO);
     	return  "user/mypage";
 	}
+	// 캘린더
+	@ResponseBody
+	@PostMapping(value = "/user/cal_all")
+	public Map<String,CalenderDTO> cal_all(HttpServletRequest request, Principal principal) {
+		CalenderDTO calDTO = calenderService.DTOselect(1);
+		Map<String, CalenderDTO> map = new HashMap<String, CalenderDTO>();
+		map.put("evt1", calDTO);
 
+		return map;
+	}
 }
