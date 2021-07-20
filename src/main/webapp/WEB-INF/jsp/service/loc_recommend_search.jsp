@@ -239,20 +239,27 @@
 		</div>
 
 		<%--	PageNumber	--%>
-		<c:set var="tagHolderStr" value=""></c:set>
-		<c:forEach var="i" begin="0" end="${tagSet.size()-1}">
-			<c:set var="tag" value="${tagSet.get(i)}"></c:set>
-<%--			${tagHolderStr = tagHolderStr.concat(tagSet.get(i))}--%>
-<%--			${tagHolderStr = tagHolderStr.concat("%2C")}--%>
-			<%
-				String tag = (String) pageContext.getAttribute("tag");
-				String tagHolderStr = (String) pageContext.getAttribute("tagHolderStr");
-				tagHolderStr = tagHolderStr.concat(tag);
-				tagHolderStr = tagHolderStr.concat("%2C");
-				pageContext.setAttribute("tagHolderStr", tagHolderStr);
-			%>
-		</c:forEach>
-		<c:set var="tagStr" value="${tagHolderStr.substring(0, tagHolderStr.length()-3)}"></c:set>
+		<c:choose>
+			<c:when test="${tagSet.size() ne 0}">
+				<c:set var="tagHolderStr" value=""></c:set>
+				<c:forEach var="i" begin="0" end="${tagSet.size()-1}">
+					<c:set var="tag" value="${tagSet.get(i)}"></c:set>
+					<%--			${tagHolderStr = tagHolderStr.concat(tagSet.get(i))}--%>
+					<%--			${tagHolderStr = tagHolderStr.concat("%2C")}--%>
+					<%
+						String tag = (String) pageContext.getAttribute("tag");
+						String tagHolderStr = (String) pageContext.getAttribute("tagHolderStr");
+						tagHolderStr = tagHolderStr.concat(tag);
+						tagHolderStr = tagHolderStr.concat("%2C");
+						pageContext.setAttribute("tagHolderStr", tagHolderStr);
+					%>
+				</c:forEach>
+				<c:set var="tagStr" value="${tagHolderStr.substring(0, tagHolderStr.length()-3)}"></c:set>
+			</c:when>
+			<c:otherwise>
+				<c:set var="tagStr" value=""></c:set>
+			</c:otherwise>
+		</c:choose>
 		<div class="container d-flex" id="">
 			<div class="col" id="page_number">
 				<nav aria-label="Page navigation example">
