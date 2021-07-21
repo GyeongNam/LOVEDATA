@@ -6,6 +6,7 @@ import com.project.love_data.dto.CalenderDTO;
 import com.project.love_data.dto.UserDTO;
 import com.project.love_data.model.service.Calender;
 import com.project.love_data.model.user.User;
+import com.project.love_data.repository.CalenderRepository;
 import com.project.love_data.repository.UserRepository;
 import com.project.love_data.security.model.UserRole;
 import com.project.love_data.businessLogic.SmsService;
@@ -32,6 +33,8 @@ import java.util.Map;
 public class UserController {
 	@Autowired
     private UserRepository userRepository;
+	@Autowired
+	private CalenderRepository calenderRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
 	@Autowired
@@ -181,5 +184,24 @@ public class UserController {
 		return map;
 	}
 	// 추가
+	@ResponseBody
+	@PostMapping(value = "/user/cal_add")
+	public String cal_add(@RequestBody HashMap<String, String> data, Principal principal) {
 
+		Calender calender = Calender.builder()
+				.title(data.get("title"))
+				.start(data.get("start"))
+				.end(data.get("end"))
+				.text(data.get("text"))
+				.road(data.get("road"))
+				.road2(data.get("road2"))
+				.user_mail(principal.getName())
+				.color(data.get("color"))
+				.all_day(data.get("allDay").equals("true") ? true : false)
+				.build();
+
+		calenderRepository.save(calender);
+
+		return  "1";
+	}
 }
