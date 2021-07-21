@@ -273,8 +273,8 @@
 						<c:forEach var="i" begin="1" end="10">
 							<c:choose>
 								<c:when test="${i eq 1}">
-									<div class="card p-o m-2" id="loc_add_${i}">
-										<img src="/image/icon/480px-Solid_white.png" alt="" id="img_${i}" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
+									<div class="card p-0 m-2" id="loc_add_${i}">
+										<img src="/image/icon/480px-Solid_white.png" alt="" id="" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
 										<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
 											<img class="btn btn-lg align-middle" onclick="openLocationSearchPopup()" id="locAddBtn_${i}"
 												 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%; z-index: 2">
@@ -282,13 +282,21 @@
 									</div>
 									<div class="card p-0 m-2 visually-hidden" id="loc_${i}">
 										<div class="row">
+											<div class="d-flex justify-content-end card-img-overlay pe-4 pt-5 col-4" style="align-items: flex-start">
+												<img class="btn btn-lg align-middle p-0" id="locDelBtn_${i}" onclick=""
+													 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png" style="z-index: 2">
+											</div>
+											<div class="d-flex justify-content-center card-img-overlay visually-hidden" style="align-items: center">
+												<img class="w-100 h-100" id="locSel_${i}" onclick="" src="/image/icon/480px-Solid_white.png"
+													 style="opacity : 0.0; z-index: 1">
+											</div>
 											<span class="details fs-3">&lt;장소 ${i}&gt;</span>
 											<div class="col-4">
-												<img src="/image/icon/480px-Solid_white.png" alt="loc_thumnail_${i}" id="loc_thumnail_${i}"
+												<img src="/image/icon/480px-Solid_white.png" alt="loc_thumbnail_${i}" id="loc_thumbnail_${i}"
 													 class="visible bd-place card-img"
 													 style="height: 244px; width: 100%; outline: none">
 												<div class="d-flex justify-content-end card-img-overlay pe-4 pt-5 col-4" style="align-items: flex-start">
-													<img class="btn btn-lg align-middle p-0" id="imgDel_${i}" onclick="deleteImage(this)"
+													<img class="btn btn-lg align-middle p-0" id="locDel_${i}" onclick=""
 														 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png" style="z-index: 2">
 												</div>
 												<div class="d-flex justify-content-center card-img-overlay p-0"
@@ -309,14 +317,7 @@
 													<div class="col-3">
 														<span class="details mx-2 align-middle">해시태그</span>
 													</div>
-													<div class="col d-flex justify-content-start ms-3 ps-2 pe-5 visually-hidden" name="hashtag_${i}" id="hashtag_${i}">
-														<button type="button" class="btn btn-primary mx-1" value="놀이동산공원">놀이동산공원</button>
-														<button type="button" class="btn btn-primary mx-1" value="놀이동산공원">놀이동산공원</button>
-														<button type="button" class="btn btn-primary mx-1" value="놀이동산공원">놀이동산공원</button>
-														<button type="button" class="btn btn-primary mx-1" value="놀이동산공원">놀이동산공원</button>
-														<button type="button" class="btn btn-primary mx-1" value="놀이동산공원">놀이동산공원</button>
-														<button type="button" class="btn btn-primary mx-1" value="놀이동산공원">놀이동산공원</button>
-														<button type="button" class="btn btn-primary mx-1" value="놀이동산공원">놀이동산공원</button>
+													<div class="col d-flex justify-content-start ms-3 ps-2 pe-5" id="hashtag_${i}">
 													</div>
 												</div>
 												<div class="row d-flex my-2">
@@ -345,19 +346,79 @@
 									</div>
 								</c:when>
 								<c:otherwise>
-									<div class="card col-3 p-0 m-2 visually-hidden">
-										<img src="/image/icon/480px-Solid_white.png" alt="" id="img_${i}" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
+									<div class="card p-0 m-2 visually-hidden" id="loc_add_${i}">
+										<img src="/image/icon/480px-Solid_white.png" alt="loc_thumbnail_${i}" id="loc_thumbnail_${i}" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
 										<div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
-											<img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_${i}"
+											<img class="btn btn-lg align-middle" onclick="openLocationSearchPopup()" id="locAddBtn_${i}"
 												 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%; z-index: 2">
 										</div>
-										<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
-											<img class="btn btn-lg align-middle p-0" id="imgDel_${i}" onclick="deleteImage(this)"
+									</div>
+									<div class="card p-0 m-2 visually-hidden" id="loc_${i}">
+										<div class="d-flex justify-content-end card-img-overlay pe-4 pt-5 col-4" style="align-items: flex-start">
+											<img class="btn btn-lg align-middle p-0" id="locDelBtn_${i}" onclick=""
 												 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png" style="z-index: 2">
 										</div>
-										<div class="d-flex justify-content-center card-img-overlay p-0 visually-hidden" style="align-items: center">
-											<img class="w-100 h-100" id="imgSel_${i}" onclick="onSelectImage(${i})" src="/image/icon/480px-Solid_white.png"
-												 style="opacity : 0.0; z-index: 1;">
+										<div class="d-flex justify-content-center card-img-overlay visually-hidden" style="align-items: center">
+											<img class="w-100 h-100" id="locSel_${i}" onclick="" src="/image/icon/480px-Solid_white.png"
+												 style="opacity : 0.0; z-index: 1">
+										</div>
+										<div class="row">
+											<span class="details fs-3">&lt;장소 ${i}&gt;</span>
+											<div class="col-4">
+												<img src="/image/icon/480px-Solid_white.png" alt="loc_thumbnail_${i}" id="loc_thumbnail_${i}"
+													 class="visible bd-place card-img"
+													 style="height: 244px; width: 100%; outline: none">
+												<div class="d-flex justify-content-end card-img-overlay pe-4 pt-5 col-4" style="align-items: flex-start">
+													<img class="btn btn-lg align-middle p-0" id="imgDel_${i}" onclick="deleteImage(this)"
+														 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png" style="z-index: 2">
+												</div>
+												<div class="d-flex justify-content-center card-img-overlay p-0"
+													 style="align-items: center">
+													<img class="w-100 h-100" id="loc_select_${i}" onclick="onSelectLocation(${i})"
+														 src="/image/icon/480px-Solid_white.png"
+														 style="opacity : 0.0; z-index: 1;">
+												</div>
+											</div>
+											<div class="col">
+												<div class="row d-flex my-2">
+													<div class="col-6 d-flex justify-content-between align-items-md-center">
+														<span class="details mx-2">이름</span>
+														<input type="text" name="loc_name_${i}" id="loc_name_${i}" value="" readonly>
+													</div>
+												</div>
+												<div class="row d-flex my-2 align-items-md-center">
+													<div class="col-3">
+														<span class="details mx-2 align-middle">해시태그</span>
+													</div>
+													<div class="col d-flex justify-content-start ms-3 ps-2 pe-5 visually-hidden" name="hashtag_${i}" id="hashtag_${i}">
+<%--														<button type="button" class="btn btn-primary mx-1" value="놀이동산공원">놀이동산공원</button>--%>
+													</div>
+												</div>
+												<div class="row d-flex my-2">
+													<div class="col-6 d-flex justify-content-between align-items-md-center">
+														<span class="details mx-2">주소</span>
+														<input type="text" name="loc_addr_${i}" id="loc_addr_${i}" value="" readonly>
+													</div>
+												</div>
+												<div class="row d-flex my-2">
+													<div class="col-6 d-flex justify-content-between align-items-md-center">
+														<span class="details mx-2">전화번호</span>
+														<input type="text" name="loc_tel_${i}" id="loc_tel_${i}" value="" readonly>
+													</div>
+												</div>
+												<div class="row d-flex my-2 align-items-md-center">
+													<div class="col-3">
+														<span class="details mx-2">상세설명</span>
+													</div>
+													<div class="col d-flex justify-content-start ms-1 ps-0">
+														<textarea class="col ms-4 me-lg-5" name="loc_info_${i}" id="loc_info_${i}" rows="4" maxlength="150" readonly></textarea>
+													</div>
+												</div>
+												<div class="visually-hidden">
+													<span id="loc_no_${i}"></span>
+													<span id="loc_id_${i}"></span>
+												</div>
+											</div>
 										</div>
 									</div>
 								</c:otherwise>
@@ -382,55 +443,27 @@
 		integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
 		crossorigin="anonymous"></script>
 <%--<script defer src="/js/bootstrap.js"></script>--%>
-<script defer src="/js/loc_detail.js"></script>
 <script defer src="/js/loc_common.js"></script>
-<script defer src="/js/loc_registration.js"></script>
-<script>
+<script defer>
     function openLocationSearchPopup() {
 <%--        // 주소검색을 수행할 팝업 페이지를 호출합니다.
         // 호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(https://www.juso.go.kr/addrlink/addrLinkUrl.do)를 호출하게 됩니다. --%>
-        var pop = window.open("/popup/locationSearchPopup", "pop", "width=800,height=600, scrollbars=yes, resizable=yes");
+        var pop = window.open("/popup/locationSearchPopup", "pop", "width=1200,height=600, scrollbars=yes, resizable=yes");
 
         <%-- // 모바일 웹인 경우, 호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(https://www.juso.go.kr/addrlink/addrMobileLinkUrl.do)를 호출하게 됩니다. --%>
         //var pop = window.open("/popup/jusoPopup.jsp","pop","scrollbars=yes, resizable=yes");
     }
 
-
-    function locationCallBack() {
+    function locationCallBack(locNo, locID, locName) {
         // 팝업페이지에서 주소입력한 정보를 받아서, 현 페이지에 정보를 등록합니다.
-        document.getElementById("roadAddrPart1").value = roadAddrPart1;
-        document.getElementById("addrDetail").value = addrDetail;
-        document.getElementById("addrDetail").removeAttribute("disabled");
-        document.getElementById("zipNo").value = zipNo;
-        document.getElementById("siNm").value = siNm;
-        document.getElementById("sggNm").value = sggNm;
-        <%--// document.form.roadFullAddr.value = roadFullAddr;
-        // document.form.roadAddrPart1.value = roadAddrPart1;
-        // document.form.roadAddrPart2.value = roadAddrPart2;
-        // document.form.addrDetail.value = addrDetail;
-        // document.form.engAddr.value = engAddr;
-        // document.form.jibunAddr.value = jibunAddr;
-        // document.form.zipNo.value = zipNo;
-        // document.form.admCd.value = admCd;
-        // document.form.rnMgtSn.value = rnMgtSn;
-        // document.form.bdMgtSn.value = bdMgtSn;
-        // document.form.detBdNmList.value = detBdNmList;
-        /** 2017년 2월 추가제공 **/
-        // document.form.bdNm.value = bdNm;
-        // document.form.bdKdcd.value = bdKdcd;
-        // document.form.siNm.value = siNm;
-        // document.form.sggNm.value = sggNm;
-        // document.form.emdNm.value = emdNm;
-        // document.form.liNm.value = liNm;
-        // document.form.rn.value = rn;
-        // document.form.udrtYn.value = udrtYn;
-        // document.form.buldMnnm.value = buldMnnm;
-        // document.form.buldSlno.value = buldSlno;
-        // document.form.mtYn.value = mtYn;
-        // document.form.lnbrMnnm.value = lnbrMnnm;
-        // document.form.lnbrSlno.value = lnbrSlno;
-        /** 2017년 3월 추가제공 **/
-        // document.form.emdNo.value = emdNo; --%>
+        // document.getElementById("roadAddrPart1").value = roadAddrPart1;
+        // document.getElementById("addrDetail").value = addrDetail;
+        // document.getElementById("addrDetail").removeAttribute("disabled");
+        console.log("locNo : " + locNo);
+        console.log("locID : " + locID);
+        console.log("locName : " + locName);
+
+        enableLocation(locNo, locID);
     }
 </script>
 <script>
@@ -720,6 +753,8 @@
     // let selectedLocationParent = null;
     let selectedLocationIndex = null;
     let selectedLocation = null;
+    let currentLocationLength = 0;
+    let locationMap = null;
 
     function onClearSelectLocation() {
         selectedLocation.style.outline = 'none';
@@ -747,6 +782,110 @@
         // selectedImage.style.opacity = 0.3;
         selectedLocation.style.outline = 'solid thick red'
     }
+
+    function enableLocation(locNo, locID) {
+        let json = {locNo : locNo, locID : locID};
+
+        currentLocationLength += 1;
+
+		$.ajax({
+            type: "POST",
+            url: "/rest/service/loc/select",
+            data: JSON.stringify(json),
+            dataType: 'json',
+            contentType: "application/json; charset=UTF-8",
+            beforeSend: function (xhr) {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                xhr.setRequestHeader(header, token);
+            },
+            success: function (response) {
+                if (response == null) {
+                    console.log("통신 실패!")
+                    return false;
+                } else {
+                    console.log("통신 성공!");
+                    // console.log(response);
+                    locationMap = response;
+                    // console.log(locationMap);
+                    fillLocation(currentLocationLength);
+                    return true;
+                }
+            },
+            error: function (e) {
+                console.log("통신 문제 발생!")
+                return false;
+            }
+        });
+	}
+
+	function fillLocation(index) {
+        enableVisualLocation(index);
+        enableNewLocationAddBtn(index + 1);
+        inputLocationInfo(index);
+	}
+
+	function inputLocationInfo(index) {
+        let loc_name = document.getElementById("loc_name_" + index);
+        let loc_no = document.getElementById("loc_id_" + index);
+        let loc_id = document.getElementById("loc_id_" + index);
+        let loc_addr = document.getElementById("loc_addr_" + index);
+        let loc_tel = document.getElementById("loc_tel_" + index);
+        let loc_info = document.getElementById("loc_info_" + index);
+        let loc_thumbnail = document.getElementById("loc_thumbnail_" + index);
+        let loc_tags = document.getElementById("hashtag_" + index);
+
+        // console.log(locationMap);
+        // console.log(typeof locationMap);
+
+        console.log(locationMap["tags"]);
+
+        loc_name.value = locationMap["locName"];
+        // loc_no.innerText = locationMap["locNo"];
+        // loc_id.innerText = locationMap["locID"];
+        loc_addr.value = locationMap["locAddr"];
+        loc_tel.value = locationMap["locTel"];
+        loc_info.value = locationMap["locInfo"];
+		loc_thumbnail.src = locationMap["locThumbnail"];
+
+        let tagsStrAry = locationMap["tags"].replace(" ", "").split(",");
+
+        for (let i = 0; i < tagsStrAry.length; i++) {
+            let button = document.createElement("button");
+            button.setAttribute('class', 'btn btn-primary mx-1');
+            button.value = tagsStrAry[i];
+            button.innerText = tagsStrAry[i];
+			let aChild = loc_tags.appendChild(button);
+        }
+	}
+
+	function enableNewLocationAddBtn(index) {
+        let loc_add = document.getElementById("loc_add_" + index);
+
+        // console.log(index);
+
+        loc_add.setAttribute('class', 'card p-0 m-2');
+	}
+
+	function enableVisualLocation(index) {
+        let loc_add = document.getElementById("loc_add_" + index);
+        let loc = document.getElementById("loc_" + index);
+
+        // console.log(index);
+        // console.log(loc_add);
+        // console.log(loc);
+
+        loc.setAttribute('class', 'card p-0 m-2');
+        loc_add.setAttribute('class', 'card p-0 m-2 visually-hidden');
+	}
+
+	function disableVisualLocation(index) {
+        let loc_add = document.getElementById("loc_add_" + index);
+        let loc = document.getElementById("loc_" + index);
+
+        console.log(index);
+
+        loc.setAttribute("style", "card p-0 m-2 visually-hidden");
+        loc_add.setAttribute("style", "card p-0 m-2");
+	}
 </script>
 <%--<script defer src="/js/JusoAPI.js"></script>--%>
 </body>
