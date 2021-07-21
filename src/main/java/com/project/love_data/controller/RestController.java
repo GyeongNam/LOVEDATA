@@ -8,6 +8,7 @@ import com.project.love_data.dto.LocationDTO;
 import com.project.love_data.dto.PageRequestDTO;
 import com.project.love_data.dto.PageResultDTO;
 import com.project.love_data.model.service.Location;
+import com.project.love_data.model.service.LocationTag;
 import com.project.love_data.model.service.UserLikeLoc;
 import com.project.love_data.model.user.User;
 import com.project.love_data.util.DefaultLocalDateTimeFormatter;
@@ -208,6 +209,51 @@ public class RestController {
         Gson gson = new Gson();
 
         String jsonObject = gson.toJson(response);
+
+        return jsonObject;
+    }
+
+    @PostMapping("/service/loc/select")
+    @ResponseBody
+    public String onSelectLocation(HttpServletRequest request, @RequestBody HashMap<String, String> data) {
+        Long locNo = Long.valueOf(data.get("locNo"));
+        String locID = data.get("locID");
+
+        Location locationByNo = locService.selectLoc(locNo);
+        Location locationByID = locService.selectLoc(locID);
+
+        if (!locationByID.equals(locationByNo)){
+            return null;
+        }
+
+        HashMap<String, String> response = new HashMap<>();
+
+        response.put("locNo", String.valueOf(locationByID.getLoc_no()));
+        response.put("locID", locationByID.getLoc_uuid());
+        response.put("locName", locationByID.getLoc_name());
+        response.put("locAddr", locationByID.getFullAddr());
+        response.put("locTel", locationByID.getTel());
+        response.put("locInfo", locationByID.getInfo());
+
+        String reqURL = String.valueOf(request.getRequestURL());
+        String serverURL = reqURL.substring(0, reqURL.indexOf("/", 9));
+//        log.info(serverURL);
+        response.put("locThumbnail", serverURL +  locationByID.getThumbnail());
+
+        String tags = "";
+
+        for (String tag: locationByID.getTagSet()) {
+            tags = tags + tag + ", ";
+        }
+        tags = tags.substring(0, tags.length()-2);
+
+        response.put("tags", tags);
+
+        Gson gson = new Gson();
+
+        String jsonObject = gson.toJson(response);
+
+        log.info(jsonObject);
 
         return jsonObject;
     }

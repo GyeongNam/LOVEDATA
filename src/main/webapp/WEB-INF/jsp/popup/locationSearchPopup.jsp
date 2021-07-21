@@ -198,6 +198,8 @@
             let newCell5 = row.insertCell(4);
             let newCell6 = row.insertCell(5);
             let newCell7 = row.insertCell(6);
+            let newCell8 = row.insertCell(7);
+            let newCell9 = row.insertCell(8);
 
             let locName = "locName_" + i;
             let locAddr = "locAddr_" + i;
@@ -208,7 +210,19 @@
             let locViewCount = "locViewCount_" + i;
             let locLikeCount = "locLikeCount_" + i;
 
-            // row.onclick(location.href='/');
+            let clickHandler = function (row) {
+                return function() {
+                    locNo = row.getElementsByTagName("td")[7].innerText;
+                    locID = row.getElementsByTagName("td")[8].innerText;
+                    locName = row.getElementsByTagName("td")[1].innerText;
+
+                    opener.locationCallBack(locNo, locID, locName);
+                    window.close();
+				}
+			}
+
+            row.onclick = clickHandler(row);
+			row.style.cursor = "hand";
 
             newCell1.innerText = i+1;
             newCell2.innerText = searchResult[locName];
@@ -217,7 +231,16 @@
             newCell5.innerText = searchResult[locViewCount];
             newCell6.innerText = searchResult[locLikeCount];
             newCell7.innerText = searchResult[locRegDate];
+            newCell8.innerText = searchResult[locNo];
+            newCell9.innerText = searchResult[locID];
+            newCell8.className = "visually-hidden";
+            newCell9.className = "visually-hidden";
         }
+
+        function onClickLink(locNo, locID, locName) {
+            opener.locationCallBack(locNo, locID, locName);
+            window.close();
+		}
 	}
 </script>
 </body>

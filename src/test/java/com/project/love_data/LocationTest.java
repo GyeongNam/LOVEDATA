@@ -310,7 +310,7 @@ public class LocationTest {
 
     @Test
     public void testLocUUID_Read() {
-        Optional<Location> item = locationRepository.findLocByUUID("UUID_1");
+        Optional<Location> item = locationRepository.findLocByUUID("095f0735-3290-4b91-8f4b-d191ef40d8ca");
 
         System.out.println("item = " + item.get());
         System.out.println(item.get().getImgSet());
