@@ -27,12 +27,14 @@ public class CalenderService {
     public Calender dtoToEntity(CalenderDTO dto){
         Calender entity = Calender.builder()
                 .cal_no(dto.getCal_no())
-                .user_no(dto.getUser_no())
+                .user_mail(dto.getUser_mail())
                 .title(dto.getTitle())
                 .place(dto.getPlace())
                 .start(dto.getStart())
                 .end(dto.getEnd())
                 .color(dto.getColor())
+                .road(dto.getRoad())
+                .road2(dto.getRoad2())
                 .text(dto.getText())
                 .all_day(dto.isAll_day())
                 .build();
@@ -43,12 +45,14 @@ public class CalenderService {
     public CalenderDTO entityToDto(Calender entity) {
         CalenderDTO dto = CalenderDTO.builder()
                 .cal_no(entity.getCal_no())
-                .user_no(entity.getUser_no())
+                .user_mail(entity.getUser_mail())
                 .title(entity.getTitle())
                 .place(entity.getPlace())
                 .start(entity.getStart())
                 .end(entity.getEnd())
                 .color(entity.getColor())
+                .road(entity.getRoad())
+                .road2(entity.getRoad2())
                 .text(entity.getText())
                 .all_day(entity.isAll_day())
                 .build();
@@ -64,9 +68,11 @@ public class CalenderService {
         calenderRepository.delete(calender);
     }
 
-    public CalenderDTO DTOselect(long no) {
-        Optional<Calender> item = calenderRepository.findcal(no);
+    public List<Calender> Cal_select(String email) {
+        Optional<List<Calender>> item = calenderRepository.findcal(email);
 
-        return item.isPresent() ? entityToDto(item.get()) : null;
+        return item.orElse(new ArrayList<>());
+//        return item.isPresent() ? entityToDto(item.get()) : null;
     }
+
 }

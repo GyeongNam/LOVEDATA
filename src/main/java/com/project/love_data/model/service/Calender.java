@@ -24,8 +24,8 @@ public class Calender extends TimeEntity {
     @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
     private Long cal_no;
 
-    @Column(name = "user_no", nullable = false)
-    private Long user_no;
+    @Column(name = "user_mail",length = 50, nullable = false)
+    private String user_mail;
 
     @Column(name = "title", length = 15, nullable = false)
     private String title;
@@ -42,10 +42,21 @@ public class Calender extends TimeEntity {
     @Column(name = "color", length = 15, nullable = false)
     private String color;
 
-    @Column(name = "text", length = 100, nullable = false)
+    @Column(name = "text", length = 100, nullable = true)
     private String text;
+
+    @Column(name = "road",length = 50, nullable = true)
+    private String road;
+
+    @Column(name = "road2",length = 50, nullable = true)
+    private String road2;
 
     @Column(length = 1, nullable = true, columnDefinition = "TINYINT(1)")
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean all_day;
+
+    @Builder.Default
+    @Column(length = 1, nullable = true, columnDefinition = "TINYINT(1)")
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    private boolean cal_Activation = true;
 }

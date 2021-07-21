@@ -7,10 +7,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="/fullcalendar/fullcalendar.min.css" />
     <link rel="stylesheet" href="/fullcalendar/bootstrap.min.css">
     <link rel="stylesheet" href='/fullcalendar/select.min.css' />
     <link rel="stylesheet" href='/fullcalendar/bootstrap-datetimepicker.min.css' />
+    <link rel="stylesheet" href="/fullcalendar/fullcalendar.min.css" />
     <link rel="stylesheet" href="/fullcalendar/main.css">
 
     <meta name="_csrf" content="${_csrf.token}">
@@ -131,9 +131,11 @@
 <script src="/fullcalendar/jquery.min.js"></script>
 <script src="/fullcalendar/bootstrap.min.js"></script>
 <script src="/fullcalendar/moment.min.js"></script>
-<script src="/fullcalendar/fullcalendar.min.js"></script>
-<script src="/fullcalendar/ko.js"></script>
 <script src="/fullcalendar/select.min.js"></script>
 <script src="/fullcalendar/bootstrap-datetimepicker.min.js"></script>
+<script src="/fullcalendar/fullcalendar.min.js"></script>
+<script src="/fullcalendar/ko.js"></script>
 <script src="/fullcalendar/main.js"></script>
+
+
 </html>
