@@ -7,14 +7,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="/fullcalendar/fullcalendar.min.css" />
     <link rel="stylesheet" href="/fullcalendar/bootstrap.min.css">
     <link rel="stylesheet" href='/fullcalendar/select.min.css' />
     <link rel="stylesheet" href='/fullcalendar/bootstrap-datetimepicker.min.css' />
+    <link rel="stylesheet" href="/fullcalendar/fullcalendar.min.css" />
     <link rel="stylesheet" href="/fullcalendar/main.css">
 
-<%--    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>--%>
-<%--    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>--%>
     <meta name="_csrf" content="${_csrf.token}">
     <meta name="_csrf_header" content="${_csrf.headerName}">
     <title>LoveData Calender</title>
@@ -130,14 +128,14 @@
     </div>
 </body>
 <%@ include file="../layout/footer.jsp" %>
-
-
 <script src="/fullcalendar/jquery.min.js"></script>
 <script src="/fullcalendar/bootstrap.min.js"></script>
 <script src="/fullcalendar/moment.min.js"></script>
-<script src="/fullcalendar/fullcalendar.min.js"></script>
-<script src="/fullcalendar/ko.js"></script>
 <script src="/fullcalendar/select.min.js"></script>
 <script src="/fullcalendar/bootstrap-datetimepicker.min.js"></script>
+<script src="/fullcalendar/fullcalendar.min.js"></script>
+<script src="/fullcalendar/ko.js"></script>
 <script src="/fullcalendar/main.js"></script>
+
+
 </html>

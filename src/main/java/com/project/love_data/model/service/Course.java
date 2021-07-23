@@ -49,6 +49,8 @@ public class Course extends TimeEntity {
     @Column(name = "info", length = 150, nullable = false)
     private String info;
 
+    // Todo 코스 장소 테이블 만들기
+
     @ElementCollection(fetch = FetchType.EAGER)
     @JoinColumn(name = "cor_no")
     @OnDelete(action = OnDeleteAction.CASCADE)

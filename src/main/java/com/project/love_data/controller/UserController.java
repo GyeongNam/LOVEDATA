@@ -1,9 +1,16 @@
 package com.project.love_data.controller;
 
+<<<<<<< HEAD
 import com.project.love_data.businessLogic.service.LocationService;
 import com.project.love_data.businessLogic.service.UserService;
 import com.project.love_data.dto.LocationDTO;
+=======
+import com.project.love_data.businessLogic.service.CalenderService;
+import com.project.love_data.businessLogic.service.UserService;
+import com.project.love_data.dto.CalenderDTO;
+>>>>>>> edc47cd368f026852526b56aaf330af230c5bb60
 import com.project.love_data.dto.UserDTO;
+import com.project.love_data.model.service.Calender;
 import com.project.love_data.model.user.User;
 import com.project.love_data.repository.UserRepository;
 import com.project.love_data.security.model.UserRole;
@@ -18,6 +25,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -38,7 +47,11 @@ public class UserController {
 	@Autowired
 	UserService userService;
 	@Autowired
+<<<<<<< HEAD
 	LocationService locationService;
+=======
+	CalenderService calenderService;
+>>>>>>> edc47cd368f026852526b56aaf330af230c5bb60
 
     @RequestMapping(value="/signup_add",method = RequestMethod.POST)
     public String signup(
@@ -154,6 +167,30 @@ public class UserController {
 //		log.info("DTOLOG : "+ userDTO);
     	return  "user/mypage";
 	}
+	// 캘린더
+	@GetMapping(value="/service/calender")
+	public String calender(Principal principal){
+		if(principal==null){
+			return "redirect:/login";
+		}
+		return "service/service_calender";
+	}
+	// 페이지 업로드
+	@ResponseBody
+	@PostMapping(value = "/user/cal_all")
+	public Map<String,Calender> cal_all(HttpServletRequest request, HttpServletResponse response, Principal principal) {
+		Map<String, Calender> map = new HashMap<String, Calender>();
+    	if(principal==null){
+		}
+    	else {
+			List<Calender> caldata = calenderService.Cal_select(principal.getName());
+			for (int i=0; i<caldata.size(); i++){
+				map.put("evt"+i, caldata.get(i));
+			}
+		}
+		return map;
+	}
+	// 추가
 
 //	@GetMapping(value = "/mypage")
 //	public String myreview(Principal principal, Model model) {

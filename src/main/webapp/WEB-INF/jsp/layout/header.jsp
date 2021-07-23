@@ -24,6 +24,7 @@
 		<sec:authorize access="isAnonymous()">
 			<button id="hd-btn" onclick="location.href='/login'">로그인</button>
 			<button id="hd-btn" class="dropbtn" onclick="gologin()">마이 페이지</button>
+			<button id="hd-btn" onclick="gologin()">캘린더</button>
 		</sec:authorize>
 		<sec:authorize access="isAuthenticated()">
 			<c:set var="user_social"><sec:authentication property="principal.user_social"/></c:set>
@@ -51,11 +52,12 @@
 				</c:when>
 			</c:choose>
 			<button id="hd-btn" class="dropbtn" onclick="location.href='/mypage'">마이 페이지</button>
+			<button id="hd-btn" onclick="location.href='/service/calender'">캘린더</button>
 		</sec:authorize>
 
 		<button id="hd-btn" onclick="location.href='/service/loc_recommend'">장소</button>
 		<button id="hd-btn" onclick="location.href='/service/cor_index'">코스</button>
-		<button id="hd-btn" onclick="location.href='/service/calender'">캘린더</button>
+
 	</div>
 </div>
 </body>

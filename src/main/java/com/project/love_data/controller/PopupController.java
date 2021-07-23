@@ -6,9 +6,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Log4j2
 @Controller
-public class ApiController {
+public class PopupController {
     @RequestMapping("/popup/jusoPopup")
     public String popup_juso() {
         return "/popup/jusoPopup";
+    }
+
+    @RequestMapping("/popup/locationSearchPopup")
+    public String popupLocationSearch() {
+        return "/popup/locationSearchPopup";
     }
 }
