@@ -1,6 +1,8 @@
 package com.project.love_data.controller;
 
+import com.project.love_data.businessLogic.service.LocationService;
 import com.project.love_data.businessLogic.service.UserService;
+import com.project.love_data.dto.LocationDTO;
 import com.project.love_data.dto.UserDTO;
 import com.project.love_data.model.user.User;
 import com.project.love_data.repository.UserRepository;
@@ -35,6 +37,8 @@ public class UserController {
 	private UserAccountDelete accountDelete;
 	@Autowired
 	UserService userService;
+	@Autowired
+	LocationService locationService;
 
     @RequestMapping(value="/signup_add",method = RequestMethod.POST)
     public String signup(
@@ -145,10 +149,18 @@ public class UserController {
 	public String myinfo(Principal principal, Model model) {
 		UserDTO userDTO = userService.DTOselect(principal.getName());
 		model.addAttribute("UserDTO", userDTO);
-//    	log.info("data : "+ request);
-//    	log.info("data2 : "+ principal);
+//		log.info("data : "+ request);
+//		log.info("data2 : "+ principal);
 //		log.info("DTOLOG : "+ userDTO);
     	return  "user/mypage";
 	}
+
+//	@GetMapping(value = "/mypage")
+//	public String myreview(Principal principal, Model model) {
+//		LocationDTO locationDTO = userService.LocDTO(principal.getName());
+//		model.addAttribute("LocationDTO", locationDTO);
+//
+//		return "user/mypaeg";
+//	}
 
 }

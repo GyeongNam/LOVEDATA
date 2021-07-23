@@ -15,7 +15,13 @@
 </head>
 <%@ include file="../layout/header.jsp"%>
 <body>
-<%--<form class="mypageform" action="/mypage_modify" method="post">--%>
+<%--<form class="mypageform" action="/user/mypage" method="post">--%>
+	<sec:authorize access="isAnonymous()">
+		잘못된 방식으로 접근하였습니다. 로그인 후 다시 시도하여주세요!
+		<button id="hd-btn" onclick="location.href='/login'">로그인</button>
+		<button id="hd-btn" class="dropbtn" onclick="gohome()">홈으로 돌아가기</button>
+	</sec:authorize>
+	<sec:authorize access="isAuthenticated()">
 <div id="jb-container">
 	<div id="jb-header">
 		<h1>마이페이지</h1>
@@ -76,11 +82,15 @@
 				</tr>
 				<tr>
 					<td>새 비밀번호 *</td>
-					<td id="sec_line"><input type="password" id="NewPassword" onKeyup="passwordcheck()"></td>
+					<td id="sec_line"><input type="password" name="newPwd" id="pwd1" onKeyup="chkpw()" value="<%= request.getAttribute("pwd")  == null ? "" :  request.getAttribute("pwd")%>" class="form-control"  required>
+						<spen class="spen" id=pwd_rule>영문 대소문자/숫자/특수문자 중 2가지 이상 조합, 10자~16자.</spen>
+					</td>
 				</tr>
 				<tr>
 					<td>새 비밀번호 확인 *</td>
-					<td id="sec_line"><input type="password" id="NewPasswordre"  onKeyup="repasswordcheck()"><spen class="spen" id="password_check"></spen></td>
+					<td id="sec_line"><input name="npk" type="password" id="NewPasswordre"  onKeyup="repasswordcheck()">
+						<spen class="spen" id="password_check"></spen>
+					</td>
 				</tr>
 				<tr>
 					<td>휴대폰 번호 *</td>
@@ -134,7 +144,7 @@
 				<tbody>
 				<tr>
 					<td><span>2022-01-01</span></td>
-					<td>인생 맛집 투어</td>
+					<td><a href=""></a></td>
 					<td>247</td>
 				</tr>
 				<tr>
@@ -280,17 +290,18 @@
 			* 최근 본 8개 장소만 표시됩니다.
 		</div>
 	</div>
-	<div id="nic_modal" class="nic_modal">
-		<div class="nic_modal_content">
-			<div>사용하고자 하는 닉네임을 입력하세요!</div>
-			<input type="text" name="new_nic_check" id="nic_chk"
-				   placeholder="">
-			<button type="button" id="re_check" onclick="">중복확인</button>
-			<div id="nic_new_check">닉네임을 입력하세요!</div>
-			<button type="button" id="nic_modal_close_btn">닫기</button>
-		</div>
-	</div>
+<%--	<div id="nic_modal" class="nic_modal">--%>
+<%--		<div class="nic_modal_content">--%>
+<%--			<div>사용하고자 하는 닉네임을 입력하세요!</div>--%>
+<%--			<input type="text" name="new_nic_check" id="nic_chk"--%>
+<%--				   placeholder="">--%>
+<%--			<button type="button" id="re_check" onclick="">중복확인</button>--%>
+<%--			<div id="nic_new_check">닉네임을 입력하세요!</div>--%>
+<%--			<button type="button" id="nic_modal_close_btn">닫기</button>--%>
+<%--		</div>--%>
+<%--	</div>--%>
 </div>
+</sec:authorize>
 <%--</form>--%>
 </body>
 <!--   부트스트랩 js 사용  -->
