@@ -7,14 +7,14 @@ import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.*;
 
 @Entity
 @Table(name = "course")
-@Setter
-@Getter
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -48,8 +48,6 @@ public class Course extends TimeEntity {
 
     @Column(name = "info", length = 150, nullable = false)
     private String info;
-
-    // Todo 코스 장소 테이블 만들기
 
     @ElementCollection(fetch = FetchType.EAGER)
     @JoinColumn(name = "cor_no")
