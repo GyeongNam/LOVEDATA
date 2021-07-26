@@ -72,5 +72,9 @@ public class CalenderService {
         return item.orElse(new ArrayList<>());
 //        return item.isPresent() ? entityToDto(item.get()) : null;
     }
+    public Calender cal_select_no(String no){
+        Calender calender = calenderRepository.findcal_no(no);
+        return calender;
+    }
 
 }

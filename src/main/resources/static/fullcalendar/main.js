@@ -480,6 +480,9 @@ var editEvent = function (event, element, view) {
     editColor.val(event.color).css('color', event.color);
     editadr.val(event.road);
     editadr2.val(event.road2);
+    console.log(event);
+    console.log(event.road.toString());
+    console.log(event.road2.toString());
 
     addBtnContainer.hide();
     modifyBtnContainer.show();
@@ -530,15 +533,30 @@ var editEvent = function (event, element, view) {
         // $("#calendar").fullCalendar('updateEvent', event);
         calendar.fullCalendar('updateEvent', event)
 
+        var eventdata = {
+            _id: event._id,
+            title: editTitle.val(),
+            start: startDate,
+            end: displayDate,
+            text: editDesc.val(),
+            road: editadr.val(),
+            road2: editadr2.val(),
+            color: editColor.val(),
+            allDay: statusAllDay
+        }
+        // ajax token
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        $(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
         //일정 업데이트
         $.ajax({
-            type: "get",
-            url: "",
-            data: {
-                //...
-            },
+            url: "/user/cal_update",
+            dataType: 'json',
+            contentType: "application/json; charset=UTF-8",
+            data: JSON.stringify(eventdata),
+            type: "POST",
             success: function (response) {
-                alert('수정되었습니다.')
+                console.log(response);
             }
         });
 

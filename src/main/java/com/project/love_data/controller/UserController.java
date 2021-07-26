@@ -204,4 +204,22 @@ public class UserController {
 
 		return  "1";
 	}
+	@ResponseBody
+	@PostMapping(value = "/user/cal_update")
+	public String cal_update(@RequestBody HashMap<String, String> data, Principal principal) {
+
+		Calender calender = calenderService.cal_select_no(data.get("_id"));
+		calender.setTitle(data.get("title"));
+		calender.setAll_day(data.get("allDay").equals("true") ? true : false);
+		calender.setStart(data.get("start"));
+		calender.setEnd(data.get("end"));
+		calender.setRoad(data.get("road"));
+		calender.setRoad2(data.get("road2"));
+		calender.setText(data.get("text"));
+		calender.setColor(data.get("color"));
+
+		calenderService.update(calender);
+
+		return  "1";
+	}
 }
