@@ -570,16 +570,22 @@ $('#deleteEvent').on('click', function () {
     // $("#calendar").fullCalendar('removeEvents', $(this).data('id'));
     calendar.fullCalendar('removeEvents', $(this).data('id'));
     eventModal.modal('hide');
-
+    var eventdata = {
+        _id: $(this).data('id')
+    };
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    $(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
     //삭제시
     $.ajax({
-        type: "get",
-        url: "",
-        data: {
-            //...
-        },
+        url: "/user/cal_delete",
+        dataType: 'json',
+        contentType: "application/json; charset=UTF-8",
+        data: JSON.stringify(eventdata),
+        type: "POST",
         success: function (response) {
             alert('삭제되었습니다.');
+            console.log(response);
         }
     });
 

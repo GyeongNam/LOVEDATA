@@ -222,4 +222,13 @@ public class UserController {
 
 		return  "1";
 	}
+	@ResponseBody
+	@PostMapping(value = "/user/cal_delete")
+	public String cal_delete(@RequestBody HashMap<String, String> data, Principal principal) {
+
+		Calender calender = calenderService.cal_select_no(data.get("_id"));
+		calender.setCal_Activation(false);
+		calenderService.update(calender);
+		return  "1";
+	}
 }
