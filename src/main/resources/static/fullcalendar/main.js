@@ -141,10 +141,9 @@ var calendar = $('#calendar').fullCalendar({
     /** 리사이즈시 수정된 날짜반영
      * 하루를 빼야 정상적으로 반영됨. */
     var newDates = calDateWhenResize(event);
-
     //리사이즈한 일정 업데이트
     $.ajax({
-      type: "get",
+      type: "",
       url: "",
       data: {
         //id: event._id,
@@ -177,18 +176,27 @@ var calendar = $('#calendar').fullCalendar({
     // 드랍시 수정된 날짜반영
     var newDates = calDateWhenDragnDrop(event);
 
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    $(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
+
+    var eventData = {
+        _id:event._id,
+        start:newDates.startDate,
+        end:newDates.endDate
+    }
+
     //드롭한 일정 업데이트
     $.ajax({
-      type: "get",
-      url: "",
-      data: {
-        //...
-      },
+        url: "/user/cal_update_d",
+        dataType: 'json',
+        contentType: "application/json; charset=UTF-8",
+        data: JSON.stringify(eventData),
+        type: "POST",
       success: function (response) {
         alert('수정: ' + newDates.startDate + ' ~ ' + newDates.endDate);
       }
     });
-
   },
 
   select: function (startDate, endDate, jsEvent, view) {

@@ -231,4 +231,16 @@ public class UserController {
 		calenderService.update(calender);
 		return  "1";
 	}
+
+	@ResponseBody
+	@PostMapping(value = "/user/cal_update_d")
+	public String cal_update_d(@RequestBody HashMap<String, String> data, Principal principal) {
+
+		Calender calender = calenderService.cal_select_no(data.get("_id"));
+		calender.setStart(data.get("start"));
+		calender.setEnd(data.get("end"));
+		calenderService.update(calender);
+
+		return  "1";
+	}
 }
