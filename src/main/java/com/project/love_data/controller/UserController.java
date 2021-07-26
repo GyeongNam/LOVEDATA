@@ -33,6 +33,8 @@ import java.util.Map;
 public class UserController {
 	@Autowired
     private UserRepository userRepository;
+	@Autowired
+	private CalenderRepository calenderRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
 	@Autowired
