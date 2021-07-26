@@ -29,7 +29,6 @@ public class CalenderService {
                 .cal_no(dto.getCal_no())
                 .user_mail(dto.getUser_mail())
                 .title(dto.getTitle())
-                .place(dto.getPlace())
                 .start(dto.getStart())
                 .end(dto.getEnd())
                 .color(dto.getColor())
@@ -47,7 +46,6 @@ public class CalenderService {
                 .cal_no(entity.getCal_no())
                 .user_mail(entity.getUser_mail())
                 .title(entity.getTitle())
-                .place(entity.getPlace())
                 .start(entity.getStart())
                 .end(entity.getEnd())
                 .color(entity.getColor())
@@ -73,6 +71,10 @@ public class CalenderService {
 
         return item.orElse(new ArrayList<>());
 //        return item.isPresent() ? entityToDto(item.get()) : null;
+    }
+    public Calender cal_select_no(String no){
+        Calender calender = calenderRepository.findcal_no(no);
+        return calender;
     }
 
 }

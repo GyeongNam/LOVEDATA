@@ -1,17 +1,12 @@
 package com.project.love_data.controller;
 
-<<<<<<< HEAD
-import com.project.love_data.businessLogic.service.LocationService;
-import com.project.love_data.businessLogic.service.UserService;
-import com.project.love_data.dto.LocationDTO;
-=======
 import com.project.love_data.businessLogic.service.CalenderService;
 import com.project.love_data.businessLogic.service.UserService;
 import com.project.love_data.dto.CalenderDTO;
->>>>>>> edc47cd368f026852526b56aaf330af230c5bb60
 import com.project.love_data.dto.UserDTO;
 import com.project.love_data.model.service.Calender;
 import com.project.love_data.model.user.User;
+import com.project.love_data.repository.CalenderRepository;
 import com.project.love_data.repository.UserRepository;
 import com.project.love_data.security.model.UserRole;
 import com.project.love_data.businessLogic.SmsService;
@@ -47,11 +42,7 @@ public class UserController {
 	@Autowired
 	UserService userService;
 	@Autowired
-<<<<<<< HEAD
-	LocationService locationService;
-=======
 	CalenderService calenderService;
->>>>>>> edc47cd368f026852526b56aaf330af230c5bb60
 
     @RequestMapping(value="/signup_add",method = RequestMethod.POST)
     public String signup(
@@ -191,13 +182,63 @@ public class UserController {
 		return map;
 	}
 	// 추가
+	@ResponseBody
+	@PostMapping(value = "/user/cal_add")
+	public String cal_add(@RequestBody HashMap<String, String> data, Principal principal) {
 
-//	@GetMapping(value = "/mypage")
-//	public String myreview(Principal principal, Model model) {
-//		LocationDTO locationDTO = userService.LocDTO(principal.getName());
-//		model.addAttribute("LocationDTO", locationDTO);
-//
-//		return "user/mypaeg";
-//	}
+		Calender calender = Calender.builder()
+				.title(data.get("title"))
+				.start(data.get("start"))
+				.end(data.get("end"))
+				.text(data.get("text"))
+				.road(data.get("road"))
+				.road2(data.get("road2"))
+				.user_mail(principal.getName())
+				.color(data.get("color"))
+				.all_day(data.get("allDay").equals("true") ? true : false)
+				.build();
 
+		calenderRepository.save(calender);
+
+		return  "1";
+	}
+	@ResponseBody
+	@PostMapping(value = "/user/cal_update")
+	public String cal_update(@RequestBody HashMap<String, String> data, Principal principal) {
+
+		Calender calender = calenderService.cal_select_no(data.get("_id"));
+		calender.setTitle(data.get("title"));
+		calender.setAll_day(data.get("allDay").equals("true") ? true : false);
+		calender.setStart(data.get("start"));
+		calender.setEnd(data.get("end"));
+		calender.setRoad(data.get("road"));
+		calender.setRoad2(data.get("road2"));
+		calender.setText(data.get("text"));
+		calender.setColor(data.get("color"));
+
+		calenderService.update(calender);
+
+		return  "1";
+	}
+	@ResponseBody
+	@PostMapping(value = "/user/cal_delete")
+	public String cal_delete(@RequestBody HashMap<String, String> data, Principal principal) {
+
+		Calender calender = calenderService.cal_select_no(data.get("_id"));
+		calender.setCal_Activation(false);
+		calenderService.update(calender);
+		return  "1";
+	}
+
+	@ResponseBody
+	@PostMapping(value = "/user/cal_update_d")
+	public String cal_update_d(@RequestBody HashMap<String, String> data, Principal principal) {
+
+		Calender calender = calenderService.cal_select_no(data.get("_id"));
+		calender.setStart(data.get("start"));
+		calender.setEnd(data.get("end"));
+		calenderService.update(calender);
+
+		return  "1";
+	}
 }

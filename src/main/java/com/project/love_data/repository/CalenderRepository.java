@@ -14,4 +14,7 @@ public interface CalenderRepository extends JpaRepository<Calender, Long> {
 
     @Query(value = "select * from Calender u where user_mail = :user_mail and cal_Activation = true", nativeQuery = true)
     Optional<List<Calender>> findcal(String user_mail);
+
+    @Query(value = "select * from Calender u where cal_no = :no", nativeQuery = true)
+    Calender findcal_no(String no);
 }
