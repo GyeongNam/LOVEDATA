@@ -153,12 +153,17 @@ public class UserController {
 	//CHOI
 	@GetMapping(value = "/mypage")
 	public String myinfo(Principal principal, Model model) {
-		UserDTO userDTO = userService.DTOselect(principal.getName());
-		model.addAttribute("UserDTO", userDTO);
+		if(principal==null){
+			return "redirect:/login";
+		}
+		else{
+			UserDTO userDTO = userService.DTOselect(principal.getName());
+			model.addAttribute("UserDTO", userDTO);
 //		log.info("data : "+ request);
 //		log.info("data2 : "+ principal);
 //		log.info("DTOLOG : "+ userDTO);
-    	return  "user/mypage";
+			return  "user/mypage";
+		}
 	}
 	// 캘린더
 	@GetMapping(value="/service/calender")
