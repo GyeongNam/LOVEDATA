@@ -243,4 +243,18 @@ public class UserController {
 
 		return  "1";
 	}
+
+	@ResponseBody
+	@PostMapping(value = "/idfind")
+	public Map<String, String> idfind(@RequestBody HashMap<String, String> data) {
+		Map<String, String> map = new HashMap<String, String>();
+//		log.info("findfindfind");
+		log.info("fkalfhalfksfkls" + data.get("phones"));
+		List<String> idid = userService.findUserId(data.get("phones"));
+		log.info(idid);
+		for( int i = 0; i < idid.size(); i++){
+			map.put(i + "i" ,idid.get(i));
+		}
+		return  map;
+	}
 }

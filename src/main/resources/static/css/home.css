@@ -12,7 +12,7 @@ html{
 .main-content{
 	background-color: #F1E7F7;
 	width: auto;
-	height: 400px;
+	height: 510px;
 	margin: 70px 0px 70px 0px;
 }
 
@@ -21,7 +21,7 @@ html{
 .slideshow-container {
 	max-width: 1000px;
 	position: relative;
-	margin: auto;
+	margin: 0px 40px 0px 40px;
 }
 
 /* Next & previous buttons */
@@ -125,5 +125,5 @@ html{
 	right: 3%;
 }
 .Slides-content{
-
+	height: 32rem;
 }

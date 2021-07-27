@@ -11,7 +11,24 @@
 </head>
 <%@ include file="layout/header.jsp" %>
 <body>
-
+<div id="fullpage">
+	<div class='quick'><ul></ul></div>
+	<div class="fullsection full1" pageNum="1">
+	<span>1 PAGE</span>
+</div>
+	<div class="fullsection full2" pageNum="2">
+	<span>2 PAGE</span>
+</div>
+	<div class="fullsection full3" pageNum="3">
+	<span>3 PAGE</span>
+</div>
+	<div class="fullsection full4" pageNum="4">
+	<span>4 PAGE</span>
+</div>
+	<div class="fullsection full5" pageNum="5">
+	<span>5 PAGE</span>
+</div>
+</div>
 <div class="container">
 	<div class="flex-container">
 		<div class="main-content">
@@ -56,11 +73,6 @@
 			</div>
 
 
-		</div>
-		<div class="class1">
-			<P> The time on the server is ${serverTime}. </P>
-			<a href="/infoFind">아이디/비밀번호 찾기</a>
-			<a href="/signup">회원가입</a>
 		</div>
 		<div class="class1">
 			<%--			로그인 되어 있을 경우 Logout  --%>
@@ -109,10 +121,7 @@
 			</sec:authorize>
 		</div>
 		<div class="class1">
-			<%--<a href="/login">로그인</a>--%>
-			<%--			<a href="/find-info">회원정보 찾기</a>--%>
 			<a href="/find_id">회원정보 찾기 수정</a>
-			<a href="/mypage">회원정보 수정</a>
 			<a href="/user/deleteAccount">(임시)회원탈퇴</a>
 			<br><br>
 			<%--			<a href="/bootstrap">부트스트랩 테스트</a>--%>

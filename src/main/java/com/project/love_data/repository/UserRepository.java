@@ -2,6 +2,7 @@ package com.project.love_data.repository;
 
 import java.util.*;
 
+import com.project.love_data.dto.UserDTO;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.OnDelete;
@@ -38,6 +39,10 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	@Query(value = "SELECT u FROM User u where u.user_email = :email")
 	Optional<User> findUserByEmail_Privilege(@Param("email") String email);
 
+	//CHOI
+	@Query(value = "select user_email from User where user_phone = :phonenumber", nativeQuery = true)
+	Optional<List<String>> findId(String phonenumber);
+
 //	@Modifying
 //	@Transactional
 //	@Query(value = "DELETE  FROM User_role_set r WHERE r.user_user_no = :user_no", nativeQuery = true)
@@ -47,4 +52,6 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	@Query(value = "DELETE  FROM User  WHERE user_email = :email", nativeQuery = true)
 	@Transactional
 	void deleteUserByEmail(@Param("email") String email);
+
+
 }
