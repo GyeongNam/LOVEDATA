@@ -1,10 +1,13 @@
 package com.project.love_data.businessLogic.service;
 
+import com.project.love_data.dto.LocationDTO;
 import com.project.love_data.dto.UserDTO;
+import com.project.love_data.model.service.Calender;
 import com.project.love_data.model.service.Comment;
 import com.project.love_data.model.service.Location;
 import com.project.love_data.model.service.UserLikeLoc;
 import com.project.love_data.model.user.User;
+import com.project.love_data.repository.LocationRepository;
 import com.project.love_data.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +24,8 @@ public class UserService {
     UserLikeLocService likeLocService;
     @Autowired
     UserRecentLocService recentLocService;
-
+    @Autowired
+    LocationRepository locationRepository;
 
     public User dtoToEntity(UserDTO dto){
         User entity = User.builder()
@@ -110,6 +114,17 @@ public class UserService {
         return item.isPresent() ? entityToDto(item.get()) : null;
 //        return item.orElse(null);
     }
+    public List<String> findUserId(String phonenumber) {
+        Optional<List<String>> item = userRepository.findId(phonenumber);
+
+        return item.orElse(new ArrayList<>());
+    }
+//    public LocationDTO LocDTO(Long loc_no) {
+//        Optional<Location> item = LocationRepository.findByAllUser_no(loc_no);
+//
+//        return item.isPresent() ? entityToDto(item.get()) : null;
+////        return item.orElse(null);
+//    }
 //    public void addLikeLocation(User user, Location location) {
 //        user.addLikeLocation(location);
 //

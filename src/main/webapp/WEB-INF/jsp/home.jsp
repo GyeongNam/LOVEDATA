@@ -11,41 +11,68 @@
 </head>
 <%@ include file="layout/header.jsp" %>
 <body>
-
+<div id="fullpage">
+	<div class='quick'><ul></ul></div>
+	<div class="fullsection full1" pageNum="1">
+	<span>1 PAGE</span>
+</div>
+	<div class="fullsection full2" pageNum="2">
+	<span>2 PAGE</span>
+</div>
+	<div class="fullsection full3" pageNum="3">
+	<span>3 PAGE</span>
+</div>
+	<div class="fullsection full4" pageNum="4">
+	<span>4 PAGE</span>
+</div>
+	<div class="fullsection full5" pageNum="5">
+	<span>5 PAGE</span>
+</div>
+</div>
 <div class="container">
 	<div class="flex-container">
 		<div class="main-content">
-			<!-- Slideshow container -->
 			<div class="slideshow-container">
-				<!-- Full-width images with number and caption text -->
 				<div class="mySlides fade">
-					<!-- The dots/circles -->
-					<div style="text-align:center">
-						<span class="dot" onclick="currentSlide(1)"></span>
-						<span class="dot" onclick="currentSlide(2)"></span>
-						<span class="dot" onclick="currentSlide(3)"></span>
+					<div class="Slides-content">
+						<div>
+							<img class="banner-img" src="/image/icon/home/datapg1.png">
+						</div>
+<%--						<div>--%>
+<%--							<div>--%>
+<%--								<p>LOVEDAT를<br> 만나보세요</p>--%>
+<%--							</div>--%>
+<%--							<div>--%>
+<%--								<ul>--%>
+<%--									<li>데이트코스를 직접 설정하고 공유해보세요!</li>--%>
+<%--									<li>다른 사람이 설정한 데이트 코스를 체험하고 리뷰를 남겨주세요!</li>--%>
+<%--								</ul>--%>
+<%--							</div>--%>
+<%--						</div>--%>
 					</div>
-					<img src="/image/datapg1.png" style="width:60%">
 				</div>
 
 				<div class="mySlides fade">
-					<img src="/image/datapg2.png" style="width:60%">
+					<img class="banner-img" src="/image/icon/home/datapg2.png">
 				</div>
 
 				<div class="mySlides fade">
-					<img src="/image/datepg3.jpg" style="width:60%">
+					<img class="banner-img" src="/image/icon/home/datepg3.jpg">
+				</div>
+				<div>
+					<a class="prev" onclick="plusSlides(-1)"><img src="/image/icon/home/slide_btn_prev.png"></a>
+					<a class="next" onclick="plusSlides(1)"><img src="/image/icon/home/slide_btn_next.png"></a>
 				</div>
 
-				<!-- Next and previous buttons -->
-				<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-				<a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+				<div class="slider-dot">
+					<span class="dot" onclick="currentSlide(1)"></span>
+					<span class="dot" onclick="currentSlide(2)"></span>
+					<span class="dot" onclick="currentSlide(3)"></span>
+				</div>
 			</div>
-			<br>
-		</div>
-		<div class="class1">
-			<P> The time on the server is ${serverTime}. </P>
-			<a href="/infoFind">아이디/비밀번호 찾기</a>
-			<a href="/signup">회원가입</a>
+
+
 		</div>
 		<div class="class1">
 			<%--			로그인 되어 있을 경우 Logout  --%>
@@ -94,10 +121,7 @@
 			</sec:authorize>
 		</div>
 		<div class="class1">
-			<%--<a href="/login">로그인</a>--%>
-			<%--			<a href="/find-info">회원정보 찾기</a>--%>
 			<a href="/find_id">회원정보 찾기 수정</a>
-			<a href="/mypage">회원정보 수정</a>
 			<a href="/user/deleteAccount">(임시)회원탈퇴</a>
 			<br><br>
 			<%--			<a href="/bootstrap">부트스트랩 테스트</a>--%>
@@ -113,7 +137,7 @@
 	</div>
 </div>
 </body>
-<%@ include file="layout/footer.jsp" %>
+<%--<%@ include file="layout/footer.jsp" %>--%>
 <!--  부트스트랩 js 사용 -->
 <script defer src="/js/home.js"></script>
 <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

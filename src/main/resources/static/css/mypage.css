@@ -1,6 +1,10 @@
 html{
     background-color: #e4d1f0;
 }
+body{
+    margin : 0;
+    padding: 0;
+}
 #jb-container {
     width: 1024px;
     margin: 10px auto;

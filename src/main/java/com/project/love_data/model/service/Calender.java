@@ -30,13 +30,10 @@ public class Calender extends TimeEntity {
     @Column(name = "title", length = 15, nullable = false)
     private String title;
 
-    @Column(name = "place", length = 15, nullable = false)
-    private String place;
-
-    @Column(name = "start", length = 15, nullable = false)
+    @Column(name = "start", length = 20, nullable = false)
     private String start;
 
-    @Column(name = "end", length = 15, nullable = false)
+    @Column(name = "end", length = 20, nullable = false)
     private String end;
 
     @Column(name = "color", length = 15, nullable = false)

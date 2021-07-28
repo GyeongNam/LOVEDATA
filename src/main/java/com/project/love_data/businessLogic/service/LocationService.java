@@ -3,15 +3,18 @@ package com.project.love_data.businessLogic.service;
 import com.project.love_data.dto.LocationDTO;
 import com.project.love_data.dto.PageRequestDTO;
 import com.project.love_data.dto.PageResultDTO;
+import com.project.love_data.dto.UserDTO;
 import com.project.love_data.model.resource.LocationImage;
 import com.project.love_data.model.service.Comment;
 import com.project.love_data.model.service.Location;
 import com.project.love_data.model.service.QLocation;
+import com.project.love_data.model.user.User;
 import com.project.love_data.repository.LocationImageRepository;
 import com.project.love_data.repository.LocationRepository;
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -28,6 +31,7 @@ public class LocationService {
     private final LocationImageRepository imgRepository;
     private final LocationImageService imgService;
     private final CommentService cmtService;
+
 
     public Location register(Map<String, String> reqParam, List<String> tagList, List<String> filePath) {
         LocationDTO dto = getLocationDto(reqParam, tagList);

@@ -65,7 +65,8 @@ $('#sendMail').click(function (){
 
 });
 
-
+var nums = 0;
+var num_check = 0;
 // 인증번호 보내기
 function SMSsned(){
 	var phone1 = $('#selectphone').val();
@@ -91,27 +92,59 @@ function SMSsned(){
 // 인증번호 확인하기
 function rnum_check(){
 	security = $('#security').val();
-	retextmodal = $('#phone_numcheck');
 	retext = $('#phone_check');
 
 	if (nums == security) {
 		if (security == 0) {
-			retextmodal.text("인증번호를 입력하세요.");
-			mainphone = false;
+			alert("인증번호를 전송하세요.");
+			num_check = 0;
 		}
 		else {
-			retextmodal.css("color", "green");
-			retextmodal.text('인증번호가 일치합니다.');
 			retext.css("color", "green");
 			retext.text('인증된 번호입니다.');
-			mainphone = true;
+			num_check = 1;
 		}
 	}
 	else {
-		retextmodal.css("color", "red");
-		retextmodal.text('인증번호가 일치하지 않습니다.');
 		retext.css("color", "red");
 		retext.text('인증되지 않은 번호입니다.');
-		mainphone = false;
+		num_check = 0;
+	}
+}
+
+//아이디찾기 클릭이벤트
+function idfind(){
+	if (num_check == 1){
+
+		var phone1 = $('#selectphone').val();
+		var phone2 = $('#str_phone02').val();
+		var phone3 = $('#str_phone03').val();
+		var postdata = { "phones" : phone1 + phone2 + phone3 };
+
+		$.ajax({
+			url: "/idfind",
+			dataType: 'json',
+			contentType: "application/json; charset=UTF-8",
+			data: JSON.stringify(postdata),
+			type: "POST",
+			success:function(data){
+				// console.log(data);
+				$("#find_id_list").append($("<li>고객님의 아이디는</li>"));
+				$.each(data, function(index, item){
+					console.log(item);
+
+					$("#nonfind_id").hide();
+					$("#find_id_list").append($("<li>"+item+"</li>"));
+					// document.body..appendChild(newDiv);
+				});
+				$("#find_id_list").append($("<li>입니다.</li>"));
+			},
+			error : function(){
+				console.log(data);
+			}
+		});
+	}
+	else{
+		alert("인증번호를 확인해주세요.");
 	}
 }

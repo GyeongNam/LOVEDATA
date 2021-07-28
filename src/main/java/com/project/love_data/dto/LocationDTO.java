@@ -148,4 +148,10 @@ public class LocationDTO {
 
         return sb.toString().substring(0, sb.toString().length()-1);
     }
+    //CHOI
+
+    public String myreviewload(String loc_name) {
+
+        return "loc_name";
+    }
 }

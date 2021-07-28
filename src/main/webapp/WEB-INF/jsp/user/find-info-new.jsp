@@ -40,7 +40,7 @@
 
 								<!-- 아이디 찾기 -->
 								<div class="card no-shadow tab-cont">
-									<ul class="full-list">
+									<ul class="full-list" id="nonfind_id">
 										<li class="pd-v-5">
 										<select class="selectbox" name="str_phone01" id="selectphone">
 												<option value="empty" selected>선택하세요</option>
@@ -64,21 +64,25 @@
 											<li class="pd-v-5">
 										<input type="number" id="security" name="security"
 													placeholder="인증번호">
-											<button type="button" id=""
-													class="btn btn-grass" >
+											<button type="button" id="check_aus"
+													class="btn btn-grass" onclick="rnum_check()">
 													<span class="caption">인증번호 확인</span>
 													<div class="ripple"></div>
 												</button>
+												<label id="phone_check"></label>
 											</li>
 										<li class="pd-v-5"><hr class="solid"></li>
 										<li class="pd-v-10 txt-center">
 											<button type="button"
-												class="btn btn-l hidden-icon right btn-yellow" onclick="">
+												class="btn btn-l hidden-icon right btn-yellow" onclick="idfind()">
 												<div class="bg"></div>
 												<span class="caption">아이디 찾기</span><i class="material-icons">search</i>
 												<div class="ripple"></div>
 											</button>
 										</li>
+									</ul>
+									<ul class="full-list2" id="find_id_list">
+
 									</ul>
 								</div>
 
