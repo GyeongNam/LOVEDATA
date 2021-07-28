@@ -61,7 +61,7 @@
 	<div class="container m-5" id="display_center" style="margin-right: 30px; margin-top: 30px">
 		<h1>장소 등록</h1>
 		<div class="container-fluid">
-			<form action="/service/loc_registration/regData" method="post" enctype="multipart/form-data">
+			<form action="/service/cor_registration/regData" method="post" enctype="multipart/form-data">
 				<div class="user-details basic-style">
 					<div class="row">
 						<div class="col" id="top_hashtag">

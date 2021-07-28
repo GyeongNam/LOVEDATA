@@ -1,5 +1,6 @@
 package com.project.love_data.businessLogic.service;
 
+import com.project.love_data.model.resource.CourseImage;
 import com.project.love_data.model.resource.LocationImage;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ import java.util.*;
 public class FileUploadService {
     @Autowired
     LocationImageService locationImageService;
+    @Autowired
+    CourseImageService courseImageService;
 
     public void execute(List<MultipartFile> fileList,
                         UploadFileType fileType,
@@ -36,7 +39,7 @@ public class FileUploadService {
         String pathStr;
         if ("Windows_NT".equals(System.getenv().get("OS"))) {
             // 윈도우 OS에서 돌아갈 경우(디버깅 및 테스트) 현재 프로젝트설치 위치로 지정
-            pathStr =System.getProperty("user.dir");
+            pathStr = System.getProperty("user.dir");
         } else {
             // 윈도우 이외의 OS에서 돌아갈 경우 /home/tomcat/LoveData-Storage에 위치로 지정
             pathStr = "/home/tomcat/LoveData-Storage";
@@ -164,12 +167,12 @@ public class FileUploadService {
                 continue;
             }
 
-           if (isDuplicated(file.getOriginalFilename())) {
-               log.info("파일이 이미 등록되어 있습니다.");
-               log.info("fileName : " + file.getOriginalFilename());
-               result.add(file.getOriginalFilename());
-               continue;
-           }
+            if (isDuplicated(file.getOriginalFilename())) {
+                log.info("파일이 이미 등록되어 있습니다.");
+                log.info("fileName : " + file.getOriginalFilename());
+                result.add(file.getOriginalFilename());
+                continue;
+            }
 
             fileName = getFileName(file, FileNamingType.UUID);
 
@@ -214,7 +217,7 @@ public class FileUploadService {
         // 현재 프로젝트 폴더 하위 폴더인 images 폴더를 업로드 폴더로 지정
         Path path;
 
-        if ("Windows_NT".equals(System.getenv().get("OS"))){
+        if ("Windows_NT".equals(System.getenv().get("OS"))) {
             path = Paths.get(pathStr + File.separator +
                     "src" + File.separator +
                     "main" + File.separator +
@@ -283,6 +286,13 @@ public class FileUploadService {
     private boolean isDuplicated(String fileName) {
         LocationImage item = locationImageService.getImage(fileName);
 
-        return item != null;
+        CourseImage item2 = courseImageService.getImage(fileName);
+
+        if (item == null && item2 == null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
+

@@ -614,7 +614,7 @@
                         var formData = $("form");
                         $.ajax({
                             type: "POST",
-                            url: "/service/loc/tags",
+                            url: "/service/cor/tags",
                             data: {
                                 tags: tagList //notice that "myArray" matches the value for @RequestParam
                                 //on the Java side

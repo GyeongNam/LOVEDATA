@@ -1,10 +1,7 @@
 package com.project.love_data.controller.service;
 
 import com.project.love_data.businessLogic.service.*;
-import com.project.love_data.dto.CommentDTO;
-import com.project.love_data.dto.LocationDTO;
-import com.project.love_data.dto.PageRequestDTO;
-import com.project.love_data.dto.PageResultDTO;
+import com.project.love_data.dto.*;
 import com.project.love_data.model.service.*;
 import com.project.love_data.model.user.User;
 import com.project.love_data.security.model.AuthUserModel;
@@ -33,7 +30,9 @@ public class CourseController {
     @Autowired
     UserLikeCorService userLikeCorService;
     @Autowired
-    CourseService courseService;
+    CourseService corService;
+    @Autowired
+    UserService userService;
     @Autowired
     ReviewService reviewService;
     List<String> tagList = new ArrayList<>();
@@ -63,53 +62,50 @@ public class CourseController {
         return "redirect:/service/cor_recommend";
     }
 
-//    @PostMapping("/service/loc_registration/regData")
-//    public String locRegistrationData(@RequestParam("files") List<MultipartFile> fileList,
-//                                      HttpServletRequest request,
-//                                      RedirectAttributes redirectAttributes) {
-//        List<String> filePath = null;
-//        Map<String, String> reqParam = new HashMap<>();
-//
-//        reqParam.put("name", request.getParameter("name"));
-//        reqParam.put("tel", request.getParameter("tel"));
-//        reqParam.put("info", request.getParameter("info"));
-//        reqParam.put("zipNo", request.getParameter("zipNo"));
-//        reqParam.put("roadAddr", request.getParameter("roadAddrPart1"));
-//        reqParam.put("addrDetail", request.getParameter("addrDetail"));
-//        reqParam.put("siDoName", request.getParameter("siNm"));
-//        reqParam.put("siGunGuName", request.getParameter("sggNm"));
-////        // Todo Debug 목적용 코드 나중에 삭제할 것
-//        if (request.getParameter("user_no") != null) {
-//            reqParam.put("user_no", (request.getParameter("user_no")));
-//        } else {
-//            reqParam.put("user_no", (request.getParameter("user_no_debug")));
-//        }
-//
-//        if (tagList.isEmpty()) {
-//            log.warn("No Location Tag Found (Must add tag before submit location)");
-//            return "redirect:/service/loc_recommend";
-//        }
-//
-//        filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE,
-//                UploadFileCount.MULTIPLE, MIN_UPLOAD_COUNT, MAX_UPLOAD_COUNT, request);
-//
-//        if (filePath == null) {
-//            log.warn("파일이 제대로 저장되지 않았습니다.");
-//            return "redirect:/service/loc_recommend";
-//        }
-//
-//        Location entity = locService.register(reqParam, tagList, filePath);
-//        User user = userService.select(Long.parseLong(reqParam.get("user_no")));
-//        //Todo 업로드한 장소테이블에 정보 인서트 하기
-////        user.addUploadLocation(entity);
+    @PostMapping("/service/cor_registration/regData")
+    public String locRegistrationData(@RequestParam("files") List<MultipartFile> fileList,
+                                      HttpServletRequest request,
+                                      RedirectAttributes redirectAttributes) {
+        List<String> filePath = null;
+        Map<String, String> reqParam = new HashMap<>();
+
+        reqParam.put("name", request.getParameter("name"));
+        reqParam.put("est_time", request.getParameter("est_time"));
+        reqParam.put("transportation", request.getParameter("transportation"));
+        reqParam.put("cost", request.getParameter("cost"));
+        reqParam.put("info", request.getParameter("info"));
+//        // Todo Debug 목적용 코드 나중에 삭제할 것
+        if (request.getParameter("user_no") != null) {
+            reqParam.put("user_no", (request.getParameter("user_no")));
+        } else {
+            reqParam.put("user_no", (request.getParameter("user_no_debug")));
+        }
+
+        if (tagList.isEmpty()) {
+            log.warn("No Location Tag Found (Must add tag before submit location)");
+            return "redirect:/service/cor_recommend";
+        }
+
+        filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE,
+                UploadFileCount.MULTIPLE, MIN_UPLOAD_COUNT, MAX_UPLOAD_COUNT, request);
+
+        if (filePath == null) {
+            log.warn("파일이 제대로 저장되지 않았습니다.");
+            return "redirect:/service/cor_recommend";
+        }
+
+        Course entity = corService.register(reqParam, tagList, filePath);
+        User user = userService.select(Long.parseLong(reqParam.get("user_no")));
+        //Todo 업로드한 장소테이블에 정보 인서트 하기
+//        user.addUploadLocation(entity);
 //        userService.update(user);
-//        LocationDTO dto = locService.entityToDto(entity);
-//
-//        redirectAttributes.addFlashAttribute("dto", dto);
-//
-//        return "redirect:/service/loc_recommend";
-//    }
-//
+        CourseDTO dto = corService.entityToDto(entity);
+
+        redirectAttributes.addFlashAttribute("dto", dto);
+
+        return "redirect:/service/cor_recommend";
+    }
+
 //    @GetMapping(value = "/service/loc_recommend")
 //    public String goToLocRecommendList() {
 //        return "redirect:/service/loc_recommend/list";
