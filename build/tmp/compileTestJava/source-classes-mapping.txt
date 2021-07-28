@@ -13,9 +13,9 @@ com/project/love_data/LocationImageTest.java
  com.project.love_data.LocationImageTest
 com/project/love_data/LoveDataApplicationTests.java
  com.project.love_data.LoveDataApplicationTests
-com/project/love_data/UserTest.java
- com.project.love_data.UserTest
-com/project/love_data/CommentTest.java
- com.project.love_data.CommentTest
 com/project/love_data/CourseTest.java
  com.project.love_data.CourseTest
+com/project/love_data/CommentTest.java
+ com.project.love_data.CommentTest
+com/project/love_data/UserTest.java
+ com.project.love_data.UserTest

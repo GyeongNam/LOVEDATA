@@ -14,7 +14,8 @@ import java.util.*;
 
 @Entity
 @Table(name = "course")
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

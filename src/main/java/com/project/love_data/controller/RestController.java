@@ -253,7 +253,7 @@ public class RestController {
 
         String jsonObject = gson.toJson(response);
 
-        log.info(jsonObject);
+//        log.info(jsonObject);
 
         return jsonObject;
     }

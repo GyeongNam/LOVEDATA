@@ -70,7 +70,7 @@ public class CourseController {
         Map<String, String> reqParam = new HashMap<>();
 
         reqParam.put("name", request.getParameter("name"));
-        reqParam.put("est_time", request.getParameter("est_time"));
+//        reqParam.put("est_time", request.getParameter("est_time"));
         reqParam.put("transportation", request.getParameter("transportation"));
         reqParam.put("cost", request.getParameter("cost"));
         reqParam.put("info", request.getParameter("info"));
@@ -86,24 +86,30 @@ public class CourseController {
             return "redirect:/service/cor_recommend";
         }
 
-        filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE,
-                UploadFileCount.MULTIPLE, MIN_UPLOAD_COUNT, MAX_UPLOAD_COUNT, request);
-
-        if (filePath == null) {
-            log.warn("파일이 제대로 저장되지 않았습니다.");
-            return "redirect:/service/cor_recommend";
+        for (String s : reqParam.keySet()) {
+            log.info(s + "\t:\t" + reqParam.get(s));
         }
 
-        Course entity = corService.register(reqParam, tagList, filePath);
-        User user = userService.select(Long.parseLong(reqParam.get("user_no")));
-        //Todo 업로드한 장소테이블에 정보 인서트 하기
-//        user.addUploadLocation(entity);
-//        userService.update(user);
-        CourseDTO dto = corService.entityToDto(entity);
+        return "redirect:/service/cor_index";
 
-        redirectAttributes.addFlashAttribute("dto", dto);
-
-        return "redirect:/service/cor_recommend";
+//        filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE,
+//                UploadFileCount.MULTIPLE, MIN_UPLOAD_COUNT, MAX_UPLOAD_COUNT, request);
+//
+//        if (filePath == null) {
+//            log.warn("파일이 제대로 저장되지 않았습니다.");
+//            return "redirect:/service/cor_recommend";
+//        }
+//
+//        Course entity = corService.register(reqParam, tagList, filePath);
+//        User user = userService.select(Long.parseLong(reqParam.get("user_no")));
+//        //Todo 업로드한 장소테이블에 정보 인서트 하기
+////        user.addUploadLocation(entity);
+////        userService.update(user);
+//        CourseDTO dto = corService.entityToDto(entity);
+//
+//        redirectAttributes.addFlashAttribute("dto", dto);
+//
+//        return "redirect:/service/cor_recommend";
     }
 
 //    @GetMapping(value = "/service/loc_recommend")
