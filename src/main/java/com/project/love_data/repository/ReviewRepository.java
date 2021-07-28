@@ -19,10 +19,10 @@ public interface ReviewRepository extends JpaRepository<Review, Long>,
     List<Review> findAllByUser_no(@Param("user_no") Long userNo);
 
     @Query(value = "SELECT * FROM Review r WHERE r.rev_uuid = :rev_uuid", nativeQuery = true)
-    Optional<Review> findByRev_uuid(@Param("rev_uuid") String cmtUuid);
+    Optional<Review> findByRev_uuid(@Param("rev_uuid") String revUuid);
 
     @Query(value = "SELECT * FROM Review r WHERE r.rev_no = :rev_no", nativeQuery = true)
-    Optional<Review> findByRev_no(@Param("rev_no") Long cmtNo);
+    Optional<Review> findByRev_no(@Param("rev_no") Long revNo);
 
     @Modifying
     @Query(value = "DELETE FROM Review WHERE rev_no = :rev_no", nativeQuery = true)
@@ -32,5 +32,5 @@ public interface ReviewRepository extends JpaRepository<Review, Long>,
     @Modifying
     @Query(value = "DELETE FROM Review WHERE rev_uuid = :rev_uuid", nativeQuery = true)
     @Transactional
-    void deleteByRev_uuid(@Param("rev_uuid") String cmtUuid);
+    void deleteByRev_uuid(@Param("rev_uuid") String revUuid);
 }

@@ -40,7 +40,7 @@ var calendar = $('#calendar').fullCalendar({
   dayPopoverFormat          : 'MM/DD dddd',
   longPressDelay            : 0,
   eventLongPressDelay       : 0,
-  selectLongPressDelay      : 0,  
+  selectLongPressDelay      : 0,
   header                    : {
                                 left   : 'today, prev, next',
                                 center : 'title',
@@ -63,88 +63,72 @@ var calendar = $('#calendar').fullCalendar({
                                   columnFormat : ''
                                 }
                               },
+  // eventRender: function (event, element, view) {
+  //
+  //   //일정에 hover시 요약
+  //   element.popover({
+  //     title: $('<div />', {
+  //       class: 'popoverTitleCalendar',
+  //       text: event.title
+  //     }).css({
+  //       'background': event.backgroundColor,
+  //       'color': event.textColor
+  //     }),
+  //     content: $('<div />', {
+  //         class: 'popoverInfoCalendar'
+  //       }).append('<p><strong>등록자:</strong> ' + event.username + '</p>')
+  //       .append('<p><strong>구분:</strong> ' + event.type + '</p>')
+  //       .append('<p><strong>시간:</strong> ' + getDisplayEventDate(event) + '</p>')
+  //       .append('<div class="popoverDescCalendar"><strong>설명:</strong> ' + event.description + '</div>'),
+  //     delay: {
+  //       show: "800",
+  //       hide: "50"
+  //     },
+  //     trigger: 'hover',
+  //     placement: 'top',
+  //     html: true,
+  //     container: 'body'
+  //   });
+  //
+  //   return filtering(event);
+  //
+  // },
 
-  eventRender: function (event, element, view) {
-
-    //일정에 hover시 요약
-    element.popover({
-      title: $('<div />', {
-        class: 'popoverTitleCalendar',
-        text: event.title
-      }).css({
-        'background': event.backgroundColor,
-        'color': event.textColor
-      }),
-      content: $('<div />', {
-          class: 'popoverInfoCalendar'
-        }).append('<p><strong>등록자:</strong> ' + event.username + '</p>')
-        .append('<p><strong>구분:</strong> ' + event.type + '</p>')
-        .append('<p><strong>시간:</strong> ' + getDisplayEventDate(event) + '</p>')
-        .append('<div class="popoverDescCalendar"><strong>설명:</strong> ' + event.description + '</div>'),
-      delay: {
-        show: "800",
-        hide: "50"
-      },
-      trigger: 'hover',
-      placement: 'top',
-      html: true,
-      container: 'body'
-    });
-
-    return filtering(event);
-
-  },
 
   /* ****************
-   *  일정 받아옴 
+   *  일정 받아옴
    * ************** */
   events: function (start, end, timezone, callback) {
     $.ajax({
       type: "post",
       url: "/user/cal_all",
       data: {
-          start: start.unix(),
-          end: end.unix()
+          // start: start.unix(),
+          // end: end.unix()
       },
       success: function (response) {
           console.log(response);
           var arr = response;
-          // var events = [
-          //     {
-          //         "title"  : "event1",
-          //         "start"  : "2021-07-19",
-          //         "end"    : "2021-07-21"
-          //     }];
           var events = [];
-
-          events.push({
-              title: response.title,
-              start: response.start,
-              end: response.end
+          $.each(arr, function(index, item){
+              events.push({
+                  // title:"item.title",
+                  // start: "2021-07-19",
+                  // end: "2021-07-21"
+                  _id: item.cal_no,
+                  title: item.title,
+                  start: item.start,
+                  end: item.end,
+                  text: item.text,
+                  username: item.user_mail, // 로그인 정보
+                  color: item.color,
+                  allDay: item.all_day
+              });
           });
 
-          callback(events);
-
-          // events.push({title:"item.title", start: "2021-07-19", end: "2021-07-21"});
           // console.log(events);
           //
-          // callback(events);
-          //
-          // $.each(arr, function(index, item){
-          //     var tstart = new Date(item.start);
-          //     var tend = new Date(item.end);
-          //     // events.push({title:item.title, start: tstart, end: tend});
-          //
-          // });
-
-
-      //   var fixedDate = item.map(function (array) {
-      //     if (array.allDay && array.start !== array.end) {
-      //       array.end = moment(array.end).add(1, 'days'); // 이틀 이상 AllDay 일정인 경우 달력에 표기시 하루를 더해야 정상출력
-      //     }
-      //     return array;
-      //   });
-      // callback(fixedDate);
+          callback(events);
       }
     });
   },
@@ -271,7 +255,6 @@ var calendar = $('#calendar').fullCalendar({
   }
 
 });
-calendar.render();
 
 function getDisplayEventDate(event) {
 
@@ -368,11 +351,13 @@ function calDateWhenDragnDrop(event) {
 var eventModal = $('#eventModal');
 
 var modalTitle = $('.modal-title');
+
 var editAllDay = $('#edit-allDay');
 var editTitle = $('#edit-title');
 var editStart = $('#edit-start');
 var editEnd = $('#edit-end');
-var editType = $('#edit-type');
+var editadr = $('#roadAddrPart1');
+var editadr2 = $('#addrDetail');
 var editColor = $('#edit-color');
 var editDesc = $('#edit-desc');
 
@@ -393,6 +378,8 @@ var newEvent = function (start, end, eventType) {
     editStart.val(start);
     editEnd.val(end);
     editDesc.val('');
+    editadr.val('');
+    editadr2.val('');
 
     addBtnContainer.show();
     modifyBtnContainer.hide();
@@ -411,11 +398,9 @@ var newEvent = function (start, end, eventType) {
             title: editTitle.val(),
             start: editStart.val(),
             end: editEnd.val(),
-            description: editDesc.val(),
-            type: editType.val(),
+            text: editDesc.val(),
             username: '사나', // 로그인 정보
-            backgroundColor: editColor.val(),
-            textColor: '#ffffff',
+            color: editColor.val(),
             allDay: editAllDay.val()
         };
 
@@ -441,7 +426,10 @@ var newEvent = function (start, end, eventType) {
             eventData.allDay = true;
         }
 
-        $("#calendar").fullCalendar('renderEvent', eventData, true);
+        // $("#calendar").fullCalendar('renderEvent', eventData, true);
+        calendar.fullCalendar('renderEvent', eventData, true);
+
+
         eventModal.find('input, textarea').val('');
         editAllDay.prop('checked', false);
         eventModal.modal('hide');
@@ -468,7 +456,7 @@ var editEvent = function (event, element, view) {
     $('#deleteEvent').data('id', event._id); //클릭한 이벤트 ID
 
     $('.popover.fade.top').remove();
-    $(element).popover("hide");
+    // $(element).popover("hide");
 
     if (event.allDay === true) {
         editAllDay.prop('checked', true);
@@ -538,7 +526,8 @@ var editEvent = function (event, element, view) {
         event.backgroundColor = editColor.val();
         event.description = editDesc.val();
 
-        $("#calendar").fullCalendar('updateEvent', event);
+        // $("#calendar").fullCalendar('updateEvent', event);
+        calendar.fullCalendar('updateEvent', event)
 
         //일정 업데이트
         $.ajax({
@@ -559,7 +548,8 @@ var editEvent = function (event, element, view) {
 $('#deleteEvent').on('click', function () {
 
     $('#deleteEvent').unbind();
-    $("#calendar").fullCalendar('removeEvents', $(this).data('id'));
+    // $("#calendar").fullCalendar('removeEvents', $(this).data('id'));
+    calendar.fullCalendar('removeEvents', $(this).data('id'));
     eventModal.modal('hide');
 
     //삭제시

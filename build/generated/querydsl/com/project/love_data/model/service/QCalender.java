@@ -23,6 +23,8 @@ public class QCalender extends EntityPathBase<Calender> {
 
     public final BooleanPath all_day = createBoolean("all_day");
 
+    public final BooleanPath cal_Activation = createBoolean("cal_Activation");
+
     public final NumberPath<Long> cal_no = createNumber("cal_no", Long.class);
 
     public final StringPath color = createString("color");
@@ -37,13 +39,17 @@ public class QCalender extends EntityPathBase<Calender> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> regDate = _super.regDate;
 
+    public final StringPath road = createString("road");
+
+    public final StringPath road2 = createString("road2");
+
     public final StringPath start = createString("start");
 
     public final StringPath text = createString("text");
 
     public final StringPath title = createString("title");
 
-    public final NumberPath<Long> user_no = createNumber("user_no", Long.class);
+    public final StringPath user_mail = createString("user_mail");
 
     public QCalender(String variable) {
         super(Calender.class, forVariable(variable));
