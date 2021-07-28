@@ -15,13 +15,13 @@
 </head>
 <%@ include file="../layout/header.jsp"%>
 <body>
-<%--<form class="mypageform" action="/user/mypage" method="post">--%>
 	<sec:authorize access="isAnonymous()">
 		잘못된 방식으로 접근하였습니다. 로그인 후 다시 시도하여주세요!
 		<button id="hd-btn" onclick="location.href='/login'">로그인</button>
 		<button id="hd-btn" class="dropbtn" onclick="gohome()">홈으로 돌아가기</button>
 	</sec:authorize>
 	<sec:authorize access="isAuthenticated()">
+<%--<form class="mypageform" action="/user/mypage" method="post">--%>
 <div id="jb-container">
 	<div id="jb-header">
 		<h1>마이페이지</h1>
@@ -84,6 +84,7 @@
 					<td>새 비밀번호 *</td>
 					<td id="sec_line"><input type="password" name="newPwd" id="pwd1" onKeyup="chkpw()" value="<%= request.getAttribute("pwd")  == null ? "" :  request.getAttribute("pwd")%>" class="form-control"  required>
 						<spen class="spen" id=pwd_rule>영문 대소문자/숫자/특수문자 중 2가지 이상 조합, 10자~16자.</spen>
+						<a href="/NewPassword/${UserDTO.user_pw}">비밀번호변경</a>
 					</td>
 				</tr>
 				<tr>

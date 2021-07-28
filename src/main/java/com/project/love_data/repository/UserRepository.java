@@ -43,6 +43,14 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	@Query(value = "select user_email from User where user_phone = :phonenumber", nativeQuery = true)
 	Optional<List<String>> findId(String phonenumber);
 
+	@Query(value = "select * from User u where user_email = :email", nativeQuery = true)
+	User findEmail(String email);
+
+	@Query(value = "select * from User u where user_pw = :pw", nativeQuery = true)
+	User findPw2(String pw);
+
+	@Query(value = "select * from User u where user_no = :no", nativeQuery = true)
+	User find_user_no(String no);
 //	@Modifying
 //	@Transactional
 //	@Query(value = "DELETE  FROM User_role_set r WHERE r.user_user_no = :user_no", nativeQuery = true)

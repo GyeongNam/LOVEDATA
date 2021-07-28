@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.Principal;
 import java.time.LocalDateTime;
@@ -32,11 +33,11 @@ import java.util.Map;
 @Controller
 public class UserController {
 	@Autowired
-    private UserRepository userRepository;
+	private UserRepository userRepository;
 	@Autowired
 	private CalenderRepository calenderRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	@Autowired
 	private SmsService smsService;
 	@Autowired
@@ -46,22 +47,22 @@ public class UserController {
 	@Autowired
 	CalenderService calenderService;
 
-    @RequestMapping(value="/signup_add",method = RequestMethod.POST)
-    public String signup(
-	    		@RequestParam(value = "str_email01")String email1,
-	    		@RequestParam(value = "str_email02")String email2,
-				@RequestParam(value = "userPwd")String pwd,
-	    		@RequestParam(value = "nickname")String nickname,
-				@RequestParam(value = "userName")String userName,
-				@RequestParam(value = "str_phone01")String phone01,
-				@RequestParam(value = "str_phone02")String phone02,
-				@RequestParam(value = "str_phone03")String phone03,
-				@RequestParam(value = "birthday")String birthday,
-				@RequestParam(value = "gender")boolean gender,
-				@RequestParam(value = "recv_email")boolean recv_email,
-				@RequestParam(value = "social") boolean social,
-				@RequestParam(value = "social_info") String social_info
-    		) {
+	@RequestMapping(value = "/signup_add", method = RequestMethod.POST)
+	public String signup(
+			@RequestParam(value = "str_email01") String email1,
+			@RequestParam(value = "str_email02") String email2,
+			@RequestParam(value = "userPwd") String pwd,
+			@RequestParam(value = "nickname") String nickname,
+			@RequestParam(value = "userName") String userName,
+			@RequestParam(value = "str_phone01") String phone01,
+			@RequestParam(value = "str_phone02") String phone02,
+			@RequestParam(value = "str_phone03") String phone03,
+			@RequestParam(value = "birthday") String birthday,
+			@RequestParam(value = "gender") boolean gender,
+			@RequestParam(value = "recv_email") boolean recv_email,
+			@RequestParam(value = "social") boolean social,
+			@RequestParam(value = "social_info") String social_info
+	) {
 
 		User user = User.builder()
 				.user_email(email1 + "@" + email2)
@@ -77,53 +78,51 @@ public class UserController {
 				.build();
 		user.addUserRole(UserRole.USER);
 
-    	userRepository.save(user);
+		userRepository.save(user);
 
-    	return "redirect:/";
-    }
-
-    @ResponseBody
-    @RequestMapping(value="/email_check",method = RequestMethod.POST)
-    public Map<String,String> email_check(@RequestBody HashMap<String, String> data){
-
-    	log.info("email ajax : " + data.get("mail"));
-    	Map<String, String> map = new HashMap<String, String>();
-    	String a = userRepository.email_check(data.get("mail"));
-
-      	if(a == null || a.length() == 0) {
-      		map.put("msg","1");
-      	}
-      	else {
-      		map.put("msg","0");
-      	}
-      	return map;
-    }
+		return "redirect:/";
+	}
 
 	@ResponseBody
-    @RequestMapping(value="/nick_check",method = RequestMethod.POST)
-    public Map<String,String> nick_check(@RequestBody HashMap<String, String> data){
+	@RequestMapping(value = "/email_check", method = RequestMethod.POST)
+	public Map<String, String> email_check(@RequestBody HashMap<String, String> data) {
 
-    	Map<String, String> map = new HashMap<String, String>();
-    	String a = userRepository.nick_check(data.get("nickname"));
+		log.info("email ajax : " + data.get("mail"));
+		Map<String, String> map = new HashMap<String, String>();
+		String a = userRepository.email_check(data.get("mail"));
 
-      	if(a == null || a.length() == 0) {
-      		map.put("msg","1");
-      	}
-      	else {
-      		map.put("msg","0");
-      	}
-      	return map;
-    }
+		if (a == null || a.length() == 0) {
+			map.put("msg", "1");
+		} else {
+			map.put("msg", "0");
+		}
+		return map;
+	}
 
 	@ResponseBody
-	@RequestMapping(value="/sendsms",method = RequestMethod.POST)
-	public Map<String,String> sendsms(@RequestBody HashMap<String, String> data){
+	@RequestMapping(value = "/nick_check", method = RequestMethod.POST)
+	public Map<String, String> nick_check(@RequestBody HashMap<String, String> data) {
+
+		Map<String, String> map = new HashMap<String, String>();
+		String a = userRepository.nick_check(data.get("nickname"));
+
+		if (a == null || a.length() == 0) {
+			map.put("msg", "1");
+		} else {
+			map.put("msg", "0");
+		}
+		return map;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/sendsms", method = RequestMethod.POST)
+	public Map<String, String> sendsms(@RequestBody HashMap<String, String> data) {
 		Map<String, String> map = new HashMap<String, String>();
 		String num = smsService.RandomNum();
-		log.info("phone:"+data.get("phones"));
-		log.info("num:"+num);
-		map.put("msg","성공");
-		map.put("num",num);
+		log.info("phone:" + data.get("phones"));
+		log.info("num:" + num);
+		map.put("msg", "성공");
+		map.put("num", num);
 //		smsService.sendSMS(data.get("phones"), num);
 		return map;
 	}
@@ -144,50 +143,52 @@ public class UserController {
 
 	@PostMapping(value = "/user/deleteAccount/process")
 	public String deleteAccount(HttpServletRequest request,
-			Principal principal) {
+								Principal principal) {
 		String redirectURL = "redirect:/";
 
-		redirectURL = accountDelete.execute(request,  principal, userRepository);
+		redirectURL = accountDelete.execute(request, principal, userRepository);
 		return redirectURL;
 	}
+
 	//CHOI
 	@GetMapping(value = "/mypage")
 	public String myinfo(Principal principal, Model model) {
-		if(principal==null){
+		if (principal == null) {
 			return "redirect:/login";
-		}
-		else{
+		} else {
 			UserDTO userDTO = userService.DTOselect(principal.getName());
 			model.addAttribute("UserDTO", userDTO);
 //		log.info("data : "+ request);
 //		log.info("data2 : "+ principal);
 //		log.info("DTOLOG : "+ userDTO);
-			return  "user/mypage";
+			return "user/mypage";
 		}
 	}
+
 	// 캘린더
-	@GetMapping(value="/service/calender")
-	public String calender(Principal principal){
-		if(principal==null){
+	@GetMapping(value = "/service/calender")
+	public String calender(Principal principal) {
+		if (principal == null) {
 			return "redirect:/login";
 		}
 		return "service/service_calender";
 	}
+
 	// 페이지 업로드
 	@ResponseBody
 	@PostMapping(value = "/user/cal_all")
-	public Map<String,Calender> cal_all(HttpServletRequest request, HttpServletResponse response, Principal principal) {
+	public Map<String, Calender> cal_all(HttpServletRequest request, HttpServletResponse response, Principal principal) {
 		Map<String, Calender> map = new HashMap<String, Calender>();
-    	if(principal==null){
-		}
-    	else {
+		if (principal == null) {
+		} else {
 			List<Calender> caldata = calenderService.Cal_select(principal.getName());
-			for (int i=0; i<caldata.size(); i++){
-				map.put("evt"+i, caldata.get(i));
+			for (int i = 0; i < caldata.size(); i++) {
+				map.put("evt" + i, caldata.get(i));
 			}
 		}
 		return map;
 	}
+
 	// 추가
 	@ResponseBody
 	@PostMapping(value = "/user/cal_add")
@@ -207,8 +208,9 @@ public class UserController {
 
 		calenderRepository.save(calender);
 
-		return  "1";
+		return "1";
 	}
+
 	@ResponseBody
 	@PostMapping(value = "/user/cal_update")
 	public String cal_update(@RequestBody HashMap<String, String> data, Principal principal) {
@@ -225,8 +227,9 @@ public class UserController {
 
 		calenderService.update(calender);
 
-		return  "1";
+		return "1";
 	}
+
 	@ResponseBody
 	@PostMapping(value = "/user/cal_delete")
 	public String cal_delete(@RequestBody HashMap<String, String> data, Principal principal) {
@@ -234,7 +237,7 @@ public class UserController {
 		Calender calender = calenderService.cal_select_no(data.get("_id"));
 		calender.setCal_Activation(false);
 		calenderService.update(calender);
-		return  "1";
+		return "1";
 	}
 
 	@ResponseBody
@@ -246,9 +249,10 @@ public class UserController {
 		calender.setEnd(data.get("end"));
 		calenderService.update(calender);
 
-		return  "1";
+		return "1";
 	}
 
+	//CHOI
 	@ResponseBody
 	@PostMapping(value = "/idfind")
 	public Map<String, String> idfind(@RequestBody HashMap<String, String> data) {
@@ -257,9 +261,65 @@ public class UserController {
 		log.info("fkalfhalfksfkls" + data.get("phones"));
 		List<String> idid = userService.findUserId(data.get("phones"));
 		log.info(idid);
-		for( int i = 0; i < idid.size(); i++){
-			map.put(i + "i" ,idid.get(i));
+		for (int i = 0; i < idid.size(); i++) {
+			map.put(i + "i", idid.get(i));
 		}
-		return  map;
+		return map;
+	}
+	//CHOI
+	@GetMapping(value = "/NewPassword/{ranadd}")
+	public String NeuPw(@PathVariable("ranadd") String ranadd, Model model, HttpServletResponse response) throws Exception {
+		User user = userService.findPw(ranadd);
+		if (user == null) {
+			ScriptUtils scriptUtils = new ScriptUtils();
+			scriptUtils.alertAndMovePage(response, "잘못된 접근입니다. 홈 화면으로 이동합니다.", "/");
+
+			return "/";
+		}
+		else {
+			model.addAttribute("User", user);
+			return "/user/NewPassword";
+		}
+	}
+
+	@PostMapping(value = "/passwordsave")
+	public String Newpwsave(HttpServletRequest request){
+		User user = userService.savenewpw( request.getParameter("user_no"));
+		user.setUser_pw(passwordEncoder.encode(request.getParameter("npk")));
+		userService.update(user);
+
+		return "/user/loginPage";
+	}
+
+
+	//alert 창 설정 class
+	public class ScriptUtils {
+
+		public void init(HttpServletResponse response) {
+			response.setContentType("text/html; charset=euc-kr");
+			response.setCharacterEncoding("euc-kr");
+		}
+
+		public void alert(HttpServletResponse response, String alertText) throws IOException {
+			init(response);
+			PrintWriter out = response.getWriter();
+			out.println("<script>alert('" + alertText + "');</script> ");
+			out.flush();
+		}
+
+		public void alertAndMovePage(HttpServletResponse response, String alertText, String nextPage)
+				throws IOException {
+			init(response);
+			PrintWriter out = response.getWriter();
+			out.println("<script>alert('" + alertText + "'); location.href='" + nextPage + "';</script> ");
+			out.flush();
+		}
+
+		public void alertAndBackPage(HttpServletResponse response, String alertText) throws IOException {
+			init(response);
+			PrintWriter out = response.getWriter();
+			out.println("<script>alert('" + alertText + "'); history.go(-1);</script>");
+			out.flush();
+		}
 	}
 }

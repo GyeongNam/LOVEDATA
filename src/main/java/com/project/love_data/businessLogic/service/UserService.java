@@ -119,6 +119,16 @@ public class UserService {
 
         return item.orElse(new ArrayList<>());
     }
+    public  User findPw(String pw) {
+        User item = userRepository.findPw2(pw);
+
+        return item;
+    }
+    public User savenewpw(String user_no){
+        User item = userRepository.find_user_no(user_no);
+
+        return item;
+    }
 //    public LocationDTO LocDTO(Long loc_no) {
 //        Optional<Location> item = LocationRepository.findByAllUser_no(loc_no);
 //

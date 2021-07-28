@@ -1,6 +1,8 @@
 package com.project.love_data.controller;
 
 import com.project.love_data.businessLogic.MailService;
+import com.project.love_data.businessLogic.service.UserService;
+import com.project.love_data.model.user.User;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +20,9 @@ public class MailController {
 
     @Autowired
     private final MailService mailService;
+
+    @Autowired
+    UserService userService;
 
     @Autowired
     private com.project.love_data.repository.UserRepository userRepository;
@@ -49,7 +54,14 @@ public class MailController {
             return map;
         }
         else{
-            mailService.mailSend(mail);
+            String RandomAddress = mailService.getRandomStr(20);
+
+            User user = userRepository.findEmail(mail);
+            user.setUser_pw(RandomAddress);
+            userService.update(user);
+
+
+            mailService.mailSend(mail, RandomAddress);
             map.put("msg" , "1");
             return map;
         }
