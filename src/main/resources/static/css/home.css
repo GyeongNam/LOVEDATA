@@ -19,9 +19,9 @@ html{
 /*메인 배너*/
 /* Slideshow container */
 .slideshow-container {
-	max-width: 1000px;
+	max-width: 1200px;
 	position: relative;
-	margin: 0px 40px 0px 40px;
+	margin: auto;
 }
 
 /* Next & previous buttons */
@@ -127,3 +127,8 @@ html{
 .Slides-content{
 	height: 32rem;
 }
+#img-content{
+	height:510px;
+}
+
+/* fullpage scroll */

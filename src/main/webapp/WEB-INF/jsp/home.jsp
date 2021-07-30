@@ -9,33 +9,16 @@
 	<link href="/css/home.css" rel="stylesheet">
 	<title>Home</title>
 </head>
+<script src="https://www.jsdelivr.com/package/npm/fullpage.js?version=2.9.4"></script>
 <%@ include file="layout/header.jsp" %>
 <body>
-<div id="fullpage">
-	<div class='quick'><ul></ul></div>
-	<div class="fullsection full1" pageNum="1">
-	<span>1 PAGE</span>
-</div>
-	<div class="fullsection full2" pageNum="2">
-	<span>2 PAGE</span>
-</div>
-	<div class="fullsection full3" pageNum="3">
-	<span>3 PAGE</span>
-</div>
-	<div class="fullsection full4" pageNum="4">
-	<span>4 PAGE</span>
-</div>
-	<div class="fullsection full5" pageNum="5">
-	<span>5 PAGE</span>
-</div>
-</div>
 <div class="container">
 	<div class="flex-container">
 		<div class="main-content">
 			<div class="slideshow-container">
 				<div class="mySlides fade">
 					<div class="Slides-content">
-						<div>
+						<div id="img-content">
 							<img class="banner-img" src="/image/icon/home/datapg1.png">
 						</div>
 <%--						<div>--%>
@@ -53,11 +36,19 @@
 				</div>
 
 				<div class="mySlides fade">
-					<img class="banner-img" src="/image/icon/home/datapg2.png">
+					<div class="Slides-content">
+						<div id="img-content">
+							<img class="banner-img" src="/image/icon/home/datapg2.png">
+						</div>
+					</div>
 				</div>
 
 				<div class="mySlides fade">
-					<img class="banner-img" src="/image/icon/home/datepg3.jpg">
+					<div class="Slides-content">
+						<div id="img-content">
+							<img class="banner-img" src="/image/icon/home/datepg3.jpg">
+						</div>
+					</div>
 				</div>
 				<div>
 					<a class="prev" onclick="plusSlides(-1)"><img src="/image/icon/home/slide_btn_prev.png"></a>
@@ -116,12 +107,12 @@
 			<sec:authorize access="!isAuthenticated()">
 				<form action="/login" method="get">
 						<%--					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />--%>
-					<button type="submit">LOGIN</button>
+<%--					<button type="submit">LOGIN</button>--%>
 				</form>
 			</sec:authorize>
 		</div>
 		<div class="class1">
-			<a href="/find_id">회원정보 찾기 수정</a>
+<%--			<a href="/find_id">회원정보 찾기 수정</a>--%>
 			<a href="/user/deleteAccount">(임시)회원탈퇴</a>
 			<br><br>
 			<%--			<a href="/bootstrap">부트스트랩 테스트</a>--%>
@@ -129,7 +120,7 @@
 			<a href="/service/loc_recommend">장소 추천</a>
 			<a href="/service/loc_detail/ex">장소 보기 예시</a>
 			<a href="/service/cor_index">코스 인덱스</a>
-			<a href="/NewPassword">패스워드 재설정 미리보기</a>
+			<a href="/fullpage">fullpage테스트</a>
 <%--			<a href="/sample/index">테스트</a>--%>
 <%--			<a href="/service/loc_index">장소_인덱스</a>--%>
 				<a href="/Notice">공지사항</a>
