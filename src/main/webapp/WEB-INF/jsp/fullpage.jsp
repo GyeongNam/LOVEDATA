@@ -13,59 +13,106 @@
 
 <%@ include file="layout/header.jsp" %>
 <body>
-<h1><img src="logo.png" alt=""></h1>
-<nav>
-    <ul>
-        <li><a href="#sect1" class="on">clova Friends</a> </li>
-        <li> <a href="#sect2">clova Friends mini</a></li>
-        <li> <a href="#sect3">MINIONS edition</a></li>
-        <li><a href="#sect4">Doraemon edition</a> </li>
-    </ul>
+<div id="fullpage">
+    <div class='quick'>
+        <ul style="list-style: none"></ul>
+    </div>
+    <div class="fullsection full1" pageNum="1">
+        <div class="container">
+            <div class="flex-container">
+                <div class="main-content">
+                    <div class="slideshow-container">
+                        <div class="mySlides fade">
+                            <div class="Slides-content">
+                                <div id="img-content">
+                                    <img class="banner-img" src="/image/icon/home/datapg1.png">
+                                    <div class="banner-content">
+                                        <div>
+                                            <p>LOVEDAT를 <br> 만나보세요!</p>
+                                        </div>
+                                        <hr class="hr-line">
+                                        <div>
+                                            <ul class="ul-style">
+                                                <li>데이트코스를 직접 설정하고 공유해보세요!</li>
+                                                <li>다른 사람이 설정한 데이트 코스를 체험하고 리뷰를 남겨주세요!</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mySlides fade">
+                            <div class="Slides-content">
+                                <div id="img-content">
+                                    <img class="banner-img" src="/image/icon/home/datapg2.png">
+                                    <div class="banner-content">
+                                        <div>
+                                            <p>LOVEDAT를 <br> 만나보세요!</p>
+                                        </div>
+                                        <hr class="hr-line">
+                                        <div>
+                                            <ul class="ul-style">
+                                                <li>데이트코스를 직접 설정하고 공유해보세요!</li>
+                                                <li>다른 사람이 설정한 데이트 코스를 체험하고 리뷰를 남겨주세요!</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mySlides fade">
+                            <div class="Slides-content">
+                                <div id="img-content">
+                                    <img class="banner-img" src="/image/icon/home/datepg3.jpg">
+                                    <div class="banner-content">
+                                        <div>
+                                            <p>LOVEDAT를 <br> 만나보세요!</p>
+                                        </div>
+                                        <hr class="hr-line">
+                                        <div>
+                                            <ul class="ul-style">
+                                                <li>데이트코스를 직접 설정하고 공유해보세요!</li>
+                                                <li>다른 사람이 설정한 데이트 코스를 체험하고 리뷰를 남겨주세요!</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <a class="prev" onclick="plusSlides(-1)"><img src="/image/icon/home/slide_btn_prev.png"></a>
+                            <a class="next" onclick="plusSlides(1)"><img src="/image/icon/home/slide_btn_next.png"></a>
+                        </div>
 
 
-</nav>
-<div class="wrap">
-    <section id="sect1">
-        <article class="black">
-            <p>원하는 프렌즈를 선택해보세요</p>
-            <h2>Clova Friends</h2>
-            <ul class="friends">
-                <li><img src="img/article1-1.png" alt=""><img src="article1-2.png" alt=""></li>
-                <li><img src="img/article2-1.png" alt=""><img src="article2-2.png" alt=""></li>
-                <li><img src="img/article1-5.png" alt=""><img src="article1-6.png" alt=""></li>
-                <li><img src="img/article1-7.png" alt=""></li>
-        </article>
-    </section>
-
-    <section id="sect2">
-        <article class="black">
-            <p>원하는 명령어를 선택하고, 프렌즈 미니의 답볍을 들어보세요</p>
-            <h2>ClovaFriends mini</h2>
-            <img src="img/article2-1.png" alt=""><img src="img/article2-2.png" alt="">
-        </article>
-    </section>
-    <section id="sect3">
-        <article class="white">
-            <p>원하는 명령어를 선택하고, 미니언즈의 답변을 들어보세요.</p>
-            <h2>MINIONS edition</h2>
-            <img src="img/article3-1.png" alt="">
-        </article>
-    </section>
-    <section id="sect4">
-        <article class="white">
-            <p>원하는 명령어를 선택하고, 도라에몽의 답변을 들어보세요.</p>
-            <h2>Doraemon edition</h2>
-            <img src="img/article4-1.png" alt="">
-        </article>
-    </section>
-
+                        <div class="slider-dot">
+                            <span class="dot" onclick="currentSlide(1)"></span>
+                            <span class="dot" onclick="currentSlide(2)"></span>
+                            <span class="dot" onclick="currentSlide(3)"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="fullsection full2" pageNum="2">
+    </div>
+    <div class="fullsection full3" pageNum="3">
+    </div>
+    <div class="fullsection full4" pageNum="4">
+    </div>
+    <div class="fullsection full5" pageNum="5">
+    </div>
 </div>
 
-<h3>0</h3>
 </body>
 <%--<%@ include file="layout/footer.jsp" %>--%>
 <!--  부트스트랩 js 사용 -->
+
 <script defer src="/js/main-fullpage.js"></script>
-<script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script defer type="text/javascript" src="/resource/js/bootstrap.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+
 </html>
