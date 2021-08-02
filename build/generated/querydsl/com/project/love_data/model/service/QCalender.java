@@ -34,8 +34,6 @@ public class QCalender extends EntityPathBase<Calender> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modDate = _super.modDate;
 
-    public final StringPath place = createString("place");
-
     //inherited
     public final DateTimePath<java.time.LocalDateTime> regDate = _super.regDate;
 

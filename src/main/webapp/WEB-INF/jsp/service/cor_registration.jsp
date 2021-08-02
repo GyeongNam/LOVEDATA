@@ -109,10 +109,11 @@
 							<div class="col-lg me-2" id="est_time_select">
 								<div class="row">
 									<span class="details m-0 p-0">예상 소요시간</span>
-<%--									<input type="text" id="est_time" name="est_time" placeholder="10분"--%>
+<%--									<input type="text" id="est_time_sel" name="est_time_sel" placeholder="10분"--%>
 <%--										   style="width: auto" required>--%>
-									<select id="est_time" class="form-select" aria-label="Default select example" onchange="onSelectChangeValue(this)">
-										<option value="30분" selected>30분</option>
+									<select id="est_time_sel" class="form-select" aria-label="Default select example" onchange="onSelectChangeValue(this)">
+										<option value="null" selected>시간을 선택해주세요</option>
+										<option value="30분">30분</option>
 										<option value="1시간">1시간</option>
 										<option value="1시간 30분">1시간 30분</option>
 										<option value="2시간">2시간</option>
@@ -142,8 +143,9 @@
 							<div class="col-lg mx-2 visually-hidden" id="est_date_select">
 								<div class="row">
 									<span class="details m-0 p-0">예상 소요일</span>
-									<select id="est_date" class="form-select" aria-label="Default select example" onchange="onSelectChangeValue(this)">
-										<option value="1박 2일" selected>1박 2일</option>
+									<select id="est_date_sel" class="form-select" aria-label="Default select example" onchange="onSelectChangeValue(this)">
+										<option value="null" selected>날짜를 선택해주세요</option>
+										<option value="1박 2일">1박 2일</option>
 										<option value="2박 3일">2박 3일</option>
 										<option value="3박 4일">3박 4일</option>
 										<option value="4박 5일">4박 5일</option>
@@ -162,7 +164,14 @@
 								</div>
 							</div>
 						</div>
-						<input type="text" id="est_value" name="est_value">
+					</div>
+					<div class="input-box visually-hidden">
+						<span class="details">예상 시간 타입(컨트롤러 전달)</span>
+						<input type="text" id="est_type" name="est_type" placeholder="Enter est type value" value="time" required>
+					</div>
+					<div class="input-box visually-hidden">
+						<span class="details">예상 시간 값(컨트롤러 전달)</span>
+						<input type="text" id="est_value" name="est_value" placeholder="Enter est time value" value="null" required>
 					</div>
 					<div class="input-box">
 						<span class="details">예상 비용</span>
@@ -640,11 +649,30 @@
         toggleAddDelBtn(input.files.length);
     }
 
+    function nullInputCheck() {
+        let name = document.getElementById("name").value;
+        let est_type = document.getElementById("est_type").value;
+        let est_value = document.getElementById("est_value").value;
+        let trans = document.getElementById("transportation").value;
+		let cost = document.getElementById("cost").value;
+
+		if (name == "" || est_type == "" || est_value == "" || trans == "" || cost == "") {
+		    return false;
+		} else {
+		    return true;
+		}
+	}
+
     function onClickRegister() {
         console.log("submit butten clicked");
         var $fileUpload = $("input[type='file']");
         var loginCheck = null;
-        var debugCheck = {"debug": true}
+        var debugCheck = {"debug": false}
+
+		if (!nullInputCheck()) {
+		    alert("채우지 않은 항목이 있습니다.");
+		    return;
+		}
 
         $.ajax({
             type: "POST",
@@ -659,6 +687,11 @@
                 // do something ...
                 console.log("Login Check Success");
                 console.log("is login : " + response);
+
+                if (tagList.length < 3) {
+                    alert("해시태그는 최소 3개 이상 추가해야합니다.");
+                    return
+				}
 
                 if (response) {
                     if (parseInt($fileUpload.get(0).files.length) < 3) {
@@ -952,23 +985,33 @@
 
         value.value = e.value;
         value.innerText = e.value;
-
-        console.log(value);
 	}
 
     function toggleAccommodationCheck() {
         let accommodations = document.getElementById("accom_input");
-        let est_time = document.getElementById("est_time_select");
-        let est_date = document.getElementById("est_date_select");
+        let est_time_sel = document.getElementById("est_time_select");
+        let est_date_sel = document.getElementById("est_date_select");
+        let est_time = document.getElementById("est_time_sel");
+        let est_date = document.getElementById("est_date_sel");
+        let est_value = document.getElementById("est_value");
+        let est_type = document.getElementById("est_type");
 
         if (accommodations.getAttribute("class") === "input-box visually-hidden"){
             accommodations.setAttribute("class", "input-box visual");
-            est_date.setAttribute("class", "col-lg me-2 visual");
-            est_time.setAttribute("class", "col-lg me-2 visually-hidden");
+            est_date_sel.setAttribute("class", "col-lg me-2 visual");
+            est_time_sel.setAttribute("class", "col-lg me-2 visually-hidden");
+            est_type.innerText = "date"
+			est_type.value = "date";
+            est_value.innerText = est_date.options[est_date.selectedIndex].text;
+            est_value.value = est_date.options[est_date.selectedIndex].value;
         } else {
             accommodations.setAttribute("class", "input-box visually-hidden");
-            est_time.setAttribute("class", "col-lg me-2 visual");
-            est_date.setAttribute("class", "col-lg mx-2 visually-hidden");
+            est_time_sel.setAttribute("class", "col-lg me-2 visual");
+            est_date_sel.setAttribute("class", "col-lg mx-2 visually-hidden");
+            est_type.innerText = "time"
+            est_type.value = "time";
+            est_value.innerText = est_time.options[est_time.selectedIndex].text;
+            est_value.value = est_time.options[est_time.selectedIndex].value;
 		}
 	}
 </script>

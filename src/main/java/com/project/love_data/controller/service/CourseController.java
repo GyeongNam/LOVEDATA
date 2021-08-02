@@ -74,6 +74,11 @@ public class CourseController {
         reqParam.put("transportation", request.getParameter("transportation"));
         reqParam.put("cost", request.getParameter("cost"));
         reqParam.put("info", request.getParameter("info"));
+        reqParam.put("est_value", request.getParameter("est_value"));
+        reqParam.put("est_type", request.getParameter("est_type"));
+        if (reqParam.get("est_type").equals("date")) {
+            reqParam.put("accommodations", request.getParameter("accommodations"));
+        }
 //        // Todo Debug 목적용 코드 나중에 삭제할 것
         if (request.getParameter("user_no") != null) {
             reqParam.put("user_no", (request.getParameter("user_no")));
@@ -84,10 +89,18 @@ public class CourseController {
         if (tagList.isEmpty()) {
             log.warn("No Location Tag Found (Must add tag before submit location)");
             return "redirect:/service/cor_recommend";
+        } else {
+            log.info("tagList : " + tagList);
         }
 
-        for (String s : reqParam.keySet()) {
-            log.info(s + "\t:\t" + reqParam.get(s));
+//        for (String s : reqParam.keySet()) {
+//            log.info(s + "\t:\t" + reqParam.get(s));
+//        }
+
+        tagList = new ArrayList<>();
+
+        for (String s : request.getParameterMap().keySet()) {
+            log.info(s + "\t:\t" + Arrays.toString(request.getParameterMap().get(s)));
         }
 
         return "redirect:/service/cor_index";
