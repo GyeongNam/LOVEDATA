@@ -1,3 +1,6 @@
+<%@ page import="org.springframework.security.core.annotation.AuthenticationPrincipal" %>
+<%@ page import="org.springframework.security.core.Authentication" %>
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -15,10 +18,12 @@
 <div id="jb-container">
     <div id="jb-header">
         <h1>고객센터</h1>
+
+        ${Chapter1title}
+
     </div>
     <div id="jb-sidebar">
         <div class="tab">
-
             <button class="tablinks" onclick="MenuTab(event, 'Notice')" id="defaultOpen">공지사항</button>
             <button class="tablinks" onclick="MenuTab(event, 'Questions')">문의사항</button>
             <button class="tablinks" onclick="MenuTab(event, 'Policy')">LOVE DATA 정책</button>
@@ -55,55 +60,6 @@
                     <td></td>
                     <td>123</td>
                 </tr>
-                <tr>
-                    <td>1</td>
-                    <td>인생 맛집 투어</td>
-                    <td><span>2022-01-01</span></td>
-                    <td></td>
-                    <td>123</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>인생 맛집 투어</td>
-                    <td><span>2022-01-01</span></td>
-                    <td></td>
-                    <td>123</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>인생 맛집 투어</td>
-                    <td><span>2022-01-01</span></td>
-                    <td></td>
-                    <td>123</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>인생 맛집 투어</td>
-                    <td><span>2022-01-01</span></td>
-                    <td></td>
-                    <td>123</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>인생 맛집 투어</td>
-                    <td><span>2022-01-01</span></td>
-                    <td></td>
-                    <td>123</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>인생 맛집 투어</td>
-                    <td><span>2022-01-01</span></td>
-                    <td></td>
-                    <td>123</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>인생 맛집 투어</td>
-                    <td><span>2022-01-01</span></td>
-                    <td></td>
-                    <td>123</td>
-                </tr>
                 </tbody>
             </table>
             <div class="pagination">
@@ -128,13 +84,6 @@
                     <td>2021/05/24</td>
                     <td>접수중</td>
                 </tr>
-                <tr>
-                    <td>2</td>
-                    <td>코스 수정해주세요!</td>
-                    <td>조마*</td>
-                    <td>2021/05/11</td>
-                    <td>접수완료</td>
-                </tr>
                 </tbody>
             </table>
             <div class="pagination">
@@ -146,34 +95,86 @@
         <div id="Policy" class="tabcontent">
             <h3>LOVE DATA 정책</h3>
             <div class="Ptab">
-                <button class="Ptablinks" onclick="ServiceCenterTab(event, 'terms')"id="FirstTabOpen">이용약관</button>
-                <button class="Ptablinks" onclick="ServiceCenterTab(event, 'Privacy')">개인정보처리방침</button>
-                <button class="Ptablinks" onclick="ServiceCenterTab(event, 'SpamMail')">스팸메일정책</button>
-                <button class="Ptablinks" onclick="ServiceCenterTab(event, 'LegalNotice')">책임의 한계와 법적고지</button>
-                <button class="Ptablinks" onclick="ServiceCenterTab(event, 'Results')">검색결과수집에 대한 정책</button>
+                <button class="Ptablinks" onclick="ServiceCenterTab(event, 'Policy1')"id="FirstTabOpen">총직</button>
+                <button class="Ptablinks" onclick="ServiceCenterTab(event, 'Policy2')">개인정보처리방침</button>
+                <button class="Ptablinks" onclick="ServiceCenterTab(event, 'Policy3')">이용계약 당사자의 의무</button>
+                <button class="Ptablinks" onclick="ServiceCenterTab(event, 'Policy4')">서비스 이용 및 이용제한</button>
+                <button class="Ptablinks" onclick="ServiceCenterTab(event, 'Policy5')">청약철회, 과오납금의 환급 및 이용계약의 해지</button>
+                <button class="Ptablinks" onclick="ServiceCenterTab(event, 'Policy6')">손해배상 및 면책조항</button>
+
+            </div>
+            <div id="Policy1" class="Ptabcontent">
+                <h3>${Chapter1title}</h3>
+                <p>${Article1}</p>
+
+                <p>${Article2}</p>
+
+                <p>${Article3}</p>
+
+                <p>${Article4}</p>
+
+                <p>${Article5}</p>
+
+                <p>${Article6}</p>
+
+                <p>${Article7}</p>
             </div>
 
-            <div id="terms" class="Ptabcontent">
-                <h3>terms</h3>
-                <p>London is the capital city of England.</p>
+            <div id="Policy2" class="Ptabcontent">
+                <h3>${Chapter2title}</h3>
+                <p>${Article8}</p>
+
             </div>
 
-            <div id="Privacy" class="Ptabcontent">
-                <h3>Privacy</h3>
-                <p>Paris is the capital of France.</p>
-            </div>
+            <div id="Policy3" class="Ptabcontent">
+                <h3>${Chapter3title}</h3>
+                <p>${Article9}</p>
 
-            <div id="SpamMail" class="Ptabcontent">
-                <h3>SpamMail</h3>
-                <p>Tokyo is the capital of Japan.</p>
+                <p>${Article10}</p>
             </div>
-            <div id="LegalNotice" class="Ptabcontent">
-                <h3>LegalNotice</h3>
-                <p>Tokyo is the capital of Japan.</p>
+            <div id="Policy4" class="Ptabcontent">
+                <h3>${Chapter4title}</h3>
+                <p>${Article11}</p>
+
+                <p>${Article12}</p>
+
+                <p>${Article13}</p>
+
+                <p>${Article14}</p>
+
+                <p>${Article15}</p>
+
+                <p>${Article16}</p>
+
+                <p>${Article17}</p>
+
+                <p>${Article18}</p>
+
+                <p>${Article19}</p>
+
+                <p>${Article20}</p>
             </div>
-            <div id="Results" class="Ptabcontent">
-                <h3>Results</h3>
-                <p>Tokyo is the capital of Japan.</p>
+            <div id="Policy5" class="Ptabcontent">
+                <h3>${Chapter5title}</h3>
+                <p>${Article21}</p>
+
+                <p>${Article22}</p>
+
+                <p>${Article23}</p>
+
+                <p>${Article24}</p>
+            </div>
+            <div id="Policy6" class="Ptabcontent">
+                <h3>${Chapter6title}</h3>
+                <p>${Article25}</p>
+
+                <p>${Article26}</p>
+
+                <p>${Article27}</p>
+
+                <p>${Article28}</p>
+
+                <p>${Article29}</p>
             </div>
         </div>
         <div id="Withdrawal" class="tabcontent">
