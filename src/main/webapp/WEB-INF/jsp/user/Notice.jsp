@@ -192,6 +192,7 @@
         </div>
         <div id="Withdrawal" class="tabcontent">
             <h3>회원 탈퇴</h3>
+            <a href="/user/deleteAccount">(임시)회원탈퇴</a>
         </div>
     </div>
 </div>
