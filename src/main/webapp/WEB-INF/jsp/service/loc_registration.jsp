@@ -377,6 +377,11 @@
         var loginCheck = null;
         var debugCheck = {"debug": true}
 
+        if (tagList.length < 3) {
+            alert("해시태그는 최소 3개 이상 추가해야합니다.");
+            return
+        }
+
         $.ajax({
             type: "POST",
             url: "/rest/authenticationCheck",
@@ -411,6 +416,7 @@
 								alert("장소 등록 성공");
                             },
                             error: function (e) {
+                                alert("에러 발생\n페이지를 새로고침 해주세요")
                                 console.log("태그 등록 실패");
                             }
                         });

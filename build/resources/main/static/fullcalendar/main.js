@@ -99,12 +99,14 @@ var calendar = $('#calendar').fullCalendar({
    *  일정 받아옴
    * ************** */
   events: function (start, end, timezone, callback) {
+      var token = $("meta[name='_csrf']").attr("content");
+      var header = $("meta[name='_csrf_header']").attr("content");
+      $(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
+
     $.ajax({
       type: "post",
       url: "/user/cal_all",
       data: {
-          // start: start.unix(),
-          // end: end.unix()
       },
       success: function (response) {
           console.log(response);
@@ -112,22 +114,18 @@ var calendar = $('#calendar').fullCalendar({
           var events = [];
           $.each(arr, function(index, item){
               events.push({
-                  // title:"item.title",
-                  // start: "2021-07-19",
-                  // end: "2021-07-21"
                   _id: item.cal_no,
                   title: item.title,
                   start: item.start,
                   end: item.end,
                   text: item.text,
                   username: item.user_mail, // 로그인 정보
+                  road: item.road,
+                  road2: item.road2,
                   color: item.color,
                   allDay: item.all_day
               });
           });
-
-          // console.log(events);
-          //
           callback(events);
       }
     });
@@ -143,10 +141,9 @@ var calendar = $('#calendar').fullCalendar({
     /** 리사이즈시 수정된 날짜반영
      * 하루를 빼야 정상적으로 반영됨. */
     var newDates = calDateWhenResize(event);
-
     //리사이즈한 일정 업데이트
     $.ajax({
-      type: "get",
+      type: "",
       url: "",
       data: {
         //id: event._id,
@@ -179,18 +176,27 @@ var calendar = $('#calendar').fullCalendar({
     // 드랍시 수정된 날짜반영
     var newDates = calDateWhenDragnDrop(event);
 
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    $(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
+
+    var eventData = {
+        _id:event._id,
+        start:newDates.startDate,
+        end:newDates.endDate
+    }
+
     //드롭한 일정 업데이트
     $.ajax({
-      type: "get",
-      url: "",
-      data: {
-        //...
-      },
+        url: "/user/cal_update_d",
+        dataType: 'json',
+        contentType: "application/json; charset=UTF-8",
+        data: JSON.stringify(eventData),
+        type: "POST",
       success: function (response) {
         alert('수정: ' + newDates.startDate + ' ~ ' + newDates.endDate);
       }
     });
-
   },
 
   select: function (startDate, endDate, jsEvent, view) {
@@ -349,9 +355,7 @@ function calDateWhenDragnDrop(event) {
 
 
 var eventModal = $('#eventModal');
-
 var modalTitle = $('.modal-title');
-
 var editAllDay = $('#edit-allDay');
 var editTitle = $('#edit-title');
 var editStart = $('#edit-start');
@@ -373,7 +377,7 @@ var newEvent = function (start, end, eventType) {
     $("#contextMenu").hide(); //메뉴 숨김
 
     modalTitle.html('일정 추가');
-    editType.val(eventType).prop('selected', true);
+
     editTitle.val('');
     editStart.val(start);
     editEnd.val(end);
@@ -394,12 +398,12 @@ var newEvent = function (start, end, eventType) {
     $('#save-event').on('click', function () {
 
         var eventData = {
-            _id: eventId,
             title: editTitle.val(),
             start: editStart.val(),
             end: editEnd.val(),
             text: editDesc.val(),
-            username: '사나', // 로그인 정보
+            road: editadr.val(),
+            road2: editadr2.val(),
             color: editColor.val(),
             allDay: editAllDay.val()
         };
@@ -424,6 +428,7 @@ var newEvent = function (start, end, eventType) {
             realEndDay = moment(eventData.end).format('YYYY-MM-DD');
 
             eventData.allDay = true;
+            console.log(eventData);
         }
 
         // $("#calendar").fullCalendar('renderEvent', eventData, true);
@@ -434,17 +439,19 @@ var newEvent = function (start, end, eventType) {
         editAllDay.prop('checked', false);
         eventModal.modal('hide');
 
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        $(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
+
         //새로운 일정 저장
         $.ajax({
-            type: "get",
-            url: "",
-            data: {
-                //.....
-            },
+            url: "/user/cal_add",
+            dataType: 'json',
+            contentType: "application/json; charset=UTF-8",
+            data: JSON.stringify(eventData),
+            type: "POST",
             success: function (response) {
-                //DB연동시 중복이벤트 방지를 위한
-                //$('#calendar').fullCalendar('removeEvents');
-                //$('#calendar').fullCalendar('refetchEvents');
+
             }
         });
     });
@@ -477,9 +484,13 @@ var editEvent = function (event, element, view) {
     modalTitle.html('일정 수정');
     editTitle.val(event.title);
     editStart.val(event.start.format('YYYY-MM-DD HH:mm'));
-    editType.val(event.type);
-    editDesc.val(event.description);
-    editColor.val(event.backgroundColor).css('color', event.backgroundColor);
+    editDesc.val(event.text);
+    editColor.val(event.color).css('color', event.color);
+    editadr.val(event.road);
+    editadr2.val(event.road2);
+    console.log(event);
+    console.log(event.road.toString());
+    console.log(event.road2.toString());
 
     addBtnContainer.hide();
     modifyBtnContainer.show();
@@ -522,22 +533,38 @@ var editEvent = function (event, element, view) {
         event.title = editTitle.val();
         event.start = startDate;
         event.end = displayDate;
-        event.type = editType.val();
-        event.backgroundColor = editColor.val();
-        event.description = editDesc.val();
+        event.color = editColor.val();
+        event.text = editDesc.val();
+        event.road = editadr.val();
+        event.road2 = editadr2.val();
 
         // $("#calendar").fullCalendar('updateEvent', event);
         calendar.fullCalendar('updateEvent', event)
 
+        var eventdata = {
+            _id: event._id,
+            title: editTitle.val(),
+            start: startDate,
+            end: displayDate,
+            text: editDesc.val(),
+            road: editadr.val(),
+            road2: editadr2.val(),
+            color: editColor.val(),
+            allDay: statusAllDay
+        }
+        // ajax token
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        $(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
         //일정 업데이트
         $.ajax({
-            type: "get",
-            url: "",
-            data: {
-                //...
-            },
+            url: "/user/cal_update",
+            dataType: 'json',
+            contentType: "application/json; charset=UTF-8",
+            data: JSON.stringify(eventdata),
+            type: "POST",
             success: function (response) {
-                alert('수정되었습니다.')
+                console.log(response);
             }
         });
 
@@ -551,16 +578,22 @@ $('#deleteEvent').on('click', function () {
     // $("#calendar").fullCalendar('removeEvents', $(this).data('id'));
     calendar.fullCalendar('removeEvents', $(this).data('id'));
     eventModal.modal('hide');
-
+    var eventdata = {
+        _id: $(this).data('id')
+    };
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    $(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
     //삭제시
     $.ajax({
-        type: "get",
-        url: "",
-        data: {
-            //...
-        },
+        url: "/user/cal_delete",
+        dataType: 'json',
+        contentType: "application/json; charset=UTF-8",
+        data: JSON.stringify(eventdata),
+        type: "POST",
         success: function (response) {
             alert('삭제되었습니다.');
+            console.log(response);
         }
     });
 
