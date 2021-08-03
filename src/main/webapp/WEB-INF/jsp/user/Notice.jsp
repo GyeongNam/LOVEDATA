@@ -18,9 +18,6 @@
 <div id="jb-container">
     <div id="jb-header">
         <h1>고객센터</h1>
-
-        ${Chapter1title}
-
     </div>
     <div id="jb-sidebar">
         <div class="tab">
@@ -34,7 +31,7 @@
         <div id="Notice" class="tabcontent">
             <div class="table-head">
                 <div class="Notice-head">
-                    공지사항
+                    <h3>공지사항</h3>
                 </div>
                 <div class="Nsearch">
                     <select class="selitm">
@@ -45,7 +42,6 @@
                     <input type="text" class="Notice-search"><button>검색</button>
                 </div>
             </div>
-
             <table>
                 <thead>
                 <tr>
@@ -53,13 +49,15 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>인생 맛집 투어</td>
-                    <td><span>2022-01-01</span></td>
-                    <td></td>
-                    <td>123</td>
+                <c:forEach var="noti" items="${nots}">
+                <tr onclick=location.href='/Notice/Notice/${noti.noti_no}';>
+                    <td>${noti.noti_no}</td>
+                    <td>${noti.noti_title}</td>
+                    <td><span>${noti.noti_date}</span></td>
+                    <td>파일?</td>
+                    <td>${noti.noti_viewCount}</td>
                 </tr>
+                </c:forEach>
                 </tbody>
             </table>
             <div class="pagination">
@@ -77,13 +75,29 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>아니 코스가 잘못된거같아요..</td>
-                    <td>도루**</td>
-                    <td>2021/05/24</td>
-                    <td>접수중</td>
+                <c:forEach var="qu" items="${qu}">
+                <tr onclick=location.href='/Notice/Questions/${qu.qu_no}';>
+                    <td>${qu.qu_no}</td>
+                    <c:choose>
+                        <c:when test="${qu.qu_secret eq true}">
+                            <td>${qu.qu_title} [비밀글]</td>
+                        </c:when>
+                        <c:when test="${qu.qu_secret eq false}">
+                            <td>${qu.qu_title}</td>
+                        </c:when>
+                    </c:choose>
+                    <td>${qu.qu_user}</td>
+                    <td>${qu.qu_date}</td>
+                    <c:choose>
+                        <c:when test="${qu.qu_answer eq true}">
+                            <td>답변완료</td>
+                        </c:when>
+                        <c:otherwise>
+                            <td>답변중</td>
+                        </c:otherwise>
+                    </c:choose>
                 </tr>
+                </c:forEach>
                 </tbody>
             </table>
             <div class="pagination">
@@ -101,7 +115,6 @@
                 <button class="Ptablinks" onclick="ServiceCenterTab(event, 'Policy4')">서비스 이용 및 이용제한</button>
                 <button class="Ptablinks" onclick="ServiceCenterTab(event, 'Policy5')">청약철회, 과오납금의 환급 및 이용계약의 해지</button>
                 <button class="Ptablinks" onclick="ServiceCenterTab(event, 'Policy6')">손해배상 및 면책조항</button>
-
             </div>
             <div id="Policy1" class="Ptabcontent">
                 <h3>${Chapter1title}</h3>
@@ -187,4 +200,11 @@
 <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script defer type="text/javascript" src="/resource/js/bootstrap.js"></script>
 <script defer src="/js/notice.js"></script>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+    body {
+        font-family: 'Jua', sans-serif;
+    }
+</style>
 </html>

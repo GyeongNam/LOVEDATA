@@ -14,7 +14,6 @@ public class CalenderDTO {
     private Long cal_no;
     private String user_mail;
     private String title;
-    private String place;
     private String start;
     private String end;
     private String color;
