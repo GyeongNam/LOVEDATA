@@ -272,6 +272,7 @@
 }
 
 .d-flex {
+  padding-top: 100px;
   display: flex !important;
 }
 

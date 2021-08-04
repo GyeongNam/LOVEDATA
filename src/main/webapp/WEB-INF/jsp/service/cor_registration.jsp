@@ -30,7 +30,7 @@
 <%@ include file="../layout/header.jsp" %>
 <body>
 
-<div class="container-fluid d-flex">
+<div class="container-fluid d-flex" style="padding-top: 100px">
 	<div class="col-2" id="sidebar">
 		<ul class="nav nav-pills flex-column col-2 position-fixed" style="top: 40%">
 			<div class="accordion text-center" id="loc">
@@ -281,9 +281,9 @@
 						</div>
 						<div class="col d-flex justify-content-end">
 							<image type="button" id="loc_move_up" name="loc_move_up"
-								   src="/image/icon/up-arrow.png" onclick="" style="height: 30px; margin: 2px"></image>
+								   src="/image/icon/up-arrow.png" onclick="onClickLocationMoveUp()" style="height: 30px; margin: 2px"></image>
 							<image type="button" id="loc_move_down" name="loc_move_down"
-								   src="/image/icon/down-arrow.png" onclick=""
+								   src="/image/icon/down-arrow.png" onclick="onClickLocationMoveDown()"
 								   style="height: 30px; margin: 2px"></image>
 						</div>
 					</div>
@@ -327,7 +327,7 @@
 													 style="height: 244px; width: 100%; outline: none">
 												<div class="d-flex justify-content-end card-img-overlay pe-4 pt-5 col-4"
 													 style="align-items: flex-start">
-													<img class="btn btn-lg align-middle p-0" id="locDel_${i}" onclick=""
+													<img class="btn btn-lg align-middle p-0" id="locDel_${i}" onclick="onRemoveLocation(${i})"
 														 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png"
 														 style="z-index: 2">
 												</div>
@@ -383,6 +383,10 @@
 													</textarea>
 													</div>
 												</div>
+												<div class="visually-hidden">
+													<span id="loc_no_${i}"></span>
+													<span id="loc_id_${i}"></span>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -421,7 +425,7 @@
 													 style="height: 244px; width: 100%; outline: none">
 												<div class="d-flex justify-content-end card-img-overlay pe-4 pt-5 col-4"
 													 style="align-items: flex-start">
-													<img class="btn btn-lg align-middle p-0" id="locDel_${i}" onclick=""
+													<img class="btn btn-lg align-middle p-0" id="locDel_${i}" onclick="onRemoveLocation(${i})"
 														 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png"
 														 style="z-index: 2">
 												</div>
@@ -489,6 +493,7 @@
 						</c:forEach>
 					</div>
 				</div>
+				<span class="visually-hidden" id="location_length" name="location_length"></span>
 				<button type="button" id="register" name="register" onclick="onClickRegister()">Register</button>
 			</form>
 		</div>
@@ -522,9 +527,9 @@
         // document.getElementById("roadAddrPart1").value = roadAddrPart1;
         // document.getElementById("addrDetail").value = addrDetail;
         // document.getElementById("addrDetail").removeAttribute("disabled");
-        console.log("locNo : " + locNo);
-        console.log("locID : " + locID);
-        console.log("locName : " + locName);
+        // console.log("locNo : " + locNo);
+        // console.log("locID : " + locID);
+        // console.log("locName : " + locName);
 
         enableLocation(locNo, locID);
     }
@@ -853,6 +858,261 @@
         selectedLocationIndex = null;
     }
 
+    function onClickLocationMoveUp() {
+        if (selectedLocationIndex == null) {
+            alert('장소를 선택해주세요!');
+            return;
+		}
+
+        if (selectedLocationIndex == 1) {
+            return;
+		}
+
+        let selectedLocation_thumbnail = document.getElementById("loc_thumbnail_" + selectedLocationIndex);
+        let selectedLocation_name = document.getElementById("loc_name_" + selectedLocationIndex);
+        let selectedLocation_hashtag = document.getElementById("hashtag_" + selectedLocationIndex);
+        let selectedLocation_addr = document.getElementById("loc_addr_" + selectedLocationIndex);
+        let selectedLocation_tel = document.getElementById("loc_tel_" + selectedLocationIndex);
+        let selectedLocation_info = document.getElementById("loc_info_" + selectedLocationIndex);
+
+        let beforeLocation_thumbnail = document.getElementById("loc_thumbnail_" + (selectedLocationIndex-1));
+        let beforeLocation_name = document.getElementById("loc_name_" + (selectedLocationIndex-1));
+        let beforeLocation_hashtag = document.getElementById("hashtag_" + (selectedLocationIndex-1));
+        let beforeLocation_addr = document.getElementById("loc_addr_" + (selectedLocationIndex-1));
+        let beforeLocation_tel = document.getElementById("loc_tel_" + (selectedLocationIndex-1));
+        let beforeLocation_info = document.getElementById("loc_info_" + (selectedLocationIndex-1));
+
+        let temp_thumbnail;
+        let temp_name;
+        let temp_hashtag = document.createElement("button");
+        let temp_addr;
+        let temp_tel;
+        let temp_info;
+
+        temp_thumbnail = selectedLocation_thumbnail.src;
+        temp_name = selectedLocation_name.value;
+        temp_addr = selectedLocation_addr.value;
+        temp_tel = selectedLocation_tel.value;
+        temp_info = selectedLocation_info.value;
+
+        for (let i = 0; i < selectedLocation_hashtag.childElementCount; i++) {
+            let button = document.createElement("button");
+            button.setAttribute('class', 'btn btn-primary mx-1');
+            button.value = selectedLocation_hashtag.children.item(i).value;
+            button.innerText = selectedLocation_hashtag.children.item(i).innerText;
+            temp_hashtag.append(button);
+
+            selectedLocation_hashtag.removeChild(selectedLocation_hashtag.children.item(i));
+        }
+
+        selectedLocation_thumbnail.src = beforeLocation_thumbnail.src;
+        selectedLocation_name.value = beforeLocation_name.value;
+        selectedLocation_addr.value = beforeLocation_addr.value;
+        selectedLocation_tel.value = beforeLocation_tel.value;
+        selectedLocation_info.value = beforeLocation_info.value;
+
+        for (let i = 0; i < beforeLocation_hashtag.childElementCount; i++) {
+            let button = document.createElement("button");
+            button.setAttribute('class', 'btn btn-primary mx-1');
+            button.value = beforeLocation_hashtag.children.item(i).value;
+            button.innerText = beforeLocation_hashtag.children.item(i).innerText;
+            selectedLocation_hashtag.append(button);
+
+            beforeLocation_hashtag.removeChild(beforeLocation_hashtag.children.item(i));
+        }
+
+        beforeLocation_thumbnail.src = temp_thumbnail;
+        beforeLocation_name.value = temp_name;
+        beforeLocation_addr.value = temp_addr;
+        beforeLocation_tel.value = temp_tel;
+        beforeLocation_info.value = temp_info;
+
+        for (let i = 0; i < temp_hashtag.childElementCount; i++) {
+            let button = document.createElement("button");
+            button.setAttribute('class', 'btn btn-primary mx-1');
+            button.value = temp_hashtag.children.item(i).value;
+            button.innerText = temp_hashtag.children.item(i).innerText;
+            beforeLocation_hashtag.append(button);
+        }
+
+        onSelectLocation(selectedLocationIndex-1);
+	}
+
+    function onClickLocationMoveDown() {
+        if (selectedLocationIndex == null) {
+            alert('장소를 선택해주세요!');
+            return;
+        }
+
+        if (selectedLocationIndex == 10) {
+            return;
+        }
+
+        // 아직 해당 장소가 추가가 되지 않았으면
+        if (document.getElementById("loc_" + (selectedLocationIndex + 1)).getAttribute("class") === "card p-0 m-2 visually-hidden") {
+            return;
+        }
+
+        let selectedLocation_thumbnail = document.getElementById("loc_thumbnail_" + selectedLocationIndex);
+        let selectedLocation_name = document.getElementById("loc_name_" + selectedLocationIndex);
+        let selectedLocation_hashtag = document.getElementById("hashtag_" + selectedLocationIndex);
+        let selectedLocation_addr = document.getElementById("loc_addr_" + selectedLocationIndex);
+        let selectedLocation_tel = document.getElementById("loc_tel_" + selectedLocationIndex);
+        let selectedLocation_info = document.getElementById("loc_info_" + selectedLocationIndex);
+
+        let nextLocation_thumbnail = document.getElementById("loc_thumbnail_" + (selectedLocationIndex+1));
+        let nextLocation_name = document.getElementById("loc_name_" + (selectedLocationIndex+1));
+        let nextLocation_hashtag = document.getElementById("hashtag_" + (selectedLocationIndex+1));
+        let nextLocation_addr = document.getElementById("loc_addr_" + (selectedLocationIndex+1));
+        let nextLocation_tel = document.getElementById("loc_tel_" + (selectedLocationIndex+1));
+        let nextLocation_info = document.getElementById("loc_info_" + (selectedLocationIndex+1));
+
+        let temp_thumbnail;
+        let temp_name;
+        let temp_hashtag = document.createElement("button");
+        let temp_addr;
+        let temp_tel;
+        let temp_info;
+
+        temp_thumbnail = selectedLocation_thumbnail.src;
+        temp_name = selectedLocation_name.value;
+        temp_addr = selectedLocation_addr.value;
+        temp_tel = selectedLocation_tel.value;
+        temp_info = selectedLocation_info.value;
+
+        for (let i = 0; i < selectedLocation_hashtag.childElementCount; i++) {
+            let button = document.createElement("button");
+            button.setAttribute('class', 'btn btn-primary mx-1');
+            button.value = selectedLocation_hashtag.children.item(i).value;
+            button.innerText = selectedLocation_hashtag.children.item(i).innerText;
+            temp_hashtag.append(button);
+
+            selectedLocation_hashtag.removeChild(selectedLocation_hashtag.children.item(i));
+		}
+
+        selectedLocation_thumbnail.src = nextLocation_thumbnail.src;
+        selectedLocation_name.value = nextLocation_name.value;
+        selectedLocation_addr.value = nextLocation_addr.value;
+        selectedLocation_tel.value = nextLocation_tel.value;
+        selectedLocation_info.value = nextLocation_info.value;
+
+        for (let i = 0; i < nextLocation_hashtag.childElementCount; i++) {
+            let button = document.createElement("button");
+            button.setAttribute('class', 'btn btn-primary mx-1');
+            button.value = nextLocation_hashtag.children.item(i).value;
+            button.innerText = nextLocation_hashtag.children.item(i).innerText;
+            selectedLocation_hashtag.append(button);
+
+            nextLocation_hashtag.removeChild(nextLocation_hashtag.children.item(i));
+        }
+
+        nextLocation_thumbnail.src = temp_thumbnail;
+        nextLocation_name.value = temp_name;
+        nextLocation_addr.value = temp_addr;
+        nextLocation_tel.value = temp_tel;
+        nextLocation_info.value = temp_info;
+
+        for (let i = 0; i < temp_hashtag.childElementCount; i++) {
+            let button = document.createElement("button");
+            button.setAttribute('class', 'btn btn-primary mx-1');
+            button.value = temp_hashtag.children.item(i).value;
+            button.innerText = temp_hashtag.children.item(i).innerText;
+            nextLocation_hashtag.append(button);
+        }
+
+        onSelectLocation(selectedLocationIndex+1);
+    }
+
+    function onRemoveLocation(index) {
+        if (index != currentLocationLength) {
+            pullNextLocationInfo(index);
+            deleteLocationInfo(currentLocationLength);
+            disableVisualLocation(currentLocationLength);
+		} else {
+            deleteLocationInfo(index);
+            disableVisualLocation(index);
+		}
+
+        if (index === 1) {
+            onClearSelectLocation();
+		} else {
+            selectedLocationIndex -= 1;
+		}
+
+        currentLocationLength -= 1;
+        changeLocationLengthInfo(index-1);
+	}
+
+	function deleteLocationInfo(index) {
+        let loc_name = document.getElementById("loc_name_" + index);
+        let loc_no = document.getElementById("loc_no_" + index);
+        let loc_id = document.getElementById("loc_id_" + index);
+        let loc_addr = document.getElementById("loc_addr_" + index);
+        let loc_tel = document.getElementById("loc_tel_" + index);
+        let loc_info = document.getElementById("loc_info_" + index);
+        let loc_thumbnail = document.getElementById("loc_thumbnail_" + index);
+        let loc_tags = document.getElementById("hashtag_" + index);
+
+        loc_name.value = "";
+        loc_no.innerText = "";
+        loc_id.innerText = "";
+        loc_addr.value = "";
+        loc_tel.value = "";
+        loc_info.value = "";
+        loc_thumbnail.src = "/image/icon/480px-Solid_white.png";
+        while (loc_tags.hasChildNodes()) {
+            loc_tags.removeChild(loc_tags.lastChild);
+        }
+	}
+
+	function pullNextLocationInfo(index) {
+
+        for (let i = index; i < currentLocationLength; i++) {
+            if (index === 10) {
+                return;
+			}
+
+            let loc_name = document.getElementById("loc_name_" + i);
+            let loc_no = document.getElementById("loc_no_" + i);
+            let loc_id = document.getElementById("loc_id_" + i);
+            let loc_addr = document.getElementById("loc_addr_" + i);
+            let loc_tel = document.getElementById("loc_tel_" + i);
+            let loc_info = document.getElementById("loc_info_" + i);
+            let loc_thumbnail = document.getElementById("loc_thumbnail_" + i);
+            let loc_tags = document.getElementById("hashtag_" + i);
+
+            let loc_next_name = document.getElementById("loc_name_" + (i + 1));
+            let loc_next_no = document.getElementById("loc_no_" + (i + 1));
+            let loc_next_id = document.getElementById("loc_id_" + (i + 1));
+            let loc_next_addr = document.getElementById("loc_addr_" + (i + 1));
+            let loc_next_tel = document.getElementById("loc_tel_" + (i + 1));
+            let loc_next_info = document.getElementById("loc_info_" + (i + 1));
+            let loc_next_thumbnail = document.getElementById("loc_thumbnail_" + (i + 1));
+            let loc_next_tags = document.getElementById("hashtag_" + (i + 1));
+
+            loc_name.value = loc_next_name.value;
+            loc_no.innerText = loc_next_no.innerText;
+            loc_id.innerText = loc_next_id.innerText;
+            loc_id.value = loc_next_id.value;
+            loc_addr.value = loc_next_addr.value;
+            loc_tel.value = loc_next_tel.value;
+            loc_info.value = loc_next_info.value;
+            loc_thumbnail.src = loc_next_thumbnail.src;
+
+            while (loc_tags.hasChildNodes()) {
+                loc_tags.removeChild(loc_tags.lastChild);
+            }
+
+            for (let j = 0; j < loc_next_tags.childElementCount; j++) {
+                let button = document.createElement("button");
+                button.setAttribute('class', 'btn btn-primary mx-1');
+                button.value = loc_next_tags.children.item(j).value;
+                button.innerText = loc_next_tags.children.item(j).innerText;
+                loc_tags.append(button);
+            }
+		}
+	}
+
     function onSelectLocation(index) {
         if (selectedLocationIndex === index) {
             onClearSelectLocation();
@@ -892,9 +1152,14 @@
                     return false;
                 } else {
                     console.log("통신 성공!");
-                    // console.log(response);
                     locationMap = response;
                     // console.log(locationMap);
+
+					// TODO 디버깅 목적으로 잠시 주석처리
+					// if (isLocationDuplicated(currentLocationLength)) {
+					//     alert('장소가 중복되었습니다!');
+					//     return true;
+					// }
                     currentLocationLength += 1;
                     fillLocation(currentLocationLength);
                     return true;
@@ -907,15 +1172,37 @@
         });
     }
 
+    function isLocationDuplicated(index) {
+        for (let i = 1; i <= index; i++) {
+            let locNo = document.getElementById("loc_no_" + i);
+            let locID = document.getElementById("loc_id_" + i);
+
+            // console.log(locNo);
+            // console.log(locID);
+
+            if (locNo.innerText === locationMap["locNo"] || locID.innerText === locationMap["locID"]) {
+                return true;
+			}
+		}
+        return false;
+	}
+
     function fillLocation(index) {
         enableVisualLocation(index);
         enableNewLocationAddBtn(index + 1);
         inputLocationInfo(index);
+        changeLocationLengthInfo(index);
     }
+
+    function changeLocationLengthInfo(index) {
+        let location_length_info = document.getElementById("location_length");
+
+        location_length_info.innerText = index;
+	}
 
     function inputLocationInfo(index) {
         let loc_name = document.getElementById("loc_name_" + index);
-        let loc_no = document.getElementById("loc_id_" + index);
+        let loc_no = document.getElementById("loc_no_" + index);
         let loc_id = document.getElementById("loc_id_" + index);
         let loc_addr = document.getElementById("loc_addr_" + index);
         let loc_tel = document.getElementById("loc_tel_" + index);
@@ -929,8 +1216,8 @@
         console.log(locationMap["tags"]);
 
         loc_name.value = locationMap["locName"];
-        // loc_no.innerText = locationMap["locNo"];
-        // loc_id.innerText = locationMap["locID"];
+        loc_no.innerText = locationMap["locNo"];
+        loc_id.innerText = locationMap["locID"];
         loc_addr.value = locationMap["locAddr"];
         loc_tel.value = locationMap["locTel"];
         loc_info.value = locationMap["locInfo"];
@@ -972,12 +1259,14 @@
 
     function disableVisualLocation(index) {
         let loc_add = document.getElementById("loc_add_" + index);
+        let loc_add_next = document.getElementById("loc_add_" + (index + 1));
         let loc = document.getElementById("loc_" + index);
 
         console.log(index);
 
-        loc.setAttribute("style", "card p-0 m-2 visually-hidden");
-        loc_add.setAttribute("style", "card p-0 m-2");
+        loc.setAttribute("class", "card p-0 m-2 visually-hidden");
+        loc_add.setAttribute("class", "card p-0 m-2");
+        loc_add_next.setAttribute("class", "card p-0 m-2 visually-hidden");
     }
 
     function onSelectChangeValue(e) {

@@ -149,3 +149,4 @@ fabric.properties
 *.war
 build/resources/main/static/image/upload/
 src/main/resources/static/image/upload/
+build/*
