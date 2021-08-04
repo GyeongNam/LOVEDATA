@@ -1154,12 +1154,11 @@
                     console.log("통신 성공!");
                     locationMap = response;
                     // console.log(locationMap);
-
-					// TODO 디버깅 목적으로 잠시 주석처리
-					// if (isLocationDuplicated(currentLocationLength)) {
-					//     alert('장소가 중복되었습니다!');
-					//     return true;
-					// }
+					
+					if (isLocationDuplicated(currentLocationLength)) {
+					    alert('장소가 중복되었습니다!');
+					    return true;
+					}
                     currentLocationLength += 1;
                     fillLocation(currentLocationLength);
                     return true;
