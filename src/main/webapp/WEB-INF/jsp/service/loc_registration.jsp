@@ -61,7 +61,7 @@
 	<div class="container m-5" id="display_center" style="margin-right: 30px; margin-top: 30px">
 		<h1>장소 등록</h1>
 		<div class="container-fluid">
-			<form action="/service/cor_registration/regData" method="post" enctype="multipart/form-data">
+			<form action="/service/loc_registration/regData" method="post" enctype="multipart/form-data">
 				<div class="user-details basic-style">
 					<div class="row">
 						<div class="col" id="top_hashtag">
@@ -416,8 +416,7 @@
 								alert("장소 등록 성공");
                             },
                             error: function (e) {
-                                alert("에러 발생\n페이지를 새로고침 해주세요")
-                                console.log("태그 등록 실패");
+                                console.log(e);
                             }
                         });
                         formData.submit();

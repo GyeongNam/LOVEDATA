@@ -16,6 +16,7 @@ import java.util.*;
 @Table(name = "course")
 @Getter
 @Setter
+@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -38,8 +39,14 @@ public class Course extends TimeEntity {
     @Builder.Default
     private String cor_uuid = UUID.randomUUID().toString();
 
-    @Column(name = "est_time", nullable = false)
-    private String est_time;
+    @Column(name = "location_count", nullable = false)
+    private int location_count;
+
+    @Column(name = "est_type", nullable = false)
+    private String est_type;
+
+    @Column(name = "est_value", nullable = false)
+    private String est_value;
 
     @Column(name = "transportation", nullable = false)
     private String transportation;
@@ -56,13 +63,6 @@ public class Course extends TimeEntity {
     @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
     @Builder.Default
     private Set<String> tagSet = new HashSet<>();
-
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "cor_no")
-    @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
-    @Builder.Default
-    private Set<CourseImage> imgSet = new HashSet<>();
 
     @Column(name = "likecount", nullable = false, columnDefinition = "int default 0")
     @Builder.Default

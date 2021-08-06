@@ -91,7 +91,7 @@ public class FileUploadService {
             return result;
         }
 
-        if (!isDuplicated(file.getOriginalFilename())) {
+        if (isDuplicated(file.getOriginalFilename())) {
             log.info("파일이 이미 등록되어 있습니다.");
             log.info("fileName : " + file.getOriginalFilename());
             result.add(URIPath);
@@ -246,6 +246,11 @@ public class FileUploadService {
 
     private String getFileName(MultipartFile file, FileNamingType fileNamingType) {
         String originalFileName = file.getOriginalFilename();
+
+        if ("".equals(originalFileName)) {
+            return null;
+        }
+
         String fileName = originalFileName.substring(originalFileName.lastIndexOf("\\") + 1);
         String fileFormat = originalFileName.substring(originalFileName.lastIndexOf("."));
         String uuid = UUID.randomUUID().toString();
@@ -289,9 +294,9 @@ public class FileUploadService {
         CourseImage item2 = courseImageService.getImage(fileName);
 
         if (item == null && item2 == null) {
-            return true;
-        } else {
             return false;
+        } else {
+            return true;
         }
     }
 }

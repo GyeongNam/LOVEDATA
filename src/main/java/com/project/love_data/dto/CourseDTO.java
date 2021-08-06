@@ -20,7 +20,9 @@ public class CourseDTO {
     private Long cor_no;
     private String cor_name;
     private Long user_no;
-    private String est_time;
+    private int location_count;
+    private String est_type;
+    private String est_value;
     private String transportation;
     private String cost;
     private String info;
@@ -37,8 +39,6 @@ public class CourseDTO {
     private String thumbnail = "";
     @Builder.Default
     private boolean is_deleted = false;
-    @Builder.Default
-    private List<CourseImage> imgList = new ArrayList<>();
     @Builder.Default
     private LocalDateTime regDate = LocalDateTime.now();
     @Builder.Default

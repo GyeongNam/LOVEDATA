@@ -384,8 +384,8 @@
 													</div>
 												</div>
 												<div class="visually-hidden">
-													<span id="loc_no_${i}"></span>
-													<span id="loc_id_${i}"></span>
+													<input id="loc_no_${i}" name="loc_no_${i}">
+													<input id="loc_id_${i}" name="loc_id_${i}">
 												</div>
 											</div>
 										</div>
@@ -482,8 +482,8 @@
 													</div>
 												</div>
 												<div class="visually-hidden">
-													<span id="loc_no_${i}"></span>
-													<span id="loc_id_${i}"></span>
+													<input id="loc_no_${i}" name="loc_no_${i}">
+													<input id="loc_id_${i}" name="loc_id_${i}">
 												</div>
 											</div>
 										</div>
@@ -493,7 +493,7 @@
 						</c:forEach>
 					</div>
 				</div>
-				<span class="visually-hidden" id="location_length" name="location_length"></span>
+				<input class="visually-hidden" id="location_length" name="location_length">
 				<button type="button" id="register" name="register" onclick="onClickRegister()">Register</button>
 			</form>
 		</div>
@@ -724,6 +724,7 @@
                                 }
                             });
 
+                        console.log(formData);
                         formData.submit();
                         // }
                     }
@@ -1197,6 +1198,7 @@
         let location_length_info = document.getElementById("location_length");
 
         location_length_info.innerText = index;
+        location_length_info.value = index;
 	}
 
     function inputLocationInfo(index) {
@@ -1215,8 +1217,8 @@
         console.log(locationMap["tags"]);
 
         loc_name.value = locationMap["locName"];
-        loc_no.innerText = locationMap["locNo"];
-        loc_id.innerText = locationMap["locID"];
+        loc_no.value = locationMap["locNo"];
+        loc_id.value = locationMap["locID"];
         loc_addr.value = locationMap["locAddr"];
         loc_tel.value = locationMap["locTel"];
         loc_info.value = locationMap["locInfo"];

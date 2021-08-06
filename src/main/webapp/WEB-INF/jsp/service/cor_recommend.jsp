@@ -130,7 +130,7 @@
 						<div class="col-md-4" id="loc_${i}">
 							<div class="card mb-4 shadow-sm">
 								<c:url var="loc_detail" value="/service/loc_detail">
-									<c:param name="locNo" value="${result.dtoList.get(i).loc_no}"/>
+									<c:param name="locNo" value="${result.dtoList.get(i).cor_no}"/>
 								</c:url>
 								<a class="container p-0 btn" href="${loc_detail}">
 									<c:set var="imgList" value="${result.dtoList.get(i).imgList}"></c:set>

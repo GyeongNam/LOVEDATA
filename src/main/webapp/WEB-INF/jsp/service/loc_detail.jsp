@@ -57,6 +57,13 @@
 		</ul>
 	</div>
 	<c:choose>
+<%--		없는 장소 번호로 조회시--%>
+		<c:when test="${isNullLocation eq true}">
+			<span>해당 장소가 존재하지 않습니다.</span>
+			<%
+				if( true ) return;
+			%>
+		</c:when>
 		<c:when test="${dto._deleted eq true}">
 			<sec:authorize access="isAnonymous()">
 				<span>현재 페이지는 삭제되었습니다.</span>
