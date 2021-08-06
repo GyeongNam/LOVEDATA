@@ -32,6 +32,7 @@ html{
 /*메인 배너*/
 /* Slideshow container */
 .slideshow-container {
+	padding-top: 100px;
 	max-width: 1200px;
 	position: relative;
 	margin: auto;
@@ -153,4 +154,26 @@ html{
 }
 .ul-style{
 	list-style: initial;
+}
+
+/* page 2 */
+.flex-page2{
+	display: flex;
+	text-align: center;
+}
+.cuchon{
+	width: 100%;
+	height: 100%;
+}
+.jibcok{
+	width: 100%;
+	height: 100%;
+}
+.cos_img{
+	margin: 20px 0 20px 0;
+	width: 25rem;
+	height: 16rem;
+}
+.cosname{
+	font-size: 20px;
 }
