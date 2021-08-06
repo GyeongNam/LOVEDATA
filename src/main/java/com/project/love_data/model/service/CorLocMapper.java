@@ -25,11 +25,11 @@ public class CorLocMapper extends TimeEntity {
     @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
     private Long cl_No;
 
-    @ElementCollection(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cl_no")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
-    private Set<Long> loc_no;
+    @Column(name = "loc_no", nullable = false)
+    private Long loc_no;
+
+    @Column(name = "loc_index", nullable = false)
+    private int loc_index;
 
     @Column(name = "cor_no", nullable = false)
     private Long cor_no;

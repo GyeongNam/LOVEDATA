@@ -30,7 +30,7 @@
 <%@ include file="../layout/header.jsp" %>
 <body>
 
-<div class="container-fluid d-flex">
+<div class="container-fluid d-flex" style="padding-top: 100px">
 	<div class="col-2" id="sidebar">
 		<ul class="nav nav-pills flex-column col-2 position-fixed" style="top: 40%">
 			<div class="accordion text-center" id="loc">

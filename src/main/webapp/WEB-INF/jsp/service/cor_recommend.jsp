@@ -27,7 +27,7 @@
 <%@ include file="../layout/header.jsp" %>
 <body>
 
-<div class="container-fluid d-flex">
+<div class="container-fluid d-flex" style="padding-top: 100px">
 	<div class="col-2" id="sidebar">
 		<ul class="nav nav-pills flex-column col-2 position-fixed" style="top: 40%">
 			<div class="accordion text-center" id="loc">
@@ -130,7 +130,7 @@
 						<div class="col-md-4" id="loc_${i}">
 							<div class="card mb-4 shadow-sm">
 								<c:url var="loc_detail" value="/service/loc_detail">
-									<c:param name="locNo" value="${result.dtoList.get(i).loc_no}"/>
+									<c:param name="locNo" value="${result.dtoList.get(i).cor_no}"/>
 								</c:url>
 								<a class="container p-0 btn" href="${loc_detail}">
 									<c:set var="imgList" value="${result.dtoList.get(i).imgList}"></c:set>

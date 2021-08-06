@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -28,7 +27,9 @@ public class QCorLocMapper extends EntityPathBase<CorLocMapper> {
 
     public final NumberPath<Long> cor_no = createNumber("cor_no", Long.class);
 
-    public final SetPath<Long, NumberPath<Long>> loc_no = this.<Long, NumberPath<Long>>createSet("loc_no", Long.class, NumberPath.class, PathInits.DIRECT2);
+    public final NumberPath<Integer> loc_index = createNumber("loc_index", Integer.class);
+
+    public final NumberPath<Long> loc_no = createNumber("loc_no", Long.class);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modDate = _super.modDate;

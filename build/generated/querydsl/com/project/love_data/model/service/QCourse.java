@@ -30,15 +30,17 @@ public class QCourse extends EntityPathBase<Course> {
 
     public final StringPath cost = createString("cost");
 
-    public final StringPath est_time = createString("est_time");
+    public final StringPath est_type = createString("est_type");
 
-    public final SetPath<com.project.love_data.model.resource.CourseImage, com.project.love_data.model.resource.QCourseImage> imgSet = this.<com.project.love_data.model.resource.CourseImage, com.project.love_data.model.resource.QCourseImage>createSet("imgSet", com.project.love_data.model.resource.CourseImage.class, com.project.love_data.model.resource.QCourseImage.class, PathInits.DIRECT2);
+    public final StringPath est_value = createString("est_value");
 
     public final StringPath info = createString("info");
 
     public final BooleanPath is_deleted = createBoolean("is_deleted");
 
     public final NumberPath<Integer> likeCount = createNumber("likeCount", Integer.class);
+
+    public final NumberPath<Integer> location_count = createNumber("location_count", Integer.class);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modDate = _super.modDate;
