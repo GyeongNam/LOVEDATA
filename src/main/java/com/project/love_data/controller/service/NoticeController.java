@@ -2,7 +2,10 @@ package com.project.love_data.controller.service;
 
 import com.project.love_data.businessLogic.service.*;
 import com.project.love_data.controller.UserController;
+import com.project.love_data.model.resource.QuestionsImage;
 import com.project.love_data.model.user.User;
+import com.project.love_data.repository.QuestionsImageRepository;
+import com.project.love_data.repository.QuestionsRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -35,7 +38,11 @@ public class NoticeController {
     @Autowired
     UserService userService;
     @Autowired
+    QuestionsImageService questionsImageService;
+    @Autowired
     FileUploadService fileUploadService;
+    @Autowired
+    QuestionsImageRepository questionsImageRepository;
 
     @GetMapping(value = "/ServiceCenter")
     public String Notice(Model model, HttpServletResponse response)  {
@@ -77,6 +84,7 @@ public class NoticeController {
     public String Questions_no(@PathVariable("num") String num, Model model, HttpServletResponse response, Principal principal) throws IOException {
         ScriptUtils scriptUtils = new ScriptUtils();
         Questions questions = noticeService.qu_select_no(num);
+        List<QuestionsImage> questionsImage = questionsImageService.qu_no_imgselect(num);
         if (questions.isQu_secret()) {
             if (principal == null) {
                 scriptUtils.alertAndMovePage(response, "로그인 해주세요.", "/login");
@@ -87,10 +95,12 @@ public class NoticeController {
                 if (questions2 == null) {
                     scriptUtils.alertPageout(response, "비밀글입니다.");
                 } else {
+                    model.addAttribute("qu_img", questionsImage);
                     model.addAttribute("qu", questions);
                 }
             }
         } else {
+            model.addAttribute("qu_img", questionsImage);
             model.addAttribute("qu", questions);
         }
         return "/service/qu_detail";
@@ -105,12 +115,11 @@ public class NoticeController {
         User user = userService.select(principal.getName());
 
         filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE,
-                UploadFileCount.MULTIPLE, 0, 2, request);
+                UploadFileCount.MULTIPLE, 0, 3, request);
 
         if (filePath == null) {
             log.warn("파일이 제대로 저장되지 않았습니다.");
         }
-        log.warn(">??>?"+filePath);
 
         Boolean secret = false;
         if(request.getParameter("secret").equals("1")){
@@ -126,6 +135,16 @@ public class NoticeController {
                 .qu_title(request.getParameter("title"))
                 .build();
         noticeService.qu_update(questions);
+
+        for (int i = 1; i<filePath.size(); i++) {
+            QuestionsImage questionsImage = QuestionsImage.builder()
+                    .qu_img_url(filePath.get(i))
+                    .user_no(user.getUser_no())
+                    .qu_no(questions.getQu_no())
+                    .build();
+            questionsImageRepository.save(questionsImage);
+            log.warn(">??>?"+filePath.get(i));
+        }
 
         return "redirect:/ServiceCenter";
     }
