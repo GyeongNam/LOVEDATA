@@ -9,6 +9,7 @@ import com.project.love_data.dto.PageRequestDTO;
 import com.project.love_data.dto.PageResultDTO;
 import com.project.love_data.model.service.Location;
 import com.project.love_data.model.service.LocationTag;
+import com.project.love_data.model.service.UserLikeCor;
 import com.project.love_data.model.service.UserLikeLoc;
 import com.project.love_data.model.user.User;
 import com.project.love_data.util.DefaultLocalDateTimeFormatter;
@@ -32,7 +33,11 @@ public class RestController {
     @Autowired
     LocationService locService;
     @Autowired
+    CourseService corService;
+    @Autowired
     UserLikeLocService likeLocService;
+    @Autowired
+    UserLikeCorService likeCorService;
     @Autowired
     UserService userService;
     DefaultLocalDateTimeFormatter defaultDateTimeFormatter = new DefaultLocalDateTimeFormatter();
@@ -60,11 +65,22 @@ public class RestController {
     public boolean onLikeClicked(@RequestBody HashMap<String, String> data) {
 //        log.info("data : " + data);
 
-        Long loc_no = Long.valueOf(data.get("loc_no"));
+        Long item_no = Long.valueOf(data.get("item_no"));
         Long user_no = Long.valueOf(data.get("user_no"));
+        String type = data.get("type");
 
         if (user_no == -1) {
             log.info("Not Registered!");
+            return false;
+        }
+
+        if (item_no == null) {
+            log.warn("item_no null value");
+            return false;
+        }
+
+        if ("".equals(item_no)){
+            log.warn("item_no empty value");
             return false;
         }
 
@@ -76,66 +92,120 @@ public class RestController {
             return false;
         }
 
-        UserLikeLoc item = likeLocService.selectByLocNoAndUserNo(loc_no, user_no);
+        if ("loc".equals(type)) {
+            UserLikeLoc item = likeLocService.selectByLocNoAndUserNo(item_no, user_no);
 
-        if (item != null){
-            log.warn(loc_no + "(loc_no) has been liked before!");
-            log.warn("Please Check");
-            return false;
-        }
-
-        if (loc_no == null) {
-            log.warn("loc_no null value");
-            return false;
-        }
-
-        if ( locService.onClickLike(loc_no)) {
-            if (likeLocService.register(loc_no, user_no) == null) {
-                locService.onClickLikeUndo(loc_no);
-                log.warn("UserLikeLocation register not Completed");
+            if (item != null){
+                log.warn(item_no + "(loc_no) has been liked before!");
+                log.warn("Please Check");
                 return false;
             }
-            log.info("Liked Successful");
-            // Todo 유저가 좋아요한 테이블에 정보 인서트
-            return true;
-        } else {
-            log.info("loc_no is not correct");
-            return false;
+
+            if ( locService.onClickLike(item_no)) {
+                if (likeLocService.register(item_no, user_no) == null) {
+                    locService.onClickLikeUndo(item_no);
+                    log.warn("UserLikeLocation register not Completed");
+                    return false;
+                }
+                log.info("Location Liked Successful");
+                return true;
+            } else {
+                log.info("loc_no is not correct");
+                return false;
+            }
         }
+
+        if ("cor".equals(type)) {
+            UserLikeCor item = likeCorService.selectByCorNoAndUserNo(item_no, user_no);
+
+            if (item != null){
+                log.warn(item_no + "(cor_no) has been liked before!");
+                log.warn("Please Check");
+                return false;
+            }
+
+            if (corService.onClickLike(item_no)) {
+                if (likeCorService.register(item_no, user_no) == null) {
+                    corService.onClickLikeUndo(item_no);
+                    log.warn("UserLikeCourse register not Completed");
+                    return false;
+                }
+                log.info("Course Liked Successful");
+                return true;
+            } else {
+                log.info("cor_no is not correct");
+                return false;
+            }
+        }
+
+        return false;
     }
 
     @PostMapping("/onClickLikeUndo")
     public boolean onLikeClickUndo(@RequestBody HashMap<String, String> data) {
         log.info("data : " + data);
 
-        Long loc_no = Long.valueOf(data.get("loc_no"));
+        Long item_no = Long.valueOf(data.get("item_no"));
         Long user_no = Long.valueOf(data.get("user_no"));
+        String type = data.get("type");
 
-        UserLikeLoc item = likeLocService.selectByLocNoAndUserNo(loc_no, user_no);
-
-        if (item == null){
-            log.warn(loc_no + " has not been like before!");
-            log.warn("Please Check");
+        if (item_no == null) {
+            log.warn("item_no null value");
             return false;
         }
 
-        if (loc_no == null) {
-            log.info("loc_no null value");
+        if ("".equals(item_no)) {
+            log.warn("item_no empty value");
             return false;
         }
 
-        if ( locService.onClickLikeUndo(loc_no)) {
-            if (!likeLocService.delete(loc_no, user_no)) {
-                locService.onClickLike(loc_no);
-                log.warn("UserLikeLocation delete not Completed");
+        if ("loc".equals(type)) {
+            UserLikeLoc item = likeLocService.selectByLocNoAndUserNo(item_no, user_no);
+
+            if (item == null){
+                log.warn(item_no + " has not been like before!");
+                log.warn("Please Check");
                 return false;
             }
-            log.info("Like Undo Successful");
-            return true;
-        } else {
-            log.info("Like Undo failed");
-            return false;
+
+            if ( locService.onClickLikeUndo(item_no)) {
+                if (!likeLocService.delete(item_no, user_no)) {
+                    locService.onClickLike(item_no);
+                    log.warn("UserLikeLocation delete not Completed");
+                    return false;
+                }
+                log.info("Location Like Undo Successful");
+                return true;
+            } else {
+                log.info("Location Like Undo failed");
+                return false;
+            }
         }
+
+        if ("cor".equals(type)) {
+            UserLikeCor item = likeCorService.selectByCorNoAndUserNo(item_no, user_no);
+
+            if (item == null){
+                log.warn(item_no + " has not been like before!");
+                log.warn("Please Check");
+                return false;
+            }
+
+            if ( corService.onClickLikeUndo(item_no)) {
+                if (!likeCorService.delete(item_no, user_no)) {
+                    corService.onClickLike(item_no);
+                    log.warn("UserLikeCourse delete not Completed");
+                    return false;
+                }
+                log.info("Course Like Undo Successful");
+                return true;
+            } else {
+                log.info("Course Like Undo failed");
+                return false;
+            }
+        }
+
+        return false;
     }
 
     @PostMapping("/service/loc/search")

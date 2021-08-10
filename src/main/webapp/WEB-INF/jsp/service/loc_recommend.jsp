@@ -173,11 +173,11 @@
 												<c:choose>
 													<c:when test="${isLikedList.get(i) eq true}">
 														<img src="/image/icon/like/love_color.png" class="loc_icon" alt="찜하기"
-															 onclick="onClickLike(this, <sec:authentication property="principal.user_no"/>)">
+															 onclick="onClickLike(this, <sec:authentication property="principal.user_no"/>, 'loc')">
 													</c:when>
 													<c:otherwise>
 														<img src="/image/icon/like/love_black.png" class="loc_icon" alt="찜하기"
-															 onclick="onClickLike(this, <sec:authentication property="principal.user_no"/>)">
+															 onclick="onClickLike(this, <sec:authentication property="principal.user_no"/>, 'loc')">
 													</c:otherwise>
 												</c:choose>
 											</sec:authorize>

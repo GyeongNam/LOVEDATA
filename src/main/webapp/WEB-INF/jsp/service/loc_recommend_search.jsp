@@ -214,7 +214,7 @@
 												<%--									Todo 댓글 항목 Location Entity에 추가하기--%>
 											<span class="align-middle">${result.dtoList.get(i).cmtList.size()}</span>
 											<img src="/image/icon/like/love_black.png" class="loc_icon" alt="찜하기"
-												 onclick="onClickLike(this)">
+												 onclick="onClickLike(this, <sec:authentication property="principal.user_no"/>, 'loc')">
 											<span class="align-middle" id="loc_like_count" name="loc_like_count">${result.dtoList.get(i).likeCount}</span>
 											<span class="d-none">${result.dtoList.get(i).loc_no}</span>
 											<span class="d-none">${result.dtoList.get(i).loc_uuid}</span>

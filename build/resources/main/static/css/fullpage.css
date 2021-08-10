@@ -18,11 +18,11 @@
 }
 
 .full2{
-    background:yellow;
+    background:#F1E7F7;
 }
 
 .full3{
-    background:green;
+    background:#F1E7F7;
 }
 
 .full4{
@@ -68,9 +68,9 @@ ul, li{
     height:10px;
     margin-bottom:10px;
     border-radius:15px;
-    border:2px solid #fff;
+    border:2px solid #FFA3C2;
     cursor:pointer;
 }
 .quick .on {
-    background:#fff;
+    background: #FF0D5D;
 }
