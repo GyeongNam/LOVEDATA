@@ -49,11 +49,11 @@ public class CourseController {
     public void corGetTagsList(@RequestParam("tags[]") String[] tagArray) {
         tagList = Arrays.asList(tagArray);
 
-        if (tagList != null) {
-            log.info("태그 등록 성공");
-        } else {
-            log.info("태그 등록 실패");
-        }
+//        if (tagList != null) {
+//            log.info("태그 등록 성공");
+//        } else {
+//            log.info("태그 등록 실패");
+//        }
     }
 
     @GetMapping("/service/cor_registration/regData")
@@ -76,6 +76,7 @@ public class CourseController {
         reqParam.put("info", request.getParameter("info"));
         reqParam.put("est_value", request.getParameter("est_value"));
         reqParam.put("est_type", request.getParameter("est_type"));
+        reqParam.put("location_length", request.getParameter("location_length"));
         if (reqParam.get("est_type").equals("date")) {
             reqParam.put("accommodations", request.getParameter("accommodations"));
         }
@@ -93,65 +94,68 @@ public class CourseController {
             log.info("tagList : " + tagList);
         }
 
-//        for (String s : reqParam.keySet()) {
-//            log.info(s + "\t:\t" + reqParam.get(s));
-//        }
-
-        tagList = new ArrayList<>();
-
         for (String s : request.getParameterMap().keySet()) {
             log.info(s + "\t:\t" + Arrays.toString(request.getParameterMap().get(s)));
         }
 
-        return "redirect:/service/cor_index";
+        for (int i = 1; i <= Integer.parseInt(reqParam.get("location_length")); i++) {
+            reqParam.put("loc_no_" + i, request.getParameter("loc_no_" + i));
+            reqParam.put("loc_id_" + i, request.getParameter("loc_id_" + i));
+//            reqParam.put("loc_name_" + i, request.getParameter("loc_name_" + i));
+//            reqParam.put("loc_addr_" + i, request.getParameter("loc_addr_" + i));
+//            reqParam.put("loc_tel_" + i, request.getParameter("loc_tel_" + i));
+//            reqParam.put("loc_info_" + i, request.getParameter("loc_info_" + i));
+        }
 
-//        filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE,
-//                UploadFileCount.MULTIPLE, MIN_UPLOAD_COUNT, MAX_UPLOAD_COUNT, request);
-//
-//        if (filePath == null) {
-//            log.warn("파일이 제대로 저장되지 않았습니다.");
-//            return "redirect:/service/cor_recommend";
-//        }
-//
-//        Course entity = corService.register(reqParam, tagList, filePath);
-//        User user = userService.select(Long.parseLong(reqParam.get("user_no")));
-//        //Todo 업로드한 장소테이블에 정보 인서트 하기
-////        user.addUploadLocation(entity);
-////        userService.update(user);
-//        CourseDTO dto = corService.entityToDto(entity);
-//
-//        redirectAttributes.addFlashAttribute("dto", dto);
-//
-//        return "redirect:/service/cor_recommend";
+        for (String s : reqParam.keySet()) {
+            log.info(s + "\t:\t" + reqParam.get(s));
+        }
+
+        filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE,
+                UploadFileCount.MULTIPLE, MIN_UPLOAD_COUNT, MAX_UPLOAD_COUNT, request);
+
+        if (filePath == null) {
+            log.warn("파일이 제대로 저장되지 않았습니다.");
+            return "redirect:/service/cor_recommend";
+        }
+
+        Course entity = corService.register(reqParam, tagList, filePath);
+        CourseDTO dto = corService.entityToDto(entity);
+
+        redirectAttributes.addFlashAttribute("dto", dto);
+
+        tagList = new ArrayList<>();
+
+        return "redirect:/service/cor_recommend";
     }
 
-//    @GetMapping(value = "/service/loc_recommend")
-//    public String goToLocRecommendList() {
-//        return "redirect:/service/loc_recommend/list";
-//    }
-//
-//    @GetMapping(value = "/service/loc_detail")
-//    public String locDetail(Long locNo, @ModelAttribute("requestDTO") PageRequestDTO pageRequestDTO, Authentication authentication,
-//                            Model model, HttpServletRequest request) {
-//        if (locNo != null) {
-//            locService.incViewCount(locNo);
-//            LocationDTO dto = locService.selectLocDTO(locNo);
-//            pageRequestDTO.setSize(MAX_COM_COUNT);
+    @GetMapping(value = "/service/cor_recommend")
+    public String goToCorRecommendList() {
+        return "redirect:/service/cor_recommend/list";
+    }
+
+    @GetMapping(value = "/service/cor_detail")
+    public String corDetail(Long corNo, @ModelAttribute("requestDTO") PageRequestDTO pageRequestDTO, Authentication authentication,
+                            Model model, HttpServletRequest request) {
+        if (corNo != null) {
+            corService.incViewCount(corNo);
+            CourseDTO dto = corService.selectLocDTO(corNo);
+            pageRequestDTO.setSize(MAX_COM_COUNT);
 //            PageResultDTO<CommentDTO, Comment> resultCommentDTO
 ////                    = comService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION, CommentSortType.IDX_ASC);
 //                    = comService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION);
-//
-////            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //            if (authentication != null) {
 //                AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
 //                if (authentication.isAuthenticated()) {
 //                    UserRecentLoc item = userRecentLocService.register(locNo, authUserModel.getUser_no());
-////                    if (item == null) {
-////                        log.warn(authUserModel.getUser_no() + "의 최근 접속한 기록을 추가하는 과정에서 문제가 발생하였습니다.");
-////                        log.warn("장소 번호 (" + locNo + ")");
-////                    } else {
-////                        log.info("기록 추가 성공");
-////                    }
+//                    if (item == null) {
+//                        log.warn(authUserModel.getUser_no() + "의 최근 접속한 기록을 추가하는 과정에서 문제가 발생하였습니다.");
+//                        log.warn("장소 번호 (" + locNo + ")");
+//                    } else {
+//                        log.info("기록 추가 성공");
+//                    }
 //                    if (userLikeLocService.selectByLocNoAndUserNo(locNo, authUserModel.getUser_no()) != null) {
 //                        model.addAttribute("isLiked", true);
 //                    } else {
@@ -161,66 +165,66 @@ public class CourseController {
 //            } else {
 //                model.addAttribute("isLiked", false);
 //            }
-//
-//            model.addAttribute("dto", dto);
-//            model.addAttribute("resComDTO", resultCommentDTO);
-//
-//            return "/service/loc_detail";
+
+            model.addAttribute("dto", dto);
+//            model.addAttribute("resRevDTO", resultCommentDTO);
+
+            return "/service/cor_detail";
+        }
+
+        return "/service/cor_recommend";
+    }
+
+    @GetMapping(value = "/service/cor_recommend/list")
+    public String corRecommendList(HttpServletRequest request,
+//                                   PageRequestDTO pageRequestDTO,
+                                   Authentication authentication,
+                                   Model model) {
+        String pageNumber = request.getParameter("page");
+        if (pageNumber == null){
+            pageNumber = "1";
+        }
+        int pageNum = Integer.parseInt(pageNumber);
+
+        List<LocationTag> tagList = Arrays.asList(LocationTag.values());
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+                .size(MAX_COR_LIST_SIZE)
+                .sortCriterion(SortCriterion.VIEW)
+                .page(pageNum)
+                .build();
+        PageResultDTO<CourseDTO, com.project.love_data.model.service.Course> resultDTO = corService.getList(pageRequestDTO);
+        List<Boolean> isLikedList = new ArrayList<>();
+
+        if (authentication == null) {
+            for (int i = 0; i < resultDTO.getSize(); i++) {
+                isLikedList.add(false);
+            }
+        } else {
+            AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
+            Long user_no = authUserModel.getUser_no();
+            for (int i = 0; i < resultDTO.getDtoList().size(); i++) {
+                Long cor_no = resultDTO.getDtoList().get(i).getCor_no();
+                UserLikeCor item = userLikeCorService.selectByCorNoAndUserNo(cor_no, user_no);
+                if (item != null){
+                    isLikedList.add(true);
+                } else {
+                    isLikedList.add(false);
+                }
+            }
+        }
+
+        model.addAttribute("result", resultDTO);
+        model.addAttribute("tagList", tagList);
+        model.addAttribute("isLikedList", isLikedList);
+
+//        if(authentication != null) {
+//            AuthUserModel authUser = (AuthUserModel) authentication.getPrincipal();
+////            log.info(authUser.getUser_no());
 //        }
-//
-//        return "/service/loc_recommend";
-//    }
-//
-//    @GetMapping(value = "/service/loc_recommend/list")
-//    public String locRecommendList(HttpServletRequest request,
-////                                   PageRequestDTO pageRequestDTO,
-//                                   Authentication authentication,
-//                                   Model model) {
-//        String pageNumber = request.getParameter("page");
-//        if (pageNumber == null){
-//            pageNumber = "1";
-//        }
-//        int pageNum = Integer.parseInt(pageNumber);
-//
-//        List<LocationTag> tagList = Arrays.asList(LocationTag.values());
-//        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
-//                .size(MAX_LOC_LIST_SIZE)
-//                .sortCriterion(SortCriterion.VIEW)
-//                .page(pageNum)
-//                .build();
-//        PageResultDTO<LocationDTO, com.project.love_data.model.service.Location> resultDTO = locService.getList(pageRequestDTO);
-//        List<Boolean> isLikedList = new ArrayList<>();
-//
-//        if (authentication == null) {
-//            for (int i = 0; i < resultDTO.getSize(); i++) {
-//                isLikedList.add(false);
-//            }
-//        } else {
-//            AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
-//            Long user_no = authUserModel.getUser_no();
-//            for (int i = 0; i < resultDTO.getDtoList().size(); i++) {
-//                Long loc_no = resultDTO.getDtoList().get(i).getLoc_no();
-//                UserLikeLoc item = userLikeLocService.selectByLocNoAndUserNo(loc_no, user_no);
-//                if (item != null){
-//                    isLikedList.add(true);
-//                } else {
-//                    isLikedList.add(false);
-//                }
-//            }
-//        }
-//
-//        model.addAttribute("result", resultDTO);
-//        model.addAttribute("tagList", tagList);
-//        model.addAttribute("isLikedList", isLikedList);
-//
-////        if(authentication != null) {
-////            AuthUserModel authUser = (AuthUserModel) authentication.getPrincipal();
-//////            log.info(authUser.getUser_no());
-////        }
-//
-//        return "/service/loc_recommend";
-//    }
-//
+
+        return "/service/cor_recommend";
+    }
+
 //    @GetMapping("/service/loc_edit")
 //    public String locEdit(Long locNo, Model model) {
 //        if (locNo != null) {

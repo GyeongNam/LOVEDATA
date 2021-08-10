@@ -28,7 +28,7 @@
 <%@ include file="../layout/header.jsp" %>
 <body>
 
-<div class="container-fluid d-flex">
+<div class="container-fluid d-flex" style="padding-top: 100px">
   <div class="col-2" id="sidebar">
     <ul class="nav nav-pills flex-column col-2 position-fixed" style="top: 40%">
       <div class="accordion text-center" id="loc">
@@ -116,7 +116,7 @@
         <div class="row d-flex">
         </div>
         <img src="/image/icon/like/love_black.png" class="loc_icon" alt="찜하기"
-             onclick="onClickLike(this)">
+             onclick="onClickLike(this), 'loc">
         <span class="d-none">0</span>
       </div>
     </div>

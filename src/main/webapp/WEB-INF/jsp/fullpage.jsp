@@ -98,6 +98,34 @@
         </div>
     </div>
     <div class="fullsection full2" pageNum="2">
+        <div class="container">
+            <div class="flex-page2">
+                <div class="cuchon">
+                    <h2>추천 코스</h2>
+                    <div class="cuchon-img">
+                        <img name="" class="cos_img" src="/image/icon/home/looftoppicnic.jpeg">
+                    </div>
+                    <span class="cosname">루프탑 피크닉</span>
+                    <div class="cuchon-img">
+                        <img name="" class="cos_img" src="/image/icon/home/chungguecheon.jpeg">
+                    </div>
+                    <span class="cosname">청계천 걷기</span>
+                </div>
+                <div class="jibcok">
+                    <h2>집콕 활동</h2>
+                    <div class="">
+                        <div class="cuchon-img">
+                            <img name="" class="cos_img" src="/image/icon/home/dalgona.jpeg">
+                        </div>
+                        <span class="cosname">달고나 커피 만들기</span>
+                        <div class="cuchon-img">
+                            <img name="" class="cos_img" src="/image/icon/home/bosuksibjasu.jpg">
+                        </div>
+                        <span class="cosname">보석 십자수</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="fullsection full3" pageNum="3">
     </div>

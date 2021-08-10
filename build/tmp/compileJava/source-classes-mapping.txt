@@ -43,8 +43,8 @@ com/project/love_data/businessLogic/oauth/logout/LogoutUserKakao.java
  com.project.love_data.businessLogic.oauth.logout.LogoutUserKakao
 com/project/love_data/model/service/QUserRecentLoc.java
  com.project.love_data.model.service.QUserRecentLoc
-com/project/love_data/repository/LocationImageRepository.java
- com.project.love_data.repository.LocationImageRepository
+com/project/love_data/controller/RestController.java
+ com.project.love_data.controller.RestController
 com/project/love_data/model/service/UserLikeCor.java
  com.project.love_data.model.service.UserLikeCor
  com.project.love_data.model.service.UserLikeCor$UserLikeCorBuilder
@@ -60,6 +60,8 @@ com/project/love_data/businessLogic/service/UserRecentCorService.java
  com.project.love_data.businessLogic.service.UserRecentCorService
 com/project/love_data/businessLogic/oauth/logout/LogoutProcess.java
  com.project.love_data.businessLogic.oauth.logout.LogoutProcess
+com/project/love_data/repository/NoticeRepository.java
+ com.project.love_data.repository.NoticeRepository
 com/project/love_data/dto/UserLikeLocDTO.java
  com.project.love_data.dto.UserLikeLocDTO
  com.project.love_data.dto.UserLikeLocDTO$UserLikeLocDTOBuilder
@@ -97,6 +99,8 @@ com/project/love_data/model/oauth/KakaoAuthToken.java
  com.project.love_data.model.oauth.KakaoAuthToken
 com/project/love_data/repository/UserRecentCorRepository.java
  com.project.love_data.repository.UserRecentCorRepository
+com/project/love_data/model/service/QQuestions.java
+ com.project.love_data.model.service.QQuestions
 com/project/love_data/businessLogic/service/UserRecentLocService.java
  com.project.love_data.businessLogic.service.UserRecentLocService
 com/project/love_data/repository/CourseImageRepository.java
@@ -140,6 +144,11 @@ com/project/love_data/businessLogic/oauth/login/TokenRequestKakao.java
 com/project/love_data/model/service/UserRecentCor.java
  com.project.love_data.model.service.UserRecentCor
  com.project.love_data.model.service.UserRecentCor$UserRecentCorBuilder
+com/project/love_data/repository/QuestionsRepository.java
+ com.project.love_data.repository.QuestionsRepository
+com/project/love_data/model/service/Questions.java
+ com.project.love_data.model.service.Questions
+ com.project.love_data.model.service.Questions$QuestionsBuilder
 com/project/love_data/dto/CourseImageDTO.java
  com.project.love_data.dto.CourseImageDTO
  com.project.love_data.dto.CourseImageDTO$CourseImageDTOBuilder
@@ -181,6 +190,8 @@ com/project/love_data/businessLogic/service/SortingOrder.java
  com.project.love_data.businessLogic.service.SortingOrder
 com/project/love_data/businessLogic/service/CommentPageType.java
  com.project.love_data.businessLogic.service.CommentPageType
+com/project/love_data/businessLogic/service/CorLocMapperService.java
+ com.project.love_data.businessLogic.service.CorLocMapperService
 com/project/love_data/model/service/Location.java
  com.project.love_data.model.service.Location
  com.project.love_data.model.service.Location$LocationBuilder
@@ -213,6 +224,8 @@ com/project/love_data/repository/LocationRepository.java
  com.project.love_data.repository.LocationRepository
 com/project/love_data/util/ServerDomain.java
  com.project.love_data.util.ServerDomain
+com/project/love_data/businessLogic/service/NoticeService.java
+ com.project.love_data.businessLogic.service.NoticeService
 com/project/love_data/controller/PopupController.java
  com.project.love_data.controller.PopupController
 com/project/love_data/model/service/QCorLocMapper.java
@@ -239,6 +252,9 @@ com/project/love_data/model/resource/QLocationImage.java
 com/project/love_data/dto/PageRequestDTO.java
  com.project.love_data.dto.PageRequestDTO
  com.project.love_data.dto.PageRequestDTO$PageRequestDTOBuilder
+com/project/love_data/model/service/Policy.java
+ com.project.love_data.model.service.Policy
+ com.project.love_data.model.service.Policy$PolicyBuilder
 com/project/love_data/businessLogic/oauth/login/RequestUserInfoKakao.java
  com.project.love_data.businessLogic.oauth.login.RequestUserInfoKakao
 com/project/love_data/businessLogic/service/CourseImageService.java
@@ -246,6 +262,8 @@ com/project/love_data/businessLogic/service/CourseImageService.java
 com/project/love_data/businessLogic/service/CourseService.java
  com.project.love_data.businessLogic.service.CourseService
  com.project.love_data.businessLogic.service.CourseService$1
+com/project/love_data/model/service/QNotice.java
+ com.project.love_data.model.service.QNotice
 com/project/love_data/repository/UserRecentLocRepository.java
  com.project.love_data.repository.UserRecentLocRepository
 com/project/love_data/model/service/QUserLikeLoc.java
@@ -266,6 +284,9 @@ com/project/love_data/util/EmailParser.java
  com.project.love_data.util.EmailParser
 com/project/love_data/repository/CourseRepository.java
  com.project.love_data.repository.CourseRepository
+com/project/love_data/model/service/Notice.java
+ com.project.love_data.model.service.Notice
+ com.project.love_data.model.service.Notice$NoticeBuilder
 com/project/love_data/controller/MailController.java
  com.project.love_data.controller.MailController
 com/project/love_data/businessLogic/SmsService.java
@@ -276,6 +297,9 @@ com/project/love_data/config/WebConfig.java
  com.project.love_data.config.WebConfig
 com/project/love_data/businessLogic/oauth/logout/LogoutUser.java
  com.project.love_data.businessLogic.oauth.logout.LogoutUser
+com/project/love_data/dto/CorLocMapperDTO.java
+ com.project.love_data.dto.CorLocMapperDTO
+ com.project.love_data.dto.CorLocMapperDTO$CorLocMapperDTOBuilder
 com/project/love_data/dto/UserLikeCorDTO.java
  com.project.love_data.dto.UserLikeCorDTO
  com.project.love_data.dto.UserLikeCorDTO$UserLikeCorDTOBuilder
@@ -287,7 +311,9 @@ com/project/love_data/security/converter/UserRoleConverter.java
  com.project.love_data.security.converter.UserRoleConverter
 com/project/love_data/util/DefaultLocalDateTimeFormatter.java
  com.project.love_data.util.DefaultLocalDateTimeFormatter
-com/project/love_data/controller/RestController.java
- com.project.love_data.controller.RestController
+com/project/love_data/controller/service/NoticeController.java
+ com.project.love_data.controller.service.NoticeController
+com/project/love_data/repository/LocationImageRepository.java
+ com.project.love_data.repository.LocationImageRepository
 com/project/love_data/controller/service/CourseController.java
  com.project.love_data.controller.service.CourseController

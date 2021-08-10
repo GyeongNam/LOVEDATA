@@ -122,6 +122,13 @@ public class LocationController {
     public String locDetail(Long locNo, @ModelAttribute("requestDTO") PageRequestDTO pageRequestDTO, Authentication authentication,
                             Model model, HttpServletRequest request) {
         if (locNo != null) {
+            if (locService.selectLoc(locNo) == null) {
+                model.addAttribute("isNullLocation", true);
+                return "/service/loc_detail";
+            } else {
+                model.addAttribute("isNullLocation", false);
+            }
+
             locService.incViewCount(locNo);
             LocationDTO dto = locService.selectLocDTO(locNo);
             pageRequestDTO.setSize(MAX_COM_COUNT);

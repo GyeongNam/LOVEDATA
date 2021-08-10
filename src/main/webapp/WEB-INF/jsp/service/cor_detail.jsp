@@ -29,7 +29,7 @@
 <%@ include file="../layout/header.jsp" %>
 <body>
 
-<div class="container-fluid d-flex">
+<div class="container-fluid d-flex" style="padding-top: 100px">
 	<div class="col-2" id="sidebar">
 		<ul class="nav nav-pills flex-column col-2 position-fixed" style="top: 40%">
 			<div class="accordion text-center" id="loc">
@@ -156,11 +156,11 @@
 						<c:choose>
 							<c:when test="${isLiked eq true}">
 								<img src="/image/icon/like/love_color.png" class="loc_icon_big me-2" alt="찜하기"
-									 onclick="onClickLike(this, <sec:authentication property="principal.user_no"/>)">
+									 onclick="onClickLike(this, <sec:authentication property="principal.user_no"/>, 'cor')">
 							</c:when>
 							<c:otherwise>
 								<img src="/image/icon/like/love_black.png" class="loc_icon_big me-2" alt="찜하기"
-									 onclick="onClickLike(this, <sec:authentication property="principal.user_no"/>)">
+									 onclick="onClickLike(this, <sec:authentication property="principal.user_no"/>, 'cor')">
 							</c:otherwise>
 						</c:choose>
 					</sec:authorize>

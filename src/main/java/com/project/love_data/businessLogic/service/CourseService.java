@@ -5,7 +5,6 @@ import com.project.love_data.dto.PageRequestDTO;
 import com.project.love_data.dto.PageResultDTO;
 import com.project.love_data.model.resource.CourseImage;
 import com.project.love_data.model.service.Course;
-import com.project.love_data.model.service.LocationTag;
 import com.project.love_data.repository.CourseImageRepository;
 import com.project.love_data.repository.CourseRepository;
 import com.querydsl.core.BooleanBuilder;
@@ -19,6 +18,8 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.function.Function;
 
+import static org.reflections.util.ConfigurationBuilder.build;
+
 @Service
 @RequiredArgsConstructor
 @Log4j2
@@ -27,11 +28,20 @@ public class CourseService {
     private final CourseImageRepository imgRepository;
     private final CourseImageService imgService;
     private final ReviewService revService;
+    private final CorLocMapperService corLocMapperService;
 
     public Course register(Map<String, String> reqParam, List<String> tagList, List<String> filePath) {
         CourseDTO dto = getCourseDto(reqParam, tagList);
         List<CourseImage> imgList = new ArrayList<>();
         Course entity = dtoToEntity(dto);
+        CourseImage courseImage;
+        List<Long> locNoList = new ArrayList<>();
+
+        repository.save(entity);
+
+        Optional<Course> item = repository.findCorByUUID(entity.getCor_uuid());
+
+        entity = item.orElse(null);
 
         for (int i = 1; i < filePath.size(); i++) {
             // filePath.get(0)  ==  Parent Folder (URI)
@@ -40,14 +50,19 @@ public class CourseService {
                     filePath.get(0), filePath.get(i), entity.getCor_no(), i-1));
         }
 
-        entity.setImgSet(new HashSet<>(imgList));
         entity.setThumbnail(imgList.get(0).getImg_url());
-
-        repository.save(entity);
 
         for (CourseImage CourseImage : imgList) {
             imgRepository.save(CourseImage);
         }
+
+        for (int i = 1; i <= Integer.parseInt(reqParam.get("location_length")); i++) {
+            locNoList.add(Long.parseLong(reqParam.get("loc_no_" + i)));
+        }
+
+        corLocMapperService.register(entity.getCor_no(),locNoList);
+
+        repository.save(entity);
 
         log.info("entity : " + entity);
 
@@ -56,15 +71,17 @@ public class CourseService {
 
     public Course dtoToEntity(CourseDTO dto) {
         Course entity = Course.builder()
-//                .cor_no(dto.getCor_no())
+                .cor_no(dto.getCor_no())
                 .cor_name(dto.getCor_name())
+                .user_no(dto.getUser_no())
                 .cost(dto.getCost())
-                .est_time(dto.getEst_time())
+                .location_count(dto.getLocation_count())
+                .est_type(dto.getEst_type())
+                .est_value(dto.getEst_value())
                 .transportation(dto.getTransportation())
                 .cor_uuid(dto.getCor_uuid())
                 .info(dto.getInfo())
                 .tagSet(dto.getTagSet())
-                .imgSet(new HashSet<>(dto.getImgList()))
                 .likeCount(dto.getLikeCount())
                 .thumbnail(dto.getThumbnail())
                 .viewCount(dto.getViewCount())
@@ -80,7 +97,9 @@ public class CourseService {
                 .cor_name(entity.getCor_name())
                 .cor_uuid(entity.getCor_uuid())
                 .cost(entity.getCost())
-                .est_time(entity.getEst_time())
+                .location_count(entity.getLocation_count())
+                .est_type(entity.getEst_type())
+                .est_value(entity.getEst_value())
                 .transportation(entity.getTransportation())
                 .user_no(entity.getUser_no())
                 .info(entity.getInfo())
@@ -100,10 +119,11 @@ public class CourseService {
         boolean sortedFlag = false;
         int count = 0;
 
-        for (CourseImage img :
-                entity.getImgSet()) {
-            tempList.add(img);
-        }
+        // Image 리스트 불러오기
+//        for (CourseImage img :
+//                entity.getImgSet()) {
+//            tempList.add(img);
+//        }
 
 //        for (int i = 0; i < tempList.size(); i++) {
 //            for (int j = 0; j < tempList.size(); j++) {
@@ -165,6 +185,7 @@ public class CourseService {
         return dto;
     }
 
+    // Todo 해당 부분 수정하기
     private CourseDTO getCourseDto(Map<String, String> reqParam, List<String> tagList) {
         CourseDTO courseDTO = CourseDTO.builder()
                 .cor_name(reqParam.get("name"))
@@ -172,7 +193,9 @@ public class CourseService {
                 .info(reqParam.get("info"))
                 .transportation(reqParam.get("transportation"))
                 .cost(reqParam.get("cost"))
-                .est_time(reqParam.get("est_time"))
+                .location_count(Integer.parseInt(reqParam.get("location_length")))
+                .est_type(reqParam.get("est_type"))
+                .est_value(reqParam.get("est_value"))
                 .build();
 
         Set<String> tags = new HashSet<>();
@@ -335,40 +358,40 @@ public class CourseService {
         repository.save(cor);
     }
 
-    public void permaDelete(Course cor) {
-        List<CourseImage> list = new ArrayList<CourseImage>(cor.getImgSet());
-        // Todo 리뷰 항목도 지워지도록 리뷰 리포지토리 추가후 추가작업 진행하기
-//        Set<Comment> cmtSet = cor.getCmtSet();
-
-        for (CourseImage CourseImage : list) {
-            CourseImage.setCor_no(null);
-
-            imgService.update(CourseImage);
-
-            imgService.permaDelete(CourseImage.getImg_uuid());
-        }
-
+//    public void permaDelete(Course cor) {
+//        List<CourseImage> list = new ArrayList<CourseImage>(cor.getImgSet());
+//        // Todo 리뷰 항목도 지워지도록 리뷰 리포지토리 추가후 추가작업 진행하기
+////        Set<Comment> cmtSet = cor.getCmtSet();
+//
+//        for (CourseImage CourseImage : list) {
+//            CourseImage.setCor_no(null);
+//
+//            imgService.update(CourseImage);
+//
+//            imgService.permaDelete(CourseImage.getImg_uuid());
+//        }
+//
 //        for (Comment cmt : cmtSet) {
 //            revService.permaDelete(cmt);
 //        }
+//
+//        cor.setImgSet(null);
+//
+//        update(cor);
+//
+//        repository.deleteByCor_uuid(cor.getCor_uuid());
+//    }
 
-        cor.setImgSet(null);
-
-        update(cor);
-
-        repository.deleteByCor_uuid(cor.getCor_uuid());
-    }
-
-    public void delete(Long corNo) {
-        Course cor = selectCor(corNo);
-
-        if (!cor.is_deleted()) {
-            disableCourse(cor);
-            for (CourseImage CourseImage : cor.getImgSet()) {
-                imgService.delete(CourseImage.getImg_no());
-            }
-        }
-    }
+//    public void delete(Long corNo) {
+//        Course cor = selectCor(corNo);
+//
+//        if (!cor.is_deleted()) {
+//            disableCourse(cor);
+//            for (CourseImage CourseImage : cor.getImgSet()) {
+//                imgService.delete(CourseImage.getImg_no());
+//            }
+//        }
+//    }
 
     public void delete(String uuid) {
         Course cor = selectCor(uuid);
@@ -434,46 +457,46 @@ public class CourseService {
         update(entity);
     }
 
-    public Course edit(Map<String, String> reqParam, List<String> tagList, List<String> filePath) {
-        List<CourseImage> imgList = new ArrayList<>();
-        Course entity = selectCor(reqParam.get("loc_uuid"));
-
-        // 업데이트 된 태그 정보 삽입
-        HashSet<String> tags = new HashSet<>(tagList);
-        entity.setTagSet(tags);
-
-        CourseDTO dto = entityToDto(entity);
-//        boolean flag = false;
-        // Todo 기존에 장소에 등록된 이미지가 업데이트 된 장소와 연결이 끊여졌을 때 어떻게 동작할 지
-
-        for (int i = 1; i < filePath.size(); i++) {
-            // filePath.get(0)  ==  Parent Folder (URI)
-            // filePath.get(i)  ==  fileNames
-//            if (dto.getImgList().size() > i) {
-//                for (int j = 0; j < dto.getImgList().size(); j++) {
-//                    if (dto.getImgList().get(j).getImg_uuid().equals(filePath.get(i))){
-//                        imgList.add(imgService.editImageEntityIndex(filePath.get(i), (long) (i - 1)));
-////                        flag = true;
-//                        continue;
-//                    }
-//                }
-//            }
-            log.info(filePath.get(i));
-            // Todo 현재는 기존에 이미 등록되어 있던 이미지는 삭제하고, 새로 등록하도록 했음
-            // 나중에는 기존에 이미  등록되어 있던 이미지를 삭제하지 않고, 업데이트해서 등록하도록 바꿀것
-            imgService.permaDelete(filePath.get(i));
-            imgList.add(imgService.getImageEntity(reqParam.get("user_no"), filePath.get(0), filePath.get(i), entity.getCor_no(), i-1));
-        }
-
-        entity.setImgSet(new HashSet<>(imgList));
-        entity.setThumbnail(imgList.get(0).getImg_url());
-
-        repository.save(entity);
-
-//        log.info("entity : " + entity);
-
-        return entity;
-    }
+//    public Course edit(Map<String, String> reqParam, List<String> tagList, List<String> filePath) {
+//        List<CourseImage> imgList = new ArrayList<>();
+//        Course entity = selectCor(reqParam.get("loc_uuid"));
+//
+//        // 업데이트 된 태그 정보 삽입
+//        HashSet<String> tags = new HashSet<>(tagList);
+//        entity.setTagSet(tags);
+//
+//        CourseDTO dto = entityToDto(entity);
+////        boolean flag = false;
+//        // Todo 기존에 장소에 등록된 이미지가 업데이트 된 장소와 연결이 끊여졌을 때 어떻게 동작할 지
+//
+//        for (int i = 1; i < filePath.size(); i++) {
+//            // filePath.get(0)  ==  Parent Folder (URI)
+//            // filePath.get(i)  ==  fileNames
+////            if (dto.getImgList().size() > i) {
+////                for (int j = 0; j < dto.getImgList().size(); j++) {
+////                    if (dto.getImgList().get(j).getImg_uuid().equals(filePath.get(i))){
+////                        imgList.add(imgService.editImageEntityIndex(filePath.get(i), (long) (i - 1)));
+//////                        flag = true;
+////                        continue;
+////                    }
+////                }
+////            }
+//            log.info(filePath.get(i));
+//            // Todo 현재는 기존에 이미 등록되어 있던 이미지는 삭제하고, 새로 등록하도록 했음
+//            // 나중에는 기존에 이미  등록되어 있던 이미지를 삭제하지 않고, 업데이트해서 등록하도록 바꿀것
+//            imgService.permaDelete(filePath.get(i));
+//            imgList.add(imgService.getImageEntity(reqParam.get("user_no"), filePath.get(0), filePath.get(i), entity.getCor_no(), i-1));
+//        }
+//
+//        entity.setImgSet(new HashSet<>(imgList));
+//        entity.setThumbnail(imgList.get(0).getImg_url());
+//
+//        repository.save(entity);
+//
+////        log.info("entity : " + entity);
+//
+//        return entity;
+//    }
 
     public List<Course> findCorByUserNo(Long userNo) {
         Optional<List<Course>> CourseList = repository.findByAllUser_no(userNo);

@@ -1,5 +1,6 @@
 package com.project.love_data;
 
+import com.project.love_data.businessLogic.service.CorLocMapperService;
 import com.project.love_data.businessLogic.service.CourseService;
 import com.project.love_data.businessLogic.service.LocationService;
 import com.project.love_data.model.service.CorLocMapper;
@@ -7,7 +8,6 @@ import com.project.love_data.model.service.Course;
 import com.project.love_data.model.service.Location;
 import com.project.love_data.model.service.LocationTag;
 import com.project.love_data.repository.CorLocMapperRepository;
-import org.hibernate.Hibernate;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,6 +24,8 @@ public class CourseTest {
     CourseService corService;
     @Autowired
     CorLocMapperRepository corLocMapperRepository;
+    @Autowired
+    CorLocMapperService corLocMapperService;
 
     @Test
     @Transactional
@@ -48,35 +50,28 @@ public class CourseTest {
         Course course = Course.builder()
                 .cost("10만")
                 .transportation("대중교통")
-                .est_time("3시간")
                 .cor_name("학교가기")
                 .info("중부대")
-                .imgSet(null)
                 .user_no(0L)
+                .location_count(locationList.size())
+                .est_type("시간")
+                .est_value("1시간 30분")
                 .thumbnail(null)
                 .tagSet(tagSet)
                 .thumbnail("testCode")
-                .cor_uuid("id")
                 .build();
 
         corService.update(course);
 
         Course item = corService.selectCor(course.getCor_uuid());
-        Set<Long> locNoSet = new HashSet<>();
+        List<Long> locNoList = new ArrayList<>();
 
         for (Location locItem :
                 locationList) {
-            locNoSet.add(locItem.getLoc_no());
+            locNoList.add(locItem.getLoc_no());
         }
 
-        CorLocMapper corLocMapper = CorLocMapper.builder()
-                .cor_no(item.getCor_no())
-                .loc_no(locNoSet)
-                .build();
-
-        corLocMapperRepository.save(corLocMapper);
-
-        Optional<CorLocMapper> clmItem = corLocMapperRepository.findByUUID(corLocMapper.getClm_uuid());
+        List<CorLocMapper> corLocList = corLocMapperService.register(item.getCor_no(), locNoList);
 
         if (item == null) {
             System.out.println("코스 저장 및 검색 실패!");
@@ -85,14 +80,8 @@ public class CourseTest {
             System.out.println(item);
         }
 
-        if (clmItem.isPresent()) {
-            System.out.println("코스 장소 목록 저장 성공");
-//            Hibernate.initialize(clmItem.get().getLoc_no());
-            System.out.println(clmItem.get());
-        } else {
-            System.out.println("코스 장소 목록 저장 실패");
+        for (int i = 0; i < corLocList.size(); i++) {
+            System.out.println(i + "번째 장소\t:\t" + corLocList.get(i));
         }
     }
-
-
 }

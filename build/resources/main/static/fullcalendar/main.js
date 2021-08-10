@@ -451,7 +451,7 @@ var newEvent = function (start, end, eventType) {
             data: JSON.stringify(eventData),
             type: "POST",
             success: function (response) {
-
+                location.reload();
             }
         });
     });
