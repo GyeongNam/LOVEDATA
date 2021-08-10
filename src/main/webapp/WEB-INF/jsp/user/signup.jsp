@@ -16,15 +16,18 @@
     <title>회원가입ㅣLOVEDATA</title>
 </head>
 <body>
-
-<%@ include file="../layout/header.jsp" %>
+<div id="header" class="join_membership" role="banner">
+    <h1>
+        <a href="/" class="h_logo">
+            <img class="site-logo" src="/image/icon/LOVEDATAlogo.png">
+        </a>
+    </h1>
+</div>
+<%--<%@ include file="../layout/header.jsp" %>--%>
 <c:set var="set_user" value='<%=request.getAttribute("social") == null ? false : request.getAttribute("social")%>'></c:set>
 <form class="signupform" action="/signup_add" method="post">
     <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
     <div class="content">
-        <div class="logo">
-            <h1>LOVEDATA</h1>
-        </div>
         <table class="signup">
             <tr>
                 <td class="thead"><label class="label"><strong>이메일(아이디)
@@ -33,10 +36,10 @@
                     <div class="emailcontent">
                         <c:choose>
                             <c:when test="${set_user eq false}">
-                                <input type="text" name="str_email01" id="str_email01"
+                                <input class="input_style" type="text" name="str_email01" id="str_email01"
                                        required="required" onblur="email_check()"
                                        value="<%= request.getAttribute("str_email01") == null ? "" : request.getAttribute("str_email01") %>">
-                                @ <input type="text"
+                                @ <input class="input_style" type="text"
                                          name="str_email02" id="str_email02"
                                          onblur="email_check()" required
                                          placeholder="" value="<%= request.getAttribute("str_email02") == null ? "" : request.getAttribute("str_email02") %>">
@@ -58,10 +61,10 @@
                                 </select>
                             </c:when>
                             <c:when test="${set_user eq true}">   <%--	소셜 로그인으로 들어올경우--%>
-                                <input type="text" name="str_email01" id="str_email01"
+                                <input  class="input_style" type="text" name="str_email01" id="str_email01"
                                        required="required"
                                        value="<%= request.getAttribute("str_email01") == null ? "" : request.getAttribute("str_email01") %>" readonly>
-                                @ <input type="text"
+                                @ <input class="input_style" type="text"
                                          name="str_email02" id="str_email02"
                                          required
                                          placeholder="" value="<%= request.getAttribute("str_email02") == null ? "" : request.getAttribute("str_email02") %> " readonly>
@@ -83,9 +86,10 @@
                                 </select >
                             </c:when>
                         </c:choose>
-
-                        <input class="checkbox11" type="checkbox" name="recv_email"/>
-                        <input class="checkbox12" type="hidden" name="recv_email" value=false/>
+                    </div>
+                    <div>
+                        <input  class="checkbox11" type="checkbox" name="recv_email"/>
+                        <input  class="checkbox12" type="hidden" name="recv_email" value=false/>
                         <spen class="spen"> 이메일 수신에 동의합니다.</spen>
                     </div>
                     <div>
@@ -99,11 +103,11 @@
                 <td>
                     <c:choose>
                         <c:when test="${set_user eq false}">
-                            <input type="password" name="userPwd" id="pwd1"
+                            <input  class="input_style" type="password" name="userPwd" id="pwd1"
                                    onKeyup="chkpw()" value="<%= request.getAttribute("pwd")  == null ? "" :  request.getAttribute("pwd")%>" class="form-control"  required>
                         </c:when>
                         <c:when test="${set_user eq true}">   <%--	소셜 로그인으로 들어올경우--%>
-                            <input type="password" name="userPwd" id="pwd1"
+                            <input class="input_style" type="password" name="userPwd" id="pwd1"
                                    value="<%= request.getAttribute("pwd")  == null ? "" :  request.getAttribute("pwd")%>" class="form-control"  required readonly>
                         </c:when>
                     </c:choose>
@@ -119,11 +123,11 @@
                 <td>
                     <c:choose>
                         <c:when test="${set_user eq false}">
-                            <input type="password" name="reuserPwd" id="pwd2"
+                            <input class="input_style" type="password" name="reuserPwd" id="pwd2"
                                    onKeyup="passwordcheck()" value="<%= request.getAttribute("pwd")  == null ? "" :  request.getAttribute("pwd")%>" class="form-control" required>
                         </c:when>
                         <c:when test="${set_user eq true}">   <%--	소셜 로그인으로 들어올경우--%>
-                            <input type="password" name="reuserPwd" id="pwd2"
+                            <input class="input_style" type="password" name="reuserPwd" id="pwd2"
                                    value="<%= request.getAttribute("pwd")  == null ? "" :  request.getAttribute("pwd")%>" class="form-control" required readonly>
                         </c:when>
                     </c:choose>
@@ -137,11 +141,11 @@
                 <td>
                     <c:choose>
                         <c:when test="${set_user eq false}">
-                            <input type="text" onblur="nick_check()" class="nickname" name="nickname"
+                            <input class="input_style" type="text" onblur="nick_check()" class="nickname" name="nickname"
                                    id="nickname" value="<%= request.getAttribute("nickname")  == null ? "" :  request.getAttribute("nickname")%>" minlength=3 required>
                         </c:when>
                         <c:when test="${set_user eq true}">   <%--	소셜 로그인으로 들어올경우--%>
-                            <input type="text" class="nickname" name="nickname"
+                            <input class="input_style" type="text" class="nickname" name="nickname"
                                    id="nickname" value="<%= request.getAttribute("nickname")  == null ? "" :  request.getAttribute("nickname")%>" minlength=3 required>
                         </c:when>
                     </c:choose>
@@ -155,10 +159,10 @@
                 <td>
                     <c:choose>
                         <c:when test="${set_user eq false}">
-                            <input type="text" name="userName" id="userName" onblur="name_check()" id="new_name" required>
+                            <input class="input_style" type="text" name="userName" id="userName" onblur="name_check()" id="new_name" required>
                         </c:when>
                         <c:when test="${set_user eq true}">   <%--	소셜 로그인으로 들어올경우--%>
-                            <input type="text" name="userName" id="userName" id="new_name" required>
+                            <input class="input_style" type="text" name="userName" id="userName" id="new_name" required>
                         </c:when>
                     </c:choose>
 
@@ -197,7 +201,7 @@
             <tr>
                 <td class="thead"><label class="label"><strong>생년월일</strong></label>
                 </td>
-                <td><input type="date" id="birthday" name="birthday"
+                <td><input  class="input_style" type="date" id="birthday" name="birthday"
                            value="2000-01-01" min="1930-01-01" max="2050-12-31" required>
                 </td>
             </tr>
@@ -254,7 +258,7 @@
     </c:choose>
 </form>
 
-<%@ include file="../layout/footer.jsp" %>
+<%--<%@ include file="../layout/footer.jsp" %>--%>
 </body>
 </html>
 
