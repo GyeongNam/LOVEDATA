@@ -39,6 +39,9 @@ public class Questions {
     @Column(name = "qu_date", nullable = false)
     private String qu_date;
 
+    @Column(name = "qu_user_no", nullable = false)
+    private String qu_user_no;
+
     @Column(name = "qu_secret", nullable = false)
     @Builder.Default
     private boolean qu_secret = false;

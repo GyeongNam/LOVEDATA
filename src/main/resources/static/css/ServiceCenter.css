@@ -17,6 +17,9 @@ html{
 .Nsearch{
     float: right;
 }
+.Qsearch{
+    float: right;
+}
 /*-------공지사항-------*/
 #jb-container {
     width: 1024px;
@@ -194,3 +197,7 @@ img{
 }
 
 /* 정책 관련 디자인 */
+
+.add_post{
+    float: right;
+}

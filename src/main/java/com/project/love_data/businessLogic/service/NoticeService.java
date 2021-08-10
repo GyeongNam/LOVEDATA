@@ -4,6 +4,7 @@ import com.project.love_data.model.service.*;
 import com.project.love_data.repository.NoticeRepository;
 import com.project.love_data.repository.QuestionsRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class NoticeService {
@@ -53,5 +55,26 @@ public class NoticeService {
     public Questions qu_select_no(String no){
         Questions questions = questionsRepository.qu_find_no(no);
         return questions;
+    }
+
+    public Questions secret_check(String qu_no, String user_no){
+        Questions questions = questionsRepository.qu_secret_check(qu_no, user_no);
+        return questions;
+    }
+
+    public List<Questions> qu_search_all(String no, String text){
+        Optional<List<Questions>> questions;
+        if(no.equals("1")){
+            questions = questionsRepository.qu_search_all("%"+text+"%");
+            return questions.orElse(new ArrayList<>());
+        }
+        else if(no.equals("2")){
+            questions = questionsRepository.qu_search_title("%"+text+"%");
+            return questions.orElse(new ArrayList<>());
+        }
+        else {
+            questions = questionsRepository.qu_search_text("%"+text+"%");
+            return questions.orElse(new ArrayList<>());
+        }
     }
 }

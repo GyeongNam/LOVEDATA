@@ -10,8 +10,10 @@
 
 <html>
 <head>
-    <link href="/css/Notice.css" rel="stylesheet">
-    <title>Home</title>
+    <link href="/css/ServiceCenter.css" rel="stylesheet">
+    <meta name="_csrf" content="${_csrf.token}">
+    <meta name="_csrf_header" content="${_csrf.headerName}">
+    <title>LOVEDATA:ServiceCenter</title>
 </head>
 <%@ include file="../layout/header.jsp"%>
 <body>
@@ -34,10 +36,10 @@
                     <h3>공지사항</h3>
                 </div>
                 <div class="Nsearch">
-                    <select class="selitm">
-                        <option value="" selected>제목+내용</option>
-                        <option value="">조회수</option>
-                        <option value="">등록일</option>
+                    <select class="Notice_selitm">
+                        <option value="1" selected>제목+내용</option>
+                        <option value="2">조회수</option>
+                        <option value="3">등록일</option>
                     </select>
                     <input type="text" class="Notice-search"><button>검색</button>
                 </div>
@@ -45,16 +47,16 @@
             <table>
                 <thead>
                 <tr>
-                    <th>번호</th><th>제목</th><th>등록일</th><th>첨부파일</th><th>조회수</th>
+                    <th>번호</th><th>제목</th><th>등록일</th><th>작성자</th><th>조회수</th>
                 </tr>
                 </thead>
                 <tbody>
                 <c:forEach var="noti" items="${nots}">
-                <tr onclick=location.href='/Notice/Notice/${noti.noti_no}';>
+                <tr>
                     <td>${noti.noti_no}</td>
-                    <td>${noti.noti_title}</td>
+                    <td onclick=window.open("about:blank").location.href='/ServiceCenter/Notice/${noti.noti_no}';>${noti.noti_title}</td>
                     <td><span>${noti.noti_date}</span></td>
-                    <td>파일?</td>
+                    <td>${noti.noti_manager}</td>
                     <td>${noti.noti_viewCount}</td>
                 </tr>
                 </c:forEach>
@@ -64,26 +66,40 @@
                 <a href="#">&laquo;</a>
                 <a href="#">1</a>
                 <a href="#">&raquo;</a>
+                <div class="add_post">
+                    <button>글쓰기</button>
+                </div>
             </div>
+
         </div>
         <div id="Questions" class="tabcontent">
-            <h3>문의 사항</h3>
-            <table>
+            <div class="Notice-head">
+                <h3>문의 사항</h3>
+            </div>
+                <div class="Qsearch">
+                <select id="Questions_selitm">
+                    <option value="1" selected>제목+내용</option>
+                    <option value="2">제목</option>
+                    <option value="3">내용</option>
+                </select>
+                <input type="text" id="Questions_search"><button onclick="Qsearch()">검색</button>
+                </div>
+            <table id="tbody">
                 <thead>
                 <tr>
                     <th>번호</th><th>제목</th><th>작성자</th><th>접수일</th><th>상태</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="Qtbody" >
                 <c:forEach var="qu" items="${qu}">
-                <tr onclick=location.href='/Notice/Questions/${qu.qu_no}';>
+                <tr>
                     <td>${qu.qu_no}</td>
                     <c:choose>
                         <c:when test="${qu.qu_secret eq true}">
-                            <td>${qu.qu_title} [비밀글]</td>
+                            <td onclick=window.open("about:blank").location.href='/ServiceCenter/Questions/${qu.qu_no}';>${qu.qu_title}  [비밀글]</td>
                         </c:when>
                         <c:when test="${qu.qu_secret eq false}">
-                            <td>${qu.qu_title}</td>
+                            <td onclick=window.open("about:blank").location.href='/ServiceCenter/Questions/${qu.qu_no}';>${qu.qu_title}</td>
                         </c:when>
                     </c:choose>
                     <td>${qu.qu_user}</td>
@@ -104,6 +120,14 @@
                 <a href="#">&laquo;</a>
                 <a href="#">1</a>
                 <a href="#">&raquo;</a>
+                <div class="add_post">
+                    <sec:authorize access="isAnonymous()">
+                        <button onclick="gologin()">글쓰기</button>
+                    </sec:authorize>
+                    <sec:authorize access="isAuthenticated()">
+                        <button onclick="location.href='/ServiceCenter/Questions_Post_add'">글쓰기</button>
+                    </sec:authorize>
+                </div>
             </div>
         </div>
         <div id="Policy" class="tabcontent">
@@ -200,7 +224,7 @@
 <!--   부트스트랩 js 사용  -->
 <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script defer type="text/javascript" src="/resource/js/bootstrap.js"></script>
-<script defer src="/js/notice.js"></script>
+<script defer src="/js/ServiceCenter.js"></script>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
 

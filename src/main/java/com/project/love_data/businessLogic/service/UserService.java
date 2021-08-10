@@ -1,11 +1,7 @@
 package com.project.love_data.businessLogic.service;
 
-import com.project.love_data.dto.LocationDTO;
 import com.project.love_data.dto.UserDTO;
-import com.project.love_data.model.service.Calender;
 import com.project.love_data.model.service.Comment;
-import com.project.love_data.model.service.Location;
-import com.project.love_data.model.service.UserLikeLoc;
 import com.project.love_data.model.user.User;
 import com.project.love_data.repository.LocationRepository;
 import com.project.love_data.repository.UserRepository;
@@ -129,6 +125,11 @@ public class UserService {
 
         return item;
     }
+    public String finduserNo(String email){
+        String no = userRepository.finduserNo(email);
+        return no;
+    }
+
 //    public LocationDTO LocDTO(Long loc_no) {
 //        Optional<Location> item = LocationRepository.findByAllUser_no(loc_no);
 //
