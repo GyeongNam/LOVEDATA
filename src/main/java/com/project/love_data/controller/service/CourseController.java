@@ -195,23 +195,23 @@ public class CourseController {
         PageResultDTO<CourseDTO, com.project.love_data.model.service.Course> resultDTO = corService.getList(pageRequestDTO);
         List<Boolean> isLikedList = new ArrayList<>();
 
-//        if (authentication == null) {
-//            for (int i = 0; i < resultDTO.getSize(); i++) {
-//                isLikedList.add(false);
-//            }
-//        } else {
-//            AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
-//            Long user_no = authUserModel.getUser_no();
-//            for (int i = 0; i < resultDTO.getDtoList().size(); i++) {
-//                Long loc_no = resultDTO.getDtoList().get(i).getLoc_no();
-//                UserLikeLoc item = userLikeLocService.selectByLocNoAndUserNo(loc_no, user_no);
-//                if (item != null){
-//                    isLikedList.add(true);
-//                } else {
-//                    isLikedList.add(false);
-//                }
-//            }
-//        }
+        if (authentication == null) {
+            for (int i = 0; i < resultDTO.getSize(); i++) {
+                isLikedList.add(false);
+            }
+        } else {
+            AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
+            Long user_no = authUserModel.getUser_no();
+            for (int i = 0; i < resultDTO.getDtoList().size(); i++) {
+                Long cor_no = resultDTO.getDtoList().get(i).getCor_no();
+                UserLikeCor item = userLikeCorService.selectByCorNoAndUserNo(cor_no, user_no);
+                if (item != null){
+                    isLikedList.add(true);
+                } else {
+                    isLikedList.add(false);
+                }
+            }
+        }
 
         model.addAttribute("result", resultDTO);
         model.addAttribute("tagList", tagList);

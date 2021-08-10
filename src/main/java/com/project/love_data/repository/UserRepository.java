@@ -51,6 +51,9 @@ public interface UserRepository extends JpaRepository<User, Long>{
 
 	@Query(value = "select * from User u where user_no = :no", nativeQuery = true)
 	User find_user_no(String no);
+
+	@Query(value = "select user_no from User u where user_email = :email", nativeQuery = true)
+	String finduserNo(String email);
 //	@Modifying
 //	@Transactional
 //	@Query(value = "DELETE  FROM User_role_set r WHERE r.user_user_no = :user_no", nativeQuery = true)

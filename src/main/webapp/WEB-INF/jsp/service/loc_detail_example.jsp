@@ -116,7 +116,7 @@
         <div class="row d-flex">
         </div>
         <img src="/image/icon/like/love_black.png" class="loc_icon" alt="찜하기"
-             onclick="onClickLike(this)">
+             onclick="onClickLike(this), 'loc">
         <span class="d-none">0</span>
       </div>
     </div>

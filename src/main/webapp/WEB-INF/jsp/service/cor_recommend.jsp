@@ -129,15 +129,15 @@
 						</c:if>
 						<div class="col-md-4" id="loc_${i}">
 							<div class="card mb-4 shadow-sm">
-								<c:url var="loc_detail" value="/service/loc_detail">
-									<c:param name="locNo" value="${result.dtoList.get(i).cor_no}"/>
+								<c:url var="cor_detail" value="/service/cor_detail">
+									<c:param name="corNo" value="${result.dtoList.get(i).cor_no}"/>
 								</c:url>
-								<a class="container p-0 btn" href="${loc_detail}">
-									<c:set var="imgList" value="${result.dtoList.get(i).imgList}"></c:set>
+								<a class="container p-0 btn" href="${cor_detail}">
+									<c:set var="cor_thumbnail" value="${result.dtoList.get(i).thumbnail}"></c:set>
 									<c:choose>
-										<c:when test="${!empty imgList}">
+										<c:when test="${cor_thumbnail ne ''}">
 									<img class="bd-placeholder-img card-img-top" width="100%" height="225"
-										 alt="${result.dtoList.get(i).loc_name}"
+										 alt="${result.dtoList.get(i).cor_name}"
 										 src="${result.dtoList.get(i).thumbnail}"
 										 preserveAspectRatio="xMidYMid slice" focusable="false">
 										</c:when>
@@ -149,7 +149,7 @@
 												<title>Placeholder</title>
 												<rect width="100%" height="100%" fill="#55595c"></rect>
 												<text x="40%" y="50%" fill="#eceeef"
-													  dy=".3em">${result.dtoList.get(i).loc_name}</text>
+													  dy=".3em">${result.dtoList.get(i).cor_name}</text>
 											</svg>
 										</c:otherwise>
 									</c:choose>
@@ -158,24 +158,25 @@
 								<div class="card-body p-2">
 									<div class="d-flex justify-content-between align-items-center p-1">
 										<div class="d-flex">
-											<a class="card-text loc_rec-locTitle" href="${loc_detail}"
-											   id="title_${i+0}">${result.dtoList.get(i).loc_name}</a>
+											<a class="card-text loc_rec-locTitle" href="${cor_detail}"
+											   id="title_${i+0}">${result.dtoList.get(i).cor_name}</a>
 										</div>
 										<div class="d-flex align-items-center">
 											<img src="/image/icon/view.png" class="loc_icon" alt="조회수">
 											<span class="align-middle">${result.dtoList.get(i).viewCount}</span>
 											<img src="/image/icon/comment.png" class="loc_icon" alt="댓글">
-												<%--									Todo 댓글 항목 Location Entity에 추가하기--%>
-											<span class="align-middle">${result.dtoList.get(i).cmtList.size()}</span>
+												<%--									Todo리뷰 항목 Course Entity에 추가하기--%>
+<%--											<span class="align-middle">${result.dtoList.get(i).cmtList.size()}</span>--%>
 											<sec:authorize access="isAuthenticated()">
+<%--												Todo 코스 찜하기 리스트 컨트롤러 수정후 jsp도 수정하기--%>
 												<c:choose>
 													<c:when test="${isLikedList.get(i) eq true}">
 														<img src="/image/icon/like/love_color.png" class="loc_icon" alt="찜하기"
-															 onclick="onClickLike(this, <sec:authentication property="principal.user_no"/>)">
+															 onclick="onClickLike(this, <sec:authentication property="principal.user_no"/>,'cor')">
 													</c:when>
 													<c:otherwise>
 														<img src="/image/icon/like/love_black.png" class="loc_icon" alt="찜하기"
-															 onclick="onClickLike(this, <sec:authentication property="principal.user_no"/>)">
+															 onclick="onClickLike(this, <sec:authentication property="principal.user_no"/>, 'cor')">
 													</c:otherwise>
 												</c:choose>
 											</sec:authorize>
@@ -183,8 +184,8 @@
 												<img src="/image/icon/like/love_black.png" class="loc_icon" alt="찜하기">
 											</sec:authorize>
 											<span class="align-middle" id="loc_like_count" name="loc_like_count">${result.dtoList.get(i).likeCount}</span>
-											<span class="d-none">${result.dtoList.get(i).loc_no}</span>
-											<span class="d-none">${result.dtoList.get(i).loc_uuid}</span>
+											<span class="d-none">${result.dtoList.get(i).cor_no}</span>
+											<span class="d-none">${result.dtoList.get(i).cor_uuid}</span>
 <%--											<sec:authorize access="isAuthenticated()">--%>
 <%--												<c:set var="user_no"><sec:authentication property="principal.user_no"></sec:authentication></c:set>--%>
 <%--												<span class="d-none">${user_no}</span>--%>
@@ -213,7 +214,7 @@
 					<ul class="pagination justify-content-center">
 						<c:if test="${result.next eq true}">
 							<li class="page-item">
-								<a class="page-link" href="/service/loc_recommend/list?page=${result.start - 1}"
+								<a class="page-link" href="/service/cor_recommend/list?page=${result.start - 1}"
 								   aria-label="Previous">
 									<span aria-hidden="true">&laquo;</span>
 								</a>
@@ -224,19 +225,19 @@
 						<c:when test="${result.page eq j}">
 						<li class="page-item active">
 							<a class="page-link"
-							   href="/service/loc_recommend/list?page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>
+							   href="/service/cor_recommend/list?page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>
 							</c:when>
 							<c:otherwise>
 						<li class="page-item">
 							<a class="page-link"
-							   href="/service/loc_recommend/list?page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>
+							   href="/service/cor_recommend/list?page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>
 							</c:otherwise>
 							</c:choose>
 							</c:forEach>
 						</li>
 						<c:if test="${result.next eq true}">
 							<li class="page-item">
-								<a class="page-link" href="/service/loc_recommend/list?page=${result.end + 1}"
+								<a class="page-link" href="/service/cor_recommend/list?page=${result.end + 1}"
 								   aria-label="Previous">
 									<span aria-hidden="true">&raquo;</span>
 								</a>

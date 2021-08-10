@@ -64,11 +64,11 @@ function removeTag(tag) {
     console.log(tagList);
 }
 
-function onClickLike(Like, user_no) {
+function onClickLike(Like, user_no, type) {
     var countChangeFlag = true;
     var likeCount = null;
-    var loc_no = null;
-    var loc = null;
+    var item_no = null;
+    var item = null;
     var path_noparm = location.pathname;
 
     console.log(path_noparm);
@@ -81,16 +81,16 @@ function onClickLike(Like, user_no) {
     }
     else if (path_noparm ===  "/service/loc_detail") {
         countChangeFlag = true;
-        loc = document.getElementById("loc_no");
-        loc_no = parseInt(loc.innerText);
+        item = document.getElementById("loc_no");
+        item_no = parseInt(item.innerText);
         likeCount = document.getElementById("likeCount");
     } else {
         likeCount = Like.nextElementSibling.innerText;
-        loc_no = Like.nextElementSibling.nextElementSibling.innerText;
-        loc = Like.nextElementSibling;
+        item_no = Like.nextElementSibling.nextElementSibling.innerText;
+        item = Like.nextElementSibling;
     }
 
-    var jsonData = {"loc_no": loc_no, "user_no" : user_no}
+    var jsonData = {"item_no": item_no, "user_no" : user_no, "type" : type}
     var isClicked = false;
     var map = new Map();
 
@@ -103,12 +103,12 @@ function onClickLike(Like, user_no) {
 
     map.set("likeCount", likeCount)
     map.set("listCount", likeCount);
-    map.set("loc_no", loc_no);
+    map.set("item_no", item_no);
     map.set("user_no", user_no);
     map.set("jsonData", jsonData);
     map.set("isClicked", isClicked);
     map.set("like", Like);
-    map.set("loc", loc);
+    map.set("item", item);
     map.set("countChangeFlag", countChangeFlag);
 
     onLoginCheck(map);
@@ -148,20 +148,16 @@ function onLoginCheck(map) {
 
 function onClickLikeAction(map) {
     var likeCount = map.get("likeCount");
-    var loc_no = map.get("loc_no");
+    var item_no = map.get("item_no");
     var user_no = map.get("user_no");
     var jsonData = map.get("jsonData");
     var isClicked = map.get("isClicked");
     var like = map.get("like");
-    var loc = map.get("loc");
+    var item = map.get("item");
     var countChangeFlag = map.get("countChangeFlag");
 
-    console.log("loc_no : " + loc_no);
+    console.log("item_no : " + item_no);
     console.log("user_no : " + user_no);
-
-    // Todo ajax를 인증용 하나와 db에 접속용 두번 보내기
-    // 마지막으로 클릭한 loc_id를 저장하는 전역변수 만들고, 성공적으로 저장시 해당 변수에 값을 저장
-    // 이미 클릭한 버튼을 다시 클릭시 db에서 좋아요 수를 빼고, 이미지를 원래대로 돌리게끔 설정
 
     if (!isClicked) {
         $.ajax({
@@ -189,7 +185,7 @@ function onClickLikeAction(map) {
                             console.log(parseInt(likeCount));
                             console.log(parseInt(likeCount) + 1);
                             console.log(typeof (likeCount) + "\t" + likeCount);
-                            loc.innerText = parseInt(likeCount) + 1;
+                            item.innerText = parseInt(likeCount) + 1;
                         }
                     }
                     // lastLikeLocId = loc_no;
@@ -227,7 +223,7 @@ function onClickLikeAction(map) {
                             console.log(parseInt(likeCount));
                             console.log(parseInt(likeCount) - 1);
                             console.log(typeof (likeCount) + "\t" + likeCount);
-                            loc.innerText = parseInt(likeCount) - 1;
+                            item.innerText = parseInt(likeCount) - 1;
                         }
                     }
 

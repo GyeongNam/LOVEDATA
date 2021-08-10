@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface NoticeRepository extends JpaRepository<Notice, Long> {
-    @Query(value = "select * from Notice where  noti_activation=true", nativeQuery = true)
+    @Query(value = "select * from Notice where  noti_activation=true order by noti_no desc", nativeQuery = true)
     Optional<List<Notice>> noti_find_All();
 
     @Query(value = "select * from Notice where noti_no = :no", nativeQuery = true)

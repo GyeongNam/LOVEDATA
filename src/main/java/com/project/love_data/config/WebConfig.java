@@ -29,7 +29,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/user/deleteAccount").setViewName("user/deleteAccount");
         registry.addViewController("/login").setViewName("user/loginPage");
         registry.addViewController("/NewPassword").setViewName("user/NewPassword");
-        registry.addViewController("/Notice").setViewName("user/Notice");
+        registry.addViewController("/ServiceCenter").setViewName("user/Service_center");
 
 
 

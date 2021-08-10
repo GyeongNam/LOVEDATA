@@ -101,13 +101,13 @@
 				<br><br>
 				<%--			<a href="/bootstrap">부트스트랩 테스트</a>--%>
 				<%--			<a href="/service/loc_recommend">장소_추천</a>--%>
-				<a href="/service/loc_recommend">장소 추천</a>
-				<a href="/service/loc_detail/ex">장소 보기 예시</a>
-				<a href="/service/cor_index">코스 인덱스</a>
+<%--				<a href="/service/loc_recommend">장소 추천</a>--%>
+<%--				<a href="/service/loc_detail/ex">장소 보기 예시</a>--%>
+<%--				<a href="/service/cor_index">코스 인덱스</a>--%>
 				<a href="/fullpage">fullpage테스트</a>
 				<%--			<a href="/sample/index">테스트</a>--%>
 				<%--			<a href="/service/loc_index">장소_인덱스</a>--%>
-				<a href="/Notice">공지사항</a>
+				<a href="/ServiceCenter">공지사항</a>
 			</div>
 		</div>
 	</div>
