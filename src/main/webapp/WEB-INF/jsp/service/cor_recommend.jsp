@@ -38,7 +38,7 @@
 							<button class="btn btn-link btn-block loc_highlight-selected-nav-menu" type="button"
 									data-toggle="collapse"
 									data-target="#loc_collapse" aria-expanded="true" aria-controls="collapseOne">
-								장소
+								코스
 							</button>
 						</h2>
 					</div>
@@ -80,8 +80,8 @@
 					</ul>
 					<%--					@Todo 인풋 값이 ""일 경우 버튼 활성화 x--%>
 <%--					<form action="/service/loc_recommend/search" method="get">--%>
-						<input type="text" placeholder="장소 검색" id="keyword" name="keyword"/>
-						<button class="btn btn-primary mx-2" type="button" id="searchBtn" onclick="onClickSearch()">Search</button>
+						<input type="text" placeholder="코스 검색" id="keyword" name="keyword"/>
+						<button class="btn btn-primary mx-2" type="button" id="searchBtn" onclick="onClickSearch_Course()">Search</button>
 <%--					</form>--%>
 				</div>
 			</nav>

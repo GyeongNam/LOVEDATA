@@ -300,80 +300,80 @@ public class CourseController {
 //
 //        return "redirect:/service/loc_recommend";
 //    }
-//
-//    @GetMapping(value = "/service/loc_recommend/search")
-//    public String getSearchValue(HttpServletRequest request, Model model){
-//        String keyword = request.getParameter("keyword");
-//        String order = request.getParameter("sortOrder");
-//        String tagString = request.getParameter("tags");
-//        String type = request.getParameter("searchType");
-//        String pageNumber = request.getParameter("page");
-//        if (pageNumber == null) {
-//            pageNumber = "1";
-//        }
-//        int pageNum = Integer.parseInt(pageNumber);
-//
-//        SortingOrder sortingOrder = null;
-//        SortCriterion sortCriterion = null;
-//        SearchType searchType = SearchType.valueOf(type);
-//        List<String> tempList = Arrays.asList(tagString.split(","));
-//        tagList.clear();
-//        for (String s : tempList) {
-//            if ("".equals(s)) {
-//                continue;
-//            } else {
-//                tagList.add(s);
-//            }
-//        }
-//
-//        switch (order){
-//            case "LIKE_DES" :
-//                // 좋아요 순
-//                sortCriterion = SortCriterion.LIKE;
-//                sortingOrder = SortingOrder.DES;
-//                break;
-//            case "DATE_DES" :
-//                // 최신 등록순
-//                sortCriterion = SortCriterion.DATE;
-//                sortingOrder = SortingOrder.DES;
-//                break;
-//            case "DATE_ASC" :
-//                // 오래된 등록순
-//                sortCriterion = SortCriterion.DATE;
-//                sortingOrder = SortingOrder.ASC;
-//                break;
-//            case "VIEW_DES" :
-//                // 조회순
-//            default:
-//                sortCriterion = SortCriterion.VIEW;
-//                sortingOrder = SortingOrder.DES;
-//                break;
-//        }
-//
-//        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
-//                .size(MAX_LOC_LIST_SIZE)
-//                .searchType(searchType)
-//                .keyword(keyword)
-//                .tagList(tagList)
-//                .sortCriterion(sortCriterion)
-//                .sortingOrder(sortingOrder)
-//                .page(pageNum)
-//                .build();
-//
-//        PageResultDTO<LocationDTO, com.project.love_data.model.service.Location> resultDTO = locService.getList(pageRequestDTO);
-//
-//        List<LocationTag> tags = Arrays.asList(LocationTag.values());
-//        List<String> activeTags = tagList;
-//
-//        model.addAttribute("result", resultDTO);
-//        model.addAttribute("tagList", tags);
-//        model.addAttribute("activeTags", activeTags);
-//        model.addAttribute("keyword", keyword);
-//        model.addAttribute("sortOrder", order);
-//        model.addAttribute("searchType", searchType);
-//
-////        log.info("active tags : " + activeTags);
-//
-//        return "/service/loc_recommend_search";
-//    }
+
+    @GetMapping(value = "/service/cor_recommend/search")
+    public String getSearchValue(HttpServletRequest request, Model model){
+        String keyword = request.getParameter("keyword");
+        String order = request.getParameter("sortOrder");
+        String tagString = request.getParameter("tags");
+        String type = request.getParameter("searchType");
+        String pageNumber = request.getParameter("page");
+        if (pageNumber == null) {
+            pageNumber = "1";
+        }
+        int pageNum = Integer.parseInt(pageNumber);
+
+        SortingOrder sortingOrder = null;
+        SortCriterion sortCriterion = null;
+        SearchType searchType = SearchType.valueOf(type);
+        List<String> tempList = Arrays.asList(tagString.split(","));
+        tagList.clear();
+        for (String s : tempList) {
+            if ("".equals(s)) {
+                continue;
+            } else {
+                tagList.add(s);
+            }
+        }
+
+        switch (order){
+            case "LIKE_DES" :
+                // 좋아요 순
+                sortCriterion = SortCriterion.LIKE;
+                sortingOrder = SortingOrder.DES;
+                break;
+            case "DATE_DES" :
+                // 최신 등록순
+                sortCriterion = SortCriterion.DATE;
+                sortingOrder = SortingOrder.DES;
+                break;
+            case "DATE_ASC" :
+                // 오래된 등록순
+                sortCriterion = SortCriterion.DATE;
+                sortingOrder = SortingOrder.ASC;
+                break;
+            case "VIEW_DES" :
+                // 조회순
+            default:
+                sortCriterion = SortCriterion.VIEW;
+                sortingOrder = SortingOrder.DES;
+                break;
+        }
+
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+                .size(MAX_COR_LIST_SIZE)
+                .searchType(searchType)
+                .keyword(keyword)
+                .tagList(tagList)
+                .sortCriterion(sortCriterion)
+                .sortingOrder(sortingOrder)
+                .page(pageNum)
+                .build();
+
+        PageResultDTO<CourseDTO, Course> resultDTO = corService.getList(pageRequestDTO);
+
+        List<LocationTag> tags = Arrays.asList(LocationTag.values());
+        List<String> activeTags = tagList;
+
+        model.addAttribute("result", resultDTO);
+        model.addAttribute("tagList", tags);
+        model.addAttribute("activeTags", activeTags);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("sortOrder", order);
+        model.addAttribute("searchType", searchType);
+
+//        log.info("active tags : " + activeTags);
+
+        return "/service/cor_recommend_search";
+    }
 }

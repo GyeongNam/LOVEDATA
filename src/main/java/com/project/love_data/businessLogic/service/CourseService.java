@@ -5,6 +5,7 @@ import com.project.love_data.dto.PageRequestDTO;
 import com.project.love_data.dto.PageResultDTO;
 import com.project.love_data.model.resource.CourseImage;
 import com.project.love_data.model.service.Course;
+import com.project.love_data.model.service.QCourse;
 import com.project.love_data.repository.CourseImageRepository;
 import com.project.love_data.repository.CourseRepository;
 import com.querydsl.core.BooleanBuilder;
@@ -208,13 +209,7 @@ public class CourseService {
         return courseDTO;
     }
 
-//    public PageResultDTO<CourseDTO, Course> getList(PageRequestDTO requestDTO) {
-//        return getList(requestDTO, SearchType.NONE,
-//                SortCriterion.VIEW, SortingOrder.DES);
-//    }
-
     public PageResultDTO<CourseDTO, Course> getList(PageRequestDTO requestDTO) {
-//        Pageable pageable = requestDTO.getPageable(Sort.by("viewCount").descending());
         boolean flagASC = false;
 
         Pageable pageable;
@@ -259,71 +254,56 @@ public class CourseService {
         }
 
         // Todo 추후 추가하기
-//        BooleanBuilder booleanBuilder = getSearch(requestDTO);
-        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        BooleanBuilder booleanBuilder = getSearch(requestDTO);
         Page<Course> result = repository.findAll(booleanBuilder, pageable);
-
-//        switch (requestDTO.getSearchType()){
-//            case USER:
-//                booleanBuilder =
-////                result = repository.findByAllUser_no(pageable);
-//                break;
-//            case TITLE:
-//                result = repository.findAll(pageable);
-//                break;
-//            case NONE:
-//            default:
-//                result = repository.findAll(pageable);
-//                break;
-//        }
 
         Function<Course, CourseDTO> fn = (entity -> entityToDto(entity));
 
         return new PageResultDTO<>(result, fn);
     }
 
-//    public BooleanBuilder getSearch(PageRequestDTO requestDTO) {
-//        Long userNo = requestDTO.getUserNo();
-//        Long locNo = requestDTO.getLocNo();
-//        String keyword = requestDTO.getKeyword();
-//        List<String> tagList = requestDTO.getTagList();
-//        BooleanBuilder conditionBuilder = new BooleanBuilder();
-//        QCourse qCourse = QCourse.Course;
-//
-//        switch (requestDTO.getSearchType()){
-//            case USER:
-//                conditionBuilder.and(qCourse.loc_no.eq(userNo));
-//                break;
-//            case USER_TAG:
-//                conditionBuilder.and(qCourse.loc_no.eq(userNo));
-//                for (String s : tagList) {
-//                    conditionBuilder.and(qCourse.tagSet.contains(s));
-//                }
-//                break;
-//            case TITLE:
-//                conditionBuilder.and(qCourse.loc_name.contains(keyword));
-//                break;
-//            case TITLE_TAG:
-//                conditionBuilder.and(qCourse.loc_name.contains(keyword));
-//                for (String s : tagList) {
-//                    conditionBuilder.and(qCourse.tagSet.contains(s));
-//                }
-//                break;
-//            case TAG:
-//                for (String s : tagList) {
-//                    conditionBuilder.and(qCourse.tagSet.contains(s));
-//                }
-//                break;
-//            case DISABLED:
-//                conditionBuilder.and(qCourse.is_deleted.eq(true));
-//                break;
-//            case NONE:
-//            default:
-//                return conditionBuilder.and(qCourse.is_deleted.ne(true));
-//        }
-//
-//        return conditionBuilder.and(qCourse.is_deleted.ne(true));
-//    }
+    public BooleanBuilder getSearch(PageRequestDTO requestDTO) {
+        Long userNo = requestDTO.getUserNo();
+        Long corNo = requestDTO.getLocNo();
+        String keyword = requestDTO.getKeyword();
+        List<String> tagList = requestDTO.getTagList();
+        BooleanBuilder conditionBuilder = new BooleanBuilder();
+        QCourse qCourse = QCourse.course;
+
+        switch (requestDTO.getSearchType()){
+            case USER:
+                conditionBuilder.and(qCourse.user_no.eq(userNo));
+                break;
+            case USER_TAG:
+                conditionBuilder.and(qCourse.user_no.eq(userNo));
+                for (String s : tagList) {
+                    conditionBuilder.and(qCourse.tagSet.contains(s));
+                }
+                break;
+            case TITLE:
+                conditionBuilder.and(qCourse.cor_name.contains(keyword));
+                break;
+            case TITLE_TAG:
+                conditionBuilder.and(qCourse.cor_name.contains(keyword));
+                for (String s : tagList) {
+                    conditionBuilder.and(qCourse.tagSet.contains(s));
+                }
+                break;
+            case TAG:
+                for (String s : tagList) {
+                    conditionBuilder.and(qCourse.tagSet.contains(s));
+                }
+                break;
+            case DISABLED:
+                conditionBuilder.and(qCourse.is_deleted.eq(true));
+                break;
+            case NONE:
+            default:
+                return conditionBuilder.and(qCourse.is_deleted.ne(true));
+        }
+
+        return conditionBuilder.and(qCourse.is_deleted.ne(true));
+    }
 
     public Course selectCor(Long corNo) {
         Optional<Course> result = repository.findById(corNo);

@@ -16,4 +16,9 @@ public class PopupController {
     public String popupLocationSearch() {
         return "/popup/locationSearchPopup";
     }
+
+    @RequestMapping("/popup/courseSearchPopup")
+    public String popupCourseSearch() {
+        return "/popup/courseSearchPopup";
+    }
 }
