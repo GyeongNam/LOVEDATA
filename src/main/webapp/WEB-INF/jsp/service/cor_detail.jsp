@@ -368,7 +368,7 @@
     function clickImgNext() {
         var imgDisplay = document.getElementById("imgDisplay");
         var index = document.getElementById("imgListIndex");
-        var temp;
+        var temp = "";
         var imgList;
         var tempIndex = parseInt(index.innerText);
         var indexIndicator = document.getElementById("indexIndicator");
@@ -379,9 +379,9 @@
 			</c:when>
 			<c:otherwise>
         		<c:forEach var="i" begin="0" end="${ImageList.size()-1}">
-        			temp += ${ImageList.get(i)} + "_";
+        			temp += "${ImageList.get(i).img_url}" + "_";
         		</c:forEach>
-        		temp = temp.splice(0, temp.length-1);
+        		temp = temp.substring(0, temp.length-1);
 			</c:otherwise>
 		</c:choose>
         imgList = temp.split('_');
@@ -397,7 +397,7 @@
     function clickImgPrev() {
         var imgDisplay = document.getElementById("imgDisplay");
         var index = document.getElementById("imgListIndex");
-        var temp;
+        var temp = "";
         var imgList;
         var tempIndex = parseInt(index.innerText);
         var indexIndicator = document.getElementById("indexIndicator");
@@ -408,9 +408,9 @@
 	        </c:when>
     	    <c:otherwise>
         		<c:forEach var="i" begin="0" end="${ImageList.size()-1}">
-			        temp += ${ImageList.get(i)} + "_";
+			        temp += "${ImageList.get(i).img_url}" + "_";
 		        </c:forEach>
-	    	    temp = temp.splice(0, temp.length-1);
+	    	    temp = temp.substring(0, temp.length-1);
     	    </c:otherwise>
         </c:choose>
         imgList = temp.split('_');
