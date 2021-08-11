@@ -5,6 +5,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page session="false" %>
 <jsp:useBean id="defaultDateTimeFormatter" class="com.project.love_data.util.DefaultLocalDateTimeFormatter"></jsp:useBean>
+<jsp:useBean id="simpleDateTimeFormatter" class="com.project.love_data.util.SimpleLocalDateTimeFormatter"></jsp:useBean>
 
 <html>
 <head>
@@ -152,7 +153,7 @@
 <%--						<h5 class="text-truncate">설명 : ${dto.info}</h5>--%>
 <%--					</div>--%>
 					<div class="row d-flex">
-						<h5>등록일 : ${dto.regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}</h5>
+						<h5>등록일 : ${dto.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</h5>
 					</div>
 					<div class="row d-flex">
 						<h5>연락처 : ${dto.tel}</h5>
@@ -226,8 +227,9 @@
 										<c:when test="${0 != cmtDTO.size()}">
 											<c:forEach var="c" begin="0" end="${cmtDTO.size()-1}">
 												<div class="bg-white p-2">
-													<div class="d-flex flex-row align-items-center"><img
-															src="/image/icon/user/user.png"
+													<div class="d-flex flex-row align-items-center">
+														<img
+															src="${cmtDTO.get(c).user.profile_pic}"
 															class="loc_comment-profile-image-wh">
 														<div class="flex-column">
 															<p class="visually-hidden" id="cmt_id_${c}">${cmtDTO.get(c).cmtUuid}</p>

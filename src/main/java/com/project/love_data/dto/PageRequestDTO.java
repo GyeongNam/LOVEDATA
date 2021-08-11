@@ -25,6 +25,7 @@ public class PageRequestDTO {
     private String keyword;
     private Long locNo;
     private Long userNo;
+    private Long corNo;
     @Builder.Default
     private SearchType searchType = SearchType.NONE;
     @Builder.Default

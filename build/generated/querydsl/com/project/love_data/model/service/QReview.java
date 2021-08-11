@@ -19,9 +19,17 @@ public class QReview extends EntityPathBase<Review> {
 
     public static final QReview review = new QReview("review");
 
+    public final com.project.love_data.model.base.QTimeEntity _super = new com.project.love_data.model.base.QTimeEntity(this);
+
     public final NumberPath<Long> corNo = createNumber("corNo", Long.class);
 
     public final BooleanPath is_deleted = createBoolean("is_deleted");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modDate = _super.modDate;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> regDate = _super.regDate;
 
     public final NumberPath<Float> rev_point = createNumber("rev_point", Float.class);
 
@@ -32,6 +40,8 @@ public class QReview extends EntityPathBase<Review> {
     public final NumberPath<Long> revNo = createNumber("revNo", Long.class);
 
     public final StringPath revUuid = createString("revUuid");
+
+    public final StringPath user_name = createString("user_name");
 
     public final NumberPath<Long> user_no = createNumber("user_no", Long.class);
 

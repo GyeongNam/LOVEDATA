@@ -1,5 +1,6 @@
 package com.project.love_data.model.service;
 
+import com.project.love_data.model.base.TimeEntity;
 import com.project.love_data.model.user.User;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
@@ -16,7 +17,7 @@ import java.util.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Review {
+public class Review extends TimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -42,6 +43,9 @@ public class Review {
 
     @Column(name = "user_no", nullable = false)
     private Long user_no;
+
+    @Column(name = "user_name", nullable = false)
+    private String user_name;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Cascade(value = org.hibernate.annotations.CascadeType.ALL)

@@ -29,7 +29,7 @@ public class AuthUserModel extends User {
     private boolean user_emil_re;
     private boolean user_Activation;
 
-    public AuthUserModel(String user_email, String password, boolean social, Collection<? extends GrantedAuthority> authorities) {
+    public AuthUserModel(String user_email, String password, String user_profilePic, boolean social, Collection<? extends GrantedAuthority> authorities) {
         super(user_email, password, authorities);
         this.user_email = user_email;
         this.user_social = social;

@@ -247,15 +247,6 @@
             </div>
         </div>
     </div>
-
-    <c:choose>
-    <c:when test="${set_user eq false}">
-        기본 로그인 ${set_user}
-    </c:when>
-    <c:when test="${set_user eq true}">   <%--	소셜 로그인으로 들어올경우--%>
-        소셜 로그인 ${set_user}
-    </c:when>
-    </c:choose>
 </form>
 
 <%--<%@ include file="../layout/footer.jsp" %>--%>

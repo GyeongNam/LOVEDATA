@@ -29,6 +29,12 @@ public class CourseImageService {
         return item.isPresent() ? item.get() : null;
     }
 
+    public List<CourseImage> getImagesByCorNo(Long corNo) {
+        Optional<List<CourseImage>> itmes = repository.findAllByCor_no(corNo);
+
+        return itmes.orElse(null);
+    }
+
     public CourseImage getImageEntity(String user_no, String fileRootPath, String fileName, Long corNo, long img_index) {
 //        ImageDTO dto = getImageDTO(user_no, fileRootPath, fileName, location);
 //        Image entity = dtoToEntity(dto);

@@ -1,11 +1,38 @@
+/* new setting */
+#header{
+  position: relative;
+  overflow: hidden;
+  padding: 60px 0 54px;
+  box-sizing: border-box;
+}
+.input_style{
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 51px;
+  border: solid 1px #dadada;
+  padding: 10px 110px 10px 14px;
+}
+
+.emailcontent{
+  display: flex;
+}
+
+.site-logo{
+  display: block;
+  margin: 0 auto;
+  width:240px;
+  height:44px;
+}
+/* new setting */
 
   table.signup {
     border-collapse: collapse;
     text-align: left;
     line-height: 1.5;
     border: 1px solid #ccc;
-    margin: 20px 10px;
-    width: auto;
+    margin: 0 auto;
+    width: 550px;
   }
   table.signup thead {
     border-right: 1px solid #ccc;
@@ -35,13 +62,15 @@
   }
   .spen {
     vertical-align : middle;
-    font-size: 50%;
+    font-size: 70%;
   }
   .logo {
  	  padding-left: 10px;
   }
   .sand_back {
+    margin-top: 10px;
   	padding-left: 10px;
+    text-align: center;
   }
   .checkbox1 {
     vertical-align : middle;

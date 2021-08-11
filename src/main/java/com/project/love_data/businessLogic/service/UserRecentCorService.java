@@ -1,9 +1,7 @@
 package com.project.love_data.businessLogic.service;
 
 import com.project.love_data.model.service.UserRecentCor;
-import com.project.love_data.model.service.UserRecentCor;
 import com.project.love_data.model.user.User;
-import com.project.love_data.repository.UserRecentCorRepository;
 import com.project.love_data.repository.UserRecentCorRepository;
 import com.project.love_data.util.RecentLoc_Delete_Condition;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +22,9 @@ public class UserRecentCorService {
     @Autowired
     UserService userService;
 
-    public UserRecentCor register(Long locNo, Long userNo) {
-        if (!isDuplicated(locNo, userNo) && keepMaxHistoryCount(userNo)) {
-            UserRecentCor UserRecentCor = insert(locNo, userNo);
+    public UserRecentCor register(Long corNo, Long userNo) {
+        if (!isDuplicated(corNo, userNo) && keepMaxHistoryCount(userNo)) {
+            UserRecentCor UserRecentCor = insert(corNo, userNo);
             UserRecentCor entity = update(UserRecentCor);
 
             return entity;

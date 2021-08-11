@@ -5,6 +5,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page session="false" %>
 <jsp:useBean id="defaultDateTimeFormatter" class="com.project.love_data.util.DefaultLocalDateTimeFormatter"></jsp:useBean>
+<jsp:useBean id="simpleDateTimeFormatter" class="com.project.love_data.util.SimpleLocalDateTimeFormatter"></jsp:useBean>
 
 <html>
 <head>
@@ -75,14 +76,14 @@
 		<div class="row justify-content-md-center">
 			<div class="col-md-7">
 				<div class="card mb-4 shadow-sm">
-					<c:set var="imgList" value="${dto.imgList}"></c:set>
+					<c:set var="imgList" value="${ImageList}"></c:set>
 					<c:choose>
 						<c:when test="${!empty imgList}">
 							<div class="d-flex justify-content-center">
 								<img class="bd-placeholder-img card-img" width="100%"
 									 height="400"
-									 alt="${dto.loc_name}"
-									 src="${dto.imgList.get(0).img_url}"
+									 alt="${dto.cor_name}"
+									 src="${imgList.get(0).img_url}"
 									 id="imgDisplay"
 									 name="imgDisplay"
 									 preserveAspectRatio="xMidYMid slice" focusable="false">
@@ -111,9 +112,9 @@
 								<span class="visually-hidden" id="imgListSize"
 									  name="imgListSize">${imgList.size()}</span>
 								<span class="visually-hidden" id="dtoImgListSize"
-									  name="dtoImgListSize">${dto.imgList.size()}</span>
+									  name="dtoImgListSize">${imgList.size()}</span>
 								<span class="visually-hidden" id="imgListIndex" name="imgListIndex">0</span>
-								<input type="hidden" id="imgList" name="imgList" value="${dto.imgList}"></input>
+								<input type="hidden" id="imgList" name="imgList" value="${imgList}"></input>
 							</div>
 						</c:when>
 						<c:otherwise>
@@ -123,7 +124,7 @@
 								 preserveAspectRatio="xMidYMid slice" focusable="false">
 								<title>Placeholder</title>
 								<rect width="100%" height="100%" fill="#55595c"></rect>
-								<text x="40%" y="50%" fill="#eceeef" dy=".3em">${dto.loc_name}</text>
+								<text x="40%" y="50%" fill="#eceeef" dy=".3em">${dto.cor_name}</text>
 							</svg>
 						</c:otherwise>
 					</c:choose>
@@ -132,26 +133,40 @@
 			<div class="col-md-5 justify-content-md-center">
 				<div class="row d-flex">
 					<div class="row d-flex justify-content-between p-1">
-						<span class="h2">${dto.loc_name}</span>
-					</div>
-					<div class="row d-flex">
-						<h5>지역 : ${dto.siDo} ${dto.siGunGu}</h5>
+						<span class="h2">${dto.cor_name}</span>
 					</div>
 					<div class="row d-flex">
 						<h5>해시태그 : ${dto.tagSet}</h5>
 					</div>
+					<c:choose>
+						<c:when test="${dto.est_type eq 'time'}">
+							<div class="row d-flex">
+								<h5>예상 소요시간 : ${dto.est_value}</h5>
+							</div>
+						</c:when>
+						<c:otherwise>
+							<div class="row d-flex">
+								<h5>예상 소요일 : ${dto.est_value}</h5>
+							</div>
+						</c:otherwise>
+					</c:choose>
 					<div class="row d-flex">
-						<h5 class="text-truncate">설명 : ${dto.info}</h5>
+						<h5>이동수단 : ${dto.transportation}</h5>
 					</div>
 					<div class="row d-flex">
-						<h5>등록일 : ${dto.regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}</h5>
+						<h5>비용 : ${dto.cost}</h5>
+					</div>
+<%--					<div class="row d-flex">--%>
+<%--						<h5 class="text-truncate">설명 : ${dto.info}</h5>--%>
+<%--					</div>--%>
+					<div class="row d-flex">
+						<h5>등록일 : ${dto.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</h5>
 					</div>
 				</div>
 				<div class="row d-flex">
 				</div>
 
 				<div class="d-flex align-content-end flex-wrap">
-<%--					이미지 소스 바꾸는 로직 추가--%>
 					<sec:authorize access="isAuthenticated()">
 						<c:choose>
 							<c:when test="${isLiked eq true}">
@@ -169,64 +184,63 @@
 					</sec:authorize>
 					<span class="text-center align-middle fs-3 me-4" id="likeCount">${dto.likeCount}</span>
 					<img src="/image/icon/comment.png" class="loc_icon_big me-2" alt="댓글">
-					<span class="text-center align-middle fs-3 me-4">${dto.cmtList.size()}</span>
+					<span class="text-center align-middle fs-3 me-4">${resRevDTO.dtoList.size()}</span>
 <%--					Todo 추후에 위치 수정하기--%>
 <%--				loc_common onClickLike	--%>
 					<span class="visually-hidden">${dto.user_no}</span>
 					<button class="btn btn-outline-danger col-3" style="max-height: 56px" onclick="copyURL()">공유</button>
-					<button class="btn btn-outline-danger col-3" style="max-height: 56px;" onclick="location.href='/service/loc_edit?locNo=${dto.loc_no}'">수정</button>
+					<button class="btn btn-outline-danger col-3" style="max-height: 56px;" onclick="location.href='/service/loc_edit?locNo=${dto.cor_no}'">수정</button>
 				</div>
-				<span class="d-none" id="loc_no">${dto.loc_no}</span>
+				<span class="d-none" id="cor_no">${dto.cor_no}</span>
 			</div>
 		</div>
 		<div class="row justify-content-md-start">
 			<ul class="nav nav-pills nav-fill col-5" id="pills-tab" role="tablist"
 				style="height:50px; padding-top: 5px; padding-bottom: 5px">
 				<li class="nav-item" role="presentation">
-					<button class="nav-link active" id="location-info-tab" data-bs-toggle="pill"
-							data-bs-target="#location-info" type="button" role="tab" aria-controls="location-info"
+					<button class="nav-link active" id="course-info-tab" data-bs-toggle="pill"
+							data-bs-target="#course-info" type="button" role="tab" aria-controls="course-info"
 							aria-selected="true">설명
 					</button>
 				</li>
 				<li class="nav-item" role="presentation">
-					<button class="mw-100 mh-100 nav-link" id="location-comment-tab" data-bs-toggle="pill"
-							data-bs-target="#location-comment" type="button" role="tab" aria-controls="location-comment"
-							aria-selected="false">댓글
+					<button class="mw-100 mh-100 nav-link" id="course-review-tab" data-bs-toggle="pill"
+							data-bs-target="#course-review" type="button" role="tab" aria-controls="course-review"
+							aria-selected="false">리뷰
 					</button>
 				</li>
 			</ul>
 			<div class="tab-content" id="pills-tabContent">
 				<%--      설명--%>
-				<div class="tab-pane fade show active" id="location-info" role="tabpanel" aria-labelledby="location-info-tab">
+				<div class="tab-pane fade show active" id="course-info" role="tabpanel" aria-labelledby="course-info-tab">
 					<div class="container">
 						<div class="d-flex mt-3">
 							<span class="fs-5" style="white-space: pre-wrap;">${dto.info}</span>
 						</div>
 					</div>
 				</div>
-				<%--    댓글--%>
-				<div class="tab-pane fade" id="location-comment" role="tabpanel" aria-labelledby="location-comment-tab">
+				<%--    리뷰--%>
+				<div class="tab-pane fade" id="course-review" role="tabpanel" aria-labelledby="course-review-tab">
 					<div class="container mt-0">
 						<div class="d-flex justify-content-start row">
 							<div class="col-md-10">
 								<div class="d-flex flex-column">
-									<c:set var="cmtDTO" value="${resComDTO.dtoList}"></c:set>
+									<c:set var="revDTO" value="${resRevDTO.dtoList}"></c:set>
 									<c:choose>
-										<c:when test="${0 != cmtDTO.size()}">
-											<c:forEach var="c" begin="0" end="${cmtDTO.size()-1}">
+										<c:when test="${0 != revDTO.size()}">
+											<c:forEach var="c" begin="0" end="${revDTO.size()-1}">
 												<div class="bg-white p-2">
 													<div class="d-flex flex-row align-items-center"><img
 															src="/image/icon/user/user.png"
 															class="loc_comment-profile-image-wh">
 														<div class="flex-column">
-															<p class="visually-hidden" id="cmt_id_${c}">${cmtDTO.get(c).cmtUuid}</p>
+															<p class="visually-hidden" id="rev_id_${c}">${revDTO.get(c).revUuid}</p>
 															<span class="d-block font-weight-bold name">
-																	${cmtDTO.get(c).user.user_nic}
+																	${revDTO.get(c).userName}
 																		<sec:authorize access="isAuthenticated()">
 																			<c:set var="user_no"><sec:authentication property="principal.user_no"/></c:set>
 																			<c:choose>
-																				<c:when test="${user_no eq cmtDTO.get(c).user.user_no}">
-																					<span class="d-none" id="cmt_user_email_${c}">${cmtDTO.get(c).user.user_email}</span>
+																				<c:when test="${user_no eq revDTO.get(c).userNo}">
 																					<div>
 																						<button class="btn btn-primary" onclick="openCmtEditMenu(${c})">수정</button>
 																						<button class="btn btn-primary" onclick="onClickDeleteComment(${c})">삭제</button>
@@ -235,9 +249,9 @@
 																			</c:choose>
 																		</sec:authorize>
 															</span>
-															<span class="date text-black-50 ml-5">${cmtDTO.get(c).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}</span>
+															<span class="date text-black-50 ml-5">${revDTO.get(c).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}</span>
 															<c:choose>
-																<c:when test="${cmtDTO.get(c).regDate ne cmtDTO.get(c).modDate}">
+																<c:when test="${revDTO.get(c).regDate ne revDTO.get(c).modDate}">
 																	<span class="date text-black-50 ml-5">(수정됨)</span>
 																</c:when>
 															</c:choose>
@@ -245,10 +259,10 @@
 													</div>
 													<div class="mt-2">
 														<div id="cmt_content_${c}" class="visible">
-															<p class="comment-text">${cmtDTO.get(c).cmtContent}</p>
+															<p class="comment-text">${revDTO.get(c).revContent}</p>
 														</div>
 														<div id="cmt_edit_${c}" class="row visually-hidden">
-															<textarea id="cmt_edit_content_${c}" rows="6" maxlength="300" class="form-control ml-1 shadow-none textarea">${cmtDTO.get(c).cmtContent}</textarea>
+															<textarea id="cmt_edit_content_${c}" rows="6" maxlength="300" class="form-control ml-1 shadow-none textarea">${revDTO.get(c).revContent}</textarea>
 															<div class="d-flex p-0 justify-content-end">
 																<button class="btn btn-primary mx-2" onclick="submitUpdateComment(${c})">등록</button>
 																<button class="btn btn-primary mx-2" onclick="closeCmtEditMenu(${c})">뒤로가기</button>
@@ -273,42 +287,41 @@
 						<div class="col" id="page_number">
 							<nav aria-label="Page navigation example">
 								<ul class="pagination justify-content-center">
-									<c:if test="${resComDTO.prev eq true}">
+									<c:if test="${resRevDTO.prev eq true}">
 										<li class="page-item">
-											<a class="page-link" href="/service/loc_detail?locNo=${dto.loc_no}&page=${resComDTO.start - 1}"
+											<a class="page-link" href="/service/cor_detail?corNo=${dto.cor_no}&page=${revDTO.start - 1}"
 											   aria-label="Previous">
 												<span aria-hidden="true">&laquo;</span>
 											</a>
 										</li>
 									</c:if>
 									<c:choose>
-										<c:when test="${resComDTO.start < 10}">
+										<c:when test="${resRevDTO.start < 10}">
 											<c:set var="power" value="${0}"/>
 										</c:when>
 										<c:otherwise>
-											<c:set var="power" value="${resComDTO.start - (resComDTO.start mod 10)}"/>
+											<c:set var="power" value="${resRevDTO.start - (resRevDTO.start mod 10)}"/>
 										</c:otherwise>
 									</c:choose>
-									<c:forEach var="j" begin="${1}" end="${resComDTO.end - resComDTO.start + 1}">
+									<c:forEach var="j" begin="${1}" end="${resRevDTO.end - resRevDTO.start + 1}">
 									<c:choose>
-									<c:when test="${resComDTO.page eq j + power}">
+									<c:when test="${resRevDTO.page eq j + power}">
 									<li class="page-item active">
 										<a class="page-link"
-											<%--										   pageList에는 현재 8개의 리스트 밖에 없지만 반복문 j는 11에서부터 시작하므로 인덱스 오류가 발생함--%>
-										   href="/service/loc_detail?locNo=${dto.loc_no}&page=${resComDTO.pageList.get(j - 1)}">${resComDTO.pageList.get(j - 1)}</a>
+										   href="/service/cor_detail?corNo=${dto.cor_no}&page=${resRevDTO.pageList.get(j - 1)}">${revDTO.pageList.get(j - 1)}</a>
 											<%--										   href="/service/loc_detail?locNo=${dto.loc_no}&page=${resComDTO.pageList.get(j)}">${resComDTO.pageList.get(j)}</a>--%>
 										</c:when>
 										<c:otherwise>
 									<li class="page-item">
 										<a class="page-link"
-										   href="/service/loc_detail?locNo=${dto.loc_no}&page=${resComDTO.pageList.get(j-1)}">${resComDTO.pageList.get(j-1)}</a>
+										   href="/service/cor_detail?corNo=${dto.cor_no}&page=${resRevDTO.pageList.get(j-1)}">${resRevDTO.pageList.get(j-1)}</a>
 										</c:otherwise>
 										</c:choose>
 										</c:forEach>
 									</li>
-									<c:if test="${resComDTO.next eq true}">
+									<c:if test="${resRevDTO.next eq true}">
 										<li class="page-item">
-											<a class="page-link" href="/service/loc_detail?locNo=${dto.loc_no}&page=${resComDTO.end + 1}"
+											<a class="page-link" href="/service/cor_detail?corNo=${dto.cor_no}&page=${resRevDTO.end + 1}"
 											   aria-label="Previous">
 												<span aria-hidden="true">&raquo;</span>
 											</a>
@@ -355,10 +368,23 @@
     function clickImgNext() {
         var imgDisplay = document.getElementById("imgDisplay");
         var index = document.getElementById("imgListIndex");
-        var temp = '<c:out value="${dto.printImgURLS()}"/>';
-        var imgList = temp.split('_');
+        var temp;
+        var imgList;
         var tempIndex = parseInt(index.innerText);
         var indexIndicator = document.getElementById("indexIndicator");
+
+        <c:choose>
+			<c:when test="${ImageList.size() eq 0}">
+				temp = "_";
+			</c:when>
+			<c:otherwise>
+        		<c:forEach var="i" begin="0" end="${ImageList.size()-1}">
+        			temp += ${ImageList.get(i)} + "_";
+        		</c:forEach>
+        		temp = temp.splice(0, temp.length-1);
+			</c:otherwise>
+		</c:choose>
+        imgList = temp.split('_');
 
         if (imgList.length > tempIndex + 1) {
             index.innerText = tempIndex + 1;
@@ -371,10 +397,23 @@
     function clickImgPrev() {
         var imgDisplay = document.getElementById("imgDisplay");
         var index = document.getElementById("imgListIndex");
-        var temp = '<c:out value="${dto.printImgURLS()}"/>';
-        var imgList = temp.split('_');
+        var temp;
+        var imgList;
         var tempIndex = parseInt(index.innerText);
         var indexIndicator = document.getElementById("indexIndicator");
+
+        <c:choose>
+        	<c:when test="${ImageList.size() eq 0}">
+		        temp = "_";
+	        </c:when>
+    	    <c:otherwise>
+        		<c:forEach var="i" begin="0" end="${ImageList.size()-1}">
+			        temp += ${ImageList.get(i)} + "_";
+		        </c:forEach>
+	    	    temp = temp.splice(0, temp.length-1);
+    	    </c:otherwise>
+        </c:choose>
+        imgList = temp.split('_');
 
         if (0 <= tempIndex - 1) {
             index.innerText = tempIndex - 1;
@@ -398,8 +437,8 @@
 		    $(input[i]).attr("type", "hidden");
 
             if (i === 0) {
-                $(input[0]).attr("name", "locNo");
-                $(input[0]).attr("value", "${dto.loc_no}");
+                $(input[0]).attr("name", "corNo");
+                $(input[0]).attr("value", "${dto.cor_no}");
             }
             else if (i === 1) {
                 $(input[1]).attr("name", "userNo");
@@ -457,7 +496,7 @@
 
             if (i === 0) {
                 $(input[0]).attr("name", "locNo");
-                $(input[0]).attr("value", "${dto.loc_no}");
+                $(input[0]).attr("value", "${dto.cor_no}");
             }
 
             if (i === 1) {
@@ -497,7 +536,7 @@
 
             if (i === 0) {
                 $(input[0]).attr("name", "locNo");
-                $(input[0]).attr("value", "${dto.loc_no}");
+                $(input[0]).attr("value", "${dto.cor_no}");
 			}
 
             if (i === 1) {

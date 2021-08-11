@@ -13,7 +13,7 @@ import java.util.*;
 public interface ReviewRepository extends JpaRepository<Review, Long>,
         QuerydslPredicateExecutor<Review> {
     @Query(value = "SELECT * FROM Review r WHERE r.cor_no = :cor_no", nativeQuery = true)
-    List<Review> findAllByCor_no(@Param("cor_no") Long locNo);
+    Optional<List<Review>> findAllByCor_no(@Param("cor_no") Long corNo);
 
     @Query(value = "SELECT * FROM Review r WHERE r.user_no = :user_no", nativeQuery = true)
     List<Review> findAllByUser_no(@Param("user_no") Long userNo);
@@ -27,7 +27,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long>,
     @Modifying
     @Query(value = "DELETE FROM Review WHERE rev_no = :rev_no", nativeQuery = true)
     @Transactional
-    void deleteByRev_no(@Param("rev_no") String rev_no);
+    void deleteByRev_no(@Param("rev_no") Long rev_no);
 
     @Modifying
     @Query(value = "DELETE FROM Review WHERE rev_uuid = :rev_uuid", nativeQuery = true)

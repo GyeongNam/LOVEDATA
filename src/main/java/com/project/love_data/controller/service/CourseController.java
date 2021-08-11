@@ -2,12 +2,14 @@ package com.project.love_data.controller.service;
 
 import com.project.love_data.businessLogic.service.*;
 import com.project.love_data.dto.*;
+import com.project.love_data.model.resource.CourseImage;
 import com.project.love_data.model.service.*;
 import com.project.love_data.model.user.User;
 import com.project.love_data.security.model.AuthUserModel;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +37,8 @@ public class CourseController {
     UserService userService;
     @Autowired
     ReviewService reviewService;
+    @Autowired
+    CourseImageService courseImageService;
     List<String> tagList = new ArrayList<>();
 
     @RequestMapping("/service/cor_registration")
@@ -140,34 +144,37 @@ public class CourseController {
         if (corNo != null) {
             corService.incViewCount(corNo);
             CourseDTO dto = corService.selectLocDTO(corNo);
-            pageRequestDTO.setSize(MAX_COM_COUNT);
-//            PageResultDTO<CommentDTO, Comment> resultCommentDTO
-////                    = comService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION, CommentSortType.IDX_ASC);
-//                    = comService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION);
+            pageRequestDTO.setSize(MAX_REV_COUNT);
+            PageResultDTO<ReviewDTO, Review> resultCommentDTO
+//                    = comService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION, CommentSortType.IDX_ASC);
+                    = reviewService.getRevPage(pageRequestDTO);
 
 //            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//            if (authentication != null) {
-//                AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
-//                if (authentication.isAuthenticated()) {
-//                    UserRecentLoc item = userRecentLocService.register(locNo, authUserModel.getUser_no());
+            if (authentication != null) {
+                AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
+                if (authentication.isAuthenticated()) {
+                    UserRecentCor item = userRecentCorService.register(corNo, authUserModel.getUser_no());
 //                    if (item == null) {
 //                        log.warn(authUserModel.getUser_no() + "의 최근 접속한 기록을 추가하는 과정에서 문제가 발생하였습니다.");
-//                        log.warn("장소 번호 (" + locNo + ")");
+//                        log.warn("장소 번호 (" + corNo + ")");
 //                    } else {
 //                        log.info("기록 추가 성공");
 //                    }
-//                    if (userLikeLocService.selectByLocNoAndUserNo(locNo, authUserModel.getUser_no()) != null) {
-//                        model.addAttribute("isLiked", true);
-//                    } else {
-//                        model.addAttribute("isLiked", false);
-//                    }
-//                }
-//            } else {
-//                model.addAttribute("isLiked", false);
-//            }
+                    if (userLikeCorService.selectByCorNoAndUserNo(corNo, authUserModel.getUser_no()) != null) {
+                        model.addAttribute("isLiked", true);
+                    } else {
+                        model.addAttribute("isLiked", false);
+                    }
+                }
+            } else {
+                model.addAttribute("isLiked", false);
+            }
+
+            ArrayList<CourseImage> courseImageList = (ArrayList<CourseImage>) courseImageService.getImagesByCorNo(dto.getCor_no());
 
             model.addAttribute("dto", dto);
-//            model.addAttribute("resRevDTO", resultCommentDTO);
+            model.addAttribute("resRevDTO", resultCommentDTO);
+            model.addAttribute("ImageList", courseImageList);
 
             return "/service/cor_detail";
         }
@@ -181,7 +188,7 @@ public class CourseController {
                                    Authentication authentication,
                                    Model model) {
         String pageNumber = request.getParameter("page");
-        if (pageNumber == null){
+        if (pageNumber == null) {
             pageNumber = "1";
         }
         int pageNum = Integer.parseInt(pageNumber);
@@ -205,7 +212,7 @@ public class CourseController {
             for (int i = 0; i < resultDTO.getDtoList().size(); i++) {
                 Long cor_no = resultDTO.getDtoList().get(i).getCor_no();
                 UserLikeCor item = userLikeCorService.selectByCorNoAndUserNo(cor_no, user_no);
-                if (item != null){
+                if (item != null) {
                     isLikedList.add(true);
                 } else {
                     isLikedList.add(false);

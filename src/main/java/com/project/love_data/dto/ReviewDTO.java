@@ -17,6 +17,7 @@ public class ReviewDTO {
     private String revContent;
     private Long userNo;
     private Long corNo;
+    private String userName;
 
     @Builder.Default
     private Long revIdx = 0L;
@@ -25,5 +26,5 @@ public class ReviewDTO {
     @Builder.Default
     private boolean is_deleted = false;
     @Builder.Default
-    private String cmtUuid = UUID.randomUUID().toString();
+    private String revUuid = UUID.randomUUID().toString();
 }

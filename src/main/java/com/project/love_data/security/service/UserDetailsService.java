@@ -42,6 +42,7 @@ public class UserDetailsService implements org.springframework.security.core.use
          AuthUserModel authUserModel = new AuthUserModel(
                 user.getUser_email(),
                 user.getUser_pw(),
+                user.getProfile_pic(),
                 user.isUser_social(),
                 user.getRoleSet().stream().map(role -> new SimpleGrantedAuthority("ROLE_"+role)).collect(Collectors.toSet())
         );
