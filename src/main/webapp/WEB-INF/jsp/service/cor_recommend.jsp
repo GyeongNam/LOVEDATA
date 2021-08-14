@@ -44,9 +44,9 @@
 					</div>
 					<div id="loc_collapse" class="collapse show" aria-labelledby="headingLoc" data-parent="#loc">
 						<div class="card-body center-pill">
-							<p><a href="/service/cor_recommend" class="loc_highlight-selected-text-menu">- 추천 코스</a></p>
-							<p><a href="/service/cor_registration" class="loc_highlight-not-selected-text-menu">- 코스 등록</a></p>
-							<p><a href="" class="loc_highlight-not-selected-text-menu">- 코스 편집</a></p>
+							<p><a href="/service/cor_recommend" class="highlight-selected-text-menu">- 추천 코스</a></p>
+							<p><a href="/service/cor_registration" class="highlight-not-selected-text-menu">- 코스 등록</a></p>
+							<p><a href="" class="highlight-not-selected-text-menu">- 코스 편집</a></p>
 						</div>
 					</div>
 				</div>

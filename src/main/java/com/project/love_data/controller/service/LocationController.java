@@ -346,6 +346,12 @@ public class LocationController {
 
         PageResultDTO<LocationDTO, com.project.love_data.model.service.Location> resultDTO = locService.getList(pageRequestDTO);
 
+        if (resultDTO.getTotalPage() < pageNum) {
+            model.addAttribute("isRequestPageNumberExceed", true);
+        } else {
+            model.addAttribute("isRequestPageNumberExceed", false);
+        }
+
         List<LocationTag> tags = Arrays.asList(LocationTag.values());
         List<String> activeTags = tagList;
 

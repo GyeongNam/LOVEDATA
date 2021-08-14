@@ -4,12 +4,10 @@ import com.project.love_data.businessLogic.service.*;
 import com.project.love_data.dto.*;
 import com.project.love_data.model.resource.CourseImage;
 import com.project.love_data.model.service.*;
-import com.project.love_data.model.user.User;
 import com.project.love_data.security.model.AuthUserModel;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +30,11 @@ public class CourseController {
     @Autowired
     UserLikeCorService userLikeCorService;
     @Autowired
+    LocationService locService;
+    @Autowired
     CourseService corService;
+    @Autowired
+    CorLocMapperService corLocMapperService;
     @Autowired
     UserService userService;
     @Autowired
@@ -67,7 +69,7 @@ public class CourseController {
     }
 
     @PostMapping("/service/cor_registration/regData")
-    public String locRegistrationData(@RequestParam("files") List<MultipartFile> fileList,
+    public String corRegistrationData(@RequestParam("files") List<MultipartFile> fileList,
                                       HttpServletRequest request,
                                       RedirectAttributes redirectAttributes) {
         List<String> filePath = null;
@@ -142,8 +144,15 @@ public class CourseController {
     public String corDetail(Long corNo, @ModelAttribute("requestDTO") PageRequestDTO pageRequestDTO, Authentication authentication,
                             Model model, HttpServletRequest request) {
         if (corNo != null) {
+            if (corService.selectCor(corNo) == null) {
+                model.addAttribute("isNullCourse", true);
+                return "/service/cor_detail";
+            } else {
+                model.addAttribute("isNullCourse", false);
+            }
+
             corService.incViewCount(corNo);
-            CourseDTO dto = corService.selectLocDTO(corNo);
+            CourseDTO dto = corService.selectCorDTO(corNo);
             pageRequestDTO.setSize(MAX_REV_COUNT);
             PageResultDTO<ReviewDTO, Review> resultCommentDTO
 //                    = comService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION, CommentSortType.IDX_ASC);
@@ -232,74 +241,106 @@ public class CourseController {
         return "/service/cor_recommend";
     }
 
-//    @GetMapping("/service/loc_edit")
-//    public String locEdit(Long locNo, Model model) {
-//        if (locNo != null) {
-//            LocationDTO dto = locService.selectLocDTO(locNo);
-//
-//            List<LocationTag> tagList = Arrays.asList(LocationTag.values());
-//
-//            model.addAttribute("dto", dto);
-//            model.addAttribute("tagList", tagList);
-//
-//            return "/service/loc_edit";
-//        }
-//
-//        return "/service/loc_recommend";
-//    }
-//
-//    @PostMapping("/service/loc_edit/regData")
-//    public String locEditData(@RequestParam("files") List<MultipartFile> fileList,
-//                              HttpServletRequest request,
-//                              RedirectAttributes redirectAttributes) {
-//        List<String> filePath = null;
-//        Map<String, String> reqParam = new HashMap<>();
-//
-//        reqParam.put("loc_no", request.getParameter("loc_no"));
-//        reqParam.put("loc_uuid", request.getParameter("loc_uuid"));
-//        reqParam.put("name", request.getParameter("name"));
-//        reqParam.put("tel", request.getParameter("tel"));
-//        reqParam.put("info", request.getParameter("info"));
-//        reqParam.put("zipNo", request.getParameter("zipNo"));
-//        reqParam.put("roadAddr", request.getParameter("roadAddrPart1"));
-//        reqParam.put("addrDetail", request.getParameter("addrDetail"));
-//        reqParam.put("siDoName", request.getParameter("siNm"));
-//        reqParam.put("siGunGuName", request.getParameter("sggNm"));
-////        // Todo Debug 목적용 코드 나중에 삭제할 것
-//        if (request.getParameter("user_no") != null) {
-//            reqParam.put("user_no", (request.getParameter("user_no")));
-//        } else {
-//            reqParam.put("user_no", (request.getParameter("user_no_debug")));
-//        }
-//
-//        Location loc_no_Test = locService.selectLoc(Long.valueOf(reqParam.get("loc_no")));
-//        Location loc_uuid_Test = locService.selectLoc(reqParam.get("loc_uuid"));
-//
-//        // 장소 수정 정보에 입력된 장소가 맞는지 확인하는 과정 (Validating)
-//        if (loc_no_Test == null || loc_uuid_Test == null || !loc_uuid_Test.equals(loc_no_Test)) {
-//            log.warn("Given Location Edit Information doesn't match with DB");
-//            log.info("Please Check the Value");
-//            return "redirect:/service/loc_recommend";
-//        }
-//
-//        if (tagList.isEmpty()) {
-//            log.warn("No Location Tag Found (Must add tag before submit location)");
-//            return "redirect:/service/loc_recommend";
-//        }
-//
-//        filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE,
-//                UploadFileCount.MULTIPLE, MIN_UPLOAD_COUNT, MAX_UPLOAD_COUNT, request);
-//
-//        if (filePath == null) {
-//            log.warn("파일이 제대로 저장되지 않았습니다.");
-//            return "redirect:/service/loc_recommend";
-//        }
-//
-//        LocationDTO dto = locService.entityToDto(locService.edit(reqParam, tagList, filePath));
-////        redirectAttributes.addFlashAttribute("dto", dto);
-//
-//        return "redirect:/service/loc_recommend";
-//    }
+    @GetMapping("/service/cor_edit")
+    public String corEdit(Long corNo, Model model) {
+        if (corNo != null) {
+            CourseDTO dto = corService.selectCorDTO(corNo);
+            List<LocationDTO> locList = new ArrayList<>();
+            List<CourseImage> corImageList = courseImageService.getImagesByCorNo(corNo);
+            List<LocationTag> tagList = Arrays.asList(LocationTag.values());
+            List<CorLocMapper> corLocMappers = corLocMapperService.getLocationsByCorNo(corNo);
+
+            for (CorLocMapper mapper : corLocMappers) {
+                locList.add(locService.selectLocDTO(mapper.getLoc_no()));
+            }
+
+            model.addAttribute("dto", dto);
+            model.addAttribute("imageList", corImageList);
+            model.addAttribute("tagList", tagList);
+            model.addAttribute("locList", locList);
+
+            return "/service/cor_edit";
+        }
+
+        return "/service/cor_recommend";
+    }
+
+    @PostMapping("/service/cor_edit/regData")
+    public String corEditData(@RequestParam("files") List<MultipartFile> fileList,
+                              HttpServletRequest request,
+                              RedirectAttributes redirectAttributes) {
+        List<String> filePath = null;
+        Map<String, String> reqParam = new HashMap<>();
+
+        reqParam.put("name", request.getParameter("name"));
+//        reqParam.put("est_time", request.getParameter("est_time"));
+        reqParam.put("transportation", request.getParameter("transportation"));
+        reqParam.put("cost", request.getParameter("cost"));
+        reqParam.put("info", request.getParameter("info"));
+        reqParam.put("est_value", request.getParameter("est_value"));
+        reqParam.put("est_type", request.getParameter("est_type"));
+        reqParam.put("location_length", request.getParameter("location_length"));
+        if (reqParam.get("est_type").equals("date")) {
+            reqParam.put("accommodations", request.getParameter("accommodations"));
+        }
+//        // Todo Debug 목적용 코드 나중에 삭제할 것
+        if (request.getParameter("user_no") != null) {
+            reqParam.put("user_no", (request.getParameter("user_no")));
+        } else {
+            reqParam.put("user_no", (request.getParameter("user_no_debug")));
+        }
+
+        Course cor_no_Test = corService.selectCor(Long.valueOf(reqParam.get("cor_no")));
+        Course cor_uuid_Test = corService.selectCor(reqParam.get("cor_uuid"));
+
+        //코스 수정 정보에 입력된 코스가 DB에 있는 지 확인하는 과정 (Validating)
+        if (cor_no_Test == null || cor_uuid_Test == null || !cor_uuid_Test.equals(cor_no_Test)) {
+            log.warn("Given Location Edit Information doesn't match with DB");
+            log.info("Please Check the Value");
+            return "redirect:/service/cor_recommend";
+        }
+
+        if (tagList.isEmpty()) {
+            log.warn("No Location Tag Found (Must add tag before submit location)");
+            return "redirect:/service/cor_recommend";
+        } else {
+            log.info("tagList : " + tagList);
+        }
+
+        for (String s : request.getParameterMap().keySet()) {
+            log.info(s + "\t:\t" + Arrays.toString(request.getParameterMap().get(s)));
+        }
+
+        for (int i = 1; i <= Integer.parseInt(reqParam.get("location_length")); i++) {
+            reqParam.put("loc_no_" + i, request.getParameter("loc_no_" + i));
+            reqParam.put("loc_id_" + i, request.getParameter("loc_id_" + i));
+//            reqParam.put("loc_name_" + i, request.getParameter("loc_name_" + i));
+//            reqParam.put("loc_addr_" + i, request.getParameter("loc_addr_" + i));
+//            reqParam.put("loc_tel_" + i, request.getParameter("loc_tel_" + i));
+//            reqParam.put("loc_info_" + i, request.getParameter("loc_info_" + i));
+        }
+
+        for (String s : reqParam.keySet()) {
+            log.info(s + "\t:\t" + reqParam.get(s));
+        }
+
+        filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE,
+                UploadFileCount.MULTIPLE, MIN_UPLOAD_COUNT, MAX_UPLOAD_COUNT, request);
+
+        if (filePath == null) {
+            log.warn("파일이 제대로 저장되지 않았습니다.");
+            return "redirect:/service/cor_recommend";
+        }
+
+        Course entity = corService.register(reqParam, tagList, filePath);
+        CourseDTO dto = corService.entityToDto(entity);
+
+        redirectAttributes.addFlashAttribute("dto", dto);
+
+        tagList = new ArrayList<>();
+
+        return "redirect:/service/cor_recommend";
+    }
 
     @GetMapping(value = "/service/cor_recommend/search")
     public String getSearchValue(HttpServletRequest request, Model model){
@@ -361,6 +402,12 @@ public class CourseController {
                 .build();
 
         PageResultDTO<CourseDTO, Course> resultDTO = corService.getList(pageRequestDTO);
+
+        if (resultDTO.getTotalPage() < pageNum) {
+            model.addAttribute("isRequestPageNumberExceed", true);
+        } else {
+            model.addAttribute("isRequestPageNumberExceed", false);
+        }
 
         List<LocationTag> tags = Arrays.asList(LocationTag.values());
         List<String> activeTags = tagList;

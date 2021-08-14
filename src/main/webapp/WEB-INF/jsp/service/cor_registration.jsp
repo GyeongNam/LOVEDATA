@@ -47,11 +47,11 @@
 					</div>
 					<div id="loc_collapse" class="collapse show" aria-labelledby="headingLoc" data-parent="#loc">
 						<div class="card-body center-pill">
-							<p><a href="/service/cor_recommend" class="loc_highlight-not-selected-text-menu">- 추천 코스</a>
+							<p><a href="/service/cor_recommend" class="highlight-not-selected-text-menu">- 추천 코스</a>
 							</p>
-							<p><a href="/service/cor_registration" class="loc_highlight-selected-text-menu">- 코스 등록</a>
+							<p><a href="/service/cor_registration" class="highlight-selected-text-menu">- 코스 등록</a>
 							</p>
-							<p><a href="#" class="loc_highlight-not-selected-text-menu">- 코스 편집</a></p>
+							<p><a href="#" class="highlight-not-selected-text-menu">- 코스 편집</a></p>
 						</div>
 					</div>
 				</div>
@@ -211,7 +211,7 @@
 					</div>
 					<div>
 						<div id="canvas" class="row flex-nowrap mx-0 my-3"
-							 style="/*overflow-x: scroll; outline: blue thick solid;*/">
+							 style="overflow-x: scroll; /*outline: blue thick solid;*/">
 							<input class="visually-hidden" id="imgInput" name="files" type="file" multiple
 								   accept="image/*" onchange="readImage()">
 							<c:forEach var="i" begin="1" end="10">

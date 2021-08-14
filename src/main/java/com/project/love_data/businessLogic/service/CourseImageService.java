@@ -52,8 +52,8 @@ public class CourseImageService {
         return entity;
     }
 
-    public void update(CourseImage img) {
-        repository.save(img);
+    public CourseImage update(CourseImage img) {
+        return repository.save(img);
     }
 
     public CourseImage dtoToEntity(CourseImageDTO dto) {

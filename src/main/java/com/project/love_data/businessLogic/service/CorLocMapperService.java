@@ -41,4 +41,10 @@ public class CorLocMapperService {
 
         return item;
     }
+
+    public List<CorLocMapper> getLocationsByCorNo(Long corNo) {
+        Optional<List<CorLocMapper>> item = repository.findAllByCor_no(corNo);
+
+        return item.orElse(null);
+    }
 }

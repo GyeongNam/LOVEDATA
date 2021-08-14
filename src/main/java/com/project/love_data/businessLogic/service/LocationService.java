@@ -312,6 +312,10 @@ public class LocationService {
         return conditionBuilder.and(qLocation.is_deleted.ne(true));
     }
 
+    public List<Location> locationNameSearch(String loc_name){
+        return locationNameSearch(loc_name, MatchOption.CONTAIN);
+    }
+
     // TODO 안쓰는거 지워야할 거
     public List<Location> locationNameSearch(String loc_name, MatchOption matchOption) {
         StringBuilder sb = new StringBuilder();

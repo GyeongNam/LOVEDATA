@@ -48,6 +48,10 @@ public class Course extends TimeEntity {
     @Column(name = "est_value", nullable = false)
     private String est_value;
 
+    @Column(name = "accommodations_info", nullable = true)
+    @Builder.Default
+    private String accommodations_info = "";
+
     @Column(name = "transportation", nullable = false)
     private String transportation;
 

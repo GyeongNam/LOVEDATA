@@ -87,6 +87,7 @@ public class CourseService {
                 .thumbnail(dto.getThumbnail())
                 .viewCount(dto.getViewCount())
                 .is_deleted(dto.is_deleted())
+                .accommodations_info(dto.getAccommodations_info())
                 .build();
 
         return entity;
@@ -111,6 +112,7 @@ public class CourseService {
                 .is_deleted(entity.is_deleted())
                 .modDate(entity.getModDate())
                 .regDate(entity.getRegDate())
+                .accommodations_info(entity.getAccommodations_info())
                 .build();
 
         // Image List 변환 및 정렬
@@ -198,6 +200,10 @@ public class CourseService {
                 .est_type(reqParam.get("est_type"))
                 .est_value(reqParam.get("est_value"))
                 .build();
+
+        if ("date".equals(courseDTO.getEst_type())) {
+            courseDTO.setAccommodations_info(reqParam.get("accommodations"));
+        }
 
         Set<String> tags = new HashSet<>();
         for (String item : tagList) {
@@ -311,7 +317,7 @@ public class CourseService {
         return result.orElse(null);
     }
 
-    public CourseDTO selectLocDTO(Long corNo) {
+    public CourseDTO selectCorDTO(Long corNo) {
         Optional<Course> result = repository.findById(corNo);
 
         if (result.isPresent()) {
@@ -328,14 +334,14 @@ public class CourseService {
         return result.orElse(null);
     }
 
-    public CourseDTO selectLocDTO(String cor_uuid) {
+    public CourseDTO selectCorDTO(String cor_uuid) {
         Optional<Course> result = repository.findCorByUUID(cor_uuid);
 
         return result.isPresent() ? entityToDto(result.get()) : null;
     }
 
-    public void update(Course cor) {
-        repository.save(cor);
+    public Course update(Course cor) {
+        return repository.save(cor);
     }
 
 //    public void permaDelete(Course cor) {

@@ -44,9 +44,9 @@
 					</div>
 					<div id="loc_collapse" class="collapse show" aria-labelledby="headingLoc" data-parent="#loc">
 						<div class="card-body center-pill">
-							<p><a href="/service/cor_recommend" class="loc_highlight-selected-text-menu">- 추천 코스</a></p>
-							<p><a href="/service/cor_registration" class="loc_highlight-not-selected-text-menu">- 코스 등록</a></p>
-							<p><a href="" class="loc_highlight-not-selected-text-menu">- 코스 편집</a></p>
+							<p><a href="/service/cor_recommend" class="highlight-selected-text-menu">- 추천 코스</a></p>
+							<p><a href="/service/cor_registration" class="highlight-not-selected-text-menu">- 코스 등록</a></p>
+							<p><a href="" class="highlight-not-selected-text-menu">- 코스 편집</a></p>
 						</div>
 					</div>
 				</div>
@@ -88,27 +88,27 @@
 										오래된 등록순
 									</button>
 								</c:when>
-								</c:choose>
+							</c:choose>
 							<%--							<button class="nav-link dropdown-toggle" role="button" id="navbarDropdownMenuLink"--%>
 							<%--									data-toggle="dropdown" value="mostViewed">--%>
 							<%--								조회순--%>
 							<%--							</button>--%>
-								<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-									<button class="dropdown-item" value="mostViewed" onclick="changeSort(this)">조회순</button>
-									<button class="dropdown-item" value="mostRecent" onclick="changeSort(this)">최신 등록순
-									</button>
-									<button class="dropdown-item" value="mostOldest" onclick="changeSort(this)">오래된 등록순
-									</button>
-									<button class="dropdown-item" value="mostLiked" onclick="changeSort(this)">좋아요 순
-									</button>
-								</div>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+								<button class="dropdown-item" value="mostViewed" onclick="changeSort(this)">조회순</button>
+								<button class="dropdown-item" value="mostRecent" onclick="changeSort(this)">최신 등록순
+								</button>
+								<button class="dropdown-item" value="mostOldest" onclick="changeSort(this)">오래된 등록순
+								</button>
+								<button class="dropdown-item" value="mostLiked" onclick="changeSort(this)">좋아요 순
+								</button>
+							</div>
 						</li>
 					</ul>
 					<%--					@Todo 인풋 값이 ""일 경우 버튼 활성화 x--%>
-<%--					<form action="/service/loc_recommend/search" method="get">--%>
-						<input type="text" placeholder="코스 검색" id="keyword" name="keyword"/>
-						<button class="btn btn-primary mx-2" type="button" id="searchBtn" onclick="onClickSearch_Course()">Search</button>
-<%--					</form>--%>
+					<%--					<form action="/service/loc_recommend/search" method="get">--%>
+					<input type="text" placeholder="코스 검색" id="keyword" name="keyword"/>
+					<button class="btn btn-primary mx-2" type="button" id="searchBtn" onclick="onClickSearch_Course()">Search</button>
+					<%--					</form>--%>
 				</div>
 			</nav>
 		</div>
@@ -124,11 +124,11 @@
 							<div class="dropdown-menu" aria-labelledby="tagDropdownMenuLink">
 								<div class="container">
 									<div class="row">
-									<c:forEach var="i" begin="0" end="${tagList.size()-1}">
-										<button type="button" class="dropdown-item" onclick="addTag(this)" value="${tagList.get(i).name()}">
-												${tagList.get(i).name()}
-										</button>
-									</c:forEach>
+										<c:forEach var="i" begin="0" end="${tagList.size()-1}">
+											<button type="button" class="dropdown-item" onclick="addTag(this)" value="${tagList.get(i).name()}">
+													${tagList.get(i).name()}
+											</button>
+										</c:forEach>
 									</div>
 								</div>
 							</div>
@@ -163,6 +163,13 @@
 		</div>
 		<div class="row justify-content-md-center">
 			<c:choose>
+<%--		요청한 페이지 넘버가 최대 페이지 수를 넘어갈 경우		--%>
+				<c:when test="${isRequestPageNumberExceed eq true}">
+					<span>요청한 페이지 번호는 존재하지 않습니다.</span>
+					<%
+						if( true ) return;
+					%>
+				</c:when>
 				<c:when test="${result.end ne 0}">
 					<c:forEach var="i" begin="0" end="${result.dtoList.size()-1}">
 						<c:if test="${i eq 2}">
@@ -177,10 +184,10 @@
 									<c:set var="cor_thumbnail" value="${result.dtoList.get(i).thumbnail}"></c:set>
 									<c:choose>
 										<c:when test="${cor_thumbnail ne ''}">
-									<img class="bd-placeholder-img card-img-top" width="100%" height="225"
-										 alt="${result.dtoList.get(i).cor_name}"
-										 src="${result.dtoList.get(i).thumbnail}"
-										 preserveAspectRatio="xMidYMid slice" focusable="false">
+											<img class="bd-placeholder-img card-img-top" width="100%" height="225"
+												 alt="${result.dtoList.get(i).cor_name}"
+												 src="${result.dtoList.get(i).thumbnail}"
+												 preserveAspectRatio="xMidYMid slice" focusable="false">
 										</c:when>
 										<c:otherwise>
 											<svg class="bd-placeholder-img card-img-top" width="100%" height="225"
@@ -207,9 +214,9 @@
 											<span class="align-middle">${result.dtoList.get(i).viewCount}</span>
 											<img src="/image/icon/comment.png" class="loc_icon" alt="댓글">
 												<%--									Todo리뷰 항목 Course Entity에 추가하기--%>
-<%--											<span class="align-middle">${result.dtoList.get(i).cmtList.size()}</span>--%>
+												<%--											<span class="align-middle">${result.dtoList.get(i).cmtList.size()}</span>--%>
 											<sec:authorize access="isAuthenticated()">
-<%--												Todo 코스 찜하기 리스트 컨트롤러 수정후 jsp도 수정하기--%>
+												<%--												Todo 코스 찜하기 리스트 컨트롤러 수정후 jsp도 수정하기--%>
 												<c:choose>
 													<c:when test="${isLikedList.get(i) eq true}">
 														<img src="/image/icon/like/love_color.png" class="loc_icon" alt="찜하기"
@@ -227,13 +234,13 @@
 											<span class="align-middle" id="loc_like_count" name="loc_like_count">${result.dtoList.get(i).likeCount}</span>
 											<span class="d-none">${result.dtoList.get(i).cor_no}</span>
 											<span class="d-none">${result.dtoList.get(i).cor_uuid}</span>
-<%--											<sec:authorize access="isAuthenticated()">--%>
-<%--												<c:set var="user_no"><sec:authentication property="principal.user_no"></sec:authentication></c:set>--%>
-<%--												<span class="d-none">${user_no}</span>--%>
-<%--											</sec:authorize>--%>
-<%--											<sec:authorize access="isAnonymous()">--%>
-<%--												<span class="d-none">-1</span>--%>
-<%--											</sec:authorize>--%>
+												<%--											<sec:authorize access="isAuthenticated()">--%>
+												<%--												<c:set var="user_no"><sec:authentication property="principal.user_no"></sec:authentication></c:set>--%>
+												<%--												<span class="d-none">${user_no}</span>--%>
+												<%--											</sec:authorize>--%>
+												<%--											<sec:authorize access="isAnonymous()">--%>
+												<%--												<span class="d-none">-1</span>--%>
+												<%--											</sec:authorize>--%>
 										</div>
 									</div>
 								</div>
@@ -255,7 +262,9 @@
 					<ul class="pagination justify-content-center">
 						<c:if test="${result.next eq true}">
 							<li class="page-item">
-								<a class="page-link" href="/service/cor_recommend/list?page=${result.start - 1}"
+								<a class="page-link"
+									<%--								   href="/service/cor_recommend/list?page=${result.start - 1}"--%>
+								   href="/service/cor_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&page=${result.start - 1}"
 								   aria-label="Previous">
 									<span aria-hidden="true">&laquo;</span>
 								</a>
@@ -266,20 +275,25 @@
 						<c:when test="${result.page eq j}">
 						<li class="page-item active">
 							<a class="page-link"
-							   href="/service/cor_recommend/list?page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>
+								<%--							   href="/service/cor_recommend/list?page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>--%>
+							   href="/service/cor_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>
 							</c:when>
 							<c:otherwise>
 						<li class="page-item">
 							<a class="page-link"
-							   href="/service/cor_recommend/list?page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>
+								<%--							   href="/service/cor_recommend/list?page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>--%>
+							   href="/service/cor_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&page=${result.pageList.get(j-1)}">
+									${result.pageList.get(j-1)}</a
 							</c:otherwise>
 							</c:choose>
 							</c:forEach>
 						</li>
 						<c:if test="${result.next eq true}">
 							<li class="page-item">
-								<a class="page-link" href="/service/cor_recommend/list?page=${result.end + 1}"
-								   aria-label="Previous">
+								<a class="page-link"
+									<%--								   href="/service/cor_recommend/list?page=${result.end + 1}"--%>
+								   href="/service/cor_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&page=${result.end + 1}">
+									aria-label="Previous">
 									<span aria-hidden="true">&raquo;</span>
 								</a>
 							</li>

@@ -47,9 +47,9 @@
 					</div>
 					<div id="loc_collapse" class="collapse show" aria-labelledby="headingLoc" data-parent="#loc">
 						<div class="card-body center-pill">
-							<p><a href="/service/cor_recommend" class="loc_highlight-selected-text-menu">- 추천 코스</a></p>
-							<p><a href="/service/cor_registration" class="loc_highlight-not-selected-text-menu">- 코스 등록</a></p>
-							<p><a href="#" class="loc_highlight-not-selected-text-menu">- 코스 편집</a></p>
+							<p><a href="/service/cor_recommend" class="highlight-selected-text-menu">- 추천 코스</a></p>
+							<p><a href="/service/cor_registration" class="highlight-not-selected-text-menu">- 코스 등록</a></p>
+							<p><a href="#" class="highlight-not-selected-text-menu">- 코스 편집</a></p>
 						</div>
 					</div>
 				</div>
@@ -57,6 +57,13 @@
 		</ul>
 	</div>
 	<c:choose>
+		<%--		없는 장소 번호로 조회시--%>
+		<c:when test="${isNullCourse eq true}">
+			<span>해당 장소가 존재하지 않습니다.</span>
+			<%
+				if( true ) return;
+			%>
+		</c:when>
 		<c:when test="${dto._deleted eq true}">
 			<sec:authorize access="isAnonymous()">
 				<span>현재 페이지는 삭제되었습니다.</span>
@@ -189,7 +196,7 @@
 <%--				loc_common onClickLike	--%>
 					<span class="visually-hidden">${dto.user_no}</span>
 					<button class="btn btn-outline-danger col-3" style="max-height: 56px" onclick="copyURL()">공유</button>
-					<button class="btn btn-outline-danger col-3" style="max-height: 56px;" onclick="location.href='/service/loc_edit?locNo=${dto.cor_no}'">수정</button>
+					<button class="btn btn-outline-danger col-3" style="max-height: 56px;" onclick="location.href='/service/cor_edit?corNo=${dto.cor_no}'">수정</button>
 				</div>
 				<span class="d-none" id="cor_no">${dto.cor_no}</span>
 			</div>

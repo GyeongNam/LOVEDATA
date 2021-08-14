@@ -43,4 +43,6 @@ public class CourseDTO {
     private LocalDateTime regDate = LocalDateTime.now();
     @Builder.Default
     private LocalDateTime modDate = LocalDateTime.now();
+    @Builder.Default
+    private String accommodations_info = "";
 }
