@@ -57,7 +57,7 @@ public class LocationTest {
         for (int i = 0; i < 3; i++) {
             img = LocationImage.builder()
                     .location(loc)
-                    .img_uuid("Jungbu_Chungnam_" + i + ".jpg")
+                    .img_uuid("Jungbu-Chungnam-" + i + ".jpg")
                     .user_no(user_no)
                     .img_url("/image/init/Jungbu-Chungnam-" + i + ".jpg")
                     .build();

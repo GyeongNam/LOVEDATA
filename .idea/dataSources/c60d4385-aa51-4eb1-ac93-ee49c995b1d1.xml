@@ -1244,7 +1244,7 @@ lovedata|schema||lovedatauser|localhost|UPDATE|G</Grants>
       <ColNames>img_no</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="385" parent="331" name="cl_no">
+    <column id="385" parent="331" name="clm_no">
       <Position>1</Position>
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
@@ -1280,7 +1280,7 @@ lovedata|schema||lovedatauser|localhost|UPDATE|G</Grants>
     </column>
     <key id="392" parent="331" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
-      <ColNames>cl_no</ColNames>
+      <ColNames>clm_no</ColNames>
       <Primary>1</Primary>
     </key>
     <column id="393" parent="332" name="cor_no">

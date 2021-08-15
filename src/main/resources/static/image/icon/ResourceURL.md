@@ -32,3 +32,7 @@
 
 11. Up Arrow Icon
 <ol><a> https://www.flaticon.com/free-icon/up-arrow_271237?related_id=271237&origin=pack </a></ol>
+
+12.Trash Icon
+<ol><a> https://www.flaticon.com/free-icon/trash_3096687?term=delete&page=1&position=3&page=1&position=3&related_id=3096687&origin=search </a></ol>
+

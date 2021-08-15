@@ -9,6 +9,7 @@ import com.project.love_data.security.service.UserDetailsService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -365,5 +366,35 @@ public class LocationController {
 //        log.info("active tags : " + activeTags);
 
         return "/service/loc_recommend_search";
+    }
+
+    @PostMapping("/service/loc_delete")
+    public String locDelete(HttpServletRequest request,
+                            RedirectAttributes redirectAttributes,
+                            Authentication authentication, Long locNo) {
+        if (authentication == null) {
+            return "redirect:/service/loc_recommend";
+        }
+
+        Location entity = locService.selectLoc(locNo);
+
+        if (entity == null) {
+            return "redirect:/service/loc_recommend";
+        }
+
+        AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
+        Long user_no = authUserModel.getUser_no();
+        Set<GrantedAuthority> authorities = (Set<GrantedAuthority>) authUserModel.getAuthorities();
+
+        log.info(request.isUserInRole("ROLE_ADMIN"));
+
+        if (!entity.getUser_no().equals(user_no) && !request.isUserInRole("ROLE_ADMIN")) {
+            log.warn("장소 삭제를 요청한 유저가 장소를 등록한 유저와 같지 않습니다.");
+            return "redirect:/service/loc_recommend";
+        }
+
+        locService.delete(entity.getLoc_no());
+
+        return "redirect:/service/loc_recommend";
     }
 }

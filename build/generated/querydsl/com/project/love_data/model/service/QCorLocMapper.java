@@ -21,7 +21,7 @@ public class QCorLocMapper extends EntityPathBase<CorLocMapper> {
 
     public final com.project.love_data.model.base.QTimeEntity _super = new com.project.love_data.model.base.QTimeEntity(this);
 
-    public final NumberPath<Long> cl_No = createNumber("cl_No", Long.class);
+    public final NumberPath<Long> clm_No = createNumber("clm_No", Long.class);
 
     public final StringPath clm_uuid = createString("clm_uuid");
 

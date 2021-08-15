@@ -179,7 +179,7 @@ public class CourseController {
                 model.addAttribute("isLiked", false);
             }
 
-            ArrayList<CourseImage> courseImageList = (ArrayList<CourseImage>) courseImageService.getImagesByCorNo(dto.getCor_no());
+            ArrayList<CourseImage> courseImageList = (ArrayList<CourseImage>) courseImageService.getLiveImagesByCorNo(dto.getCor_no());
 
             model.addAttribute("dto", dto);
             model.addAttribute("resRevDTO", resultCommentDTO);
@@ -246,7 +246,7 @@ public class CourseController {
         if (corNo != null) {
             CourseDTO dto = corService.selectCorDTO(corNo);
             List<LocationDTO> locList = new ArrayList<>();
-            List<CourseImage> corImageList = courseImageService.getImagesByCorNo(corNo);
+            List<CourseImage> corImageList = courseImageService.getLiveImagesByCorNo(corNo);
             List<LocationTag> tagList = Arrays.asList(LocationTag.values());
             List<CorLocMapper> corLocMappers = corLocMapperService.getLocationsByCorNo(corNo);
 
@@ -273,13 +273,14 @@ public class CourseController {
         Map<String, String> reqParam = new HashMap<>();
 
         reqParam.put("name", request.getParameter("name"));
-//        reqParam.put("est_time", request.getParameter("est_time"));
         reqParam.put("transportation", request.getParameter("transportation"));
         reqParam.put("cost", request.getParameter("cost"));
         reqParam.put("info", request.getParameter("info"));
         reqParam.put("est_value", request.getParameter("est_value"));
         reqParam.put("est_type", request.getParameter("est_type"));
         reqParam.put("location_length", request.getParameter("location_length"));
+        reqParam.put("cor_no", request.getParameter("cor_no"));
+        reqParam.put("cor_uuid", request.getParameter("cor_uuid"));
         if (reqParam.get("est_type").equals("date")) {
             reqParam.put("accommodations", request.getParameter("accommodations"));
         }
@@ -332,7 +333,7 @@ public class CourseController {
             return "redirect:/service/cor_recommend";
         }
 
-        Course entity = corService.register(reqParam, tagList, filePath);
+        Course entity = corService.update(reqParam, tagList, filePath);
         CourseDTO dto = corService.entityToDto(entity);
 
         redirectAttributes.addFlashAttribute("dto", dto);

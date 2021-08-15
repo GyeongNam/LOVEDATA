@@ -38,10 +38,10 @@ public class LocationService {
         List<LocationImage> imgList = new ArrayList<>();
         Location entity = dtoToEntity(dto);
 
-        for (int i = 1; i < filePath.size(); i++) {
-            // filePath.get(0)  ==  Parent Folder (URI)
-            // filePath.get(i)  ==  fileNames
-            imgList.add(imgService.getImageEntity(reqParam.get("user_no"), filePath.get(0), filePath.get(i), entity, i-1));
+        for (int i = 0; i < filePath.size(); i+=2) {
+            // filePath.get(i)  ==  Parent Folder (URI)
+            // filePath.get(i+1)  ==  fileNames
+            imgList.add(imgService.getImageEntity(reqParam.get("user_no"), filePath.get(i), filePath.get(i+1), entity, i/2));
         }
 
         entity.setImgSet(new HashSet<>(imgList));
@@ -487,7 +487,7 @@ public class LocationService {
 //        boolean flag = false;
         // Todo 기존에 장소에 등록된 이미지가 업데이트 된 장소와 연결이 끊여졌을 때 어떻게 동작할 지
 
-        for (int i = 1; i < filePath.size(); i++) {
+        for (int i = 0; i < filePath.size(); i+=2) {
             // filePath.get(0)  ==  Parent Folder (URI)
             // filePath.get(i)  ==  fileNames
 //            if (dto.getImgList().size() > i) {
@@ -499,11 +499,11 @@ public class LocationService {
 //                    }
 //                }
 //            }
-            log.info(filePath.get(i));
+//            log.info(filePath.get(i));
             // Todo 현재는 기존에 이미 등록되어 있던 이미지는 삭제하고, 새로 등록하도록 했음
             // 나중에는 기존에 이미  등록되어 있던 이미지를 삭제하지 않고, 업데이트해서 등록하도록 바꿀것
-            imgService.permaDelete(filePath.get(i));
-            imgList.add(imgService.getImageEntity(reqParam.get("user_no"), filePath.get(0), filePath.get(i), entity, i-1));
+            imgService.delete(filePath.get(i+1));
+            imgList.add(imgService.getImageEntity(reqParam.get("user_no"), filePath.get(i), filePath.get(i+1), entity, i/2));
         }
 
         entity.setImgSet(new HashSet<>(imgList));

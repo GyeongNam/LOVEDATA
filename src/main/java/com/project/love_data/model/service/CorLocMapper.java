@@ -23,7 +23,7 @@ public class CorLocMapper extends TimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
-    private Long cl_No;
+    private Long clm_No;
 
     @Column(name = "loc_no", nullable = false)
     private Long loc_no;

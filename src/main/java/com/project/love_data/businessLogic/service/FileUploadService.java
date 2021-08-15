@@ -94,7 +94,7 @@ public class FileUploadService {
         if (isDuplicated(file.getOriginalFilename())) {
             log.info("파일이 이미 등록되어 있습니다.");
             log.info("fileName : " + file.getOriginalFilename());
-            result.add(URIPath);
+            result.add(getDupElementURIPath(file.getOriginalFilename()));
             result.add(file.getOriginalFilename());
             return result;
         }
@@ -152,7 +152,7 @@ public class FileUploadService {
 
         log.info("파일 저장 위치 : " + filePath);
         log.info("URI 파일 위치 : " + URIPath);
-        result.add(URIPath);
+//        result.add(URIPath);
         for (MultipartFile file : fileList) {
             ++count;
             if (count > maxFileUploadCount) {
@@ -170,6 +170,7 @@ public class FileUploadService {
             if (isDuplicated(file.getOriginalFilename())) {
                 log.info("파일이 이미 등록되어 있습니다.");
                 log.info("fileName : " + file.getOriginalFilename());
+                result.add(getDupElementURIPath(file.getOriginalFilename()));
                 result.add(file.getOriginalFilename());
                 continue;
             }
@@ -191,6 +192,7 @@ public class FileUploadService {
             log.info("기존 파일 이름 : " + file.getOriginalFilename());
             log.info("저장된 파일 이름 : " + fileName);
 
+            result.add(URIPath);
             result.add(fileName);
         }
         log.info("현재 메모리에 업로드 된 파일 갯수 : " + maxFileCount);
@@ -271,6 +273,43 @@ public class FileUploadService {
         }
 
         return saveName;
+    }
+
+    private String getDupElementURIPath(String originalFileName) {
+
+        LocationImage item = locationImageService.getImage(originalFileName);
+
+        CourseImage item2 = courseImageService.getImage(originalFileName);
+
+        if (item != null) {
+            String url = item.getImg_url();
+
+            String[] ary = url.split("/");
+
+            String result = "";
+
+            for (int i = 0; i < ary.length - 1; i++) {
+                result += ary[i] + "/";
+            }
+
+            return result.substring(0, result.length()-1);
+        }
+
+        if (item2 != null) {
+            String url = item2.getImg_url();
+
+            String[] ary = url.split("/");
+
+            String result = "";
+
+            for (int i = 0; i < ary.length - 1; i++) {
+                result += ary[i] + "/";
+            }
+
+            return result.substring(0, result.length()-1);
+        }
+
+        return null;
     }
 
     private boolean saveFile(String filePath, String fileName, MultipartFile file) {

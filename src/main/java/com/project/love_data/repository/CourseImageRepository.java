@@ -10,11 +10,32 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 public interface CourseImageRepository extends JpaRepository<CourseImage, Long> {
+    @Query(value = "SELECT * from cor_image i WHERE  i.user_no = :user_no AND is_deleted = false", nativeQuery = true)
+    Optional<List<CourseImage>> findAllLiveImageByUser_no(@Param("user_no") Long user_no);
+
+    @Query(value = "SELECT * from cor_image i WHERE  i.cor_no = :cor_no AND is_deleted = false", nativeQuery = true)
+    Optional<List<CourseImage>> findAllLiveImageByCor_no(@Param("cor_no") Long cor_no);
+
+    @Query(value = "SELECT * from cor_image i WHERE  i.img_uuid = :img_uuid AND is_deleted = false", nativeQuery = true)
+    Optional<CourseImage> findLiveImageByImg_uuid(@Param("img_uuid") String img_uuid);
+
+    @Query(value = "SELECT * from cor_image i WHERE  i.user_no = :user_no AND is_deleted = true", nativeQuery = true)
+    Optional<List<CourseImage>> findAllRemovedImageByUser_no(@Param("user_no") Long user_no);
+
+    @Query(value = "SELECT * from cor_image i WHERE  i.cor_no = :cor_no AND is_deleted = true", nativeQuery = true)
+    Optional<List<CourseImage>> findAllRemovedImageByCor_no(@Param("cor_no") Long cor_no);
+
+    @Query(value = "SELECT * from cor_image i WHERE  i.img_uuid = :img_uuid AND is_deleted = true", nativeQuery = true)
+    Optional<CourseImage> findRemovedImageByImg_uuid(@Param("img_uuid") String img_uuid);
+
+    @Query(value = "SELECT * from cor_image i WHERE  is_deleted = true", nativeQuery = true)
+    Optional<CourseImage> findAllRemovedImages();
+
     @Query(value = "SELECT * from cor_image i WHERE  i.user_no = :user_no", nativeQuery = true)
-    Optional<List<CourseImage>> findAllByUser_no(@Param("user_no") Long user_no);
+    Optional<List<CourseImage>> findAllImageByUser_no(@Param("user_no") Long user_no);
 
     @Query(value = "SELECT * from cor_image i WHERE  i.cor_no = :cor_no", nativeQuery = true)
-    Optional<List<CourseImage>> findAllByCor_no(@Param("cor_no") Long cor_no);
+    Optional<List<CourseImage>> findAllImageByCor_no(@Param("cor_no") Long cor_no);
 
     @Query(value = "SELECT * from cor_image i WHERE  i.img_uuid = :img_uuid", nativeQuery = true)
     Optional<CourseImage> findImageByImg_uuid(@Param("img_uuid") String img_uuid);

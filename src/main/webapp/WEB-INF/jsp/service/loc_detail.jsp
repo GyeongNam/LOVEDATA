@@ -187,6 +187,22 @@
 					<span class="visually-hidden">${dto.user_no}</span>
 					<button class="btn btn-outline-danger col-3" style="max-height: 56px" onclick="copyURL()">공유</button>
 					<button class="btn btn-outline-danger col-3" style="max-height: 56px;" onclick="location.href='/service/loc_edit?locNo=${dto.loc_no}'">수정</button>
+					<sec:authorize access="isAuthenticated()">
+<%--						<span><sec:authentication property="principal.user_no"></sec:authentication></span>--%>
+					<c:set var="currUserNo"><sec:authentication property="principal.user_no"></sec:authentication></c:set>
+					<c:choose>
+						<c:when test="${dto.user_no eq currUserNo}">
+							<img src="/image/icon/trash.png" class="loc_icon_big me-2" alt="장소 삭제"
+							 onclick="onClickRemoveLocation()">
+						</c:when>
+						<c:otherwise>
+							<sec:authorize access="hasRole('ADMIN')">
+								<img src="/image/icon/trash.png" class="loc_icon_big me-2" alt="장소 삭제"
+									 onclick="onClickRemoveLocation()">
+							</sec:authorize>
+						</c:otherwise>
+					</c:choose>
+				</sec:authorize>
 				</div>
 				<span class="d-none" id="loc_no">${dto.loc_no}</span>
 			</div>
@@ -535,6 +551,24 @@
 
             form.appendChild(input[i]);
         }
+
+        document.body.appendChild(form);
+        form.submit();
+	}
+</script>
+<script defer>
+	function onClickRemoveLocation() {
+	    alert('장소를 삭제하시겠습니까?');
+
+	    let param = location.search;
+
+        console.log(param);
+        console.log('/service/loc_delete' + param);
+
+        let form;
+        form = document.createElement("form");
+        form.method = "post";
+        form.action= "/service/loc_delete" + param;
 
         document.body.appendChild(form);
         form.submit();

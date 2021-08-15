@@ -76,7 +76,7 @@ public class LocationImageTest {
 
     @Test
     public void ImageReadByUserNo() {
-        List<LocationImage> list = locationImageRepository.findAllByUser_no(0L);
+        List<LocationImage> list = locationImageRepository.findAllLiveImageByUser_no(0L);
 
         for (LocationImage locationImage : list) {
             System.out.println("image = " + locationImage);
@@ -85,7 +85,7 @@ public class LocationImageTest {
 
     @Test
     public void ImageReadByUUID() {
-        Optional<LocationImage> image = locationImageRepository.findImageByImg_uuid("test.png");
+        Optional<LocationImage> image = locationImageRepository.findLiveImageByImg_uuid("test.png");
 
         image.ifPresent(value -> System.out.println("image = " + value.toString()));
     }

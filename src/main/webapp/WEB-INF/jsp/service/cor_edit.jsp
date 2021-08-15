@@ -661,7 +661,7 @@
 						</c:forEach>
 					</div>
 				</div>
-				<input class="visually-hidden" id="location_length" name="location_length">
+				<input class="visually-hidden" id="location_length" name="location_length" value="${dto.location_count}">
 				<button type="button" id="register" name="register" onclick="onClickRegister()">Register</button>
 			</form>
 		</div>
@@ -755,6 +755,19 @@
 		        aChild = loc_tags.appendChild(button);
 			</c:forEach>
 		</c:forEach>
+
+        <%--console.log("tagList.size() : " + "${tagList.size()}")--%>
+        <%--console.log("tagList : " + "${tagList}")--%>
+		<%--console.log("tagSet : " + "${dto.tagSet}")--%>
+        <c:forEach var="k" begin="0" end="${tagList.size()-1}">
+        	<c:choose>
+		        <c:when test="${dto.tagSet.contains(tagList.get(k).name())}">
+			        tagList.push("${tagList.get(k).name()}");
+		        </c:when>
+	        </c:choose>
+        </c:forEach>
+
+        // console.log(tagList)
 	}
 </script>
 <script defer>
@@ -779,7 +792,7 @@
         enableLocation(locNo, locID);
     }
 </script>
-<script>
+<script defer>
     let input = document.getElementById("imgInput");
     let isBuffered = false;
 
@@ -1095,7 +1108,7 @@
     // let selectedLocationParent = null;
     let selectedLocationIndex = null;
     let selectedLocation = null;
-    let currentLocationLength = 0;
+    let currentLocationLength = ${dto.location_count};
     let locationMap = null;
 
     function onClearSelectLocation() {
@@ -1120,6 +1133,8 @@
         let selectedLocation_addr = document.getElementById("loc_addr_" + selectedLocationIndex);
         let selectedLocation_tel = document.getElementById("loc_tel_" + selectedLocationIndex);
         let selectedLocation_info = document.getElementById("loc_info_" + selectedLocationIndex);
+        let selectedLocation_no = document.getElementById("loc_no_" + selectedLocationIndex);
+        let selectedLocation_id = document.getElementById("loc_id_" + selectedLocationIndex);
 
         let beforeLocation_thumbnail = document.getElementById("loc_thumbnail_" + (selectedLocationIndex-1));
         let beforeLocation_name = document.getElementById("loc_name_" + (selectedLocationIndex-1));
@@ -1127,6 +1142,8 @@
         let beforeLocation_addr = document.getElementById("loc_addr_" + (selectedLocationIndex-1));
         let beforeLocation_tel = document.getElementById("loc_tel_" + (selectedLocationIndex-1));
         let beforeLocation_info = document.getElementById("loc_info_" + (selectedLocationIndex-1));
+        let beforeLocation_no = document.getElementById("loc_no_" + (selectedLocationIndex-1));
+        let beforeLocation_id = document.getElementById("loc_id_" + (selectedLocationIndex-1));
 
         let temp_thumbnail;
         let temp_name;
@@ -1134,12 +1151,16 @@
         let temp_addr;
         let temp_tel;
         let temp_info;
+        let temp_no;
+        let temp_id;
 
         temp_thumbnail = selectedLocation_thumbnail.src;
         temp_name = selectedLocation_name.value;
         temp_addr = selectedLocation_addr.value;
         temp_tel = selectedLocation_tel.value;
         temp_info = selectedLocation_info.value;
+        temp_no = selectedLocation_no.value;
+        temp_id = selectedLocation_id.value;
 
         for (let i = 0; i < selectedLocation_hashtag.childElementCount; i++) {
             let button = document.createElement("button");
@@ -1156,6 +1177,8 @@
         selectedLocation_addr.value = beforeLocation_addr.value;
         selectedLocation_tel.value = beforeLocation_tel.value;
         selectedLocation_info.value = beforeLocation_info.value;
+        selectedLocation_no.value = beforeLocation_no.value;
+        selectedLocation_id.value = beforeLocation_id.value;
 
         for (let i = 0; i < beforeLocation_hashtag.childElementCount; i++) {
             let button = document.createElement("button");
@@ -1172,6 +1195,8 @@
         beforeLocation_addr.value = temp_addr;
         beforeLocation_tel.value = temp_tel;
         beforeLocation_info.value = temp_info;
+        beforeLocation_no.value = temp_no;
+        beforeLocation_id.value = temp_id;
 
         for (let i = 0; i < temp_hashtag.childElementCount; i++) {
             let button = document.createElement("button");
@@ -1205,6 +1230,8 @@
         let selectedLocation_addr = document.getElementById("loc_addr_" + selectedLocationIndex);
         let selectedLocation_tel = document.getElementById("loc_tel_" + selectedLocationIndex);
         let selectedLocation_info = document.getElementById("loc_info_" + selectedLocationIndex);
+        let selectedLocation_no = document.getElementById("loc_no_" + selectedLocationIndex);
+        let selectedLocation_id = document.getElementById("loc_id_" + selectedLocationIndex);
 
         let nextLocation_thumbnail = document.getElementById("loc_thumbnail_" + (selectedLocationIndex+1));
         let nextLocation_name = document.getElementById("loc_name_" + (selectedLocationIndex+1));
@@ -1212,6 +1239,8 @@
         let nextLocation_addr = document.getElementById("loc_addr_" + (selectedLocationIndex+1));
         let nextLocation_tel = document.getElementById("loc_tel_" + (selectedLocationIndex+1));
         let nextLocation_info = document.getElementById("loc_info_" + (selectedLocationIndex+1));
+        let nextLocation_no = document.getElementById("loc_no_" + (selectedLocationIndex+1));
+        let nextLocation_id = document.getElementById("loc_id_" + (selectedLocationIndex+1));
 
         let temp_thumbnail;
         let temp_name;
@@ -1219,12 +1248,16 @@
         let temp_addr;
         let temp_tel;
         let temp_info;
+        let temp_no;
+        let temp_id;
 
         temp_thumbnail = selectedLocation_thumbnail.src;
         temp_name = selectedLocation_name.value;
         temp_addr = selectedLocation_addr.value;
         temp_tel = selectedLocation_tel.value;
         temp_info = selectedLocation_info.value;
+        temp_no = selectedLocation_no.value;
+        temp_id = selectedLocation_id.value;
 
         for (let i = 0; i < selectedLocation_hashtag.childElementCount; i++) {
             let button = document.createElement("button");
@@ -1241,6 +1274,8 @@
         selectedLocation_addr.value = nextLocation_addr.value;
         selectedLocation_tel.value = nextLocation_tel.value;
         selectedLocation_info.value = nextLocation_info.value;
+        selectedLocation_no.value = nextLocation_no.value;
+        selectedLocation_id.value = nextLocation_id.value;
 
         for (let i = 0; i < nextLocation_hashtag.childElementCount; i++) {
             let button = document.createElement("button");
@@ -1257,6 +1292,8 @@
         nextLocation_addr.value = temp_addr;
         nextLocation_tel.value = temp_tel;
         nextLocation_info.value = temp_info;
+        nextLocation_no.value = temp_no;
+        nextLocation_id.value = temp_id;
 
         for (let i = 0; i < temp_hashtag.childElementCount; i++) {
             let button = document.createElement("button");

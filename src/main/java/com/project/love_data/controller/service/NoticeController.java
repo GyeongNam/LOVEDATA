@@ -136,7 +136,8 @@ public class NoticeController {
                 .build();
         noticeService.qu_update(questions);
 
-        for (int i = 1; i<filePath.size(); i++) {
+        // Todo FileUploadService에서 filePath 리턴값이 변경되어 확인 필요
+        for (int i = 0; i<filePath.size(); i+=2) {
             QuestionsImage questionsImage = QuestionsImage.builder()
                     .qu_img_url(filePath.get(i))
                     .user_no(user.getUser_no())

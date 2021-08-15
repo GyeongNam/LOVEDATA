@@ -75,11 +75,12 @@ public class CourseTest {
 
         entity = corService.update(entity);
 
-        for (int i = 1; i <= 2; i++) {
+        for (int i = 1; i <= 3; i++) {
             CourseImage courseImage = CourseImage.builder()
-                    .idx(0L)
+                    .idx((long) (i-1))
                     .cor_no(entity.getCor_no())
                     .img_url("/image/init/Jungbu-Logo-0" + i + ".jpg")
+                    .img_uuid("Jungbu-Logo-0" + i + ".jpg")
                     .user_no(0L)
                     .build();
 

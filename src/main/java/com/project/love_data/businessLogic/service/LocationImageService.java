@@ -21,7 +21,7 @@ public class LocationImageService {
     }
 
     public LocationImage getImage(String uuid) {
-        Optional<LocationImage> item = repository.findImageByImg_uuid(uuid);
+        Optional<LocationImage> item = repository.findLiveImageByImg_uuid(uuid);
 
         return item.isPresent() ? item.get() : null;
     }
