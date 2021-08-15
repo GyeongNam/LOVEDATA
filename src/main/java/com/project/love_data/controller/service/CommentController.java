@@ -147,7 +147,7 @@ public class CommentController {
         }
 
         if (!returnFlag) {
-            cmtService.permaDelete(cmt_temp);
+            cmtService.delete(cmt_temp.getCmtNo());
         }
 
         LocationDTO dto = locService.selectLocDTO(locNo);

@@ -211,21 +211,44 @@
 			<ul class="nav nav-pills nav-fill col-5" id="pills-tab" role="tablist"
 				style="height:50px; padding-top: 5px; padding-bottom: 5px">
 				<li class="nav-item" role="presentation">
-					<button class="nav-link active" id="location-info-tab" data-bs-toggle="pill"
-							data-bs-target="#location-info" type="button" role="tab" aria-controls="location-info"
-							aria-selected="true">설명
-					</button>
+					<c:choose>
+						<c:when test="${param.containsKey('page') eq true}">
+						<button class="nav-link" id="location-info-tab" data-bs-toggle="pill"
+								data-bs-target="#location-info" type="button" role="tab" aria-controls="location-info"
+								aria-selected="true">설명</button>
+						</c:when>
+						<c:otherwise>
+							<button class="nav-link active" id="location-info-tab" data-bs-toggle="pill"
+									data-bs-target="#location-info" type="button" role="tab" aria-controls="location-info"
+									aria-selected="true">설명</button>
+						</c:otherwise>
+					</c:choose>
 				</li>
 				<li class="nav-item" role="presentation">
-					<button class="mw-100 mh-100 nav-link" id="location-comment-tab" data-bs-toggle="pill"
-							data-bs-target="#location-comment" type="button" role="tab" aria-controls="location-comment"
-							aria-selected="false">댓글
-					</button>
+					<c:choose>
+						<c:when test="${param.containsKey('page') eq true}">
+							<button class="mw-100 mh-100 nav-link active" id="location-comment-tab" data-bs-toggle="pill"
+									data-bs-target="#location-comment" type="button" role="tab" aria-controls="location-comment"
+									aria-selected="false">댓글</button>
+						</c:when>
+						<c:otherwise>
+							<button class="mw-100 mh-100 nav-link" id="location-comment-tab" data-bs-toggle="pill"
+									data-bs-target="#location-comment" type="button" role="tab" aria-controls="location-comment"
+									aria-selected="false">댓글</button>
+						</c:otherwise>
+					</c:choose>
 				</li>
 			</ul>
 			<div class="tab-content" id="pills-tabContent">
 				<%--      설명--%>
-				<div class="tab-pane fade show active" id="location-info" role="tabpanel" aria-labelledby="location-info-tab">
+					<c:choose>
+						<c:when test="${param.containsKey('page') eq true}">
+							<div class="tab-pane fade" id="location-info" role="tabpanel" aria-labelledby="location-info-tab">
+						</c:when>
+						<c:otherwise>
+							<div class="tab-pane fade show active" id="location-info" role="tabpanel" aria-labelledby="location-info-tab">
+						</c:otherwise>
+					</c:choose>
 					<div class="container">
 						<div class="d-flex mt-3">
 							<span class="fs-5" style="white-space: pre-wrap;">${dto.info}</span>
@@ -233,7 +256,14 @@
 					</div>
 				</div>
 				<%--    댓글--%>
-				<div class="tab-pane fade" id="location-comment" role="tabpanel" aria-labelledby="location-comment-tab">
+				<c:choose>
+					<c:when test="${param.containsKey('page') eq true}">
+						<div class="tab-pane fade active show" id="location-comment" role="tabpanel" aria-labelledby="location-comment-tab">
+					</c:when>
+					<c:otherwise>
+						<div class="tab-pane fade" id="location-comment" role="tabpanel" aria-labelledby="location-comment-tab">
+					</c:otherwise>
+				</c:choose>
 					<div class="container mt-0">
 						<div class="d-flex justify-content-start row">
 							<div class="col-md-10">
@@ -380,6 +410,29 @@
 <script defer src="/js/bootstrap.js"></script>
 <script defer src="/js/loc_detail.js"></script>
 <script defer src="/js/loc_common.js"></script>
+<script>
+	window.onload = function() {
+        let params = new URLSearchParams(location.search);
+        // console.log(params);
+        // console.log(params.get("locNo"));
+        // console.log(params.get("page"));
+
+		if (params.has("page")) {
+		    let offsetTop = document.querySelector("#location-comment-tab").offsetTop;
+
+		    window.scrollTo({top:offsetTop, behavior: 'smooth'});
+<%--		    let location_info = document.getElementById("location-info");--%>
+<%--		    let location_info_tab = document.getElementById("location-info-tab");--%>
+<%--		    let location_comment = document.getElementById("location-comment");--%>
+<%--		    let location_comment_tab = document.getElementById("location-comment-tab");--%>
+
+<%--		    location_info_tab.setAttribute("class", "nav-link");--%>
+<%--		    location_comment_tab.setAttribute("class", "mw-100 mh-100 nav-link active");--%>
+<%--            location_info.setAttribute("class", "tab-pane fade");--%>
+<%--            location_comment.setAttribute("class", "tab-pane fade active show");--%>
+		}
+	}
+</script>
 <script defer>
     function clickImgNext() {
         var imgDisplay = document.getElementById("imgDisplay");

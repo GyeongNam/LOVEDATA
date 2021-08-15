@@ -98,6 +98,7 @@
 			<div class="class1">
 				<%--			<a href="/find_id">회원정보 찾기 수정</a>--%>
 				<a href="/user/deleteAccount">(임시)회원탈퇴</a>
+				<a href="/admin/service/loc_recommend/list">어드민 장소 추천 페이지</a>
 				<br><br>
 				<%--			<a href="/bootstrap">부트스트랩 테스트</a>--%>
 				<%--			<a href="/service/loc_recommend">장소_추천</a>--%>

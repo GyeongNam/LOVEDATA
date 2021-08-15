@@ -9,6 +9,7 @@ import com.project.love_data.model.service.Comment;
 import com.project.love_data.model.service.Location;
 import com.project.love_data.model.service.QLocation;
 import com.project.love_data.model.user.User;
+import com.project.love_data.repository.CommentRepository;
 import com.project.love_data.repository.LocationImageRepository;
 import com.project.love_data.repository.LocationRepository;
 import com.querydsl.core.BooleanBuilder;
@@ -31,7 +32,7 @@ public class LocationService {
     private final LocationImageRepository imgRepository;
     private final LocationImageService imgService;
     private final CommentService cmtService;
-
+    private final CommentRepository cmtRepository;
 
     public Location register(Map<String, String> reqParam, List<String> tagList, List<String> filePath) {
         LocationDTO dto = getLocationDto(reqParam, tagList);
@@ -161,8 +162,9 @@ public class LocationService {
         // cmd_idx 기준 정렬
         List<Comment> tempCmtList = new ArrayList<>(entity.getCmtSet());
         List<Comment> cmtList = new ArrayList<>();
+        int maxCmtIndex = Math.toIntExact(cmtRepository.findMaxIdxByLoc_no(entity.getLoc_no()));
 
-        for (int i = 0; i < tempCmtList.size(); i++) {
+        for (int i = 0; i <= maxCmtIndex; i++) {
             for (int j = 0; j < tempCmtList.size(); j++) {
                 if (tempCmtList.get(j).getCmtIdx() == i) {
                     cmtList.add(tempCmtList.get(j));
@@ -276,10 +278,13 @@ public class LocationService {
         List<String> tagList = requestDTO.getTagList();
         BooleanBuilder conditionBuilder = new BooleanBuilder();
         QLocation qLocation = QLocation.location;
+        boolean isContainDeletedLocation = false;
 
         switch (requestDTO.getSearchType()){
+            case DISABLED_USER:
+                isContainDeletedLocation = true;
             case USER:
-                conditionBuilder.and(qLocation.loc_no.eq(userNo));
+                conditionBuilder.and(qLocation.user_no.eq(userNo));
                 break;
             case USER_TAG:
                 conditionBuilder.and(qLocation.loc_no.eq(userNo));
@@ -287,29 +292,36 @@ public class LocationService {
                     conditionBuilder.and(qLocation.tagSet.contains(s));
                 }
                 break;
+            case DISABLED_TITLE:
+                isContainDeletedLocation = true;
             case TITLE:
                 conditionBuilder.and(qLocation.loc_name.contains(keyword));
                 break;
+            case DISABLED_TITLE_TAG:
+                isContainDeletedLocation = true;
             case TITLE_TAG:
                 conditionBuilder.and(qLocation.loc_name.contains(keyword));
                 for (String s : tagList) {
                     conditionBuilder.and(qLocation.tagSet.contains(s));
                 }
                 break;
+            case DISABLED_TAG:
+               isContainDeletedLocation = true;
             case TAG:
                 for (String s : tagList) {
                     conditionBuilder.and(qLocation.tagSet.contains(s));
                 }
                 break;
             case DISABLED:
-                conditionBuilder.and(qLocation.is_deleted.eq(true));
+                isContainDeletedLocation = true;
                 break;
-            case NONE:
-            default:
-                return conditionBuilder.and(qLocation.is_deleted.ne(true));
         }
 
-        return conditionBuilder.and(qLocation.is_deleted.ne(true));
+        if (isContainDeletedLocation) {
+            return conditionBuilder;
+        } else {
+            return conditionBuilder.and(qLocation.is_deleted.ne(true));
+        }
     }
 
     public List<Location> locationNameSearch(String loc_name){

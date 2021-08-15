@@ -136,10 +136,10 @@
 									<c:set var="cor_thumbnail" value="${result.dtoList.get(i).thumbnail}"></c:set>
 									<c:choose>
 										<c:when test="${cor_thumbnail ne ''}">
-									<img class="bd-placeholder-img card-img-top" width="100%" height="225"
-										 alt="${result.dtoList.get(i).cor_name}"
-										 src="${result.dtoList.get(i).thumbnail}"
-										 preserveAspectRatio="xMidYMid slice" focusable="false">
+											<img class="bd-placeholder-img card-img-top" width="100%" height="225"
+												 alt="${result.dtoList.get(i).cor_name}"
+												 src="${result.dtoList.get(i).thumbnail}"
+												 preserveAspectRatio="xMidYMid slice" focusable="false">
 										</c:when>
 										<c:otherwise>
 											<svg class="bd-placeholder-img card-img-top" width="100%" height="225"
@@ -152,6 +152,16 @@
 													  dy=".3em">${result.dtoList.get(i).cor_name}</text>
 											</svg>
 										</c:otherwise>
+									</c:choose>
+									<c:choose>
+										<c:when test="${result.dtoList.get(i)._deleted eq true}">
+											<div class="d-flex justify-content-end card-img-overlay" style="outline: dotted 3px red">
+												<img class="bd-placeholder-img" width="30" height="30"
+													 alt="삭제된 장소 아이콘"
+													 src="/image/icon/trash.png"
+													 preserveAspectRatio="xMidYMid slice" focusable="false">
+											</div>
+										</c:when>
 									</c:choose>
 								</a>
 

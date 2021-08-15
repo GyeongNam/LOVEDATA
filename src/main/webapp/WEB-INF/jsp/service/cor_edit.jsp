@@ -693,7 +693,7 @@
             est_date_sel.setAttribute("class", "col-lg me-2 visual");
             est_time_sel.setAttribute("class", "col-lg me-2 visually-hidden");
 
-            for (let i = 0; i < est_time.options.length; i++) {
+            for (let i = 0; i < est_date.options.length; i++) {
                 if (est_value.value === est_date.options[i].innerText) {
                     est_date.options.selectedIndex = i;
                     break;

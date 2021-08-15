@@ -285,8 +285,11 @@ public class CourseService {
         List<String> tagList = requestDTO.getTagList();
         BooleanBuilder conditionBuilder = new BooleanBuilder();
         QCourse qCourse = QCourse.course;
+        boolean isContainDeletedCourse = false;
 
         switch (requestDTO.getSearchType()){
+            case DISABLED_USER:
+                isContainDeletedCourse = true;
             case USER:
                 conditionBuilder.and(qCourse.user_no.eq(userNo));
                 break;
@@ -296,29 +299,39 @@ public class CourseService {
                     conditionBuilder.and(qCourse.tagSet.contains(s));
                 }
                 break;
+            case DISABLED_TITLE:
+                isContainDeletedCourse = true;
             case TITLE:
                 conditionBuilder.and(qCourse.cor_name.contains(keyword));
                 break;
+            case DISABLED_TITLE_TAG:
+                isContainDeletedCourse = true;
             case TITLE_TAG:
                 conditionBuilder.and(qCourse.cor_name.contains(keyword));
                 for (String s : tagList) {
                     conditionBuilder.and(qCourse.tagSet.contains(s));
                 }
                 break;
+            case DISABLED_TAG:
+                isContainDeletedCourse = true;
             case TAG:
                 for (String s : tagList) {
                     conditionBuilder.and(qCourse.tagSet.contains(s));
                 }
                 break;
             case DISABLED:
-                conditionBuilder.and(qCourse.is_deleted.eq(true));
+                isContainDeletedCourse = true;
                 break;
             case NONE:
             default:
                 return conditionBuilder.and(qCourse.is_deleted.ne(true));
         }
 
-        return conditionBuilder.and(qCourse.is_deleted.ne(true));
+        if (isContainDeletedCourse) {
+            return conditionBuilder;
+        } else {
+            return conditionBuilder.and(qCourse.is_deleted.ne(true));
+        }
     }
 
     public Course selectCor(Long corNo) {

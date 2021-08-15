@@ -1,8 +1,10 @@
 package com.project.love_data.businessLogic.service;
 
 import com.project.love_data.dto.CommentDTO;
+import com.project.love_data.dto.LocationDTO;
 import com.project.love_data.dto.PageRequestDTO;
 import com.project.love_data.dto.PageResultDTO;
+import com.project.love_data.model.resource.LocationImage;
 import com.project.love_data.model.service.Comment;
 import com.project.love_data.model.service.Location;
 import com.project.love_data.model.service.QComment;
@@ -79,12 +81,14 @@ public class CommentService {
 
     public PageResultDTO<CommentDTO, Comment> getCmtPage(PageRequestDTO requestDTO,
                                                          CommentPageType commentType) {
-       return getCmtPage(requestDTO, commentType, CommentSortType.IDX_ASC);
+       return getCmtPage(requestDTO, commentType,
+               CommentSortType.IDX_ASC, CommentSearchType.Live);
     }
 
     public PageResultDTO<CommentDTO, Comment> getCmtPage(PageRequestDTO requestDTO,
                                                          CommentPageType commentType,
-                                                         CommentSortType commentSortType) {
+                                                         CommentSortType commentSortType,
+                                                         CommentSearchType commentSearchType) {
         Pageable pageable;
         switch (commentSortType) {
             case IDX_DES:
@@ -100,7 +104,7 @@ public class CommentService {
 
         switch (commentType) {
             case LOCATION:
-                booleanBuilder = getCmtPage_Loc(requestDTO);
+                booleanBuilder = getCmtPage_Loc(requestDTO, commentSearchType);
                 break;
             case ALL:
             default:
@@ -120,7 +124,7 @@ public class CommentService {
         return new PageResultDTO<>(result, fn);
     }
 
-    public BooleanBuilder getCmtPage_Loc(PageRequestDTO requestDTO) {
+    public BooleanBuilder getCmtPage_Loc(PageRequestDTO requestDTO, CommentSearchType commentSearchType) {
         Long locNo = requestDTO.getLocNo();
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
@@ -128,6 +132,16 @@ public class CommentService {
         QComment qComment = QComment.comment;
 
         BooleanExpression expression = qComment.location.loc_no.eq(locNo);
+
+        switch (commentSearchType) {
+            case Deleted:
+                booleanBuilder.and(qComment.is_deleted.eq(true));
+                break;
+            case Live:
+            default:
+                booleanBuilder.and(qComment.is_deleted.eq(false));
+                break;
+        }
 
         booleanBuilder.and(expression);
 
@@ -160,22 +174,55 @@ public class CommentService {
         return select(cmt.getCmtNo());
     }
 
+    private void sortIndex(Long cmtNo) {
+        Comment entity = select(cmtNo);
+        LocationDTO loc = locEntityToLocDto(entity.getLocation());
+
+        if (entity == null || loc == null) {
+            log.warn("존재하지 않는 장소이거나 존재하지 않는 코멘트입니다.");
+            return;
+        }
+
+        if (entity.getCmtIdx() == 0L) {
+            return;
+        }
+
+        if (entity.getCmtIdx() == loc.getCmtList().size() - 1) {
+            return;
+        }
+
+        List<Comment> cmtList = loc.getCmtList();
+        entity.set_deleted(true);
+        for (int i = Math.toIntExact(entity.getCmtIdx() + 1); i < cmtList.size()-2; i++) {
+            cmtList.get(i).setCmtIdx(i - 1L);
+        }
+
+        cmtRepository.save(entity);
+
+        loc.setCmtList(cmtList);
+
+        locRepository.save(locDtoToLocEntity(loc));
+    }
+
     public void delete(Long cmtNo) {
         Comment cmt = select(cmtNo);
 
         if (!cmt.is_deleted()) {
             disable(cmt);
+//            sortIndex(cmt.getCmtNo());
         }
     }
 
     public void permaDelete(Comment cmt) {
-        Location loc = cmt.getLocation();
+        LocationDTO locDTO = locEntityToLocDto(cmt.getLocation());
 
-        Set<Comment> cmtSet = loc.getCmtSet();
+        List<Comment> cmtList = locDTO.getCmtList();
 
-        cmtSet.remove(cmt);
+        cmtList.remove(cmt);
 
-        loc.setCmtSet(cmtSet);
+        locDTO.setCmtList(cmtList);
+
+        Location loc = locDtoToLocEntity(locDTO);
 
         locRepository.save(loc);
 
@@ -190,5 +237,130 @@ public class CommentService {
     public Comment select(Long cmtNo) {
         Optional<Comment> item = cmtRepository.findByCmt_no(cmtNo);
         return item.orElse(null);
+    }
+
+    public Comment selectByLocNoAndCmtIdx(Long locNo, Long cmtIdx) {
+        Optional<Comment> item = cmtRepository.findByLoc_noAndCmtIdx(locNo, cmtIdx);
+        return item.orElse(null);
+    }
+
+    private Location locDtoToLocEntity(LocationDTO dto) {
+        Location entity = Location.builder()
+                .loc_no(dto.getLoc_no())
+                .loc_name(dto.getLoc_name())
+                .loc_uuid(dto.getLoc_uuid())
+                .user_no(dto.getUser_no())
+                .roadAddr(dto.getRoadAddr())
+                .addrDetail(dto.getAddrDetail())
+                .siDo(dto.getSiDo())
+                .siGunGu(dto.getSiGunGu())
+                .info(dto.getInfo())
+                .tel(dto.getTel())
+                .zipNo(dto.getZipNo())
+                .tagSet(dto.getTagSet())
+                .imgSet(new HashSet<>(dto.getImgList()))
+                .cmtSet(new HashSet<>(dto.getCmtList()))
+                .likeCount(dto.getLikeCount())
+                .thumbnail(dto.getThumbnail())
+                .viewCount(dto.getViewCount())
+                .is_deleted(dto.is_deleted())
+                .build();
+
+        return entity;
+    }
+
+    private LocationDTO locEntityToLocDto(Location entity) {
+        LocationDTO dto = LocationDTO.builder()
+                .loc_no(entity.getLoc_no())
+                .loc_name(entity.getLoc_name())
+                .loc_uuid(entity.getLoc_uuid())
+                .user_no(entity.getUser_no())
+                .roadAddr(entity.getRoadAddr())
+                .addrDetail(entity.getAddrDetail())
+                .siDo(entity.getSiDo())
+                .siGunGu(entity.getSiGunGu())
+                .info(entity.getInfo())
+                .tel(entity.getTel())
+                .zipNo(entity.getZipNo())
+                .tagSet(entity.getTagSet())
+                .regDate(entity.getRegDate())
+                .modDate(entity.getModDate())
+                .likeCount(entity.getLikeCount())
+                .thumbnail(entity.getThumbnail())
+                .viewCount(entity.getViewCount())
+                .is_deleted(entity.is_deleted())
+                .build();
+
+        // Image List 변환 및 정렬
+        // idx 기준 정렬
+        List<LocationImage> tempList = new ArrayList<>();
+        List<LocationImage> imgList = new ArrayList<>();
+        boolean sortedFlag = false;
+        int count = 0;
+
+        for (LocationImage img :
+                entity.getImgSet()) {
+            tempList.add(img);
+        }
+
+//        for (int i = 0; i < tempList.size(); i++) {
+//            for (int j = 0; j < tempList.size(); j++) {
+//                if (tempList.get(j).getIdx() == i) {
+//                    imgList.add(tempList.get(j));
+//                    break;
+//                }
+//            }
+//        }
+
+        // idx가 전부 0일 경우 정리가 되지 않은 것이므로
+        for (int i = 0; i < tempList.size(); i++) {
+            if (tempList.get(i).getIdx() == 0) {
+                count++;
+            }
+        }
+
+        // 플래그 설정
+        if (count > 1) {
+            sortedFlag = false;
+        } else {
+            sortedFlag = true;
+        }
+
+        if (!sortedFlag) {
+            for (int i = 0; i < tempList.size(); i++) {
+                tempList.get(i).setIdx((long) i);
+                imgList.add(tempList.get(i));
+            }
+        } else {
+            for (int i = 0; i < tempList.size(); i++) {
+                for (int j = 0; j < tempList.size(); j++) {
+                    if (tempList.get(j).getIdx() == i) {
+                        imgList.add(tempList.get(j));
+                        break;
+                    }
+                }
+            }
+        }
+
+
+        // Comment List 변환 및 정렬
+        // cmd_idx 기준 정렬
+        List<Comment> tempCmtList = new ArrayList<>(entity.getCmtSet());
+        List<Comment> cmtList = new ArrayList<>();
+        int maxCmtIndex = Math.toIntExact(cmtRepository.findMaxIdxByLoc_no(entity.getLoc_no()));
+
+        for (int i = 0; i <= maxCmtIndex; i++) {
+            for (int j = 0; j < tempCmtList.size(); j++) {
+                if (tempCmtList.get(j).getCmtIdx() == i) {
+                    cmtList.add(tempCmtList.get(j));
+                    break;
+                }
+            }
+        }
+
+        dto.setImgList(imgList);
+        dto.setCmtList(cmtList);
+
+        return dto;
     }
 }
