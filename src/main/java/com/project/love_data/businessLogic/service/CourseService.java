@@ -4,6 +4,7 @@ import com.project.love_data.dto.CourseDTO;
 import com.project.love_data.dto.PageRequestDTO;
 import com.project.love_data.dto.PageResultDTO;
 import com.project.love_data.model.resource.CourseImage;
+import com.project.love_data.model.resource.LocationImage;
 import com.project.love_data.model.service.CorLocMapper;
 import com.project.love_data.model.service.Course;
 import com.project.love_data.model.service.QCourse;
@@ -53,15 +54,13 @@ public class CourseService {
         for (int i = 0; i < filePath.size(); i += 2) {
             // filePath.get(i)  ==  Parent Folder (URI)
             // filePath.get(i+1)  ==  fileNames
-            imgList.add(imgService.getImageEntity(reqParam.get("user_no"),
-                    filePath.get(i), filePath.get(i+1), entity.getCor_no(), (i/2)));
+            CourseImage locImage = imgService.getImageEntity(reqParam.get("user_no"),
+                    filePath.get(i), filePath.get(i+1), entity.getCor_no(), (i/2));
+            CourseImage imgEntity = imgService.update(locImage);
+            imgList.add(imgEntity);
         }
 
         entity.setThumbnail(imgList.get(0).getImg_url());
-
-        for (CourseImage CourseImage : imgList) {
-            imgRepository.save(CourseImage);
-        }
 
         List<CorLocMapper> corLocMappers = corLocMapperService.getLocationsByCorNo(Long.valueOf(reqParam.get("cor_no")));
 
@@ -98,15 +97,13 @@ public class CourseService {
         for (int i = 0; i < filePath.size(); i += 2) {
             // filePath.get(i)  ==  Parent Folder (URI)
             // filePath.get(i+1)  ==  fileNames
-            imgList.add(imgService.getImageEntity(reqParam.get("user_no"),
-                    filePath.get(i), filePath.get(i+1), entity.getCor_no(), (i/2)));
+            CourseImage locImage = imgService.getImageEntity(reqParam.get("user_no"),
+                    filePath.get(i), filePath.get(i+1), entity.getCor_no(), (i/2));
+            CourseImage imgEntity = imgService.update(locImage);
+            imgList.add(imgEntity);
         }
 
         entity.setThumbnail(imgList.get(0).getImg_url());
-
-        for (CourseImage CourseImage : imgList) {
-            imgRepository.save(CourseImage);
-        }
 
         for (int i = 1; i <= Integer.parseInt(reqParam.get("location_length")); i++) {
             locNoList.add(Long.parseLong(reqParam.get("loc_no_" + i)));

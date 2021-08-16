@@ -1,9 +1,6 @@
 package com.project.love_data.businessLogic.service;
 
-import com.project.love_data.dto.LocationDTO;
-import com.project.love_data.dto.PageRequestDTO;
-import com.project.love_data.dto.PageResultDTO;
-import com.project.love_data.dto.UserDTO;
+import com.project.love_data.dto.*;
 import com.project.love_data.model.resource.LocationImage;
 import com.project.love_data.model.service.Comment;
 import com.project.love_data.model.service.Location;
@@ -42,7 +39,9 @@ public class LocationService {
         for (int i = 0; i < filePath.size(); i+=2) {
             // filePath.get(i)  ==  Parent Folder (URI)
             // filePath.get(i+1)  ==  fileNames
-            imgList.add(imgService.getImageEntity(reqParam.get("user_no"), filePath.get(i), filePath.get(i+1), entity, i/2));
+            LocationImage locImage = imgService.getImageEntity(reqParam.get("user_no"), filePath.get(i), filePath.get(i+1), entity, i/2);
+            LocationImage imgEntity = imgService.update(locImage);
+            imgList.add(imgEntity);
         }
 
         entity.setImgSet(new HashSet<>(imgList));
@@ -162,7 +161,12 @@ public class LocationService {
         // cmd_idx 기준 정렬
         List<Comment> tempCmtList = new ArrayList<>(entity.getCmtSet());
         List<Comment> cmtList = new ArrayList<>();
-        int maxCmtIndex = Math.toIntExact(cmtRepository.findMaxIdxByLoc_no(entity.getLoc_no()));
+        Long cmtMaxCounter = cmtRepository.findMaxIdxByLoc_no(entity.getLoc_no());
+
+        if (cmtMaxCounter == null) {
+            cmtMaxCounter = 0L;
+        }
+        int maxCmtIndex = Math.toIntExact(cmtMaxCounter);
 
         for (int i = 0; i <= maxCmtIndex; i++) {
             for (int j = 0; j < tempCmtList.size(); j++) {
@@ -433,7 +437,11 @@ public class LocationService {
         Location loc = selectLoc(locNo);
 
         if (loc.is_deleted()){
-            enableLocation(loc);
+            loc = enableLocation(loc);
+            List<LocationImage> locImageList = imgService.getLastDeletedImageList(locNo);
+            for (LocationImage image : locImageList) {
+                imgService.rollback(image.getImg_no());
+            }
         }
     }
 
@@ -441,7 +449,11 @@ public class LocationService {
         Location loc = selectLoc(uuid);
 
         if (loc.is_deleted()){
-            enableLocation(loc);
+            loc = enableLocation(loc);
+            List<LocationImage> locImageList = imgService.getLastDeletedImageList(imgService.getFirstIndexOfLastDeletedLocationImage(loc.getLoc_no()));
+            for (LocationImage image : locImageList) {
+                imgService.rollback(image.getImg_no());
+            }
         }
     }
 
@@ -515,7 +527,10 @@ public class LocationService {
             // Todo 현재는 기존에 이미 등록되어 있던 이미지는 삭제하고, 새로 등록하도록 했음
             // 나중에는 기존에 이미  등록되어 있던 이미지를 삭제하지 않고, 업데이트해서 등록하도록 바꿀것
             imgService.delete(filePath.get(i+1));
-            imgList.add(imgService.getImageEntity(reqParam.get("user_no"), filePath.get(i), filePath.get(i+1), entity, i/2));
+
+            LocationImage locImage = imgService.getImageEntity(reqParam.get("user_no"), filePath.get(i), filePath.get(i+1), entity, i/2);
+            LocationImage imgEntity = imgService.update(locImage);
+            imgList.add(imgEntity);
         }
 
         entity.setImgSet(new HashSet<>(imgList));

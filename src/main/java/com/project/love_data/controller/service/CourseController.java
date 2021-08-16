@@ -180,6 +180,18 @@ public class CourseController {
             }
 
             ArrayList<CourseImage> courseImageList = (ArrayList<CourseImage>) courseImageService.getLiveImagesByCorNo(dto.getCor_no());
+            List<LocationDTO> locList = new ArrayList<>();
+            List<CorLocMapper> corLocMappers = corLocMapperService.getLocationsByCorNo(dto.getCor_no());
+
+            if (!corLocMappers.isEmpty()) {
+                for (CorLocMapper mapper : corLocMappers) {
+                    locList.add(locService.selectLocDTO(mapper.getLoc_no()));
+                }
+
+                model.addAttribute("locList", locList);
+            } else {
+                model.addAttribute("locList", null);
+            }
 
             model.addAttribute("dto", dto);
             model.addAttribute("resRevDTO", resultCommentDTO);

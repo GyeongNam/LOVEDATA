@@ -197,6 +197,7 @@
 					<span class="visually-hidden">${dto.user_no}</span>
 					<button class="btn btn-outline-danger col-3" style="max-height: 56px" onclick="copyURL()">공유</button>
 					<button class="btn btn-outline-danger col-3" style="max-height: 56px;" onclick="location.href='/service/cor_edit?corNo=${dto.cor_no}'">수정</button>
+					<button class="btn btn-outline-danger col-3" style="max-height: 56px" onclick="copyURL()">리뷰 남기기</button>
 				</div>
 				<span class="d-none" id="cor_no">${dto.cor_no}</span>
 			</div>
@@ -204,8 +205,30 @@
 		<div class="row justify-content-md-start">
 			<ul class="nav nav-pills nav-fill col-5" id="pills-tab" role="tablist"
 				style="height:50px; padding-top: 5px; padding-bottom: 5px">
+				<c:choose>
+					<c:when test="${locList ne null}">
+						<c:forEach var="i" begin="0" end="${locList.size()-1}">
+							<c:choose>
+								<c:when test="${i eq 0}">
+									<li class="nav-item" role="presentation">
+										<button class="nav-link active" id="course-loc-tab-${i}" data-bs-toggle="pill"
+												data-bs-target="#course-loc-${i}" type="button" role="tab" aria-controls="course-loc-tab-${i}"
+												aria-selected="true">${i+1}</button>
+									</li>
+								</c:when>
+								<c:otherwise>
+									<li class="nav-item" role="presentation">
+										<button class="nav-link" id="course-loc-tab-${i}" data-bs-toggle="pill"
+												data-bs-target="#course-loc-${i}" type="button" role="tab" aria-controls="course-loc-tab-${i}"
+												aria-selected="true">${i+1}</button>
+									</li>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+					</c:when>
+				</c:choose>
 				<li class="nav-item" role="presentation">
-					<button class="nav-link active" id="course-info-tab" data-bs-toggle="pill"
+					<button class="nav-link" id="course-info-tab" data-bs-toggle="pill"
 							data-bs-target="#course-info" type="button" role="tab" aria-controls="course-info"
 							aria-selected="true">설명
 					</button>
@@ -218,8 +241,54 @@
 				</li>
 			</ul>
 			<div class="tab-content" id="pills-tabContent">
+				<c:choose>
+					<c:when test="${locList ne null}">
+						<c:forEach var="i" begin="0" end="${locList.size()-1}">
+							<c:choose>
+								<c:when test="${i eq 0}">
+									<div class="tab-pane fade show active" id="course-loc-${i}" role="tabpanel" aria-labelledby="course-loc-tab-${i}">
+								</c:when>
+								<c:otherwise>
+									<div class="tab-pane fade" id="course-loc-${i}" role="tabpanel" aria-labelledby="course-loc-tab-${i}">
+								</c:otherwise>
+							</c:choose>
+									<div class="container mt-0">
+									<div class="d-flex justify-content-start row">
+										<div class="col-md-10">
+											<div class="d-flex my-lg-4 flex-column">
+												<button class="btn-lg btn-primary" onclick="location.href='/service/loc_detail?locNo=${locList.get(i).loc_no}'">장소 바로 가기</button>
+												<div class="row my-lg-4">
+													<div class="col-md-7">
+														<div class="card shadow-sm">
+															<div class="d-flex justify-content-center">
+																<img class="bd-placeholder-img card-img" width="70%"
+																	 height="300"
+																	 alt="${locList.get(i).loc_name}"
+																	 src="${locList.get(i).thumbnail}"
+																	 id="loc_img_${i}"
+																	 name="loc_img_${i}"
+																	 preserveAspectRatio="xMidYMid slice" focusable="false">
+															</div>
+														</div>
+													</div>
+													<div class="col d-flex">
+														<div class="row mt-3 d-flex justify-content-center">
+															<span>${i+1}번째 장소</span>
+															<span>장소 이름 : ${locList.get(i).loc_name}</span>
+															<span>장소 설명 : ${locList.get(i).info}</span>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</c:forEach>
+					</c:when>
+				</c:choose>
 				<%--      설명--%>
-				<div class="tab-pane fade show active" id="course-info" role="tabpanel" aria-labelledby="course-info-tab">
+				<div class="tab-pane fade" id="course-info" role="tabpanel" aria-labelledby="course-info-tab">
 					<div class="container">
 						<div class="d-flex mt-3">
 							<span class="fs-5" style="white-space: pre-wrap;">${dto.info}</span>

@@ -40,6 +40,12 @@ public interface LocationImageRepository extends JpaRepository<LocationImage, Lo
     @Query(value = "SELECT * from loc_image i WHERE  i.img_uuid LIKE :img_uuid AND i.is_deleted = true", nativeQuery = true)
     Optional<LocationImage> findAllRemovedImageByUUID(@Param("img_uuid") String img_uuid);
 
+    @Query(value = "SELECT max(img_no) from loc_image WHERE  location_loc_no = :loc_no AND img_idx = 0", nativeQuery = true)
+    Optional<Long> findFirstIndexOfLastDeletedLocationImageByLocNo(@Param("loc_no") Long loc_no);
+
+    @Query(value = "SELECT * from loc_image WHERE  location_loc_no = :loc_no AND img_no >= :img_no", nativeQuery = true)
+    Optional<List<LocationImage>> findLocationImageListOfLocNoAndImgNo(@Param("loc_no") Long loc_no, @Param("img_no") Long img_no);
+
     @Modifying
     @Query(value = "DELETE FROM loc_image  WHERE img_uuid = :img_uuid", nativeQuery = true)
     @Transactional

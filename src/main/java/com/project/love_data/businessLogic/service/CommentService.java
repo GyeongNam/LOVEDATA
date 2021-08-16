@@ -347,7 +347,12 @@ public class CommentService {
         // cmd_idx 기준 정렬
         List<Comment> tempCmtList = new ArrayList<>(entity.getCmtSet());
         List<Comment> cmtList = new ArrayList<>();
-        int maxCmtIndex = Math.toIntExact(cmtRepository.findMaxIdxByLoc_no(entity.getLoc_no()));
+        Long cmtMaxCounter = cmtRepository.findMaxIdxByLoc_no(entity.getLoc_no());
+
+        if (cmtMaxCounter == null) {
+            cmtMaxCounter = 0L;
+        }
+        int maxCmtIndex = Math.toIntExact(cmtMaxCounter);
 
         for (int i = 0; i <= maxCmtIndex; i++) {
             for (int j = 0; j < tempCmtList.size(); j++) {

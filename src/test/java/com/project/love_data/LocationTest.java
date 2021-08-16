@@ -165,24 +165,24 @@ public class LocationTest {
 
         Optional<Location> temp = locationRepository.findLocByUUID(loc.getLoc_uuid());
 
-        if(temp.isPresent()){
-            Location item = temp.get();
-
-            img = null;
-            img = LocationImage.builder()
-                    .location(item)
-                    .img_uuid("Seoul-Forest-03.jpg")
-                    .user_no(user_no)
-                    .img_url("/image/init/Seoul-Forest-03.jpg")
-                    .build();
-            img.setLocation(item);
-
-            locationImageRepository.save(img);
-
-            item.addImg(img);
-
-            locService.update(item);
-        }
+//        if(temp.isPresent()){
+//            Location item = temp.get();
+//
+//            img = null;
+//            img = LocationImage.builder()
+//                    .location(item)
+//                    .img_uuid("Seoul-Forest-03.jpg")
+//                    .user_no(user_no)
+//                    .img_url("/image/init/Seoul-Forest-03.jpg")
+//                    .build();
+//            img.setLocation(item);
+//
+//            locationImageRepository.save(img);
+//
+//            item.addImg(img);
+//
+//            locService.update(item);
+//        }
 
         System.out.println("Location 저장 완료");
     }
