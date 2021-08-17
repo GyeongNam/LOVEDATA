@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -22,6 +23,7 @@ import java.util.regex.Pattern;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true,prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Autowired
     private UserDetailsService userDetailsService;
@@ -35,6 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
       http.authorizeRequests()
               .antMatchers("/member").hasRole("USER")
               .antMatchers("/admin").hasRole("ADMIN")
+              .antMatchers("/manager").hasRole("MANAGER")
               .antMatchers("/all").permitAll()
               .and()
               .csrf().ignoringAntMatchers("/service/**").ignoringAntMatchers("/popup/**");
