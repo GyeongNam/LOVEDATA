@@ -199,6 +199,8 @@
 							<sec:authorize access="hasRole('ADMIN')">
 								<img src="/image/icon/trash.png" class="loc_icon_big me-2" alt="장소 삭제"
 									 onclick="onClickRemoveLocation()">
+								<img src="/image/icon/rollback.png" class="loc_icon_big me-2" alt="장소 복원"
+									 onclick="onClickRollbackLocation()">
 							</sec:authorize>
 						</c:otherwise>
 					</c:choose>
@@ -626,6 +628,23 @@
         document.body.appendChild(form);
         form.submit();
 	}
+
+    function onClickRollbackLocation() {
+        alert('장소를 복원하시겠습니까?');
+
+        let param = location.search;
+
+        console.log(param);
+        console.log('/service/loc_rollback' + param);
+
+        let form;
+        form = document.createElement("form");
+        form.method = "post";
+        form.action= "/service/loc_rollback" + param;
+
+        document.body.appendChild(form);
+        form.submit();
+    }
 </script>
 </body>
 <%--<%@ include file="../layout/footer.jsp" %>--%>

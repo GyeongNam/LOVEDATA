@@ -325,10 +325,10 @@ com/project/love_data/businessLogic/service/LocationService.java
  com.project.love_data.businessLogic.service.LocationService$1
 com/project/love_data/controller/service/CourseController.java
  com.project.love_data.controller.service.CourseController
-com/project/love_data/controller/service/LocationController.java
- com.project.love_data.controller.service.LocationController
+com/project/love_data/controller/RestController.java
+ com.project.love_data.controller.RestController
 com/project/love_data/businessLogic/service/CourseService.java
  com.project.love_data.businessLogic.service.CourseService
  com.project.love_data.businessLogic.service.CourseService$1
-com/project/love_data/controller/RestController.java
- com.project.love_data.controller.RestController
+com/project/love_data/controller/service/LocationController.java
+ com.project.love_data.controller.service.LocationController

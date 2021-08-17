@@ -397,4 +397,34 @@ public class LocationController {
 
         return "redirect:/service/loc_recommend";
     }
+
+    @PostMapping("/service/loc_rollback")
+    public String locRollback(HttpServletRequest request,
+                            RedirectAttributes redirectAttributes,
+                            Authentication authentication, Long locNo) {
+        if (authentication == null) {
+            return "redirect:/service/loc_recommend";
+        }
+
+        Location entity = locService.selectLoc(locNo);
+
+        if (entity == null) {
+            return "redirect:/service/loc_recommend";
+        }
+
+        AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
+        Long user_no = authUserModel.getUser_no();
+        Set<GrantedAuthority> authorities = (Set<GrantedAuthority>) authUserModel.getAuthorities();
+
+        log.info(request.isUserInRole("ROLE_ADMIN"));
+
+        if (!request.isUserInRole("ROLE_ADMIN")) {
+            log.warn("장소 복원을 요청한 유저가 어드민 권한을 가지고 있지 않습니다.");
+            return "redirect:/service/loc_recommend";
+        }
+
+        locService.rollback(entity.getLoc_no());
+
+        return "redirect:/service/loc_recommend";
+    }
 }

@@ -36,3 +36,6 @@
 12.Trash Icon
 <ol><a> https://www.flaticon.com/free-icon/trash_3096687?term=delete&page=1&position=3&page=1&position=3&related_id=3096687&origin=search </a></ol>
 
+13.Rollback icon
+<ol><a> https://www.flaticon.com/free-icon/reload-time_81681?term=restore&page=1&position=37&page=1&position=37&related_id=81681&origin=search </a></ol>
+
