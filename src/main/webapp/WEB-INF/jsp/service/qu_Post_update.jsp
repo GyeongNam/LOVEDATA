@@ -55,17 +55,19 @@
     </div>
     <div class="container-fluid" id="display_center" style="margin-right: 30px">
         <div class="container col-lg-6 ">
-    <form action="/ServiceCenter/Questions_Post_add/add" method="post" enctype="multipart/form-data">
+    <form action="/ServiceCenter/Questions_Post_Update/update" method="post" enctype="multipart/form-data">
         <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
+        <input id="qu_no" name="qu_no" type="hidden" value="${qu.qu_no}"/>
+        <input id="qu_secret" name="qu_secret" type="hidden" value="${qu.qu_secret}"/>
     <h2> 문의하기 </h2>
     <div class="card" style="padding:20px; border-radius: 15px; margin: 20px auto;">
         <div class="form-group" >
             <label>제목</label>
-            <select name="secret">
+            <select id="qu_select" name="secret" >
                 <option value="0">공개</option>
                 <option value="1">비공개</option>
             </select>
-            <input class="form-control" type="text" id="title" name="title"  >
+            <input class="form-control" type="text" id="title" name="title"  value="${qu.qu_title}">
         </div>
         <div class="form-group">
             <label>작성자</label>
@@ -73,7 +75,7 @@
         </div>
         <div class="form-group">
             <label>내용</label>
-            <textarea class="form-control" rows="10" maxlength="150" name="info" id="info" required></textarea>
+            <textarea class="form-control" rows="10" maxlength="150" name="info" id="info"required>${qu.qu_text}</textarea>
         </div>
         <div class="row d-flex align-items-end">
             <div class="col">
@@ -89,21 +91,39 @@
         <div>
             <input class="visually-hidden" id="imgInput" name="files" type="file" multiple accept="image/*" onchange="readImage()">
             <div id="canvas" class="row flex-nowrap mx-0 mt-3" style="overflow-x: scroll">
-                <c:forEach var="i" begin="1" end="10">
+                <c:forEach var="i" begin="0" end="10">
                     <c:choose>
-                        <c:when test="${i eq 1}">
+                        <c:when test="${i < qu_img_size}">
                             <div class="card col-3 p-0 m-2">
-                                <img src="/image/icon/480px-Solid_white.png" alt="" id="img_${i}" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
+                                    <%--											<button class="w-25" onclick="console.log('clicked!')"></button>--%>
+                                <img src="/image/upload/${qu_img[i].qu_img_url}" alt="" id="img_${(i + 1)}" class="visible bd-place card-img w-100 h-100">
+                                <div class="d-flex justify-content-center card-img-overlay visually-hidden" style="align-items: center;">
+                                    <img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_${(i + 1)}"
+                                         src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%; z-index: 2">
+                                </div>
+                                <div class="d-flex justify-content-end card-img-overlay p-0" style="align-items: flex-start">
+                                    <img class="btn btn-lg align-middle p-0" id="imgDel_${(i + 1)}" onclick="deleteImage(this)"
+                                         src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png" style="z-index: 2">
+                                </div>
+                                <div class="d-flex justify-content-center card-img-overlay p-0" style="align-items: center">
+                                    <img class="w-100 h-100" id="imgSel_${i+1}" onclick="onSelectImage(${i + 1})" src="/image/icon/480px-Solid_white.png"
+                                         style="opacity : 0.0; z-index: 1;">
+                                </div>
+                            </div>
+                        </c:when>
+                        <c:when test="${i eq qu_img_size}">
+                            <div class="card col-3 p-0 m-2">
+                                <img src="/image/icon/480px-Solid_white.png" alt="" id="img_${(i + 1)}" class="visible bd-place card-img" style="height: 244px; width: 100%; outline: none">
                                 <div class="d-flex justify-content-center card-img-overlay" style="align-items: center">
-                                    <img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_${i}"
+                                    <img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_${(i + 1)}"
                                          src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%; z-index: 2">
                                 </div>
                                 <div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden" style="align-items: flex-start">
-                                    <img class="btn btn-lg align-middle p-0" id="imgDel_${i}" onclick="deleteImage(this)"
+                                    <img class="btn btn-lg align-middle p-0" id="imgDel_${(i + 1)}" onclick="deleteImage(this)"
                                          src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png" style="z-index: 2">
                                 </div>
                                 <div class="d-flex justify-content-center card-img-overlay p-0 visually-hidden" style="align-items: center">
-                                    <img class="w-100 h-100" id="imgSel_${i}" onclick="onSelectImage(${i})" src="/image/icon/480px-Solid_white.png"
+                                    <img class="w-100 h-100" id="imgSel_${i+1}" onclick="onSelectImage(${i + 1})" src="/image/icon/480px-Solid_white.png"
                                          style="opacity : 0.0; z-index: 1;">
                                 </div>
                             </div>
@@ -130,7 +150,7 @@
             </div>
         </div>
         <div class="btn_wrap text-center">
-            <button type="submit" id="post_add" name="post_add">추가하기</button>
+            <button type="submit" id="post_add" name="post_add">수정하기</button>
         </div>
     </div>
     </form>

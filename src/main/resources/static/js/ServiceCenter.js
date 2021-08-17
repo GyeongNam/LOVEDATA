@@ -40,70 +40,32 @@ function gologin(){
 }
 
 function Qsearch(){
-    var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
-    $(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
+    var select =$('#Notice_select').val();
+    var text =$('#keyword').val();
 
-    var select =$('#Questions_selitm');
-    var text =$('#Questions_search');
+    var special_pattern = /[`~!@#$%^&*|\\\'\";:\/?]/gi;
 
-    var tbody = document.getElementById("tbody").getElementsByTagName("tbody")[0];
-    while(tbody.rows.length > 0){
-        tbody.deleteRow(0);
+    if(special_pattern.test(text) == true) {
+        alert("특수문자는 안됩니다.")
+    } else {
+        return location.href="/ServiceCenter/Questions/search/"+select+"/"+text+"/1";
     }
+}
 
-    var postdata = {
-        "select" : select.val(),
-        "text" : text.val()
-    }
+$(document).ready(function() {
+    var target_imgs = $("#imgDisplay");
+    console.log(target_imgs)
 
-    $.ajax({
-        url: "/Questions/search",
-        dataType: 'json',
-        contentType: "application/json; charset=UTF-8",
-        data: JSON.stringify(postdata),
-        type: "POST",
-        success:function(data){
-            var list = data.questions;
-
-            list.forEach(function(element){
-
-                var answer;
-                if(element.qu_answer){
-                    answer = "답변완료"
-                }else {
-                    answer = "답변중"
-                }
-                var Qtbody = document.getElementById("Qtbody");
-                var tr = document.createElement( 'TR' );
-                console.log(element.qu_secret);
-                if(element.qu_secret){
-                    tr.innerHTML =
-                        "<td>"+element.qu_no+"</td>" +
-                        "<td onclick=window.open('about:blank').location.href='/ServiceCenter/Questions/"+element.qu_no+"';>"+element.qu_title+" [비밀글] </td>" +
-                        "<td>"+element.qu_user+"</td>" +
-                        "<td>"+element.qu_date+"</td>" +
-                        "<td>"+answer+"</td>";
-                    Qtbody.appendChild(tr);
-                }else {
-                    tr.innerHTML =
-                        "<td>"+element.qu_no+"</td>" +
-                        "<td onclick=window.open('about:blank').location.href='/ServiceCenter/Questions/"+element.qu_no+"';>"+element.qu_title+"</td>" +
-                        "<td>"+element.qu_user+"</td>" +
-                        "<td>"+element.qu_date+"</td>" +
-                        "<td>"+answer+"</td>";
-
-                    Qtbody.appendChild(tr);
-                }
-            });
-
-        },
-        error : function(){
-
-        }
+    target_imgs.load(function(){
+        var width = $(this).outerWidth();
+        if(width >= 10) $(this).css("width", "10");
     });
 
+    for(var i=0 ; target_imgs && i<target_imgs.length ; i++)
+    {
+        var width = target_imgs.eq(i).outerWidth();
+        if(width >= 10) target_imgs.eq(i).css("width", "10");
+    }
 
-
-}
+});
 

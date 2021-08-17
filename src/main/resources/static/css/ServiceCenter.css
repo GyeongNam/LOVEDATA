@@ -5,7 +5,7 @@ body, html {
 }
 
 html{
-    background-color: #e4d1f0;
+    /*background-color: #e4d1f0;*/
 }
 /*-------공지사항-------*/
 .table-head{
@@ -25,13 +25,13 @@ html{
     width: 1024px;
     margin: 10px auto;
     padding: 20px;
-    /*border: 1px solid #bcbcbc;*/
+    border: 1px solid #bcbcbc;
 }
 #jb-header {
     padding: 20px;
     margin-bottom: 20px;
     text-align: center;
-    /*border: 1px solid #bcbcbc;*/
+    border: 1px solid #bcbcbc;
 }
 #jb-content {
     width: 719px;
@@ -46,19 +46,19 @@ html{
     width: 200px;
     /*margin-bottom: 20px;*/
     float: left;
-    /*border-top: 1px solid #bcbcbc;*/
-    /*border-bottom: 1px solid #bcbcbc;*/
+    border-top: 1px solid #bcbcbc;
+    border-bottom: 1px solid #bcbcbc;
 }
 /*table 디자인*/
 table{
     width: 100%;
     border-top: 1px solid #444444;
     border-collapse: collapse;
-    background-color: #c9b0d2;
+    /*background-color: #c9b0d2;*/
 }
 th, td{
     padding: 10px;
-    border-bottom: 1px solid #c11e5c;
+    border-bottom: 1px solid #000000;
     text-align: center;
 
 }
@@ -81,8 +81,8 @@ img{
     color: black;
     padding: 22px 16px;
     width: 100%;
-    border-top: 1px solid #994BD4FF;
-    border-bottom: 1px solid #994BD4FF;
+    /*border-top: 1px solid #994BD4FF;*/
+    /*border-bottom: 1px solid #994BD4FF;*/
     border-left: none;
     border-right: none;
     outline: none;
@@ -93,29 +93,29 @@ img{
 }
 /* Change background color of buttons on hover */
 .tab button:hover {
-    background-color: #cb52e7;
+    /*background-color: #cb52e7;*/
 }
 
 /* Create an active/current "tab button" class */
 .tab button.active {
-    background-color: #e3a1ec;
-    color: #c11e5c;
+    /*background-color: #e3a1ec;*/
+    /*color: #c11e5c;*/
 }
 
 #img-edit{
     min-width: 52px;
     padding: 5px;
-    border: 1px solid #bfbfbf;
+    /*border: 1px solid #bfbfbf;*/
 }
 #img-del{
     min-width: 52px;
     padding: 5px;
-    border: 1px solid #bfbfbf;
+    /*border: 1px solid #bfbfbf;*/
 }
 #file {
     min-width: 52px;
     padding: 5px;
-    border: 1px solid #bfbfbf;
+    /*border: 1px solid #bfbfbf;*/
 }
 #NickName{
     min-width: 52px;
@@ -126,7 +126,7 @@ img{
 #jb-footer {
     clear: both;
     padding: 20px;
-    border: 1px solid #bcbcbc;
+    /*border: 1px solid #bcbcbc;*/
 }
 
 /*pagenation*/
@@ -135,15 +135,15 @@ img{
     margin: 20px;
 }
 .pagination a {
-    color: black;
+    /*color: black;*/
     padding: 8px 16px;
     text-decoration: none;
     transition: background-color .3s;
 }
 
 .pagination a.active {
-    background-color: dodgerblue;
-    color: white;
+    /*background-color: dodgerblue;*/
+    /*color: white;*/
 }
 /*pagenation*/
 
@@ -165,7 +165,7 @@ img{
 /* 정책 관련 디자인 */
 .Ptab {
     overflow: hidden;
-    border: 1px solid #ccc;
+    /*border: 1px solid #ccc;*/
     background-color: #f1f1f1;
 }
 
@@ -192,7 +192,7 @@ img{
 .Ptabcontent {
     display: none;
     padding: 6px 12px;
-    border: 1px solid #ccc;
+    /*border: 1px solid #ccc;*/
     border-top: none;
 }
 
@@ -201,3 +201,15 @@ img{
 .add_post{
     float: right;
 }
+.btn btn-primary m-2{
+    float: right;
+}
+.img_s{
+    width: 15px;
+    height: 15px;
+    margin-right: 1px;
+    margin-left: 1px;
+}
+/*.navbar-nav{*/
+/*    float: right;*/
+/*}*/

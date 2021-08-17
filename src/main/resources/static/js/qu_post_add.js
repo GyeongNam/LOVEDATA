@@ -1,6 +1,16 @@
 let input = document.getElementById("imgInput");
 let isBuffered = false;
 
+$(document).ready(function(){
+    qu_secret = $("#qu_secret").val();
+    if(qu_secret=="true"){
+        $("#qu_select").val("1");
+    }else {
+        $("#qu_select").val("0");
+    }
+})
+
+
 function onClickAddImage() {
     $('#imgInput').trigger('click');
 }
