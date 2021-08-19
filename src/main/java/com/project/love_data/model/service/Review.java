@@ -38,14 +38,47 @@ public class Review extends TimeEntity {
     @Builder.Default
     private boolean is_deleted = false;
 
+    @Column(name = "is_reported", nullable = false)
+    @Builder.Default
+    private Long reported_count = 0L;
+
     @Column(name = "rev_point", nullable = false)
-    private float rev_point;
+    @Builder.Default
+    private float rev_point = 0f;
+
+    @Column(name = "sc_move")
+    @Builder.Default
+    private int sc_move = 0;
+
+    @Column(name = "sc_loc")
+    @Builder.Default
+    private int sc_loc = 0;
+
+    @Column(name = "sc_time")
+    @Builder.Default
+    private int sc_time = 0;
+
+    @Column(name = "sc_revisit")
+    @Builder.Default
+    private int sc_revisit = 0;
 
     @Column(name = "user_no", nullable = false)
     private Long user_no;
 
     @Column(name = "user_name", nullable = false)
     private String user_name;
+
+    @Column(name = "rev_like", nullable = false)
+    @Builder.Default
+    private Long rev_like = 0L;
+
+    @Column(name = "rev_dislike", nullable = false)
+    @Builder.Default
+    private Long rev_dislike = 0L;
+
+    @Column(name = "view_count", nullable = false)
+    @Builder.Default
+    private Long view_count = 0L;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Cascade(value = org.hibernate.annotations.CascadeType.ALL)

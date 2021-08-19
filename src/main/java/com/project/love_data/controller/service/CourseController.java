@@ -154,7 +154,7 @@ public class CourseController {
             corService.incViewCount(corNo);
             CourseDTO dto = corService.selectCorDTO(corNo);
             pageRequestDTO.setSize(MAX_REV_COUNT);
-            PageResultDTO<ReviewDTO, Review> resultCommentDTO
+            PageResultDTO<ReviewDTO, Review> resultReviewDTO
 //                    = comService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION, CommentSortType.IDX_ASC);
                     = reviewService.getRevPage(pageRequestDTO);
 
@@ -194,7 +194,7 @@ public class CourseController {
             }
 
             model.addAttribute("dto", dto);
-            model.addAttribute("resRevDTO", resultCommentDTO);
+            model.addAttribute("resRevDTO", resultReviewDTO);
             model.addAttribute("ImageList", courseImageList);
 
             return "/service/cor_detail";

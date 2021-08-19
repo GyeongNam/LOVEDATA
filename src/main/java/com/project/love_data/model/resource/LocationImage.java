@@ -47,8 +47,6 @@ public class LocationImage extends TimeEntity {
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
     private Location location;
 
-    // @Todo 코스, 리뷰 칼럼 추가
-
     @Column(name = "img_url", nullable = false, length = 200)
     private String img_url;
 

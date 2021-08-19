@@ -31,6 +31,12 @@ public class QReview extends EntityPathBase<Review> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> regDate = _super.regDate;
 
+    public final NumberPath<Long> reported_count = createNumber("reported_count", Long.class);
+
+    public final NumberPath<Long> rev_dislike = createNumber("rev_dislike", Long.class);
+
+    public final NumberPath<Long> rev_like = createNumber("rev_like", Long.class);
+
     public final NumberPath<Float> rev_point = createNumber("rev_point", Float.class);
 
     public final StringPath revContent = createString("revContent");
@@ -41,9 +47,19 @@ public class QReview extends EntityPathBase<Review> {
 
     public final StringPath revUuid = createString("revUuid");
 
+    public final NumberPath<Integer> sc_loc = createNumber("sc_loc", Integer.class);
+
+    public final NumberPath<Integer> sc_move = createNumber("sc_move", Integer.class);
+
+    public final NumberPath<Integer> sc_revisit = createNumber("sc_revisit", Integer.class);
+
+    public final NumberPath<Integer> sc_time = createNumber("sc_time", Integer.class);
+
     public final StringPath user_name = createString("user_name");
 
     public final NumberPath<Long> user_no = createNumber("user_no", Long.class);
+
+    public final NumberPath<Long> view_count = createNumber("view_count", Long.class);
 
     public QReview(String variable) {
         super(Review.class, forVariable(variable));
