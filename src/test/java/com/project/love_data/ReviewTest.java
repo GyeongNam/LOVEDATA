@@ -44,7 +44,13 @@ public class ReviewTest {
 
         Course corEntity = corList.get(0);
         String content = "리뷰 테스트!";
-        Map<String, Integer> scoreMap = revService.getScoreMap(3, 3, 3, 3);
+        List<Integer> rndInt = new ArrayList<>();
+        Random rnd = new Random();
+
+        for (int i = 0; i < 4; i++) {
+            rndInt.add((rnd.nextInt(6)));
+        }
+        Map<String, Integer> scoreMap = revService.getScoreMap(rndInt.get(0), rndInt.get(1), rndInt.get(2), rndInt.get(3));
 
         Review entity = revService.createRevEntity(corEntity.getCor_no(), user.getUser_no(),
                 content, 3.5f, scoreMap);
@@ -80,7 +86,13 @@ public class ReviewTest {
 
         corEntity = corList.get(0);
         content = "리뷰 이미지 테스트!";
-        scoreMap = revService.getScoreMap(3, 3, 3, 3);
+        rndInt = new ArrayList<>();
+        rnd = new Random();
+
+        for (int i = 0; i < 4; i++) {
+            rndInt.add((rnd.nextInt(6)));
+        }
+        scoreMap = revService.getScoreMap(rndInt.get(0), rndInt.get(1), rndInt.get(2), rndInt.get(3));
 
         entity = revService.createRevEntity(corEntity.getCor_no(), user.getUser_no(),
                 content, 3.5f, scoreMap);

@@ -191,8 +191,8 @@
 						<img src="/image/icon/like/love_black.png" class="loc_icon_big me-2" alt="찜하기">
 					</sec:authorize>
 					<span class="text-center align-middle fs-3 me-4" id="likeCount">${dto.likeCount}</span>
-					<img src="/image/icon/comment.png" class="loc_icon_big me-2" alt="댓글">
-					<span class="text-center align-middle fs-3 me-4">${resRevDTO.dtoList.size()}</span>
+					<img src="/image/icon/comment.png" class="loc_icon_big me-2" alt="리뷰">
+					<span class="text-center align-middle fs-3 me-4">${revCount}</span>
 <%--					Todo 추후에 위치 수정하기--%>
 <%--				loc_common onClickLike	--%>
 					<span class="visually-hidden">${dto.user_no}</span>
@@ -210,19 +210,33 @@
 					<c:when test="${locList ne null}">
 						<c:forEach var="i" begin="0" end="${locList.size()-1}">
 							<c:choose>
-								<c:when test="${i eq 0}">
+								<c:when test="${param.containsKey('page') eq true}">
 									<li class="nav-item" role="presentation">
-										<button class="nav-link active" id="course-loc-tab-${i}" data-bs-toggle="pill"
+										<button class="nav-link" id="course-loc-tab-${i}" data-bs-toggle="pill"
 												data-bs-target="#course-loc-${i}" type="button" role="tab" aria-controls="course-loc-tab-${i}"
+												onclick="removeURLParam()"
 												aria-selected="true">${i+1}</button>
 									</li>
 								</c:when>
 								<c:otherwise>
-									<li class="nav-item" role="presentation">
-										<button class="nav-link" id="course-loc-tab-${i}" data-bs-toggle="pill"
-												data-bs-target="#course-loc-${i}" type="button" role="tab" aria-controls="course-loc-tab-${i}"
-												aria-selected="true">${i+1}</button>
-									</li>
+									<c:choose>
+										<c:when test="${i eq 0}">
+											<li class="nav-item" role="presentation">
+												<button class="nav-link active" id="course-loc-tab-${i}" data-bs-toggle="pill"
+														data-bs-target="#course-loc-${i}" type="button" role="tab" aria-controls="course-loc-tab-${i}"
+														onclick="removeURLParam()"
+														aria-selected="true">${i+1}</button>
+											</li>
+										</c:when>
+										<c:otherwise>
+											<li class="nav-item" role="presentation">
+												<button class="nav-link" id="course-loc-tab-${i}" data-bs-toggle="pill"
+														data-bs-target="#course-loc-${i}" type="button" role="tab" aria-controls="course-loc-tab-${i}"
+														onclick="removeURLParam()"
+														aria-selected="true">${i+1}</button>
+											</li>
+										</c:otherwise>
+									</c:choose>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
@@ -230,15 +244,25 @@
 				</c:choose>
 				<li class="nav-item" role="presentation">
 					<button class="nav-link" id="course-info-tab" data-bs-toggle="pill"
-							data-bs-target="#course-info" type="button" role="tab" aria-controls="course-info"
+							data-bs-target="#course-info" type="button" role="tab" aria-controls="course-info" onclick="removeURLParam()"
 							aria-selected="true">설명
 					</button>
 				</li>
 				<li class="nav-item" role="presentation">
-					<button class="mw-100 mh-100 nav-link" id="course-review-tab" data-bs-toggle="pill"
-							data-bs-target="#course-review" type="button" role="tab" aria-controls="course-review"
-							aria-selected="false">리뷰
-					</button>
+				<c:choose>
+					<c:when test="${param.containsKey('page') eq true}">
+							<button class="mw-100 mh-100 nav-link active" id="course-review-tab" data-bs-toggle="pill"
+									data-bs-target="#course-review" type="button" role="tab" aria-controls="course-review"
+									aria-selected="false">리뷰
+							</button>
+					</c:when>
+					<c:otherwise>
+							<button class="mw-100 mh-100 nav-link" id="course-review-tab" data-bs-toggle="pill"
+									data-bs-target="#course-review" type="button" role="tab" aria-controls="course-review"
+									aria-selected="false">리뷰
+							</button>
+					</c:otherwise>
+				</c:choose>
 				</li>
 			</ul>
 			<div class="tab-content" id="pills-tabContent">
@@ -246,11 +270,18 @@
 					<c:when test="${locList ne null}">
 						<c:forEach var="i" begin="0" end="${locList.size()-1}">
 							<c:choose>
-								<c:when test="${i eq 0}">
-									<div class="tab-pane fade show active" id="course-loc-${i}" role="tabpanel" aria-labelledby="course-loc-tab-${i}">
+								<c:when test="${param.containsKey('page') eq true}">
+									<div class="tab-pane fade" id="course-loc-${i}" role="tabpanel" aria-labelledby="course-loc-tab-${i}">
 								</c:when>
 								<c:otherwise>
-									<div class="tab-pane fade" id="course-loc-${i}" role="tabpanel" aria-labelledby="course-loc-tab-${i}">
+									<c:choose>
+										<c:when test="${i eq 0}">
+											<div class="tab-pane fade show active" id="course-loc-${i}" role="tabpanel" aria-labelledby="course-loc-tab-${i}">
+										</c:when>
+										<c:otherwise>
+											<div class="tab-pane fade" id="course-loc-${i}" role="tabpanel" aria-labelledby="course-loc-tab-${i}">
+										</c:otherwise>
+									</c:choose>
 								</c:otherwise>
 							</c:choose>
 									<div class="container mt-0">
@@ -298,7 +329,7 @@
 				</div>
 				<%--    리뷰--%>
 				<c:choose>
-					<c:when test="param.containsKey('page') eq true">
+					<c:when test="${param.containsKey('page') eq true}">
 						<div class="tab-pane fade show active" id="course-review" role="tabpanel" aria-labelledby="course-review-tab">
 					</c:when>
 					<c:otherwise>
@@ -402,63 +433,50 @@
 													</div>
 													<div class="mt-2">
 <%--												리뷰 이미지 첨부		--%>
-<%--														<div class="col-md-7">--%>
-<%--															<div class="card mb-4 shadow-sm">--%>
-<%--																<c:set var="imgList" value="${ImageList}"></c:set>--%>
-<%--																<c:choose>--%>
-<%--																	<c:when test="${!empty imgList}">--%>
-<%--																		<div class="d-flex justify-content-center">--%>
-<%--																			<img class="bd-placeholder-img card-img" width="100%"--%>
-<%--																				 height="400"--%>
-<%--																				 alt="${dto.cor_name}"--%>
-<%--																				 src="${imgList.get(0).img_url}"--%>
-<%--																				 id="imgDisplay"--%>
-<%--																				 name="imgDisplay"--%>
-<%--																				 preserveAspectRatio="xMidYMid slice" focusable="false">--%>
-<%--																			<div class="d-flex justify-content-between h-25 card-img-overlay" style="top: 40%">--%>
-<%--																				<button class="btn btn-sm" id="imgPrev" name="imgPrev" onclick="clickImgPrev()">--%>
-<%--																					<img src="/image/icon/left-arrow.png" width="30px" height="30px" alt="imgPrev">--%>
-<%--																				</button>--%>
-<%--																				<button class="btn btn-sm" id="imgNext" name="imgNext" onclick="clickImgNext()">--%>
-<%--																					<img src="/image/icon/right-arrow.png" width="30px" height="30px" alt="imgNext">--%>
-<%--																				</button>--%>
-<%--																					&lt;%&ndash;									<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor"&ndash;%&gt;--%>
-<%--																					&lt;%&ndash;										 class="bi bi-arrow-right-circle" viewBox="0 0 100 100">&ndash;%&gt;--%>
-<%--																					&lt;%&ndash;										<path fill-rule="evenodd"&ndash;%&gt;--%>
-<%--																					&lt;%&ndash;											  d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>&ndash;%&gt;--%>
-<%--																					&lt;%&ndash;									</svg>&ndash;%&gt;--%>
-<%--																			</div>--%>
-<%--																			<div class="d-flex justify-content-end h-25 card-img-overlay" style="top : 75%">--%>
-<%--																				<div class="badge bg-dark d-flex justify-content-center" style="width: 6rem">--%>
-<%--																					<p class="text-center fs-3 align-self-center mb-0" id="indexIndicator"--%>
-<%--																					   name="indexIndicator">--%>
-<%--																						1/${imgList.size()}--%>
-<%--																					</p>--%>
-<%--																				</div>--%>
-<%--																			</div>--%>
-<%--																			</img>--%>
-<%--																			<span class="visually-hidden" id="imgListSize"--%>
-<%--																				  name="imgListSize">${imgList.size()}</span>--%>
-<%--																			<span class="visually-hidden" id="dtoImgListSize"--%>
-<%--																				  name="dtoImgListSize">${imgList.size()}</span>--%>
-<%--																			<span class="visually-hidden" id="imgListIndex" name="imgListIndex">0</span>--%>
-<%--																			<input type="hidden" id="imgList" name="imgList" value="${imgList}"></input>--%>
-<%--																		</div>--%>
-<%--																	</c:when>--%>
-<%--																	<c:otherwise>--%>
-<%--																		<svg class="bd-placeholder-img card-img-top" width="100%" height="400"--%>
-<%--																			 xmlns="http://www.w3.org/2000/svg" role="img"--%>
-<%--																			 aria-label="Placeholder: Thumbnail"--%>
-<%--																			 preserveAspectRatio="xMidYMid slice" focusable="false">--%>
-<%--																			<title>Placeholder</title>--%>
-<%--																			<rect width="100%" height="100%" fill="#55595c"></rect>--%>
-<%--																			<text x="40%" y="50%" fill="#eceeef" dy=".3em">${dto.cor_name}</text>--%>
-<%--																		</svg>--%>
-<%--																	</c:otherwise>--%>
-<%--																</c:choose>--%>
-<%--															</div>--%>
-<%--														</div>--%>
-														<div id="cmt_content_${c}" class="visible">
+														<c:set var="revImg" value="${revImgList.get(c)}"></c:set>
+														<c:choose>
+															<c:when test="${!empty revImg}">
+																<div class="col-md-3">
+																	<div class="card mb-4 shadow-sm">
+																		<div class="d-flex justify-content-center">
+																			<img class="bd-placeholder-img card-img" width="100%"
+																				 height="200"
+																				 alt="${revDTO.get(c).revNo}"
+																				 src="${revImg.get(0).img_url}"
+																				 id="revImg_${c}"
+																				 name="revImg_${c}"
+																				 preserveAspectRatio="xMidYMid slice" focusable="false">
+																			<div class="d-flex justify-content-between h-25 card-img-overlay" style="top: 40%">
+																				<button class="btn btn-sm" id="imgPrev" name="imgPrev" onclick="clickImgPrev()">
+																					<img src="/image/icon/left-arrow.png" width="30px" height="30px" alt="imgPrev">
+																				</button>
+																				<button class="btn btn-sm" id="imgNext" name="imgNext" onclick="clickImgNext()">
+																					<img src="/image/icon/right-arrow.png" width="30px" height="30px" alt="imgNext">
+																				</button>
+																					<%--									<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor"--%>
+																					<%--										 class="bi bi-arrow-right-circle" viewBox="0 0 100 100">--%>
+																					<%--										<path fill-rule="evenodd"--%>
+																					<%--											  d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>--%>
+																					<%--									</svg>--%>
+																			</div>
+																			<div class="d-flex justify-content-end h-25 card-img-overlay" style="top : 75%">
+																				<div class="badge bg-dark d-flex justify-content-center" style="width: 6rem; height: 2rem">
+																					<p class="text-center fs-3 align-self-center mb-0" id="rev_idx_Indicator_${c}"
+																					   name="rev_idx_Indicator_${c}">
+																						1/${imgList.size()}
+																					</p>
+																				</div>
+																			</div>
+																			</img>
+																			<span class="visually-hidden" id="revImgListSize_${c}"
+																				  name="imgListSize">${imgList.size()}</span>
+																			<span class="visually-hidden" id="revImgListIndex_${c}" name="revImgListIndex_${c}">0</span>
+																		</div>
+																	</div>
+																</div>
+															</c:when>
+														</c:choose>
+														<div id="rev_content_${c}" class="visible">
 															<p class="comment-text">${revDTO.get(c).revContent}</p>
 														</div>
 														<div id="cmt_edit_${c}" class="row visually-hidden">
@@ -564,6 +582,17 @@
 <script defer src="/js/bootstrap.js"></script>
 <script defer src="/js/loc_detail.js"></script>
 <script defer src="/js/loc_common.js"></script>
+<script>
+    window.onload = function() {
+        let params = new URLSearchParams(location.search);
+
+        if (params.has("page")) {
+            let offsetTop = document.querySelector("#pills-tab").offsetTop - 100;
+
+            window.scrollTo({top:offsetTop, behavior: 'smooth'});
+        }
+    }
+</script>
 <script defer>
     function clickImgNext() {
         var imgDisplay = document.getElementById("imgDisplay");

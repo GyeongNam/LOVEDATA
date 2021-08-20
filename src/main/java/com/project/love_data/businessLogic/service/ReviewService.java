@@ -250,4 +250,9 @@ public class ReviewService {
         Optional<Review> item = repository.findByRev_no(revNo);
         return item.orElse(null);
     }
+
+    public List<Review> getReviewsByCorNo(Long corNo) {
+        Optional<List<Review>> items = repository.findAllByCor_no(corNo);
+        return items.orElse(null);
+    }
 }
