@@ -82,7 +82,7 @@ public class CommentService {
     public PageResultDTO<CommentDTO, Comment> getCmtPage(PageRequestDTO requestDTO,
                                                          CommentPageType commentType) {
        return getCmtPage(requestDTO, commentType,
-               CommentSortType.IDX_ASC, CommentSearchType.Live);
+               CommentSortType.IDX_DES, CommentSearchType.Live);
     }
 
     public PageResultDTO<CommentDTO, Comment> getCmtPage(PageRequestDTO requestDTO,

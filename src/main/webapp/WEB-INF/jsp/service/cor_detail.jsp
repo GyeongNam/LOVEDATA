@@ -1,3 +1,5 @@
+<%@ page import="com.project.love_data.dto.ReviewImageDTO" %>
+<%@ page import="java.util.*" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -30,8 +32,82 @@
 </head>
 <%@ include file="../layout/header.jsp" %>
 <body>
-
 <div class="container-fluid d-flex" style="padding-top: 100px">
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+					<button class="btn-close" type="button" class="close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col d-flex justify-content-center align-items-md-center" id="searchResultArea">
+							<table>
+								<tbody id="tableBody">
+<%--								<tr onclick="location.href='/'" style="cursor:hand">--%>
+								<tr>
+									<td>1</td>
+									<td>광화문</td>
+								</tr>
+								<tr>
+									<td>내용</td>
+									<td><textarea rows="3" cols="30"></textarea></td>
+								</tr>
+								<tr>
+									<td>별점</td>
+									<td>별점 등록</td>
+								</tr>
+								<tr>
+									<td>이미지</td>
+									<td>
+										<div id="canvas_rev" class="row flex-nowrap mx-0 my-3"
+											 style="overflow-x: scroll; /*outline: blue thick solid;*/">
+											<input id="imgInput" name="files" type="file"  minlength="1" maxlength="3" multiple
+												   accept="image/*" onchange="readImage()">
+											<c:forEach var="i" begin="1" end="3">
+												<div class="card p-0 m-2 visually-hidden">
+													<img src="/image/icon/480px-Solid_white.png" alt="" id="img_${i}"
+														 class="visible bd-place card-img"
+														 style="height: 244px; width: 100%; outline: none">
+													<div class="d-flex justify-content-center card-img-overlay"
+														 style="align-items: center">
+														<img class="btn btn-lg align-middle" onclick="onClickAddImage()"
+															 id="imgAdd_${i}"
+															 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png"
+															 style="height: 30%; z-index: 2">
+													</div>
+													<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden"
+														 style="align-items: flex-start">
+														<img class="btn btn-lg align-middle p-0" id="imgDel_${i}"
+															 onclick="deleteImage(this)"
+															 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png"
+															 style="z-index: 2">
+													</div>
+													<div class="d-flex justify-content-center card-img-overlay p-0 visually-hidden"
+														 style="align-items: center">
+														<img class="w-100 h-100" id="imgSel_${i}" onclick="onSelectImage(${i})"
+															 src="/image/icon/480px-Solid_white.png"
+															 style="opacity : 0.0; z-index: 1;">
+													</div>
+												</div>
+											</c:forEach>
+										</div>
+									</td>
+								</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Save changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div class="col-2" id="sidebar">
 		<ul class="nav nav-pills flex-column col-2 position-fixed" style="top: 40%">
 			<div class="accordion text-center" id="loc">
@@ -198,7 +274,11 @@
 					<span class="visually-hidden">${dto.user_no}</span>
 					<button class="btn btn-outline-danger col-3" style="max-height: 56px" onclick="copyURL()">공유</button>
 					<button class="btn btn-outline-danger col-3" style="max-height: 56px;" onclick="location.href='/service/cor_edit?corNo=${dto.cor_no}'">수정</button>
-					<button class="btn btn-outline-danger col-3" style="max-height: 56px" onclick="copyURL()">리뷰 남기기</button>
+					<!-- Button trigger modal -->
+					<button class="btn btn-outline-danger col-3" style="max-height: 56px" data-bs-toggle="modal" data-bs-target="#exampleModal">리뷰 남기기</button>
+<%--					<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">--%>
+<%--						Launch demo modal--%>
+<%--					</button>--%>
 				</div>
 				<span class="d-none" id="cor_no">${dto.cor_no}</span>
 			</div>
@@ -447,10 +527,10 @@
 																				 name="revImg_${c}"
 																				 preserveAspectRatio="xMidYMid slice" focusable="false">
 																			<div class="d-flex justify-content-between h-25 card-img-overlay" style="top: 40%">
-																				<button class="btn btn-sm" id="imgPrev" name="imgPrev" onclick="clickImgPrev()">
+																				<button class="btn btn-sm" id="imgPrev" name="imgPrev" onclick="clickRevImgPrev(${c})">
 																					<img src="/image/icon/left-arrow.png" width="30px" height="30px" alt="imgPrev">
 																				</button>
-																				<button class="btn btn-sm" id="imgNext" name="imgNext" onclick="clickImgNext()">
+																				<button class="btn btn-sm" id="imgNext" name="imgNext" onclick="clickRevImgNext(${c})">
 																					<img src="/image/icon/right-arrow.png" width="30px" height="30px" alt="imgNext">
 																				</button>
 																					<%--									<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor"--%>
@@ -592,6 +672,22 @@
             window.scrollTo({top:offsetTop, behavior: 'smooth'});
         }
     }
+
+    var revImgList = [];
+    let tempStr = "";
+
+    <c:choose>
+		<c:when test="${revImgStringURLList ne null}">
+    		console.log("${revImgStringURLList.size()}")
+			<c:forEach var="i" begin="0" end="${revImgStringURLList.size()-1}">
+				tempStr = "${revImgStringURLList.get(i)}";
+    			revImgList.push(tempStr);
+			</c:forEach>
+		</c:when>
+	</c:choose>
+
+    console.log(revImgList);
+    console.log(revImgList[0]);
 </script>
 <script defer>
     function clickImgNext() {
@@ -643,6 +739,42 @@
     	    </c:otherwise>
         </c:choose>
         imgList = temp.split('_');
+
+        if (0 <= tempIndex - 1) {
+            index.innerText = tempIndex - 1;
+            tempIndex -= 1;
+            imgDisplay.src = imgList[tempIndex];
+            indexIndicator.innerText = (tempIndex + 1) + "/" + imgList.length;
+        }
+    }
+
+    function clickRevImgNext(currIndex) {
+        var imgDisplay = document.getElementById("revImg_" + currIndex);
+        var index = document.getElementById("revImgListIndex_" + currIndex);
+        var temp = revImgList[currIndex];
+        var imgList;
+        var tempIndex = parseInt(index.innerText);
+        var indexIndicator = document.getElementById("rev_idx_Indicator_" + currIndex);
+
+        imgList = temp.split(';<>;');
+
+        if (imgList.length > tempIndex + 1) {
+            index.innerText = tempIndex + 1;
+            tempIndex += 1;
+            imgDisplay.src = imgList[tempIndex];
+            indexIndicator.innerText = (tempIndex + 1) + "/" + imgList.length;
+        }
+    }
+
+    function clickRevImgPrev(currIndex) {
+        var imgDisplay = document.getElementById("revImg_" + currIndex);
+        var index = document.getElementById("revImgListIndex_" + currIndex);
+        var temp = revImgList[currIndex];
+        var imgList;
+        var tempIndex = parseInt(index.innerText);
+        var indexIndicator = document.getElementById("rev_idx_Indicator_" + currIndex);
+
+        imgList = temp.split(';<>;');
 
         if (0 <= tempIndex - 1) {
             index.innerText = tempIndex - 1;
@@ -794,6 +926,126 @@
         document.body.appendChild(form);
         form.submit();
 	}
+</script>
+<script defer>
+    let input = document.getElementById("imgInput");
+    let isBuffered = false;
+
+    function onClickAddImage() {
+        $('#imgInput').trigger('click');
+    }
+
+    function toggleAddDelBtn(offset) {
+        for (let i = 1; i <= 10; i++) {
+            let btnAddParent = document.getElementById("imgAdd_" + i).parentElement;
+            let btnDelParent = document.getElementById("imgDel_" + i).parentElement;
+            let btnSelParent = document.getElementById("imgSel_" + i).parentElement;
+
+            if (offset < i) {
+                btnAddParent.setAttribute('class', 'd-flex justify-content-center card-img-overlay');
+                btnDelParent.setAttribute('class', 'd-flex justify-content-end card-img-overlay p-0 visually-hidden');
+                btnSelParent.setAttribute('class', 'd-flex justify-content-center card-img-overlay p-0 visually-hidden');
+            } else {
+                btnAddParent.setAttribute('class', 'd-flex justify-content-center card-img-overlay visually-hidden');
+                btnDelParent.setAttribute('class', 'd-flex justify-content-end card-img-overlay p-0');
+                btnSelParent.setAttribute('class', 'd-flex justify-content-center card-img-overlay p-0');
+            }
+        }
+    }
+
+    <%--						http://yoonbumtae.com/?p=3304 --%>
+
+    function readImage() {
+        let fileList = Array.from(input.files);
+
+        console.log(input.files);
+        console.log(fileList);
+        fileList.forEach((file, index) => {
+            let reader = new FileReader();
+            console.log((index) + "번 째 아이템이 등록되었습니다.");
+            let item = document.getElementById("img_" + (index + 1));
+            reader.onload = e => {
+                item.src = e.target.result;
+                item.parentElement.setAttribute("class", "card col-3 p-0 m-2");
+            }
+            if (index != 3) {
+                document.getElementById("img_" + (index + 2)).parentElement.setAttribute("class", "card col-3 p-0 m-2");
+            }
+            reader.readAsDataURL(file);
+            console.log(item);
+        })
+
+        // // 기존에 있던 이미지 지우기
+        for (let i = fileList.length + 1; i <= 10; i++) {
+            if (i === (fileList.length + 1)) {
+                document.getElementById("img_" + i).parentElement.setAttribute("class", "card col-3 p-0 m-2");
+            } else {
+                document.getElementById("img_" + i).parentElement.setAttribute("class", "card col-3 p-0 m-2 visually-hidden");
+            }
+
+            document.getElementById("img_" + i).src = "/image/icon/480px-Solid_white.png";
+        }
+        toggleAddDelBtn(fileList.length);
+        // onSelectImage(selectedImageIndex + 1);
+    }
+
+    function deleteImage(obj) {
+        <%-- https://stackoverflow.com/questions/16943605/remove-a-filelist-item-from-a-multiple-inputfile  --%>
+        let dt = new DataTransfer();
+        dt.files = input.files;
+
+        let objId = obj.id.split('_');
+        let index = objId[objId.length - 1];
+        console.log(index);
+        for (let file of input.files) {
+            if (file !== input.files[index - 1]) {
+                dt.items.add(file);
+            }
+        }
+
+        if (selectedImageParent !== null) {
+            if (selectedImageIndex < index) {
+                onSelectImage(selectedImageIndex);
+            } else {
+                if (Number(index) + 1 == selectedImageIndex) {
+                    onSelectImage(index);
+                } else {
+                    onClearSelecteImage();
+                }
+                // onClearSelecteImage();
+            }
+        }
+
+        for (let i = 1; i <= 10; i++) {
+            if (i >= index) {
+                if (i !== 10) {
+                    document.getElementById("img_" + i).src = document.getElementById("img_" + (i + 1)).src;
+                } else {
+                    document.getElementById("img_" + i).src = "/image/icon/480px-Solid_white.png";
+                }
+            }
+
+            // if (dt.items.length+1 == i) {
+            //     document.getElementById("imgAdd_"+i).parentElement.setAttribute("class", "d-flex justify-content-center card-img-overlay");
+            //     document.getElementById("imgDel_"+i).parentElement.setAttribute("class", "d-flex justify-content-end card-img-overlay p-0 visually-hidden");
+            // }
+
+            if (dt.items.length + 1 < i) {
+                document.getElementById("img_" + i).parentElement.setAttribute("class", "card col-3 p-0 m-2 visually-hidden");
+            }
+        }
+
+        input.files = dt.files;
+        console.log(dt.files);
+        console.log(input.files);
+
+        for (let i = input.files.length + 1; i <= 10; i++) {
+            let img = document.getElementById("img_" + i);
+            img.src = "/image/icon/480px-Solid_white.png";
+        }
+
+        toggleAddDelBtn(input.files.length);
+    }
 </script>
 </body>
 <%--<%@ include file="../layout/footer.jsp" %>--%>

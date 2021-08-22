@@ -149,7 +149,7 @@ public class ReviewService {
     }
 
     public PageResultDTO<ReviewDTO, Review> getRevPage(PageRequestDTO requestDTO) {
-        return getRevPage(requestDTO, SortingOrder.ASC);
+        return getRevPage(requestDTO, SortingOrder.DES);
     }
 
     public PageResultDTO<ReviewDTO, Review> getRevPage(PageRequestDTO requestDTO,

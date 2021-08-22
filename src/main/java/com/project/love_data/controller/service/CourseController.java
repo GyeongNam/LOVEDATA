@@ -159,7 +159,7 @@ public class CourseController {
             pageRequestDTO.setSize(MAX_REV_COUNT);
             PageResultDTO<ReviewDTO, Review> resultReviewDTO
 //                    = comService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION, CommentSortType.IDX_ASC);
-                    = reviewService.getRevPage(pageRequestDTO);
+                    = reviewService.getRevPage(pageRequestDTO, SortingOrder.DES);
 
 //            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (authentication != null) {
@@ -198,9 +198,12 @@ public class CourseController {
 
             Integer revCounter = reviewService.getReviewsByCorNo(corNo).size();
             List<List<ReviewImageDTO>> revImgDTOList = new ArrayList<>();
+            List<String> revImgURLStringList = new ArrayList<>();
+            String revImgURL = "";
 
             for (int i = 0; i < resultReviewDTO.getDtoList().size(); i++) {
                 List<ReviewImage> revImgList = revImgService.getAllLiveImageByCorNoAndRevNo(corNo, resultReviewDTO.getDtoList().get(i).getRevNo());
+                revImgURL = "";
 
                 if (revImgList == null) {
                     revImgDTOList.add(new ArrayList<>());
@@ -211,9 +214,25 @@ public class CourseController {
 
                 for (ReviewImage image : revImgList) {
                     reviewImageDTOS.add(revImgService.entityToDTO(image));
+                    revImgURL += image.getImg_url() + ";<>;";
+                }
+
+                if ("".equals(revImgURL)) {
+                    revImgURLStringList.add(revImgURL);
+                } else {
+                    revImgURL = revImgURL.substring(0, revImgURL.length()-4);
+                    revImgURLStringList.add(revImgURL);
                 }
 
                 revImgDTOList.add(reviewImageDTOS);
+            }
+
+            for (String s : revImgURLStringList) {
+                revImgURL += s;
+            }
+
+            if ("".equals(revImgURL)) {
+                revImgURLStringList = null;
             }
 
             model.addAttribute("dto", dto);
@@ -221,6 +240,7 @@ public class CourseController {
             model.addAttribute("ImageList", courseImageList);
             model.addAttribute("revCount", revCounter);
             model.addAttribute("revImgList", revImgDTOList);
+            model.addAttribute("revImgStringURLList", revImgURLStringList);
 
             return "/service/cor_detail";
         }
