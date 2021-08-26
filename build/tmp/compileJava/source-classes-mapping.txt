@@ -243,8 +243,8 @@ com/project/love_data/repository/LocationRepository.java
  com.project.love_data.repository.LocationRepository
 com/project/love_data/util/ServerDomain.java
  com.project.love_data.util.ServerDomain
-com/project/love_data/controller/PopupController.java
- com.project.love_data.controller.PopupController
+com/project/love_data/controller/RestController.java
+ com.project.love_data.controller.RestController
 com/project/love_data/model/service/QCorLocMapper.java
  com.project.love_data.model.service.QCorLocMapper
 com/project/love_data/businessLogic/oauth/login/TokenRequest.java
@@ -342,5 +342,5 @@ com/project/love_data/businessLogic/service/ReviewService.java
 com/project/love_data/businessLogic/service/CourseService.java
  com.project.love_data.businessLogic.service.CourseService
  com.project.love_data.businessLogic.service.CourseService$1
-com/project/love_data/controller/RestController.java
- com.project.love_data.controller.RestController
+com/project/love_data/controller/PopupController.java
+ com.project.love_data.controller.PopupController
