@@ -23,7 +23,7 @@ public class ReviewDTO {
     @Builder.Default
     private Long revIdx = 0L;
     @Builder.Default
-    private float rev_point = 0f;
+    private float sc_total = 0f;
     @Builder.Default
     private int sc_move = 0;
     @Builder.Default

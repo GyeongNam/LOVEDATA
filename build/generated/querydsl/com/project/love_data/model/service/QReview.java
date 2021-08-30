@@ -37,8 +37,6 @@ public class QReview extends EntityPathBase<Review> {
 
     public final NumberPath<Long> rev_like = createNumber("rev_like", Long.class);
 
-    public final NumberPath<Float> rev_point = createNumber("rev_point", Float.class);
-
     public final StringPath revContent = createString("revContent");
 
     public final NumberPath<Long> revIdx = createNumber("revIdx", Long.class);
@@ -54,6 +52,8 @@ public class QReview extends EntityPathBase<Review> {
     public final NumberPath<Integer> sc_revisit = createNumber("sc_revisit", Integer.class);
 
     public final NumberPath<Integer> sc_time = createNumber("sc_time", Integer.class);
+
+    public final NumberPath<Float> sc_total = createNumber("sc_total", Float.class);
 
     public final StringPath user_name = createString("user_name");
 

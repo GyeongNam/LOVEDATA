@@ -2,6 +2,7 @@ package com.project.love_data.businessLogic.service;
 
 import com.project.love_data.model.resource.CourseImage;
 import com.project.love_data.model.resource.LocationImage;
+import com.project.love_data.model.resource.ReviewImage;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,8 @@ public class FileUploadService {
     LocationImageService locationImageService;
     @Autowired
     CourseImageService courseImageService;
+    @Autowired
+    ReviewImageService reviewImageService;
 
     public void execute(List<MultipartFile> fileList,
                         UploadFileType fileType,
@@ -332,7 +335,9 @@ public class FileUploadService {
 
         CourseImage item2 = courseImageService.getImage(fileName);
 
-        if (item == null && item2 == null) {
+        ReviewImage item3 = reviewImageService.getImage(fileName);
+
+        if (item == null && item2 == null && item3 == null) {
             return false;
         } else {
             return true;

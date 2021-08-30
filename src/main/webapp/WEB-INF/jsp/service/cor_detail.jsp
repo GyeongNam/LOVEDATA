@@ -34,80 +34,80 @@
 <body>
 <div class="container-fluid d-flex" style="padding-top: 100px">
 	<!-- Modal -->
-	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-					<button class="btn-close" type="button" class="close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<div class="row">
-						<div class="col d-flex justify-content-center align-items-md-center" id="searchResultArea">
-							<table>
-								<tbody id="tableBody">
-<%--								<tr onclick="location.href='/'" style="cursor:hand">--%>
-								<tr>
-									<td>1</td>
-									<td>광화문</td>
-								</tr>
-								<tr>
-									<td>내용</td>
-									<td><textarea rows="3" cols="30"></textarea></td>
-								</tr>
-								<tr>
-									<td>별점</td>
-									<td>별점 등록</td>
-								</tr>
-								<tr>
-									<td>이미지</td>
-									<td>
-										<div id="canvas_rev" class="row flex-nowrap mx-0 my-3"
-											 style="overflow-x: scroll; /*outline: blue thick solid;*/">
-											<input id="imgInput" name="files" type="file"  minlength="1" maxlength="3" multiple
-												   accept="image/*" onchange="readImage()">
-											<c:forEach var="i" begin="1" end="3">
-												<div class="card p-0 m-2 visually-hidden">
-													<img src="/image/icon/480px-Solid_white.png" alt="" id="img_${i}"
-														 class="visible bd-place card-img"
-														 style="height: 244px; width: 100%; outline: none">
-													<div class="d-flex justify-content-center card-img-overlay"
-														 style="align-items: center">
-														<img class="btn btn-lg align-middle" onclick="onClickAddImage()"
-															 id="imgAdd_${i}"
-															 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png"
-															 style="height: 30%; z-index: 2">
-													</div>
-													<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden"
-														 style="align-items: flex-start">
-														<img class="btn btn-lg align-middle p-0" id="imgDel_${i}"
-															 onclick="deleteImage(this)"
-															 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png"
-															 style="z-index: 2">
-													</div>
-													<div class="d-flex justify-content-center card-img-overlay p-0 visually-hidden"
-														 style="align-items: center">
-														<img class="w-100 h-100" id="imgSel_${i}" onclick="onSelectImage(${i})"
-															 src="/image/icon/480px-Solid_white.png"
-															 style="opacity : 0.0; z-index: 1;">
-													</div>
-												</div>
-											</c:forEach>
-										</div>
-									</td>
-								</tr>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
-				</div>
-			</div>
-		</div>
-	</div>
+<%--	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">--%>
+<%--		<div class="modal-dialog" role="document">--%>
+<%--			<div class="modal-content">--%>
+<%--				<div class="modal-header">--%>
+<%--					<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>--%>
+<%--					<button class="btn-close" type="button" class="close" data-bs-dismiss="modal" aria-label="Close"></button>--%>
+<%--				</div>--%>
+<%--				<div class="modal-body">--%>
+<%--					<div class="row">--%>
+<%--						<div class="col d-flex justify-content-center align-items-md-center" id="searchResultArea">--%>
+<%--							<table>--%>
+<%--								<tbody id="tableBody">--%>
+<%--&lt;%&ndash;								<tr onclick="location.href='/'" style="cursor:hand">&ndash;%&gt;--%>
+<%--								<tr>--%>
+<%--									<td>1</td>--%>
+<%--									<td>광화문</td>--%>
+<%--								</tr>--%>
+<%--								<tr>--%>
+<%--									<td>내용</td>--%>
+<%--									<td><textarea rows="3" cols="30"></textarea></td>--%>
+<%--								</tr>--%>
+<%--								<tr>--%>
+<%--									<td>별점</td>--%>
+<%--									<td>별점 등록</td>--%>
+<%--								</tr>--%>
+<%--								<tr>--%>
+<%--									<td>이미지</td>--%>
+<%--									<td>--%>
+<%--										<div id="canvas_rev" class="row flex-nowrap mx-0 my-3"--%>
+<%--											 style="overflow-x: scroll; /*outline: blue thick solid;*/">--%>
+<%--											<input id="imgInput" name="files" type="file"  minlength="1" maxlength="3" multiple--%>
+<%--												   accept="image/*" onchange="readImage()">--%>
+<%--											<c:forEach var="i" begin="1" end="3">--%>
+<%--												<div class="card p-0 m-2 visually-hidden">--%>
+<%--													<img src="/image/icon/480px-Solid_white.png" alt="" id="img_${i}"--%>
+<%--														 class="visible bd-place card-img"--%>
+<%--														 style="height: 244px; width: 100%; outline: none">--%>
+<%--													<div class="d-flex justify-content-center card-img-overlay"--%>
+<%--														 style="align-items: center">--%>
+<%--														<img class="btn btn-lg align-middle" onclick="onClickAddImage()"--%>
+<%--															 id="imgAdd_${i}"--%>
+<%--															 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png"--%>
+<%--															 style="height: 30%; z-index: 2">--%>
+<%--													</div>--%>
+<%--													<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden"--%>
+<%--														 style="align-items: flex-start">--%>
+<%--														<img class="btn btn-lg align-middle p-0" id="imgDel_${i}"--%>
+<%--															 onclick="deleteImage(this)"--%>
+<%--															 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png"--%>
+<%--															 style="z-index: 2">--%>
+<%--													</div>--%>
+<%--													<div class="d-flex justify-content-center card-img-overlay p-0 visually-hidden"--%>
+<%--														 style="align-items: center">--%>
+<%--														<img class="w-100 h-100" id="imgSel_${i}" onclick="onSelectImage(${i})"--%>
+<%--															 src="/image/icon/480px-Solid_white.png"--%>
+<%--															 style="opacity : 0.0; z-index: 1;">--%>
+<%--													</div>--%>
+<%--												</div>--%>
+<%--											</c:forEach>--%>
+<%--										</div>--%>
+<%--									</td>--%>
+<%--								</tr>--%>
+<%--								</tbody>--%>
+<%--							</table>--%>
+<%--						</div>--%>
+<%--					</div>--%>
+<%--				</div>--%>
+<%--				<div class="modal-footer">--%>
+<%--					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>--%>
+<%--					<button type="button" class="btn btn-primary">Save changes</button>--%>
+<%--				</div>--%>
+<%--			</div>--%>
+<%--		</div>--%>
+<%--	</div>--%>
 	<div class="col-2" id="sidebar">
 		<ul class="nav nav-pills flex-column col-2 position-fixed" style="top: 40%">
 			<div class="accordion text-center" id="loc">
@@ -416,7 +416,7 @@
 				</c:choose>
 					<div class="container mt-0">
 						<div class="d-flex justify-content-start row">
-							<div class="col-md-10">
+							<div class="col-md-12">
 								<div class="d-flex flex-column">
 									<c:set var="revDTO" value="${resRevDTO.dtoList}"></c:set>
 									<c:choose>
@@ -448,60 +448,60 @@
 																	<span class="date text-black-50 ml-5">(수정됨)</span>
 																</c:when>
 															</c:choose>
-															<div class="d-flex row">
-																<div class="flex-column">
-																	<span class="date text-black-50">총점</span>
+															<div class="row">
+																<div class="d-flex align-items-md-baseline">
+																	<span class="date text-black-50 me-1">총점</span>
 																	<c:forEach var="i" begin="1" end="5">
 																		<c:choose>
-																			<c:when test="${revDTO.get(c).rev_point >= i}">
-																				<img class="sc_icon_small" src="/image/icon/star_color.png" alt="star_color">
+																			<c:when test="${revDTO.get(c).sc_total >= i}">
+																				<img class="sc_icon_small ms-1" src="/image/icon/star_color.png" alt="star_color">
 																			</c:when>
 																			<c:otherwise>
-																				<img class="sc_icon_small" src="/image/icon/star_black.png" alt="star_black">
+																				<img class="sc_icon_small ms-1" src="/image/icon/star_black.png" alt="star_black">
 																			</c:otherwise>
 																		</c:choose>
 																	</c:forEach>
-																	<span class="date text-black-50">장소추천도</span>
+																	<span class="date text-black-50 ms-4 me-1">장소추천도</span>
 																	<c:forEach var="i" begin="1" end="5">
 																		<c:choose>
 																			<c:when test="${revDTO.get(c).sc_loc >= i}">
-																				<img class="sc_icon_small" src="/image/icon/star_color.png" alt="star_color">
+																				<img class="sc_icon_small ms-1" src="/image/icon/star_color.png" alt="star_color">
 																			</c:when>
 																			<c:otherwise>
-																				<img class="sc_icon_small" src="/image/icon/star_black.png" alt="star_black">
+																				<img class="sc_icon_small ms-1" src="/image/icon/star_black.png" alt="star_black">
 																			</c:otherwise>
 																		</c:choose>
 																	</c:forEach>
-																	<span class="date text-black-50">이동편리성</span>
+																	<span class="date text-black-50 ms-4 me-1">이동편리성</span>
 																	<c:forEach var="i" begin="1" end="5">
 																		<c:choose>
 																			<c:when test="${revDTO.get(c).sc_move >= i}">
-																				<img class="sc_icon_small" src="/image/icon/star_color.png" alt="star_color">
+																				<img class="sc_icon_small ms-1" src="/image/icon/star_color.png" alt="star_color">
 																			</c:when>
 																			<c:otherwise>
-																				<img class="sc_icon_small" src="/image/icon/star_black.png" alt="star_black">
+																				<img class="sc_icon_small ms-1" src="/image/icon/star_black.png" alt="star_black">
 																			</c:otherwise>
 																		</c:choose>
 																	</c:forEach>
-																	<span class="date text-black-50">시간소요도</span>
+																	<span class="date text-black-50 ms-4 me-1">시간소요도</span>
 																	<c:forEach var="i" begin="1" end="5">
 																		<c:choose>
 																			<c:when test="${revDTO.get(c).sc_time >= i}">
-																				<img class="sc_icon_small" src="/image/icon/star_color.png" alt="star_color">
+																				<img class="sc_icon_small ms-1" src="/image/icon/star_color.png" alt="star_color">
 																			</c:when>
 																			<c:otherwise>
-																				<img class="sc_icon_small" src="/image/icon/star_black.png" alt="star_black">
+																				<img class="sc_icon_small ms-1" src="/image/icon/star_black.png" alt="star_black">
 																			</c:otherwise>
 																		</c:choose>
 																	</c:forEach>
-																	<span class="date text-black-50">재방문의사</span>
+																	<span class="date text-black-50 ms-4 me-1">재방문의사</span>
 																	<c:forEach var="i" begin="1" end="5">
 																		<c:choose>
 																			<c:when test="${revDTO.get(c).sc_revisit >= i}">
-																				<img class="sc_icon_small" src="/image/icon/star_color.png" alt="star_color">
+																				<img class="sc_icon_small ms-1" src="/image/icon/star_color.png" alt="star_color">
 																			</c:when>
 																			<c:otherwise>
-																				<img class="sc_icon_small" src="/image/icon/star_black.png" alt="star_black">
+																				<img class="sc_icon_small ms-1" src="/image/icon/star_black.png" alt="star_black">
 																			</c:otherwise>
 																		</c:choose>
 																	</c:forEach>
@@ -509,8 +509,11 @@
 															</div>
 														</div>
 													</div>
-													<div class="mt-2">
+													<div class="mt-3">
 <%--												리뷰 이미지 첨부		--%>
+														<div id="rev_content_${c}" class="visible">
+															<p class="comment-text">${revDTO.get(c).revContent}</p>
+														</div>
 														<c:set var="revImg" value="${revImgList.get(c)}"></c:set>
 														<c:choose>
 															<c:when test="${!empty revImg}">
@@ -554,9 +557,6 @@
 																</div>
 															</c:when>
 														</c:choose>
-														<div id="rev_content_${c}" class="visible">
-															<p class="comment-text">${revDTO.get(c).revContent}</p>
-														</div>
 														<div id="cmt_edit_${c}" class="row visually-hidden">
 															<textarea id="cmt_edit_content_${c}" rows="6" maxlength="300" class="form-control ml-1 shadow-none textarea">${revDTO.get(c).revContent}</textarea>
 															<div class="d-flex p-0 justify-content-end">
@@ -576,6 +576,24 @@
 							</div>
 						</div>
 					</div>
+					<form action="/service/rev_registration" id="form" name="form" method="post" enctype="multipart/form-data">
+						<input type="hidden" id="user_no_input" name="user_no" value="${user_no}">
+						<input type="hidden" id="cor_no_input" name="cor_no" value="${dto.cor_no}">
+						<input type="hidden" id="rev_content_input" name="rev_content_input" value="">
+						<input type="hidden" id="rev_total_rate" name="rev_total_rate" value="">
+						<input type="hidden" id="rev_loc_rate" name="rev_loc_rate" value="">
+						<input type="hidden" id="rev_move_rate" name="rev_move_rate" value="">
+						<input type="hidden" id="rev_time_rate" name="rev_time_rate" value="">
+						<input type="hidden" id="rev_revisit_rate" name="rev_revisit_rate" value="">
+<%--						<input class="visually-hidden" id="files" name="files" type="file" multiple--%>
+<%--							   accept="image/*">--%>
+						<input type="hidden" id="resultType" name="resultType" value="review"/>
+						<!-- 해당시스템의 인코딩타입이 EUC-KR일경우에만 추가 START-->
+						<!--
+						<input type="hidden" id="encodingType" name="encodingType" value="EUC-KR"/>
+						 -->
+						<!-- 해당시스템의 인코딩타입이 EUC-KR일경우에만 추가 END-->
+					</form>
 
 
 					<%--	PageNumber	--%>
@@ -627,23 +645,6 @@
 							</nav>
 						</div>
 					</div>
-					<%-- 댓글 작성--%>
-					<sec:authorize access="isAnonymous()">
-					</sec:authorize>
-					<sec:authorize access="isAuthenticated()">
-						<div class="d-flex justify-content-start" id="comment">
-							<div class="bg-light p-2 col-10">
-								<div class="d-flex flex-row align-items-start">
-									<c:set var="currentUserPic"><sec:authentication property="principal.user_profilePic"></sec:authentication></c:set>
-									<img class="rounded-circle m-3" src="${currentUserPic}" width="60">
-									<textarea id="commentArea" rows="6" maxlength="300" class="form-control ml-1 shadow-none textarea" placeholder="postCommentTest"></textarea>
-								</div>
-								<div class="mt-2 text-end">
-									<button id="postCommentBtn" onclick="onClickPostComment()" class="btn btn-primary btn shadow-none" type="button">Post comment</button>
-								</div>
-							</div>
-						</div>
-					</sec:authorize>
 				</div>
 			</div>
 		</div>
@@ -782,65 +783,43 @@
         }
     }
 
-    function onClickPostComment() {
-        let form;
-        let cmt = document.getElementById("commentArea");
-
-        form = document.createElement("form");
-        form.method = "post";
-        form.action="/service/com_registration"
-
-		let input = [];
-		for (let i = 0; i < 3; i++) {
-		    input[i] = document.createElement("input");
-		    $(input[i]).attr("type", "hidden");
-
-            if (i === 0) {
-                $(input[0]).attr("name", "corNo");
-                $(input[0]).attr("value", "${dto.cor_no}");
-            }
-            else if (i === 1) {
-                $(input[1]).attr("name", "userNo");
-                <sec:authorize access="isAuthenticated()">
-                $(input[1]).attr("value", "<sec:authentication property="principal.user_no"/>");
-                </sec:authorize>
-                <sec:authorize access="isAnonymous()">
-                $(input[1]).attr("value", null);
-                </sec:authorize>
-            } else if (i === 2) {
-                $(input[2]).attr("name", "cmtContent");
-                $(input[2]).attr("value", cmt.value);
-            }
-
-		    form.appendChild(input[i]);
-		}
-
-		document.body.appendChild(form);
-		form.submit();
+    function returnToCoruseList() {
+        location.href = "/service/cor_recommend/list";
 	}
 
-	function openCmtEditMenu(index) {
-        let cmt_content = document.getElementById("cmt_content_" + index);
-        let cmt_edit_menu = document.getElementById("cmt_edit_" + index);
+    function onClickPostReview(reviewMapParam, imgInput) {
+        let form = document.getElementById("form");
 
-        cmt_content.setAttribute("class", "visually-hidden");
-        cmt_edit_menu.setAttribute("class", "row visible");
-	}
+        let user_no_input = document.getElementById("user_no_input");
+        let cor_no_input = document.getElementById("cor_no_input");
+        let rev_content_input = document.getElementById("rev_content_input");
+        let rev_total_rate = document.getElementById("rev_total_rate");
+        let rev_loc_rate = document.getElementById("rev_loc_rate");
+        let rev_move_rate = document.getElementById("rev_move_rate");
+        let rev_time_rate = document.getElementById("rev_time_rate");
+        let rev_revisit_rate = document.getElementById("rev_revisit_rate");
+        let files_input = document.getElementById("files");
 
-	function closeCmtEditMenu(index) {
-        let cmt_content = document.getElementById("cmt_content_" + index);
-        let cmt_edit_menu = document.getElementById("cmt_edit_" + index);
+        user_no_input.value = "${user_no}";
+        cor_no_input.value = "${dto.cor_no}";
+        rev_content_input.value = reviewMapParam.get("commentInput");
+		rev_total_rate.value = reviewMapParam.get("totalRate");
+		rev_loc_rate.value = reviewMapParam.get("locRate");
+		rev_move_rate.value = reviewMapParam.get("moveRate");
+		rev_time_rate.value = reviewMapParam.get("timeRate");
+		rev_revisit_rate.value = reviewMapParam.get("revisitRate");
 
-        cmt_content.setAttribute("class", "visible");
-        cmt_edit_menu.setAttribute("class", "row visually-hidden");
-	}
+		form.append(imgInput);
 
-	function onClickDeleteComment(index) {
+        form.submit();
+    }
+
+    function onClickDeleteReview(index) {
         let delConfirm = confirm("댓글을 지우시겠습니까?");
 
         if (!delConfirm){
             return;
-		}
+        }
 
         let cmt_uuid = document.getElementById("cmt_id_" + index).innerText;
         let form;
@@ -878,9 +857,9 @@
 
         document.body.appendChild(form);
         form.submit();
-	}
+    }
 
-	function submitUpdateComment(index) {
+    function submitUpdateReview(index) {
         let cmt_uuid = document.getElementById("cmt_id_" + index).innerText;
         let cmt_content = document.getElementById("cmt_edit_content_" + index).value;
         let form;
@@ -896,7 +875,7 @@
             if (i === 0) {
                 $(input[0]).attr("name", "locNo");
                 $(input[0]).attr("value", "${dto.cor_no}");
-			}
+            }
 
             if (i === 1) {
                 $(input[1]).attr("name", "userEmail");
@@ -923,7 +902,7 @@
 
         document.body.appendChild(form);
         form.submit();
-	}
+    }
 </script>
 <script defer>
     let input = document.getElementById("imgInput");
@@ -1049,13 +1028,16 @@
     function openReviewRegisterPopup() {
         <%--        // 주소검색을 수행할 팝업 페이지를 호출합니다.
 				// 호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(https://www.juso.go.kr/addrlink/addrLinkUrl.do)를 호출하게 됩니다. --%>
-        var pop = window.open("/popup/reviewRegisterPopup", "pop", "width=1200,height=600, scrollbars=yes, resizable=yes");
+        var pop = window.open("/popup/reviewRegisterPopup?corName=${dto.cor_name}&corNo=${dto.cor_no}", "pop", "width=1200,height=600, scrollbars=yes, resizable=yes");
+
+        <%--pop.document.getElementById("popup_cor_name").value = '${dto.cor_name}';--%>
+        <%--pop.document.getElementById("popup_cor_name").innerText = '${dto.cor_name}';--%>
 
         <%-- // 모바일 웹인 경우, 호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(https://www.juso.go.kr/addrlink/addrMobileLinkUrl.do)를 호출하게 됩니다. --%>
         //var pop = window.open("/popup/jusoPopup.jsp","pop","scrollbars=yes, resizable=yes");
     }
 
-    function reviewRegisterCallBack() {
+    function reviewRegisterCallBack(reviewMapParam, imgInput) {
         // 팝업페이지에서 주소입력한 정보를 받아서, 현 페이지에 정보를 등록합니다.
         // document.getElementById("roadAddrPart1").value = roadAddrPart1;
         // document.getElementById("addrDetail").value = addrDetail;
@@ -1064,7 +1046,12 @@
         // console.log("locID : " + locID);
         // console.log("locName : " + locName);
 
-        console.log("reviewRegisterCallBack");
+        // console.log('reviewRegisterCallBack');
+        // console.log(reviewMapParam);
+        // console.log(imgInput);
+        // console.log(imgInput.files);
+
+        onClickPostReview(reviewMapParam, imgInput);
     }
 </script>
 </body>

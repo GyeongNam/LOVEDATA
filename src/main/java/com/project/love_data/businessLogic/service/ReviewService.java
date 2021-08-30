@@ -32,7 +32,7 @@ public class ReviewService {
         Review entity = Review.builder()
                 .corNo(dto.getCorNo())
                 .is_deleted(dto.is_deleted())
-                .rev_point(dto.getRev_point())
+                .sc_total(dto.getSc_total())
                 .revContent(dto.getRevContent())
                 .revIdx(dto.getRevNo())
                 .revUuid(dto.getRevUuid())
@@ -56,7 +56,7 @@ public class ReviewService {
         ReviewDTO dto = ReviewDTO.builder()
                 .corNo(entity.getCorNo())
                 .is_deleted(entity.is_deleted())
-                .rev_point(entity.getRev_point())
+                .sc_total(entity.getSc_total())
                 .revContent(entity.getRevContent())
                 .revIdx(entity.getRevNo())
                 .revUuid(entity.getRevUuid())
@@ -78,7 +78,12 @@ public class ReviewService {
         return dto;
     }
 
-    public Map<String, Integer> getScoreMap(int sc_loc, int sc_time, int sc_move, int sc_revisit) {
+    public Map<String, Integer> getScoreMap(int sc_total, int sc_loc, int sc_move, int sc_time, int sc_revisit) {
+        if (sc_total < 0 || sc_total > 5) {
+            log.warn("총 점수는 0 ~ 5점 사이입니다.");
+            return null;
+        }
+
         if (sc_loc < 0 || sc_loc > 5) {
             log.warn("장소 추천 점수는 0 ~ 5점 사이입니다.");
             return null;
@@ -101,6 +106,7 @@ public class ReviewService {
 
         Map<String, Integer> map = new HashMap<>();
 
+        map.put("sc_total", sc_total);
         map.put("sc_loc", sc_loc);
         map.put("sc_time", sc_time);
         map.put("sc_move", sc_move);
@@ -109,7 +115,7 @@ public class ReviewService {
         return map;
     }
 
-    public Review createRevEntity(Long corNo, Long userNo, String revContent, float revPoint, Map<String, Integer> scoreMap) {
+    public Review createRevEntity(Long corNo, Long userNo, String revContent, Map<String, Integer> scoreMap) {
         Optional<Course> cor = corRepository.findCorByCor_no(corNo);
         Optional<User> user = userRepository.findById(userNo);
 
@@ -134,7 +140,7 @@ public class ReviewService {
                     .user_no(userNo)
                     .revIdx(index)
                     .revContent(revContent)
-                    .rev_point(revPoint)
+                    .sc_total(scoreMap.get("sc_total"))
                     .sc_time(scoreMap.get("sc_time"))
                     .sc_loc(scoreMap.get("sc_loc"))
                     .sc_move(scoreMap.get("sc_move"))

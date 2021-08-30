@@ -42,9 +42,9 @@ public class Review extends TimeEntity {
     @Builder.Default
     private Long reported_count = 0L;
 
-    @Column(name = "rev_point", nullable = false)
+    @Column(name = "sc_total", nullable = false)
     @Builder.Default
-    private float rev_point = 0f;
+    private float sc_total = 0f;
 
     @Column(name = "sc_move")
     @Builder.Default
