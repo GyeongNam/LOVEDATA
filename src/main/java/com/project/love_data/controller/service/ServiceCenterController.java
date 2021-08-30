@@ -70,9 +70,24 @@ public class ServiceCenterController {
         List<Questions> questions = serviceCenterService.qu_select_all();
         List<Questions> questions_page = null;
         model.addAttribute("search", false);
-
+        long qu_size = questions.size();
         long qu_page = questions.size()/15;
         long qu_page_na = questions.size()%15;
+        long qu_page_size = qu_page/10;
+        long qu_page_size_na = qu_page%10;
+        Date today = new Date();
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+        model.addAttribute("qu_time", format1.format(today));
+
+        if(qu_page_size_na >= 1){
+            qu_page_size = qu_page_size+1;
+            model.addAttribute("qu_page_size",qu_page_size);
+        }
+        else {
+            model.addAttribute("qu_page_size",qu_page_size);
+        }
+
+
         if(qu_page_na >= 1){
             qu_page = qu_page+1;
             model.addAttribute("qu_page",qu_page);
@@ -88,7 +103,7 @@ public class ServiceCenterController {
         if(questions.size()<15){
             model.addAttribute("qu",questions);
         }else {
-            for (int i = 0; i < questions.size(); i++) {
+            for (int i = 0; i < qu_size; i++) {
                 questions_page = questions.subList(0,15);
 
                 if (i % 15 == 0) {
@@ -97,7 +112,7 @@ public class ServiceCenterController {
                         model.addAttribute("qu",questions_page);
                         break;
                     } else {
-                       questions.subList(0,15).clear();
+                        questions.subList(0,15).clear();
 
                        if(questions.size()<15){
                            model.addAttribute("qu",questions);
@@ -133,8 +148,13 @@ public class ServiceCenterController {
                            Principal principal)  {
         List<Questions> questions = serviceCenterService.qu_search_all(menu, text);
         List<Questions> questions_page = null;
+        long qu_size = questions.size();
         long qu_page = questions.size()/15;
         long qu_page_na = questions.size()%15;
+
+        Date today = new Date();
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+        model.addAttribute("qu_time", format1.format(today));
 
         model.addAttribute("search", true);
         model.addAttribute("text", text);
@@ -155,7 +175,7 @@ public class ServiceCenterController {
         if(questions.size()<15){
             model.addAttribute("qu",questions);
         }else {
-            for (int i = 0; i < questions.size(); i++) {
+            for (int i = 0; i < qu_size; i++) {
                 questions_page = questions.subList(0,15);
 
                 if (i % 15 == 0) {
@@ -174,10 +194,8 @@ public class ServiceCenterController {
                 }
             }
         }
-
         return "user/Service_center_qu";
     }
-
 
     @PreAuthorize("hasRole('ROLE_MANAGER')")
     @PostMapping(value = "/ServiceCenter/Questions_answer/{num}")
@@ -200,6 +218,7 @@ public class ServiceCenterController {
         model.addAttribute("qu", questions);
         return "/service/qu_detail";
     }
+
     @GetMapping(value = "/ServiceCenter/Questions_Post/{num}")
     public String Questions_no(@PathVariable("num") String num, Model model, HttpServletResponse response , Principal principal) throws IOException {
         ScriptUtils scriptUtils = new ScriptUtils();
@@ -237,10 +256,6 @@ public class ServiceCenterController {
         filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE,
                 UploadFileCount.MULTIPLE, 0, 3, request);
 
-        if (filePath == null) {
-            log.warn("파일이 제대로 저장되지 않았습니다.");
-        }
-
         Boolean secret = false;
         if(request.getParameter("secret").equals("1")){
             secret = true;
@@ -255,16 +270,19 @@ public class ServiceCenterController {
                 .qu_title(request.getParameter("title"))
                 .build();
         serviceCenterService.qu_update(questions);
-
-        for (int i = 1; i<filePath.size(); i++) {
-            QuestionsImage questionsImage = QuestionsImage.builder()
-                    .qu_img_url(filePath.get(i))
-                    .user_no(user.getUser_no())
-                    .qu_no(questions.getQu_no())
-                    .build();
-            questionsImageRepository.save(questionsImage);
+        if (filePath == null) {
+            log.warn("파일이 제대로 저장되지 않았습니다.");
+        }else {
+            for (int i = 1; i<filePath.size();) {
+                QuestionsImage questionsImage = QuestionsImage.builder()
+                        .qu_img_url(filePath.get(i))
+                        .user_no(user.getUser_no())
+                        .qu_no(questions.getQu_no())
+                        .build();
+                questionsImageRepository.save(questionsImage);
+                i = i+2;
+            }
         }
-
         return "redirect:/ServiceCenter/Questions/1";
     }
 
@@ -273,37 +291,54 @@ public class ServiceCenterController {
         List<String> filePath = null;
         Date today = new Date();
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        // 업데이트시 기존 사진 아웃
+        questionsImageRepository.qu_no_img_false(request.getParameter("qu_no"));
 
         Questions questions = serviceCenterService.qu_select_no(request.getParameter("qu_no"));
         User user = userService.select(principal.getName());
-        if(!fileList.get(0).getOriginalFilename().equals("")){
-            questionsImageRepository.qu_no_img_false(request.getParameter("qu_no"));
-        }
-
-        filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE,
-                UploadFileCount.MULTIPLE, 0, 3, request);
-
-        if (filePath == null) {
-            log.warn("파일이 제대로 저장되지 않았습니다.");
-        }
 
         Boolean secret = false;
         if(request.getParameter("secret").equals("1")){
             secret = true;
         }
 
-        questions.setQu_secret(secret);
-        questions.setQu_text(request.getParameter("info"));
-        questions.setQu_title(request.getParameter("title"));
-        serviceCenterService.qu_update(questions);
+//        log.info("files list"+ fileList.get(0).getOriginalFilename());
+        for(int i = 0; i<fileList.size(); i++){
+            List<QuestionsImage> questionsImage = questionsImageRepository.qu_name_imgselect(fileList.get(i).getOriginalFilename());
+            if(questionsImage.size() > 0) {
+                log.info(i+" :존재함");
+                questions.setQu_secret(secret);
+                questions.setQu_text(request.getParameter("info"));
+                questions.setQu_title(request.getParameter("title"));
+                serviceCenterService.qu_update(questions);
+                QuestionsImage questionsImages = QuestionsImage.builder()
+                        .qu_img_url(questionsImage.get(0).getQu_img_url())
+                        .user_no(user.getUser_no())
+                        .qu_no(questions.getQu_no())
+                        .build();
+                questionsImageRepository.save(questionsImages);
+            }
+            else {
+                log.info(i+" :존재하지 않음");
+                List<MultipartFile> fileList2 = fileList.subList(i,i+1);
+                filePath = fileUploadService.execute(fileList2, UploadFileType.IMAGE,
+                        UploadFileCount.MULTIPLE, 0, 3, request);
 
-        for (int i = 1; i<filePath.size(); i++) {
-            QuestionsImage questionsImage = QuestionsImage.builder()
-                    .qu_img_url(filePath.get(i))
-                    .user_no(user.getUser_no())
-                    .qu_no(questions.getQu_no())
-                    .build();
-            questionsImageRepository.save(questionsImage);
+                questions.setQu_secret(secret);
+                questions.setQu_text(request.getParameter("info"));
+                questions.setQu_title(request.getParameter("title"));
+                serviceCenterService.qu_update(questions);
+                if (filePath == null) {
+                    log.warn("파일이 제대로 저장되지 않았습니다.");
+                }else {
+                    QuestionsImage questionsImages = QuestionsImage.builder()
+                            .qu_img_url(filePath.get(1))
+                            .user_no(user.getUser_no())
+                            .qu_no(questions.getQu_no())
+                            .build();
+                    questionsImageRepository.save(questionsImages);
+                }
+            }
         }
 
         return "redirect:/ServiceCenter/Questions_Post/"+request.getParameter("qu_no");
@@ -316,6 +351,27 @@ public class ServiceCenterController {
             scriptUtils.alertAndMovePage(response, "로그인 해주세요.", "/login");
         }
         return "/service/qu_Post_add";
+    }
+
+    @GetMapping(value = "/ServiceCenter/Questions_Delete/{num}")
+    public String Questions_Delete(@PathVariable("num") String num, Model model, Principal principal, HttpServletResponse response) throws IOException {
+        ScriptUtils scriptUtils = new ScriptUtils();
+        if(principal == null){
+            scriptUtils.alertAndMovePage(response, "로그인 해주세요.", "/login");
+        }else {
+            Questions questions = serviceCenterService.qu_select_no(num);
+            User user = userService.select(principal.getName());
+            if(user.getUser_nic().equals(questions.getQu_user()) ){
+                log.info("동일 인물");
+                questions.setQu_activation(false);
+                serviceCenterService.qu_update(questions);
+            }else {
+                log.info("동일 인물 아님");
+                scriptUtils.alertAndBackPage(response,"다른사람의 글을 함부로 삭제할 수 없습니다.");
+            }
+
+        }
+        return "redirect:/ServiceCenter/Questions/1";
     }
 
 
@@ -345,7 +401,6 @@ public class ServiceCenterController {
 
 
     public class ScriptUtils {
-
         public void init(HttpServletResponse response) {
             response.setContentType("text/html; charset=euc-kr");
             response.setCharacterEncoding("euc-kr");

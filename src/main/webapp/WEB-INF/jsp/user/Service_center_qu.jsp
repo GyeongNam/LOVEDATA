@@ -7,6 +7,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.Date" %>
+<%@ page import="java.net.URLEncoder" %>
 <%@ page session="false" %>
 
 <html>
@@ -22,6 +23,7 @@
 <%@ include file="../layout/header.jsp"%>
 <body>
 <div class="container-fluid d-flex " style="padding-top: 100px">
+
     <div class="col-2" id="sidebar">
         <ul class="nav nav-pills flex-column col-2 position-fixed" style="top: 40%">
             <div class="accordion text-center" id="loc">
@@ -66,7 +68,8 @@
                 </div>
             </nav>
         </div>
-
+        <c:choose>
+            <c:when test="${qu_size>0}">
         <table id="tbody">
             <thead>
             <tr>
@@ -74,56 +77,78 @@
             </tr>
             </thead>
             <tbody id="Qtbody" >
-            <c:forEach var="qu" items="${qu}">
-                <tr>
-                    <td>${qu.qu_no}</td>
-                    <c:choose>
-                        <c:when test="${qu.qu_secret eq true}">
-                            <td onclick=location.href='/ServiceCenter/Questions_Post/${qu.qu_no}';>${qu.qu_title} <img src="/image/icon/user/secret.png" class="img_s"
-                                                                                                                        id="imgDisplay" name="imgDisplay" ></td>
-                        </c:when>
-                        <c:when test="${qu.qu_secret eq false}">
-                            <td onclick=location.href='/ServiceCenter/Questions_Post/${qu.qu_no}';>${qu.qu_title}</td>
-                        </c:when>
-                    </c:choose>
-                    <td>${qu.qu_user}</td>
-                    <c:set var="tel" value="${fn:split(qu.qu_date,' ')}" />
 
-                    <td>${tel[0]}</td>
-                    <c:choose>
-                        <c:when test="${qu.qu_answer eq true}">
-                            <td>답변완료</td>
-                        </c:when>
-                        <c:otherwise>
-                            <td>답변중</td>
-                        </c:otherwise>
-                    </c:choose>
-                </tr>
-            </c:forEach>
+                <c:forEach var="qu" items="${qu}">
+                    <tr>
+                        <td>${qu.qu_no}</td>
+                        <c:choose>
+                            <c:when test="${qu.qu_secret eq true}">
+                                <td onclick=location.href='/ServiceCenter/Questions_Post/${qu.qu_no}';>${qu.qu_title} <img src="/image/icon/user/secret.png" class="img_s"
+                                                                                                                            id="imgDisplay" name="imgDisplay" ></td>
+                            </c:when>
+                            <c:when test="${qu.qu_secret eq false}">
+                                <td onclick=location.href='/ServiceCenter/Questions_Post/${qu.qu_no}';>${qu.qu_title}</td>
+                            </c:when>
+                        </c:choose>
+                        <td>${qu.qu_user}</td>
+                        <c:set var="tel" value="${fn:split(qu.qu_date,' ')}" />
+                        <c:choose>
+                            <c:when test="${tel[0] == qu_time}">
+                                <td>${tel[1]}</td>
+                            </c:when>
+                            <c:when test="${tel[0] != qu_time}">
+                                <td>${tel[0]}</td>
+                            </c:when>
+                        </c:choose>
+                        <c:choose>
+                            <c:when test="${qu.qu_answer eq true}">
+                                <td>답변완료</td>
+                            </c:when>
+                            <c:otherwise>
+                                <td>답변중</td>
+                            </c:otherwise>
+                        </c:choose>
+                    </tr>
+                </c:forEach>
             </tbody>
         </table>
+            </c:when>
+        <c:when test="${qu_size==0}">
 
+            글이 존재하지 않습니다.
+
+        </c:when>
+        </c:choose>
         <div class="col" id="pu_navbar">
             <div class="container d-flex" id="">
                 <div class="col" id="page_number">
                     <nav aria-label="Page navigation example">
-                        <div class="pagination justify-content-center">
+
+                        <input id="qu_pages" value="${qu_page_size}" type="hidden">
+                        <input id="qu_pagess" value="${qu_page}" type="hidden">
+                        <div class="pagination justify-content-center" , id="pagination justify-content-center">
+                            <p onclick="subpage()">이전</p>
                             <c:choose>
                                 <c:when test="${search eq false}">
                                     <c:forEach var="qu_pages" begin="1" end="${qu_page}" step="1">
-                                        <li class="page-item">
+                                        <div class="page-item" id="${qu_pages}">
+                                        <li class="page-item ${qu_pages}">
                                             <a href="/ServiceCenter/Questions/${qu_pages}">${qu_pages}</a>
                                         </li>
+                                        </div>
                                     </c:forEach>
                                 </c:when>
                                 <c:when test="${search eq true}">
                                     <c:forEach var="qu_pages" begin="1" end="${qu_page}" step="1">
-                                        <li class="page-item">
+                                    <div class="page-item" id="${qu_pages}">
+                                        <li class="page-item ${qu_pages}">
                                             <a href="/ServiceCenter/Questions/search/${menu}/${text}/${qu_pages}">${qu_pages}</a>
                                         </li>
+                                    </div>
                                     </c:forEach>
                                 </c:when>
                             </c:choose>
+                            <p onclick="plupage()">다음</p>
                         </div>
                     </nav>
                 </div>
@@ -132,6 +157,7 @@
         </div>
     </div>
 </div>
+
 </body>
 <!--   부트스트랩 js 사용  -->
 <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

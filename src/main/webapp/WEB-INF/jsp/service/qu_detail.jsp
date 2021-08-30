@@ -60,6 +60,7 @@
                     <c:if test="${qu.qu_user eq name}">
                         <c:if test="${qu.qu_answer eq false}">
                             <button onclick="onclick=location.href='/ServiceCenter/Questions_Update/'+${qu.qu_no}">수정하기</button>
+                            <button onclick="onclick=location.href='/ServiceCenter/Questions_Delete/'+${qu.qu_no}">삭제하기</button>
                         </c:if>
                     </c:if>
                 </sec:authorize>

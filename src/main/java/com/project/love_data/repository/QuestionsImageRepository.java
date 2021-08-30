@@ -18,4 +18,7 @@ public interface QuestionsImageRepository extends JpaRepository<QuestionsImage, 
     @Modifying(clearAutomatically = true)
     @Query(value = "update qu_image set qu_img_Activation = false where qu_no = :qu_no ", nativeQuery = true)
     void qu_no_img_false(String qu_no);
+
+    @Query(value = "select * from qu_image  where qu_img_url = :name ", nativeQuery = true)
+    List<QuestionsImage> qu_name_imgselect(String name);
 }
