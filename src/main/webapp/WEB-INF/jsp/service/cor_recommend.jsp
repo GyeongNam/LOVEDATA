@@ -174,11 +174,10 @@
 										<div class="d-flex align-items-center">
 											<img src="/image/icon/view.png" class="loc_icon" alt="조회수">
 											<span class="align-middle">${result.dtoList.get(i).viewCount}</span>
-											<img src="/image/icon/comment.png" class="loc_icon" alt="댓글">
+											<img src="/image/icon/comment.png" class="loc_icon" alt="리뷰">
 												<%--									Todo리뷰 항목 Course Entity에 추가하기--%>
-<%--											<span class="align-middle">${result.dtoList.get(i).cmtList.size()}</span>--%>
+											<span class="align-middle">${revCounterList.get(i)}</span>
 											<sec:authorize access="isAuthenticated()">
-<%--												Todo 코스 찜하기 리스트 컨트롤러 수정후 jsp도 수정하기--%>
 												<c:choose>
 													<c:when test="${isLikedList.get(i) eq true}">
 														<img src="/image/icon/like/love_color.png" class="loc_icon" alt="찜하기"

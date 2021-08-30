@@ -42,10 +42,6 @@ public class LocationDTO {
     @Builder.Default
     private List<Comment> cmtList = new ArrayList<>();
     @Builder.Default
-    private List<Location> likeLocList = new ArrayList<>();
-    @Builder.Default
-    private List<Location> recentLocList = new ArrayList<>();
-    @Builder.Default
     private String thumbnail = "";
     @Builder.Default
     private boolean is_deleted = false;

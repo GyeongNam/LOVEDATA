@@ -36,6 +36,8 @@ public class LocationService {
         List<LocationImage> imgList = new ArrayList<>();
         Location entity = dtoToEntity(dto);
 
+        repository.save(entity);
+
         for (int i = 0; i < filePath.size(); i+=2) {
             // filePath.get(i)  ==  Parent Folder (URI)
             // filePath.get(i+1)  ==  fileNames

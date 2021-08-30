@@ -7,6 +7,7 @@ import com.project.love_data.model.resource.CourseImage;
 import com.project.love_data.model.resource.LocationImage;
 import com.project.love_data.model.service.CorLocMapper;
 import com.project.love_data.model.service.Course;
+import com.project.love_data.model.service.Location;
 import com.project.love_data.model.service.QCourse;
 import com.project.love_data.repository.CourseImageRepository;
 import com.project.love_data.repository.CourseRepository;
@@ -488,5 +489,35 @@ public class CourseService {
         update(loc);
 
         return selectCor(loc.getCor_no());
+    }
+
+    public List<Course> courseNameSearch(String cor_name){
+        return courseNameSearch(cor_name, MatchOption.CONTAIN);
+    }
+
+    // TODO 안쓰는거 지워야할 거
+    public List<Course> courseNameSearch(String cor_name, MatchOption matchOption) {
+        StringBuilder sb = new StringBuilder();
+        switch (matchOption) {
+            case START_WITH:
+                sb.append(cor_name);
+                sb.insert(0, "%");
+                break;
+            case END_WITH:
+                sb.append(cor_name);
+                sb.append("%");
+                break;
+            case CONTAIN:
+                sb.append(cor_name);
+                sb.insert(0, "%");
+                sb.append("%");
+                break;
+            default:
+                return null;
+        }
+
+        Optional<List<Course>> lists = repository.findByCor_nameContaining(sb.toString());
+
+        return lists.orElse(null);
     }
 }

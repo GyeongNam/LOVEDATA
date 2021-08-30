@@ -6,6 +6,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Data
@@ -22,9 +23,29 @@ public class ReviewDTO {
     @Builder.Default
     private Long revIdx = 0L;
     @Builder.Default
-    private float rev_point = 2.5f;
+    private float sc_total = 0f;
+    @Builder.Default
+    private int sc_move = 0;
+    @Builder.Default
+    private int sc_loc = 0;
+    @Builder.Default
+    private int sc_time = 0;
+    @Builder.Default
+    private int sc_revisit = 0;
     @Builder.Default
     private boolean is_deleted = false;
     @Builder.Default
+    private Long reported_count = 0L;
+    @Builder.Default
     private String revUuid = UUID.randomUUID().toString();
+    @Builder.Default
+    private Long rev_like = 0L;
+    @Builder.Default
+    private Long rev_dislike = 0L;
+    @Builder.Default
+    private Long view_count = 0L;
+    @Builder.Default
+    private LocalDateTime regDate = LocalDateTime.now();
+    @Builder.Default
+    private LocalDateTime modDate = LocalDateTime.now();
 }

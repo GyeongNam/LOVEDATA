@@ -1,6 +1,5 @@
 package com.project.love_data.businessLogic.service;
 
-import com.project.love_data.dto.CommentDTO;
 import com.project.love_data.dto.PageRequestDTO;
 import com.project.love_data.dto.PageResultDTO;
 import com.project.love_data.dto.ReviewDTO;
@@ -33,13 +32,21 @@ public class ReviewService {
         Review entity = Review.builder()
                 .corNo(dto.getCorNo())
                 .is_deleted(dto.is_deleted())
-                .rev_point(dto.getRev_point())
+                .sc_total(dto.getSc_total())
                 .revContent(dto.getRevContent())
                 .revIdx(dto.getRevNo())
                 .revUuid(dto.getRevUuid())
                 .user_no(dto.getUserNo())
                 .revNo(dto.getRevNo())
                 .user_name(dto.getUserName())
+                .rev_like(dto.getRev_like())
+                .rev_dislike(dto.getRev_dislike())
+                .view_count(dto.getView_count())
+                .reported_count(dto.getReported_count())
+                .sc_loc(dto.getSc_loc())
+                .sc_move(dto.getSc_move())
+                .sc_revisit(dto.getSc_revisit())
+                .sc_time(dto.getSc_time())
                 .build();
 
         return entity;
@@ -49,19 +56,66 @@ public class ReviewService {
         ReviewDTO dto = ReviewDTO.builder()
                 .corNo(entity.getCorNo())
                 .is_deleted(entity.is_deleted())
-                .rev_point(entity.getRev_point())
+                .sc_total(entity.getSc_total())
                 .revContent(entity.getRevContent())
                 .revIdx(entity.getRevNo())
                 .revUuid(entity.getRevUuid())
                 .userNo(entity.getUser_no())
                 .revNo(entity.getRevNo())
+                .reported_count(entity.getReported_count())
                 .userName(entity.getUser_name())
+                .rev_like(entity.getRev_like())
+                .rev_dislike(entity.getRev_dislike())
+                .view_count(entity.getView_count())
+                .sc_loc(entity.getSc_loc())
+                .sc_move(entity.getSc_move())
+                .sc_revisit(entity.getSc_revisit())
+                .sc_time(entity.getSc_time())
+                .regDate(entity.getRegDate())
+                .modDate(entity.getModDate())
                 .build();
 
         return dto;
     }
 
-    public Review createRevEntity(Long corNo, Long userNo, String revContent, float revPoint) {
+    public Map<String, Integer> getScoreMap(int sc_total, int sc_loc, int sc_move, int sc_time, int sc_revisit) {
+        if (sc_total < 0 || sc_total > 5) {
+            log.warn("총 점수는 0 ~ 5점 사이입니다.");
+            return null;
+        }
+
+        if (sc_loc < 0 || sc_loc > 5) {
+            log.warn("장소 추천 점수는 0 ~ 5점 사이입니다.");
+            return null;
+        }
+
+        if (sc_time < 0 || sc_time > 5) {
+            log.warn("시간 점수는 0 ~ 5점 사이입니다.");
+            return null;
+        }
+
+        if (sc_move < 0 || sc_move > 5) {
+            log.warn("이동 점수는 0 ~ 5점 사이입니다.");
+            return null;
+        }
+
+        if (sc_revisit < 0 || sc_revisit > 5) {
+            log.warn("재방문 점수는 0 ~ 5점 사이입니다.");
+            return null;
+        }
+
+        Map<String, Integer> map = new HashMap<>();
+
+        map.put("sc_total", sc_total);
+        map.put("sc_loc", sc_loc);
+        map.put("sc_time", sc_time);
+        map.put("sc_move", sc_move);
+        map.put("sc_revisit", sc_revisit);
+
+        return map;
+    }
+
+    public Review createRevEntity(Long corNo, Long userNo, String revContent, Map<String, Integer> scoreMap) {
         Optional<Course> cor = corRepository.findCorByCor_no(corNo);
         Optional<User> user = userRepository.findById(userNo);
 
@@ -82,10 +136,15 @@ public class ReviewService {
             }
 
             Review entity = Review.builder()
+                    .corNo(corNo)
                     .user_no(userNo)
                     .revIdx(index)
                     .revContent(revContent)
-                    .rev_point(revPoint)
+                    .sc_total(scoreMap.get("sc_total"))
+                    .sc_time(scoreMap.get("sc_time"))
+                    .sc_loc(scoreMap.get("sc_loc"))
+                    .sc_move(scoreMap.get("sc_move"))
+                    .sc_revisit(scoreMap.get("sc_revisit"))
                     .user_name(user.get().getUser_name())
                     .build();
 
@@ -96,7 +155,7 @@ public class ReviewService {
     }
 
     public PageResultDTO<ReviewDTO, Review> getRevPage(PageRequestDTO requestDTO) {
-        return getRevPage(requestDTO, SortingOrder.ASC);
+        return getRevPage(requestDTO, SortingOrder.DES);
     }
 
     public PageResultDTO<ReviewDTO, Review> getRevPage(PageRequestDTO requestDTO,
@@ -196,5 +255,10 @@ public class ReviewService {
     public Review select(Long revNo) {
         Optional<Review> item = repository.findByRev_no(revNo);
         return item.orElse(null);
+    }
+
+    public List<Review> getReviewsByCorNo(Long corNo) {
+        Optional<List<Review>> items = repository.findAllByCor_no(corNo);
+        return items.orElse(null);
     }
 }

@@ -84,7 +84,14 @@ function onClickLike(Like, user_no, type) {
         item = document.getElementById("loc_no");
         item_no = parseInt(item.innerText);
         likeCount = document.getElementById("likeCount");
-    } else {
+    }
+    else if (path_noparm === "/service/cor_detail") {
+        countChangeFlag = true;
+        item = document.getElementById("cor_no");
+        item_no = parseInt(item.innerText);
+        likeCount = document.getElementById("likeCount");
+    }
+    else {
         likeCount = Like.nextElementSibling.innerText;
         item_no = Like.nextElementSibling.nextElementSibling.innerText;
         item = Like.nextElementSibling;
@@ -180,6 +187,9 @@ function onClickLikeAction(map) {
                         if (location.pathname === "/service/loc_detail") {
                             var temp = parseInt(likeCount.innerText);
                             likeCount.innerText = temp + 1;
+                        } else if (location.pathname === "/service/cor_detail") {
+                            var temp = parseInt(likeCount.innerText);
+                            likeCount.innerText = temp + 1;
                         }
                         else {
                             console.log(parseInt(likeCount));
@@ -217,6 +227,9 @@ function onClickLikeAction(map) {
                     like.src = "/image/icon/like/love_black.png";
                     if (countChangeFlag) {
                         if (location.pathname === "/service/loc_detail") {
+                            var temp = parseInt(likeCount.innerText);
+                            likeCount.innerText = temp - 1;
+                        } else if (location.pathname === "/service/cor_detail") {
                             var temp = parseInt(likeCount.innerText);
                             likeCount.innerText = temp - 1;
                         } else {
@@ -305,4 +318,23 @@ function ajaxCall() {
             console.log('error:' + error);
         }
     });
+}
+
+function removeURLParam() {
+    let url = window.location.href;
+    let param = new URLSearchParams(window.location.search);
+
+    // console.log(url);
+    // console.log(param.has('page'));
+
+    param.delete('page');
+    // console.log(param.has('page'));
+
+    url = window.location.protocol + "//" + window.location.host + window.location.pathname + "?" + param;
+
+    // console.log(url);
+
+    /* https://stackoverflow.com/questions/22753052/remove-url-parameters-without-refreshing-page */
+    // window.history.pushState(null, null, url);
+    window.history.replaceState(null, null, url);
 }

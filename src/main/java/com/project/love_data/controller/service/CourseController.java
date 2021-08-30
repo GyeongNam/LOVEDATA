@@ -3,6 +3,7 @@ package com.project.love_data.controller.service;
 import com.project.love_data.businessLogic.service.*;
 import com.project.love_data.dto.*;
 import com.project.love_data.model.resource.CourseImage;
+import com.project.love_data.model.resource.ReviewImage;
 import com.project.love_data.model.service.*;
 import com.project.love_data.security.model.AuthUserModel;
 import lombok.extern.log4j.Log4j2;
@@ -41,6 +42,8 @@ public class CourseController {
     ReviewService reviewService;
     @Autowired
     CourseImageService courseImageService;
+    @Autowired
+    ReviewImageService revImgService;
     List<String> tagList = new ArrayList<>();
 
     @RequestMapping("/service/cor_registration")
@@ -154,9 +157,9 @@ public class CourseController {
             corService.incViewCount(corNo);
             CourseDTO dto = corService.selectCorDTO(corNo);
             pageRequestDTO.setSize(MAX_REV_COUNT);
-            PageResultDTO<ReviewDTO, Review> resultCommentDTO
+            PageResultDTO<ReviewDTO, Review> resultReviewDTO
 //                    = comService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION, CommentSortType.IDX_ASC);
-                    = reviewService.getRevPage(pageRequestDTO);
+                    = reviewService.getRevPage(pageRequestDTO, SortingOrder.DES);
 
 //            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (authentication != null) {
@@ -193,9 +196,51 @@ public class CourseController {
                 model.addAttribute("locList", null);
             }
 
+            Integer revCounter = reviewService.getReviewsByCorNo(corNo).size();
+            List<List<ReviewImageDTO>> revImgDTOList = new ArrayList<>();
+            List<String> revImgURLStringList = new ArrayList<>();
+            String revImgURL = "";
+
+            for (int i = 0; i < resultReviewDTO.getDtoList().size(); i++) {
+                List<ReviewImage> revImgList = revImgService.getAllLiveImageByCorNoAndRevNo(corNo, resultReviewDTO.getDtoList().get(i).getRevNo());
+                revImgURL = "";
+
+                if (revImgList == null) {
+                    revImgDTOList.add(new ArrayList<>());
+                    continue;
+                }
+
+                List<ReviewImageDTO> reviewImageDTOS = new ArrayList<>();
+
+                for (ReviewImage image : revImgList) {
+                    reviewImageDTOS.add(revImgService.entityToDTO(image));
+                    revImgURL += image.getImg_url() + ";<>;";
+                }
+
+                if ("".equals(revImgURL)) {
+                    revImgURLStringList.add(revImgURL);
+                } else {
+                    revImgURL = revImgURL.substring(0, revImgURL.length()-4);
+                    revImgURLStringList.add(revImgURL);
+                }
+
+                revImgDTOList.add(reviewImageDTOS);
+            }
+
+            for (String s : revImgURLStringList) {
+                revImgURL += s;
+            }
+
+            if ("".equals(revImgURL)) {
+                revImgURLStringList = null;
+            }
+
             model.addAttribute("dto", dto);
-            model.addAttribute("resRevDTO", resultCommentDTO);
+            model.addAttribute("resRevDTO", resultReviewDTO);
             model.addAttribute("ImageList", courseImageList);
+            model.addAttribute("revCount", revCounter);
+            model.addAttribute("revImgList", revImgDTOList);
+            model.addAttribute("revImgStringURLList", revImgURLStringList);
 
             return "/service/cor_detail";
         }
@@ -222,6 +267,17 @@ public class CourseController {
                 .build();
         PageResultDTO<CourseDTO, com.project.love_data.model.service.Course> resultDTO = corService.getList(pageRequestDTO);
         List<Boolean> isLikedList = new ArrayList<>();
+        List<Integer> corRevCountList = new ArrayList<>();
+
+        for (int i = 0; i < resultDTO.getDtoList().size(); i++) {
+            List<Review> list = reviewService.getReviewsByCorNo(resultDTO.getDtoList().get(i).getCor_no());
+
+            if (list == null) {
+                corRevCountList.add(0);
+            } else {
+                corRevCountList.add(list.size());
+            }
+        }
 
         if (authentication == null) {
             for (int i = 0; i < resultDTO.getSize(); i++) {
@@ -244,6 +300,7 @@ public class CourseController {
         model.addAttribute("result", resultDTO);
         model.addAttribute("tagList", tagList);
         model.addAttribute("isLikedList", isLikedList);
+        model.addAttribute("revCounterList", corRevCountList);
 
 //        if(authentication != null) {
 //            AuthUserModel authUser = (AuthUserModel) authentication.getPrincipal();
