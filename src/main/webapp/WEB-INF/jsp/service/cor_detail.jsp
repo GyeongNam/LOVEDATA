@@ -34,80 +34,80 @@
 <body>
 <div class="container-fluid d-flex" style="padding-top: 100px">
 	<!-- Modal -->
-<%--	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">--%>
-<%--		<div class="modal-dialog" role="document">--%>
-<%--			<div class="modal-content">--%>
-<%--				<div class="modal-header">--%>
-<%--					<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>--%>
-<%--					<button class="btn-close" type="button" class="close" data-bs-dismiss="modal" aria-label="Close"></button>--%>
-<%--				</div>--%>
-<%--				<div class="modal-body">--%>
-<%--					<div class="row">--%>
-<%--						<div class="col d-flex justify-content-center align-items-md-center" id="searchResultArea">--%>
-<%--							<table>--%>
-<%--								<tbody id="tableBody">--%>
-<%--&lt;%&ndash;								<tr onclick="location.href='/'" style="cursor:hand">&ndash;%&gt;--%>
-<%--								<tr>--%>
-<%--									<td>1</td>--%>
-<%--									<td>광화문</td>--%>
-<%--								</tr>--%>
-<%--								<tr>--%>
-<%--									<td>내용</td>--%>
-<%--									<td><textarea rows="3" cols="30"></textarea></td>--%>
-<%--								</tr>--%>
-<%--								<tr>--%>
-<%--									<td>별점</td>--%>
-<%--									<td>별점 등록</td>--%>
-<%--								</tr>--%>
-<%--								<tr>--%>
-<%--									<td>이미지</td>--%>
-<%--									<td>--%>
-<%--										<div id="canvas_rev" class="row flex-nowrap mx-0 my-3"--%>
-<%--											 style="overflow-x: scroll; /*outline: blue thick solid;*/">--%>
-<%--											<input id="imgInput" name="files" type="file"  minlength="1" maxlength="3" multiple--%>
-<%--												   accept="image/*" onchange="readImage()">--%>
-<%--											<c:forEach var="i" begin="1" end="3">--%>
-<%--												<div class="card p-0 m-2 visually-hidden">--%>
-<%--													<img src="/image/icon/480px-Solid_white.png" alt="" id="img_${i}"--%>
-<%--														 class="visible bd-place card-img"--%>
-<%--														 style="height: 244px; width: 100%; outline: none">--%>
-<%--													<div class="d-flex justify-content-center card-img-overlay"--%>
-<%--														 style="align-items: center">--%>
-<%--														<img class="btn btn-lg align-middle" onclick="onClickAddImage()"--%>
-<%--															 id="imgAdd_${i}"--%>
-<%--															 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png"--%>
-<%--															 style="height: 30%; z-index: 2">--%>
-<%--													</div>--%>
-<%--													<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden"--%>
-<%--														 style="align-items: flex-start">--%>
-<%--														<img class="btn btn-lg align-middle p-0" id="imgDel_${i}"--%>
-<%--															 onclick="deleteImage(this)"--%>
-<%--															 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png"--%>
-<%--															 style="z-index: 2">--%>
-<%--													</div>--%>
-<%--													<div class="d-flex justify-content-center card-img-overlay p-0 visually-hidden"--%>
-<%--														 style="align-items: center">--%>
-<%--														<img class="w-100 h-100" id="imgSel_${i}" onclick="onSelectImage(${i})"--%>
-<%--															 src="/image/icon/480px-Solid_white.png"--%>
-<%--															 style="opacity : 0.0; z-index: 1;">--%>
-<%--													</div>--%>
-<%--												</div>--%>
-<%--											</c:forEach>--%>
-<%--										</div>--%>
-<%--									</td>--%>
-<%--								</tr>--%>
-<%--								</tbody>--%>
-<%--							</table>--%>
-<%--						</div>--%>
-<%--					</div>--%>
-<%--				</div>--%>
-<%--				<div class="modal-footer">--%>
-<%--					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>--%>
-<%--					<button type="button" class="btn btn-primary">Save changes</button>--%>
-<%--				</div>--%>
-<%--			</div>--%>
-<%--		</div>--%>
-<%--	</div>--%>
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+					<button class="btn-close" type="button" class="close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col d-flex justify-content-center align-items-md-center" id="searchResultArea">
+							<table>
+								<tbody id="tableBody">
+<%--								<tr onclick="location.href='/'" style="cursor:hand">--%>
+								<tr>
+									<td>1</td>
+									<td>광화문</td>
+								</tr>
+								<tr>
+									<td>내용</td>
+									<td><textarea rows="3" cols="30"></textarea></td>
+								</tr>
+								<tr>
+									<td>별점</td>
+									<td>별점 등록</td>
+								</tr>
+								<tr>
+									<td>이미지</td>
+									<td>
+										<div id="canvas_rev" class="row flex-nowrap mx-0 my-3"
+											 style="overflow-x: scroll; /*outline: blue thick solid;*/">
+											<input id="imgInput" name="files" type="file"  minlength="1" maxlength="3" multiple
+												   accept="image/*" onchange="readImage()">
+											<c:forEach var="i" begin="1" end="3">
+												<div class="card p-0 m-2 visually-hidden">
+													<img src="/image/icon/480px-Solid_white.png" alt="" id="img_${i}"
+														 class="visible bd-place card-img"
+														 style="height: 244px; width: 100%; outline: none">
+													<div class="d-flex justify-content-center card-img-overlay"
+														 style="align-items: center">
+														<img class="btn btn-lg align-middle" onclick="onClickAddImage()"
+															 id="imgAdd_${i}"
+															 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png"
+															 style="height: 30%; z-index: 2">
+													</div>
+													<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden"
+														 style="align-items: flex-start">
+														<img class="btn btn-lg align-middle p-0" id="imgDel_${i}"
+															 onclick="deleteImage(this)"
+															 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png"
+															 style="z-index: 2">
+													</div>
+													<div class="d-flex justify-content-center card-img-overlay p-0 visually-hidden"
+														 style="align-items: center">
+														<img class="w-100 h-100" id="imgSel_${i}" onclick="onSelectImage(${i})"
+															 src="/image/icon/480px-Solid_white.png"
+															 style="opacity : 0.0; z-index: 1;">
+													</div>
+												</div>
+											</c:forEach>
+										</div>
+									</td>
+								</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Save changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div class="col-2" id="sidebar">
 		<ul class="nav nav-pills flex-column col-2 position-fixed" style="top: 40%">
 			<div class="accordion text-center" id="loc">
@@ -292,7 +292,7 @@
 									<li class="nav-item" role="presentation">
 										<button class="nav-link" id="course-loc-tab-${i}" data-bs-toggle="pill"
 												data-bs-target="#course-loc-${i}" type="button" role="tab" aria-controls="course-loc-tab-${i}"
-												onclick="removeURLParam()"
+												onclick="removeURLParam('page')"
 												aria-selected="true">${i+1}</button>
 									</li>
 								</c:when>
@@ -302,7 +302,7 @@
 											<li class="nav-item" role="presentation">
 												<button class="nav-link active" id="course-loc-tab-${i}" data-bs-toggle="pill"
 														data-bs-target="#course-loc-${i}" type="button" role="tab" aria-controls="course-loc-tab-${i}"
-														onclick="removeURLParam()"
+														onclick="removeURLParam('page')"
 														aria-selected="true">${i+1}</button>
 											</li>
 										</c:when>
@@ -310,7 +310,7 @@
 											<li class="nav-item" role="presentation">
 												<button class="nav-link" id="course-loc-tab-${i}" data-bs-toggle="pill"
 														data-bs-target="#course-loc-${i}" type="button" role="tab" aria-controls="course-loc-tab-${i}"
-														onclick="removeURLParam()"
+														onclick="removeURLParam('page')"
 														aria-selected="true">${i+1}</button>
 											</li>
 										</c:otherwise>
@@ -322,7 +322,7 @@
 				</c:choose>
 				<li class="nav-item" role="presentation">
 					<button class="nav-link" id="course-info-tab" data-bs-toggle="pill"
-							data-bs-target="#course-info" type="button" role="tab" aria-controls="course-info" onclick="removeURLParam()"
+							data-bs-target="#course-info" type="button" role="tab" aria-controls="course-info" onclick="removeURLParam('page')"
 							aria-selected="true">설명
 					</button>
 				</li>
@@ -331,13 +331,13 @@
 					<c:when test="${param.containsKey('page') eq true}">
 							<button class="mw-100 mh-100 nav-link active" id="course-review-tab" data-bs-toggle="pill"
 									data-bs-target="#course-review" type="button" role="tab" aria-controls="course-review"
-									aria-selected="false">리뷰
+									aria-selected="false" onclick="addURLParam('page', '1')">리뷰
 							</button>
 					</c:when>
 					<c:otherwise>
 							<button class="mw-100 mh-100 nav-link" id="course-review-tab" data-bs-toggle="pill"
 									data-bs-target="#course-review" type="button" role="tab" aria-controls="course-review"
-									aria-selected="false">리뷰
+									aria-selected="false" onclick="addURLParam('page', '1')">리뷰
 							</button>
 					</c:otherwise>
 				</c:choose>
@@ -435,8 +435,8 @@
 																			<c:choose>
 																				<c:when test="${user_no eq revDTO.get(c).userNo}">
 																					<div>
-																						<button class="btn btn-primary" onclick="openCmtEditMenu(${c})">수정</button>
-																						<button class="btn btn-primary" onclick="onClickDeleteComment(${c})">삭제</button>
+																						<button class="btn btn-primary" onclick="openReviewEditPopup(${revDTO.get(c).revNo})">수정</button>
+																						<button class="btn btn-primary" onclick="deleteReview(${revDTO.get(c).revNo})">삭제</button>
 																					</div>
 																				</c:when>
 																			</c:choose>
@@ -462,49 +462,17 @@
 																		</c:choose>
 																	</c:forEach>
 																	<span class="date text-black-50 ms-4 me-1">장소추천도</span>
-																	<c:forEach var="i" begin="1" end="5">
-																		<c:choose>
-																			<c:when test="${revDTO.get(c).sc_loc >= i}">
-																				<img class="sc_icon_small ms-1" src="/image/icon/star_color.png" alt="star_color">
-																			</c:when>
-																			<c:otherwise>
-																				<img class="sc_icon_small ms-1" src="/image/icon/star_black.png" alt="star_black">
-																			</c:otherwise>
-																		</c:choose>
-																	</c:forEach>
+																	<img class="sc_icon_small ms-1" src="/image/icon/star_color.png" alt="star_color">
+																	<span class="ms-1">${revDTO.get(c).sc_loc}</span>
 																	<span class="date text-black-50 ms-4 me-1">이동편리성</span>
-																	<c:forEach var="i" begin="1" end="5">
-																		<c:choose>
-																			<c:when test="${revDTO.get(c).sc_move >= i}">
-																				<img class="sc_icon_small ms-1" src="/image/icon/star_color.png" alt="star_color">
-																			</c:when>
-																			<c:otherwise>
-																				<img class="sc_icon_small ms-1" src="/image/icon/star_black.png" alt="star_black">
-																			</c:otherwise>
-																		</c:choose>
-																	</c:forEach>
+																	<img class="sc_icon_small ms-1" src="/image/icon/star_color.png" alt="star_color">
+																	<span class="ms-1">${revDTO.get(c).sc_move}</span>
 																	<span class="date text-black-50 ms-4 me-1">시간소요도</span>
-																	<c:forEach var="i" begin="1" end="5">
-																		<c:choose>
-																			<c:when test="${revDTO.get(c).sc_time >= i}">
-																				<img class="sc_icon_small ms-1" src="/image/icon/star_color.png" alt="star_color">
-																			</c:when>
-																			<c:otherwise>
-																				<img class="sc_icon_small ms-1" src="/image/icon/star_black.png" alt="star_black">
-																			</c:otherwise>
-																		</c:choose>
-																	</c:forEach>
+																	<img class="sc_icon_small ms-1" src="/image/icon/star_color.png" alt="star_color">
+																	<span class="ms-1">${revDTO.get(c).sc_time}</span>
 																	<span class="date text-black-50 ms-4 me-1">재방문의사</span>
-																	<c:forEach var="i" begin="1" end="5">
-																		<c:choose>
-																			<c:when test="${revDTO.get(c).sc_revisit >= i}">
-																				<img class="sc_icon_small ms-1" src="/image/icon/star_color.png" alt="star_color">
-																			</c:when>
-																			<c:otherwise>
-																				<img class="sc_icon_small ms-1" src="/image/icon/star_black.png" alt="star_black">
-																			</c:otherwise>
-																		</c:choose>
-																	</c:forEach>
+																	<img class="sc_icon_small ms-1" src="/image/icon/star_color.png" alt="star_color">
+																	<span class="ms-1">${revDTO.get(c).sc_revisit}</span>
 																</div>
 															</div>
 														</div>
@@ -544,26 +512,19 @@
 																				<div class="badge bg-dark d-flex justify-content-center" style="width: 6rem; height: 2rem">
 																					<p class="text-center fs-3 align-self-center mb-0" id="rev_idx_Indicator_${c}"
 																					   name="rev_idx_Indicator_${c}">
-																						1/${imgList.size()}
+																						1/${revImgList.get(c).size()}
 																					</p>
 																				</div>
 																			</div>
 																			</img>
 																			<span class="visually-hidden" id="revImgListSize_${c}"
-																				  name="imgListSize">${imgList.size()}</span>
+																				  name="imgListSize">${revImgList.get(c).size()}</span>
 																			<span class="visually-hidden" id="revImgListIndex_${c}" name="revImgListIndex_${c}">0</span>
 																		</div>
 																	</div>
 																</div>
 															</c:when>
 														</c:choose>
-														<div id="cmt_edit_${c}" class="row visually-hidden">
-															<textarea id="cmt_edit_content_${c}" rows="6" maxlength="300" class="form-control ml-1 shadow-none textarea">${revDTO.get(c).revContent}</textarea>
-															<div class="d-flex p-0 justify-content-end">
-																<button class="btn btn-primary mx-2" onclick="submitUpdateComment(${c})">등록</button>
-																<button class="btn btn-primary mx-2" onclick="closeCmtEditMenu(${c})">뒤로가기</button>
-															</div>
-														</div>
 													</div>
 												</div>
 											</c:forEach>
@@ -577,6 +538,7 @@
 						</div>
 					</div>
 					<form action="/service/rev_registration" id="form" name="form" method="post" enctype="multipart/form-data">
+						<input type="hidden" id="rev_no" name="rev_no">
 						<input type="hidden" id="user_no_input" name="user_no" value="${user_no}">
 						<input type="hidden" id="cor_no_input" name="cor_no" value="${dto.cor_no}">
 						<input type="hidden" id="rev_content_input" name="rev_content_input" value="">
@@ -800,7 +762,9 @@
         let rev_revisit_rate = document.getElementById("rev_revisit_rate");
         let files_input = document.getElementById("files");
 
-        user_no_input.value = "${user_no}";
+        <sec:authorize access="isAuthenticated()">
+       	 	user_no_input.value = "<sec:authentication property="principal.user_no"/>";
+		</sec:authorize>
         cor_no_input.value = "${dto.cor_no}";
         rev_content_input.value = reviewMapParam.get("commentInput");
 		rev_total_rate.value = reviewMapParam.get("totalRate");
@@ -810,6 +774,38 @@
 		rev_revisit_rate.value = reviewMapParam.get("revisitRate");
 
 		form.append(imgInput);
+
+        form.submit();
+    }
+
+    function onClickEditReview(reviewMapParam, imgInput) {
+        let form = document.getElementById("form");
+
+        let rev_no = document.getElementById("rev_no");
+        let user_no_input = document.getElementById("user_no_input");
+        let cor_no_input = document.getElementById("cor_no_input");
+        let rev_content_input = document.getElementById("rev_content_input");
+        let rev_total_rate = document.getElementById("rev_total_rate");
+        let rev_loc_rate = document.getElementById("rev_loc_rate");
+        let rev_move_rate = document.getElementById("rev_move_rate");
+        let rev_time_rate = document.getElementById("rev_time_rate");
+        let rev_revisit_rate = document.getElementById("rev_revisit_rate");
+        let files_input = document.getElementById("files");
+
+        rev_no.value = reviewMapParam.get("revNo");
+        <sec:authorize access="isAuthenticated()">
+        user_no_input.value = "<sec:authentication property="principal.user_no"/>";
+        </sec:authorize>
+        cor_no_input.value = "${dto.cor_no}";
+        rev_content_input.value = reviewMapParam.get("commentInput");
+        rev_total_rate.value = reviewMapParam.get("totalRate");
+        rev_loc_rate.value = reviewMapParam.get("locRate");
+        rev_move_rate.value = reviewMapParam.get("moveRate");
+        rev_time_rate.value = reviewMapParam.get("timeRate");
+        rev_revisit_rate.value = reviewMapParam.get("revisitRate");
+
+        form.action = "/service/rev_edit"
+        form.append(imgInput);
 
         form.submit();
     }
@@ -1026,33 +1022,25 @@
 </script>
 <script defer>
     function openReviewRegisterPopup() {
-        <%--        // 주소검색을 수행할 팝업 페이지를 호출합니다.
-				// 호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(https://www.juso.go.kr/addrlink/addrLinkUrl.do)를 호출하게 됩니다. --%>
-        var pop = window.open("/popup/reviewRegisterPopup?corName=${dto.cor_name}&corNo=${dto.cor_no}", "pop", "width=1200,height=600, scrollbars=yes, resizable=yes");
-
-        <%--pop.document.getElementById("popup_cor_name").value = '${dto.cor_name}';--%>
-        <%--pop.document.getElementById("popup_cor_name").innerText = '${dto.cor_name}';--%>
-
-        <%-- // 모바일 웹인 경우, 호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(https://www.juso.go.kr/addrlink/addrMobileLinkUrl.do)를 호출하게 됩니다. --%>
-        //var pop = window.open("/popup/jusoPopup.jsp","pop","scrollbars=yes, resizable=yes");
+        var openReviewRegisterPop = window.open("/popup/reviewRegisterPopup?corName=${dto.cor_name}&corNo=${dto.cor_no}", "pop", "width=1200,height=600, scrollbars=yes, resizable=yes");
     }
 
     function reviewRegisterCallBack(reviewMapParam, imgInput) {
-        // 팝업페이지에서 주소입력한 정보를 받아서, 현 페이지에 정보를 등록합니다.
-        // document.getElementById("roadAddrPart1").value = roadAddrPart1;
-        // document.getElementById("addrDetail").value = addrDetail;
-        // document.getElementById("addrDetail").removeAttribute("disabled");
-        // console.log("locNo : " + locNo);
-        // console.log("locID : " + locID);
-        // console.log("locName : " + locName);
-
-        // console.log('reviewRegisterCallBack');
-        // console.log(reviewMapParam);
-        // console.log(imgInput);
-        // console.log(imgInput.files);
-
         onClickPostReview(reviewMapParam, imgInput);
     }
+
+    function openReviewEditPopup(revNo) {
+        let url = "/popup/reviewEditPopup?corName=${dto.cor_name}&revNo=" + revNo;
+        var openReviewEditPop = window.open(url, "pop", "width=1200,height=600, scrollbars=yes, resizable=yes");
+    }
+
+    function reviewEditCallBack(reviewMapParam, imgInput) {
+        onClickEditReview(reviewMapParam, imgInput);
+	}
+
+    function deleteReview(revNo) {
+        let url = "/popup/reviewEditPopup?corName=${dto.cor_name}&revNo=" + revNo;
+	}
 </script>
 </body>
 <%--<%@ include file="../layout/footer.jsp" %>--%>

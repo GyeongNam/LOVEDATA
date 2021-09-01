@@ -216,12 +216,12 @@
 					<c:choose>
 						<c:when test="${param.containsKey('page') eq true}">
 						<button class="nav-link" id="location-info-tab" data-bs-toggle="pill"
-								data-bs-target="#location-info" type="button" role="tab" aria-controls="location-info" onclick="removeURLParam()"
+								data-bs-target="#location-info" type="button" role="tab" aria-controls="location-info" onclick="removeURLParam('page')"
 								aria-selected="true">설명</button>
 						</c:when>
 						<c:otherwise>
 							<button class="nav-link active" id="location-info-tab" data-bs-toggle="pill"
-									data-bs-target="#location-info" type="button" role="tab" aria-controls="location-info" onclick="removeURLParam()"
+									data-bs-target="#location-info" type="button" role="tab" aria-controls="location-info" onclick="removeURLParam('page')"
 									aria-selected="true">설명</button>
 						</c:otherwise>
 					</c:choose>
@@ -231,12 +231,12 @@
 						<c:when test="${param.containsKey('page') eq true}">
 							<button class="mw-100 mh-100 nav-link active" id="location-comment-tab" data-bs-toggle="pill"
 									data-bs-target="#location-comment" type="button" role="tab" aria-controls="location-comment"
-									aria-selected="false">댓글</button>
+									aria-selected="false" onclick="addURLParam('page', '1')">댓글</button>
 						</c:when>
 						<c:otherwise>
 							<button class="mw-100 mh-100 nav-link" id="location-comment-tab" data-bs-toggle="pill"
 									data-bs-target="#location-comment" type="button" role="tab" aria-controls="location-comment"
-									aria-selected="false">댓글</button>
+									aria-selected="false" onclick="addURLParam('page', '1')">댓글</button>
 						</c:otherwise>
 					</c:choose>
 				</li>

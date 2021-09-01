@@ -47,14 +47,14 @@ public class ReviewTest {
         List<Integer> rndInt = new ArrayList<>();
         Random rnd = new Random();
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 4; i++) {
             rndInt.add((rnd.nextInt(6)));
         }
         Map<String, Integer> scoreMap = revService.getScoreMap(rndInt.get(0), rndInt.get(1), rndInt.get(2),
-                rndInt.get(3), rndInt.get(4));
+                rndInt.get(3));
 
         Review entity = revService.createRevEntity(corEntity.getCor_no(), user.getUser_no(),
-                content, scoreMap);
+                content, scoreMap, 3.5f);
 
         if (entity == null) {
             System.out.println("리뷰 생성과정에 문제 발생!");
@@ -90,14 +90,14 @@ public class ReviewTest {
         rndInt = new ArrayList<>();
         rnd = new Random();
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 4; i++) {
             rndInt.add((rnd.nextInt(6)));
         }
         scoreMap = revService.getScoreMap(rndInt.get(0), rndInt.get(1),
-                rndInt.get(2), rndInt.get(3), rndInt.get(4));
+                rndInt.get(2), rndInt.get(3));
 
         entity = revService.createRevEntity(corEntity.getCor_no(), user.getUser_no(),
-                content, scoreMap);
+                content, scoreMap, 3.5f);
 
         if (entity == null) {
             System.out.println("리뷰 생성과정에 문제 발생!");

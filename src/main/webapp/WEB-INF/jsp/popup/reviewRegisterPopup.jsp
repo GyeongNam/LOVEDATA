@@ -326,12 +326,16 @@
         fileList.forEach((file, index) => {
             let reader = new FileReader();
             // console.log(i + "번 째 아이템이 등록되었습니다.");
+			if (index >= ${maxRevImgCount}) {
+                deleteFileListImage();
+                return false;
+			}
             let item = document.getElementById("img_" + (index + 1));
             reader.onload = e => {
                 item.src = e.target.result;
                 item.parentElement.setAttribute("class", "card col-3 p-0 m-2");
             }
-            if (index != (${maxRevImgCount} - 1)) {
+            if (index < (${maxRevImgCount} - 1)) {
                 document.getElementById("img_" + (index + 2)).parentElement.setAttribute("class", "card col-3 p-0 m-2");
             }
             reader.readAsDataURL(file);
@@ -351,6 +355,19 @@
         toggleAddDelBtn(fileList.length);
         // onSelectImage(selectedImageIndex + 1);
     }
+
+    function deleteFileListImage() {
+        let dt = new DataTransfer();
+        dt.files = input.files;
+
+        for (let i = 0; i < ${maxRevImgCount}; i++) {
+			dt.items.add(input.files[i]);
+        }
+
+        input.files = dt.files;
+        console.log(dt.files);
+        console.log(input.files);
+	}
 
     function deleteImage(obj) {
         <%-- https://stackoverflow.com/questions/16943605/remove-a-filelist-item-from-a-multiple-inputfile  --%>
@@ -541,7 +558,7 @@
 		}
 
 		if (parseInt($fileUpload.get(0).files.length) > 3) {
-            alert("최대 10개의 이미지 파일만 업로드 가능합니다.");
+            alert("최대 ${maxRevImgCount}개의 이미지 파일만 업로드 가능합니다.");
             return;
 		}
 

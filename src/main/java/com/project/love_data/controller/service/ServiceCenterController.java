@@ -4,11 +4,10 @@ import com.project.love_data.businessLogic.service.*;
 import com.project.love_data.model.resource.QuestionsImage;
 import com.project.love_data.model.user.User;
 import com.project.love_data.repository.QuestionsImageRepository;
+import com.project.love_data.businessLogic.service.ControllerScriptUtils;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import com.project.love_data.model.service.*;
 import org.springframework.ui.Model;
@@ -17,9 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.transaction.Transactional;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -37,6 +34,8 @@ public class ServiceCenterController {
     FileUploadService fileUploadService;
     @Autowired
     QuestionsImageRepository questionsImageRepository;
+    @Autowired
+    ControllerScriptUtils scriptUtils;
 
     @GetMapping(value = "/ServiceCenter/Notice/{page}")
     public String Notice(@PathVariable("page") String page, Model model, HttpServletResponse response) {
@@ -221,7 +220,6 @@ public class ServiceCenterController {
 
     @GetMapping(value = "/ServiceCenter/Questions_Post/{num}")
     public String Questions_no(@PathVariable("num") String num, Model model, HttpServletResponse response , Principal principal) throws IOException {
-        ScriptUtils scriptUtils = new ScriptUtils();
         Questions questions = serviceCenterService.qu_select_no(num);
         List<QuestionsImage> questionsImage = questionsImageService.qu_no_imgselect(num);
         if (questions.isQu_secret()) {
@@ -347,7 +345,6 @@ public class ServiceCenterController {
     @GetMapping(value = "/ServiceCenter/Questions_Post_add")
     public String Post_add(Principal principal, HttpServletResponse response) throws IOException {
         if(principal == null){
-            ScriptUtils scriptUtils = new ScriptUtils();
             scriptUtils.alertAndMovePage(response, "로그인 해주세요.", "/login");
         }
         return "/service/qu_Post_add";
@@ -355,7 +352,6 @@ public class ServiceCenterController {
 
     @GetMapping(value = "/ServiceCenter/Questions_Delete/{num}")
     public String Questions_Delete(@PathVariable("num") String num, Model model, Principal principal, HttpServletResponse response) throws IOException {
-        ScriptUtils scriptUtils = new ScriptUtils();
         if(principal == null){
             scriptUtils.alertAndMovePage(response, "로그인 해주세요.", "/login");
         }else {
@@ -378,7 +374,6 @@ public class ServiceCenterController {
 
     @GetMapping(value = "/ServiceCenter/Questions_Update/{num}")
     public String Questions_Update(@PathVariable("num") String num, Model model, Principal principal, HttpServletResponse response) throws IOException {
-        ScriptUtils scriptUtils = new ScriptUtils();
         if(principal == null){
             scriptUtils.alertAndMovePage(response, "로그인 해주세요.", "/login");
         }else {
@@ -397,48 +392,6 @@ public class ServiceCenterController {
             }
         }
         return "redirect:/ServiceCenter/Questions_Post/"+num;
-    }
-
-
-    public class ScriptUtils {
-        public void init(HttpServletResponse response) {
-            response.setContentType("text/html; charset=euc-kr");
-            response.setCharacterEncoding("euc-kr");
-        }
-
-        public void alert(HttpServletResponse response, String alertText) throws IOException {
-            init(response);
-            PrintWriter out = response.getWriter();
-            out.println("<script>alert('" + alertText + "');</script> ");
-            out.flush();
-        }
-
-        public void alertAndMovePage(HttpServletResponse response, String alertText, String nextPage)
-                throws IOException {
-            init(response);
-            PrintWriter out = response.getWriter();
-            out.println("<script>alert('" + alertText + "'); location.href='" + nextPage + "';</script> ");
-            out.flush();
-        }
-
-        public void alertAndBackPage(HttpServletResponse response, String alertText) throws IOException {
-            init(response);
-            PrintWriter out = response.getWriter();
-            out.println("<script>alert('" + alertText + "'); history.go(-1);</script>");
-            out.flush();
-        }
-        public void alertPageout(HttpServletResponse response, String alertText) throws IOException {
-            init(response);
-            PrintWriter out = response.getWriter();
-            out.println("<script>alert('" + alertText + "'); window.close();</script>");
-            out.flush();
-        }
-        public void Nextpage(HttpServletResponse response, String Nextpage) throws IOException {
-            init(response);
-            PrintWriter out = response.getWriter();
-            out.println("<script>location.href='" + Nextpage + "';</script>");
-            out.flush();
-        }
     }
 }
 

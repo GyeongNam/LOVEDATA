@@ -320,17 +320,33 @@ function ajaxCall() {
     });
 }
 
-function removeURLParam() {
+function removeURLParam(keyword) {
     let url = window.location.href;
     let param = new URLSearchParams(window.location.search);
 
     // console.log(url);
     // console.log(param.has('page'));
 
-    param.delete('page');
+    param.delete(keyword);
     // console.log(param.has('page'));
 
     url = window.location.protocol + "//" + window.location.host + window.location.pathname + "?" + param;
+
+    // console.log(url);
+
+    /* https://stackoverflow.com/questions/22753052/remove-url-parameters-without-refreshing-page */
+    // window.history.pushState(null, null, url);
+    window.history.replaceState(null, null, url);
+}
+
+function addURLParam(keyword, value) {
+    let url = window.location.href;
+    let urlParams = new URLSearchParams(window.location.search);
+    // console.log(param.has('page'));
+
+    urlParams.set(keyword, value);
+
+    window.location.search = urlParams;
 
     // console.log(url);
 

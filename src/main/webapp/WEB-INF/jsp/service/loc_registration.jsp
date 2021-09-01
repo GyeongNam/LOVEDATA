@@ -58,6 +58,9 @@
 			</div>
 		</ul>
 	</div>
+
+	<c:set value="3" var="minLocImgCount"></c:set>
+	<c:set value="10" var="maxLocImgCount"></c:set>
 	<div class="container m-5" id="display_center" style="margin-right: 30px; margin-top: 30px">
 		<h1>장소 등록</h1>
 		<div class="container-fluid">
@@ -141,7 +144,7 @@
 					<div>
 						<input class="visually-hidden" id="imgInput" name="files" type="file" multiple accept="image/*" onchange="readImage()">
 						<div id="canvas" class="row flex-nowrap mx-0 mt-3" style="overflow-x: scroll">
-							<c:forEach var="i" begin="1" end="10">
+							<c:forEach var="i" begin="1" end="${maxLocImgCount}">
 								<c:choose>
 									<c:when test="${i eq 1}">
 										<div class="card col-3 p-0 m-2">
@@ -286,13 +289,17 @@
         console.log(fileList);
         fileList.forEach((file, index) => {
             let reader = new FileReader();
+            if (index >= ${maxLocImgCount}) {
+                deleteFileListImage();
+                return false;
+            }
             // console.log(i + "번 째 아이템이 등록되었습니다.");
             let item = document.getElementById("img_" + (index+1));
             reader.onload= e => {
                 item.src = e.target.result;
                 item.parentElement.setAttribute("class", "card col-3 p-0 m-2");
             }
-            if (index != 9) {
+            if (index  < (${maxLocImgCount} - 1)) {
                 document.getElementById("img_" + (index+2)).parentElement.setAttribute("class", "card col-3 p-0 m-2");
             }
             reader.readAsDataURL(file);
@@ -311,6 +318,19 @@
         }
         toggleAddDelBtn(fileList.length);
         // onSelectImage(selectedImageIndex + 1);
+    }
+
+    function deleteFileListImage() {
+        let dt = new DataTransfer();
+        dt.files = input.files;
+
+        for (let i = 0; i < ${maxLocImgCount}; i++) {
+            dt.items.add(input.files[i]);
+        }
+
+        input.files = dt.files;
+        console.log(dt.files);
+        console.log(input.files);
     }
 
     function deleteImage(obj) {
@@ -340,9 +360,9 @@
             }
         }
 
-        for (let i = 1; i <= 10; i++) {
+        for (let i = 1; i <= ${maxLocImgCount}; i++) {
             if (i >= index) {
-                if (i !== 10) {
+                if (i !== ${maxLocImgCount}) {
                     document.getElementById("img_"+i).src = document.getElementById("img_"+(i+1)).src;
                 } else {
                     document.getElementById("img_"+i).src = "/image/icon/480px-Solid_white.png";
@@ -363,7 +383,7 @@
         console.log(dt.files);
         console.log(input.files);
 
-        for (let i = input.files.length + 1; i <= 10; i++) {
+        for (let i = input.files.length + 1; i <= ${maxLocImgCount}; i++) {
             let img = document.getElementById("img_" + i);
             img.src = "/image/icon/480px-Solid_white.png";
         }
@@ -397,9 +417,9 @@
                 console.log("is login : " + response);
 
                 if (response) {
-                    if (parseInt($fileUpload.get(0).files.length) < 3) {
+                    if (parseInt($fileUpload.get(0).files.length) < ${minLocImgCount}) {
                         alert("최소 3개의 이미지 파일은 업로드 해야합니다.")
-                    } else if (parseInt($fileUpload.get(0).files.length) > 10) {
+                    } else if (parseInt($fileUpload.get(0).files.length) > ${maxLocImgCount}) {
                         alert("최대 10개의 이미지 파일만 업로드 가능합니다.");
                     } else {
                         var formData = $("form");

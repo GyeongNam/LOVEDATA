@@ -11,6 +11,7 @@ import com.project.love_data.model.service.Course;
 import com.project.love_data.model.service.Review;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,6 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.security.Principal;
 import java.util.*;
 
 import static com.project.love_data.util.ConstantValues.*;
@@ -36,9 +40,11 @@ public class ReviewController {
     ReviewImageService revImgService;
     @Autowired
     FileUploadService fileUploadService;
+    @Autowired
+    ControllerScriptUtils scriptUtils;
 
     @PostMapping(value = "/service/rev_registration")
-    public String regComment(HttpServletRequest request, Model model, @RequestParam("files") List<MultipartFile> fileList,
+    public String regReview(HttpServletRequest request, Model model, @RequestParam("files") List<MultipartFile> fileList,
                              @ModelAttribute("requestDTO") PageRequestDTO pageRequestDTO) {
         Set<String> keys = request.getParameterMap().keySet();
 
@@ -51,7 +57,7 @@ public class ReviewController {
         Long corNo = Long.valueOf(request.getParameter("cor_no"));
         Long userNo = Long.valueOf(request.getParameter("user_no"));
         String revContent = request.getParameter("rev_content_input");
-        Integer totalRate = Integer.valueOf(request.getParameter("rev_total_rate"));
+        Float totalRate = Float.valueOf(request.getParameter("rev_total_rate"));
         Integer locRate = Integer.valueOf(request.getParameter("rev_loc_rate"));
         Integer moveRate = Integer.valueOf(request.getParameter("rev_move_rate"));
         Integer timeRate = Integer.valueOf(request.getParameter("rev_time_rate"));
@@ -59,10 +65,10 @@ public class ReviewController {
         String resultType = request.getParameter("resultType");
         List<String> filePath = null;
 
-        Map<String, Integer> scoreMap = revService.getScoreMap(totalRate, locRate,
+        Map<String, Integer> scoreMap = revService.getScoreMap(locRate,
                 moveRate, timeRate, revisitRate);
 
-        Review entity = revService.createRevEntity(corNo, userNo, revContent, scoreMap);
+        Review entity = revService.createRevEntity(corNo, userNo, revContent, scoreMap, totalRate);
 
         entity = revService.update(entity);
 
@@ -93,52 +99,54 @@ public class ReviewController {
         return "redirect:/service/cor_detail?corNo=" + corNo + "&page=1";
     }
 
-//    @PostMapping("/service/com_edit")
-//    public String editComment(HttpServletRequest request, Model model, Principal principal,
-//                              @ModelAttribute("requestDTO") PageRequestDTO pageRequestDTO) {
-//        Long locNo = Long.valueOf(request.getParameter("locNo"));
-//        String userEmail = request.getParameter("userEmail");
-//        String cmt_uuid = request.getParameter("cmt_uuid");
-//        String cmtContent = request.getParameter("cmtContent");
-//        boolean returnFlag = false;
-//
-//        Location loc_temp = locService.selectLoc(locNo);
-//        Comment cmt_temp = cmtService.select(cmt_uuid);
-//
-//        if (!userEmail.equals(principal.getName())){
-//            log.warn(principal.getName());
-//            log.warn("Not Match with Comment Posted User and Current Logined User");
-//            log.warn("Please Check User");
-//            returnFlag = true;
-//        }
-//
-//        if (cmt_temp == null) {
-//            log.warn(cmt_uuid);
-//            log.warn("Can't not find Comment");
-//            log.warn("Please Check Comment uuid is match with current Comment");
-//            returnFlag = true;
-//        }
-//
-//        if (returnFlag || !cmt_temp.getLocation().getLoc_no().equals(loc_temp.getLoc_no())){
-//            log.warn("Current Comment is not match with Location");
-//            log.warn("Please Check Location");
-//            returnFlag = true;
-//        }
-//
-//        if (!returnFlag) {
-//            cmt_temp.setCmtContent(cmtContent);
-//            cmtService.update(cmt_temp);
-//        }
-//
-//        LocationDTO dto = locService.selectLocDTO(locNo);
-//        pageRequestDTO.setSize(MAX_COM_COUNT);
-//        PageResultDTO<CommentDTO, Comment> resultCommentDTO
-////                    = comService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION, CommentSortType.IDX_ASC);
-//                = cmtService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION);
-//
-//        model.addAttribute("dto", dto);
-//        model.addAttribute("resComDTO", resultCommentDTO);
-//
-//        return "redirect:/service/loc_detail?locNo=" + locNo;
-//    }
+    @PostMapping("/service/rev_edit")
+    public String editReview(HttpServletRequest request, HttpServletResponse response, Model model,
+                             Authentication authentication, @ModelAttribute("requestDTO") PageRequestDTO pageRequestDTO) throws IOException {
+        Long revNo = Long.valueOf(request.getParameter("rev_no"));
+        String revId = request.getParameter("rev_id");
+        Long corNo = Long.valueOf(request.getParameter("cor_no"));
+        Long userNo = Long.valueOf(request.getParameter("user_no"));
+        String revContent = request.getParameter("rev_content_input");
+        Float totalRate = Float.valueOf(request.getParameter("rev_total_rate"));
+        Integer locRate = Integer.valueOf(request.getParameter("rev_loc_rate"));
+        Integer moveRate = Integer.valueOf(request.getParameter("rev_move_rate"));
+        Integer timeRate = Integer.valueOf(request.getParameter("rev_time_rate"));
+        Integer revisitRate = Integer.valueOf(request.getParameter("rev_revisit_rate"));
+        String resultType = request.getParameter("resultType");
+        List<String> filePath = null;
+        boolean returnFlag = false;
+
+        Course course_temp = corService.selectCor(corNo);
+        Review rev_temp = revService.select(revNo);
+
+        if (course_temp == null || rev_temp == null) {
+            log.warn("No Matching Result of Given Course Or Review");
+            scriptUtils.alertAndBackPage(response, "[오류 발생] 해당하는 코스나 리뷰에 관한 결과가 없습니다.");
+            returnFlag = true;
+        }
+
+        if (!rev_temp.getUser_no().equals(userNo)) {
+            log.warn("Not Match User of given userNo");
+            scriptUtils.alertAndBackPage(response, "[오류 발생] 리뷰를 등록한 유저와 같지 않습니다.");
+            returnFlag = true;
+        }
+
+        if (!rev_temp.getCorNo().equals(course_temp.getCor_no())){
+            log.warn("Review isn't belong to Course");
+            scriptUtils.alertAndBackPage(response, "[오류 발생] 리뷰가 해당 코스에 작성되어 있지 않습니다.");
+            returnFlag = true;
+        }
+
+        if (!returnFlag) {
+            rev_temp.setRevContent(revContent);
+            rev_temp.setSc_loc(locRate);
+            rev_temp.setSc_move(moveRate);
+            rev_temp.setSc_time(timeRate);
+            rev_temp.setSc_revisit(revisitRate);
+            rev_temp.setSc_total(totalRate);
+            revService.update(rev_temp);
+        }
+
+        return "redirect:/service/cor_detail?corNo=" + corNo + "&page=1";
+    }
 }

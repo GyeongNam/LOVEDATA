@@ -26,6 +26,12 @@ public class ReviewImageService {
         return item.isPresent() ? item.get() : null;
     }
 
+    public List<ReviewImage> getAllLiveImageByRevNo(Long revNo) {
+        Optional<List<ReviewImage>> items = repository.findAllLiveImageByRev_no(revNo);
+
+        return items.orElse(null);
+    }
+
     public List<ReviewImage> getAllImagesByCorNo(Long corNo) {
         Optional<List<ReviewImage>> itmes = repository.findAllImageByCor_no(corNo);
 
