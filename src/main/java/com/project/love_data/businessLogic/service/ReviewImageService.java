@@ -1,8 +1,11 @@
 package com.project.love_data.businessLogic.service;
 
 import com.project.love_data.dto.ReviewImageDTO;
+import com.project.love_data.model.resource.CourseImage;
 import com.project.love_data.model.resource.ReviewImage;
+import com.project.love_data.model.service.Review;
 import com.project.love_data.repository.ReviewImageRepository;
+import com.project.love_data.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +15,7 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class ReviewImageService {
+    public final ReviewRepository revRepository;
     private final ReviewImageRepository repository;
 
     public ReviewImage getImage(Long imgId) {
@@ -156,5 +160,31 @@ public class ReviewImageService {
         img.setIdx(img_Index);
 
         return img;
+    }
+
+    public List<ReviewImage> updateOldImage(Long revNo, List<String> filePath) {
+        Optional<Review> revItem = revRepository.findByRev_no(revNo);
+        Optional<List<ReviewImage>> items = repository.findAllLiveImageByRev_no(revNo);
+        if (!items.isPresent() || !revItem.isPresent()) {
+            return null;
+        }
+
+        List<ReviewImage> entities = items.get();
+
+        for (ReviewImage image : entities) {
+            delete(image.getImg_no());
+        }
+        entities.clear();
+
+        for (int i = 0; i < filePath.size(); i += 2) {
+            // filePath.get(i)  ==  Parent Folder (URI)
+            // filePath.get(i+1)  ==  fileNames
+            ReviewImage revImage = getImageEntity(revItem.get().getUser_no(),
+                    filePath.get(i), filePath.get(i+1), revItem.get().getCorNo(), revItem.get().getRevNo(), (long) (i / 2));
+            ReviewImage imgEntity = update(revImage);
+            entities.add(imgEntity);
+        }
+
+        return entities;
     }
 }

@@ -47,6 +47,7 @@ public class ReviewService {
                 .sc_move(dto.getSc_move())
                 .sc_revisit(dto.getSc_revisit())
                 .sc_time(dto.getSc_time())
+                .is_modified(dto.is_modified())
                 .build();
 
         return entity;
@@ -73,6 +74,7 @@ public class ReviewService {
                 .sc_time(entity.getSc_time())
                 .regDate(entity.getRegDate())
                 .modDate(entity.getModDate())
+                .is_modified(entity.is_modified())
                 .build();
 
         return dto;
@@ -149,11 +151,11 @@ public class ReviewService {
     }
 
     public PageResultDTO<ReviewDTO, Review> getRevPage(PageRequestDTO requestDTO) {
-        return getRevPage(requestDTO, SortingOrder.DES);
+        return getRevPage(requestDTO, SortingOrder.DES, ReviewSearchType.Live);
     }
 
     public PageResultDTO<ReviewDTO, Review> getRevPage(PageRequestDTO requestDTO,
-                                                         SortingOrder sortingOrder) {
+                                                         SortingOrder sortingOrder, ReviewSearchType reviewSearchType) {
         Pageable pageable;
         switch (sortingOrder) {
             case DES:
@@ -167,7 +169,7 @@ public class ReviewService {
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
 
-        booleanBuilder = getRevPage_Cor(requestDTO);
+        booleanBuilder = getRevPage_Cor(requestDTO, reviewSearchType);
 
         Page<Review> result = null;
         if (booleanBuilder.hasValue()) {
@@ -181,14 +183,26 @@ public class ReviewService {
         return new PageResultDTO<>(result, fn);
     }
 
-    public BooleanBuilder getRevPage_Cor(PageRequestDTO requestDTO) {
+    public BooleanBuilder getRevPage_Cor(PageRequestDTO requestDTO, ReviewSearchType searchType) {
         Long corNo = requestDTO.getCorNo();
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
 
-        QReview qReivew = QReview.review;
+        QReview qReview = QReview.review;
 
-        BooleanExpression expression = qReivew.corNo.eq(corNo);
+        BooleanExpression expression = qReview.corNo.eq(corNo);
+
+        switch (searchType) {
+            case ALL:
+                break;
+            case Deleted:
+                booleanBuilder.and(qReview.is_deleted.eq(true));
+                break;
+            case Live:
+            default:
+                booleanBuilder.and(qReview.is_deleted.eq(false));
+                break;
+        }
 
         booleanBuilder.and(expression);
 
@@ -236,7 +250,7 @@ public class ReviewService {
         PageRequestDTO requestDTO = PageRequestDTO.builder()
                 .size(Integer.MAX_VALUE)
                 .sortingOrder(SortingOrder.ASC).build();
-        PageResultDTO<ReviewDTO, Review> revResultList = getRevPage(requestDTO, SortingOrder.ASC);
+        PageResultDTO<ReviewDTO, Review> revResultList = getRevPage(requestDTO, SortingOrder.ASC, ReviewSearchType.Live);
 
         repository.deleteByRev_no(rev.getRevNo());
     }

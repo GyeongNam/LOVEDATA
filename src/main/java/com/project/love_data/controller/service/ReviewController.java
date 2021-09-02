@@ -22,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.security.Principal;
 import java.util.*;
 
 import static com.project.love_data.util.ConstantValues.*;
@@ -100,7 +99,7 @@ public class ReviewController {
     }
 
     @PostMapping("/service/rev_edit")
-    public String editReview(HttpServletRequest request, HttpServletResponse response, Model model,
+    public String editReview(HttpServletRequest request, HttpServletResponse response, Model model,  @RequestParam("files") List<MultipartFile> fileList,
                              Authentication authentication, @ModelAttribute("requestDTO") PageRequestDTO pageRequestDTO) throws IOException {
         Long revNo = Long.valueOf(request.getParameter("rev_no"));
         String revId = request.getParameter("rev_id");
@@ -118,6 +117,7 @@ public class ReviewController {
 
         Course course_temp = corService.selectCor(corNo);
         Review rev_temp = revService.select(revNo);
+        Review entity = null;
 
         if (course_temp == null || rev_temp == null) {
             log.warn("No Matching Result of Given Course Or Review");
@@ -144,8 +144,48 @@ public class ReviewController {
             rev_temp.setSc_time(timeRate);
             rev_temp.setSc_revisit(revisitRate);
             rev_temp.setSc_total(totalRate);
-            revService.update(rev_temp);
+            rev_temp.set_modified(true);
+            entity = revService.update(rev_temp);
+            filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE, UploadFileCount.MULTIPLE,
+                    REV_MIN_UPLOAD_COUNT, REV_MAX_UPLOAD_COUNT, request);
+            revImgService.updateOldImage(revNo, filePath);
         }
+
+        return "redirect:/service/cor_detail?corNo=" + corNo + "&page=1";
+    }
+
+    @PostMapping("/service/rev_del")
+    public String delReview(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Long revNo = Long.valueOf(request.getParameter("rev_no"));
+        String revId = request.getParameter("rev_id");
+        Long corNo = Long.valueOf(request.getParameter("cor_no"));
+        Long userNo = Long.valueOf(request.getParameter("user_no"));
+        boolean returnFlag = false;
+
+        Course course_temp = corService.selectCor(corNo);
+        Review rev_temp = revService.select(revNo);
+
+        if (course_temp == null || rev_temp == null) {
+            log.warn("No Matching Result of Given Course Or Review");
+            scriptUtils.alertAndBackPage(response, "[오류 발생] 해당하는 코스나 리뷰에 관한 결과가 없습니다.");
+            returnFlag = true;
+        }
+
+        if (!rev_temp.getUser_no().equals(userNo)) {
+            log.warn("Not Match User of given userNo");
+            scriptUtils.alertAndBackPage(response, "[오류 발생] 리뷰를 등록한 유저와 같지 않습니다.");
+            returnFlag = true;
+        }
+
+        if (!rev_temp.getCorNo().equals(course_temp.getCor_no())){
+            log.warn("Review isn't belong to Course");
+            scriptUtils.alertAndBackPage(response, "[오류 발생] 리뷰가 해당 코스에 작성되어 있지 않습니다.");
+            returnFlag = true;
+        }
+
+       if (!returnFlag) {
+           revService.delete(revNo);
+       }
 
         return "redirect:/service/cor_detail?corNo=" + corNo + "&page=1";
     }

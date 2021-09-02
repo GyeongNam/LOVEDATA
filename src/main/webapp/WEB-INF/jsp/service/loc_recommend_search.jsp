@@ -218,8 +218,7 @@
 											<img src="/image/icon/view.png" class="loc_icon" alt="조회수">
 											<span class="align-middle">${result.dtoList.get(i).viewCount}</span>
 											<img src="/image/icon/comment.png" class="loc_icon" alt="댓글">
-												<%--									Todo 댓글 항목 Location Entity에 추가하기--%>
-											<span class="align-middle">${result.dtoList.get(i).cmtList.size()}</span>
+											<span class="align-middle">${result.dtoList.get(i).liveCmtCount}</span>
 											<sec:authorize access="isAuthenticated()">
 												<c:set var="user_no"><sec:authentication property="principal.user_no"></sec:authentication></c:set>
 												<img src="/image/icon/like/love_black.png" class="loc_icon" alt="찜하기"

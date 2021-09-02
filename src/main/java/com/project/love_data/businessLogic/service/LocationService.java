@@ -169,6 +169,7 @@ public class LocationService {
             cmtMaxCounter = 0L;
         }
         int maxCmtIndex = Math.toIntExact(cmtMaxCounter);
+        int liveCmtCount = 0;
 
         for (int i = 0; i <= maxCmtIndex; i++) {
             for (int j = 0; j < tempCmtList.size(); j++) {
@@ -179,8 +180,15 @@ public class LocationService {
             }
         }
 
+        for (Comment comment : cmtList) {
+            if (!comment.is_deleted()) {
+                liveCmtCount++;
+            }
+        }
+
         dto.setImgList(imgList);
         dto.setCmtList(cmtList);
+        dto.setLiveCmtCount(liveCmtCount);
 
         return dto;
     }

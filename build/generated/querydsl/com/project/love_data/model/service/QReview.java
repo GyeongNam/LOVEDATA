@@ -25,6 +25,8 @@ public class QReview extends EntityPathBase<Review> {
 
     public final BooleanPath is_deleted = createBoolean("is_deleted");
 
+    public final BooleanPath is_modified = createBoolean("is_modified");
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modDate = _super.modDate;
 

@@ -178,7 +178,7 @@
 											<span class="align-middle">${result.dtoList.get(i).viewCount}</span>
 											<img src="/image/icon/comment.png" class="loc_icon" alt="댓글">
 												<%--									Todo 댓글 항목 Location Entity에 추가하기--%>
-											<span class="align-middle">${result.dtoList.get(i).cmtList.size()}</span>
+											<span class="align-middle">${result.dtoList.get(i).liveCmtCount}</span>
 											<sec:authorize access="isAuthenticated()">
 												<c:choose>
 													<c:when test="${isLikedList.get(i) eq true}">

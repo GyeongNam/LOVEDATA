@@ -181,7 +181,7 @@
 					</sec:authorize>
 					<span class="text-center align-middle fs-3 me-4" id="likeCount">${dto.likeCount}</span>
 					<img src="/image/icon/comment.png" class="loc_icon_big me-2" alt="댓글">
-					<span class="text-center align-middle fs-3 me-4">${dto.cmtList.size()}</span>
+					<span class="text-center align-middle fs-3 me-4">${dto.liveCmtCount}</span>
 <%--					Todo 추후에 위치 수정하기--%>
 <%--				loc_common onClickLike	--%>
 					<span class="visually-hidden">${dto.user_no}</span>
@@ -300,6 +300,11 @@
 															<c:choose>
 																<c:when test="${cmtDTO.get(c).regDate ne cmtDTO.get(c).modDate}">
 																	<span class="date text-black-50 ml-5">(수정됨)</span>
+																</c:when>
+															</c:choose>
+															<c:choose>
+																<c:when test="${cmtDTO.get(c)._deleted eq true}">
+																	<span class="date text-black-50 ml-5">(삭제됨)</span>
 																</c:when>
 															</c:choose>
 														</div>
@@ -613,7 +618,9 @@
 </script>
 <script defer>
 	function onClickRemoveLocation() {
-	    alert('장소를 삭제하시겠습니까?');
+        if (!window.confirm("장소를 삭제하시겠습니까?")) {
+            return;
+		}
 
 	    let param = location.search;
 

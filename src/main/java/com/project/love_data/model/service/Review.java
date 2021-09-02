@@ -62,6 +62,10 @@ public class Review extends TimeEntity {
     @Builder.Default
     private int sc_revisit = 0;
 
+    @Column(name ="is_modified")
+    @Builder.Default
+    private boolean is_modified = false;
+
     @Column(name = "user_no", nullable = false)
     private Long user_no;
 

@@ -130,12 +130,27 @@ public class LocationController {
                 model.addAttribute("isNullLocation", false);
             }
 
+            boolean isAdmin = false;
+            if (authentication != null) {
+                for (GrantedAuthority authority : authentication.getAuthorities()) {
+                    if (authority.getAuthority().equals("ROLE_ADMIN")) {
+                        isAdmin = true;
+                        break;
+                    }
+                }
+            }
+
             locService.incViewCount(locNo);
             LocationDTO dto = locService.selectLocDTO(locNo);
             pageRequestDTO.setSize(MAX_COM_COUNT);
-            PageResultDTO<CommentDTO, Comment> resultCommentDTO
-//                    = comService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION, CommentSortType.IDX_ASC);
-                    = comService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION);
+            PageResultDTO<CommentDTO, Comment> resultCommentDTO = null;
+
+            if (isAdmin) {
+                resultCommentDTO = comService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION,
+                        CommentSortType.IDX_DES, CommentSearchType.All);
+            } else {
+                resultCommentDTO = comService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION);
+            }
 
 //            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (authentication != null) {

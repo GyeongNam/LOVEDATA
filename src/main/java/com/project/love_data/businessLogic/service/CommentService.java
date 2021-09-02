@@ -134,6 +134,8 @@ public class CommentService {
         BooleanExpression expression = qComment.location.loc_no.eq(locNo);
 
         switch (commentSearchType) {
+            case All:
+                break;
             case Deleted:
                 booleanBuilder.and(qComment.is_deleted.eq(true));
                 break;

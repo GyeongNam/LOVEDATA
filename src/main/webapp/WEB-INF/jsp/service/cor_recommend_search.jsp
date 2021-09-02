@@ -213,8 +213,7 @@
 											<img src="/image/icon/view.png" class="loc_icon" alt="조회수">
 											<span class="align-middle">${result.dtoList.get(i).viewCount}</span>
 											<img src="/image/icon/comment.png" class="loc_icon" alt="댓글">
-												<%--									Todo리뷰 항목 Course Entity에 추가하기--%>
-												<%--											<span class="align-middle">${result.dtoList.get(i).cmtList.size()}</span>--%>
+											<span class="align-middle">${liveRevCountList.get(i)}</span>
 											<sec:authorize access="isAuthenticated()">
 												<%--												Todo 코스 찜하기 리스트 컨트롤러 수정후 jsp도 수정하기--%>
 												<c:choose>

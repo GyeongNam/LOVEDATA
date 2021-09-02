@@ -9,6 +9,7 @@ import com.project.love_data.security.model.AuthUserModel;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -157,9 +158,23 @@ public class CourseController {
             corService.incViewCount(corNo);
             CourseDTO dto = corService.selectCorDTO(corNo);
             pageRequestDTO.setSize(MAX_REV_COUNT);
-            PageResultDTO<ReviewDTO, Review> resultReviewDTO
-//                    = comService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION, CommentSortType.IDX_ASC);
-                    = reviewService.getRevPage(pageRequestDTO, SortingOrder.DES);
+            PageResultDTO<ReviewDTO, Review> resultReviewDTO = null;
+            boolean isAdmin = false;
+
+            if (authentication != null) {
+                for (GrantedAuthority authority : authentication.getAuthorities()) {
+                    if (authority.getAuthority().equals("ROLE_ADMIN")) {
+                        isAdmin = true;
+                        break;
+                    }
+                }
+            }
+
+            if (isAdmin) {
+                resultReviewDTO = reviewService.getRevPage(pageRequestDTO, SortingOrder.DES, ReviewSearchType.ALL);
+            } else {
+                resultReviewDTO  = reviewService.getRevPage(pageRequestDTO, SortingOrder.DES, ReviewSearchType.Live);
+            }
 
 //            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (authentication != null) {
@@ -267,15 +282,26 @@ public class CourseController {
                 .build();
         PageResultDTO<CourseDTO, com.project.love_data.model.service.Course> resultDTO = corService.getList(pageRequestDTO);
         List<Boolean> isLikedList = new ArrayList<>();
-        List<Integer> corRevCountList = new ArrayList<>();
+//        List<Integer> corRevCountList = new ArrayList<>();
+        List<Integer> corLiveRevCountList = new ArrayList<>();
 
         for (int i = 0; i < resultDTO.getDtoList().size(); i++) {
             List<Review> list = reviewService.getReviewsByCorNo(resultDTO.getDtoList().get(i).getCor_no());
 
             if (list == null) {
-                corRevCountList.add(0);
+//                corRevCountList.add(0);
+                corLiveRevCountList.add(0);
             } else {
-                corRevCountList.add(list.size());
+//                corRevCountList.add(list.size());
+
+                int liveRevCount = 0;
+                for (Review review : list) {
+                    if (!review.is_deleted()) {
+                        liveRevCount++;
+                    }
+                }
+
+                corLiveRevCountList.add(liveRevCount);
             }
         }
 
@@ -300,7 +326,8 @@ public class CourseController {
         model.addAttribute("result", resultDTO);
         model.addAttribute("tagList", tagList);
         model.addAttribute("isLikedList", isLikedList);
-        model.addAttribute("revCounterList", corRevCountList);
+//        model.addAttribute("revCounterList", corRevCountList);
+        model.addAttribute("liveRevCountList", corLiveRevCountList);
 
 //        if(authentication != null) {
 //            AuthUserModel authUser = (AuthUserModel) authentication.getPrincipal();
@@ -479,6 +506,25 @@ public class CourseController {
             model.addAttribute("isRequestPageNumberExceed", false);
         }
 
+        List<Integer> corLiveRevCountList = new ArrayList<>();
+
+        for (int i = 0; i < resultDTO.getDtoList().size(); i++) {
+            List<Review> list = reviewService.getReviewsByCorNo(resultDTO.getDtoList().get(i).getCor_no());
+
+            if (list == null) {
+                corLiveRevCountList.add(0);
+            } else {
+                int liveRevCount = 0;
+                for (Review review : list) {
+                    if (!review.is_deleted()) {
+                        liveRevCount++;
+                    }
+                }
+
+                corLiveRevCountList.add(liveRevCount);
+            }
+        }
+
         List<LocationTag> tags = Arrays.asList(LocationTag.values());
         List<String> activeTags = tagList;
 
@@ -488,6 +534,7 @@ public class CourseController {
         model.addAttribute("keyword", keyword);
         model.addAttribute("sortOrder", order);
         model.addAttribute("searchType", searchType);
+        model.addAttribute("liveRevCountList", corLiveRevCountList);
 
 //        log.info("active tags : " + activeTags);
 

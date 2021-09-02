@@ -284,6 +284,8 @@ public class FileUploadService {
 
         CourseImage item2 = courseImageService.getImage(originalFileName);
 
+        ReviewImage item3 = reviewImageService.getImage(originalFileName);
+
         if (item != null) {
             String url = item.getImg_url();
 
@@ -300,6 +302,20 @@ public class FileUploadService {
 
         if (item2 != null) {
             String url = item2.getImg_url();
+
+            String[] ary = url.split("/");
+
+            String result = "";
+
+            for (int i = 0; i < ary.length - 1; i++) {
+                result += ary[i] + "/";
+            }
+
+            return result.substring(0, result.length()-1);
+        }
+
+        if (item3 != null) {
+            String url = item3.getImg_url();
 
             String[] ary = url.split("/");
 

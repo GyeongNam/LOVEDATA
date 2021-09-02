@@ -224,7 +224,7 @@
 																	 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png"
 																	 style="height: 30%; z-index: 2">
 															</div>
-															<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden"
+															<div class="d-flex justify-content-end card-img-overlay p-0"
 																 style="align-items: flex-start">
 																<img class="btn btn-lg align-middle p-0" id="imgDel_${i}"
 																	 onclick="deleteImage(this)"
@@ -334,6 +334,26 @@
 <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
 		crossorigin="anonymous"></script>
+<script>
+	window.onload = function() {
+        // getRevImg()
+        let dtoImgURLList = [];
+        let dt = new DataTransfer();
+
+        <c:forEach items="${revImgList}" var="id">
+        	dtoImgURLList.push("${id.img_url}");
+        </c:forEach>
+
+        for (let i = 0; i < dtoImgURLList.length; i++){
+            let temp = dtoImgURLList[i].split('/');
+            let uuid = temp[temp.length - 1];
+            let mediaType = "image/" + uuid.split('.')[1];
+            dt.items.add(new File([dtoImgURLList[i]], uuid, {type : mediaType, lastModified : Date.now()}));
+        }
+
+        input.files = dt.files;
+	}
+</script>
 <script defer>
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");

@@ -35,6 +35,8 @@ public class ReviewDTO {
     @Builder.Default
     private boolean is_deleted = false;
     @Builder.Default
+    private boolean is_modified = false;
+    @Builder.Default
     private Long reported_count = 0L;
     @Builder.Default
     private String revUuid = UUID.randomUUID().toString();

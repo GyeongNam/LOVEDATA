@@ -175,8 +175,7 @@
 											<img src="/image/icon/view.png" class="loc_icon" alt="조회수">
 											<span class="align-middle">${result.dtoList.get(i).viewCount}</span>
 											<img src="/image/icon/comment.png" class="loc_icon" alt="리뷰">
-												<%--									Todo리뷰 항목 Course Entity에 추가하기--%>
-											<span class="align-middle">${revCounterList.get(i)}</span>
+											<span class="align-middle">${liveRevCountList.get(i)}</span>
 											<sec:authorize access="isAuthenticated()">
 												<c:choose>
 													<c:when test="${isLikedList.get(i) eq true}">
