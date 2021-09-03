@@ -203,7 +203,7 @@ public class CourseController {
 
             if (!corLocMappers.isEmpty()) {
                 for (CorLocMapper mapper : corLocMappers) {
-                    locList.add(locService.selectLocDTO(mapper.getLoc_no()));
+                    locList.add(locService.selectLiveLocDTO(mapper.getLoc_no()));
                 }
 
                 model.addAttribute("locList", locList);
@@ -211,7 +211,7 @@ public class CourseController {
                 model.addAttribute("locList", null);
             }
 
-            Integer revCounter = reviewService.getReviewsByCorNo(corNo).size();
+            Integer revCounter = reviewService.getLiveReviewsByCorNo(corNo).size();
             List<List<ReviewImageDTO>> revImgDTOList = new ArrayList<>();
             List<String> revImgURLStringList = new ArrayList<>();
             String revImgURL = "";
@@ -346,8 +346,14 @@ public class CourseController {
             List<LocationTag> tagList = Arrays.asList(LocationTag.values());
             List<CorLocMapper> corLocMappers = corLocMapperService.getLocationsByCorNo(corNo);
 
-            for (CorLocMapper mapper : corLocMappers) {
-                locList.add(locService.selectLocDTO(mapper.getLoc_no()));
+            for (int i = 0; i < corLocMappers.size(); i++) {
+                LocationDTO locDTO = locService.selectLiveLocDTO(corLocMappers.get(i).getLoc_no());
+
+                if (locDTO == null) {
+                    continue;
+                } else {
+                    locList.add(locDTO);
+                }
             }
 
             model.addAttribute("dto", dto);

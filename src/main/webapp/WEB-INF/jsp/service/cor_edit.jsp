@@ -661,7 +661,7 @@
 						</c:forEach>
 					</div>
 				</div>
-				<input class="visually-hidden" id="location_length" name="location_length" value="${dto.location_count}">
+				<input class="visually-hidden" id="location_length" name="location_length" value="${locList.size()}">
 				<button type="button" id="register" name="register" onclick="onClickRegister()">Register</button>
 			</form>
 		</div>
@@ -736,35 +736,39 @@
         let button;
         let aChild;
 
-        <c:forEach var="i" begin="0" end="${locList.size()-1}">
-			<c:set var="tagSet" value="${locList.get(i).tagSet}"></c:set>
-        	loc_tags = document.getElementById("hashtag_" + ${i+1});
-	        tagAryList = [];
+        <c:choose>
+			<c:when test="${!empty locList}">
+        		<c:forEach var="i" begin="0" end="${locList.size()-1}">
+				<c:set var="tagSet" value="${locList.get(i).tagSet}"></c:set>
+        		loc_tags = document.getElementById("hashtag_" + ${i+1});
+        		tagAryList = [];
 
-        	<%
-				Set<String> tagSet = (Set<String>) pageContext.getAttribute("tagSet");
-				List<String> tagAryList = new ArrayList<>(tagSet);
-				pageContext.setAttribute("tagAryList", tagAryList);
-			%>
+				<%
+					Set<String> tagSet = (Set<String>) pageContext.getAttribute("tagSet");
+					List<String> tagAryList = new ArrayList<>(tagSet);
+					pageContext.setAttribute("tagAryList", tagAryList);
+				%>
 
-			<c:forEach var="j" begin="0" end="${tagAryList.size()-1}">
-        		button = document.createElement("button");
-		        button.setAttribute('class', 'btn btn-primary mx-1');
-		        button.value = '${tagAryList.get(j)}';
-		        button.innerText = '${tagAryList.get(j)}';
-		        aChild = loc_tags.appendChild(button);
-			</c:forEach>
-		</c:forEach>
+					<c:forEach var="j" begin="0" end="${tagAryList.size()-1}">
+					button = document.createElement("button");
+					button.setAttribute('class', 'btn btn-primary mx-1');
+					button.value = '${tagAryList.get(j)}';
+					button.innerText = '${tagAryList.get(j)}';
+					aChild = loc_tags.appendChild(button);
+					</c:forEach>
+				</c:forEach>
+        </c:when>
+		</c:choose>
 
         <%--console.log("tagList.size() : " + "${tagList.size()}")--%>
         <%--console.log("tagList : " + "${tagList}")--%>
-		<%--console.log("tagSet : " + "${dto.tagSet}")--%>
+        <%--console.log("tagSet : " + "${dto.tagSet}")--%>
         <c:forEach var="k" begin="0" end="${tagList.size()-1}">
-        	<c:choose>
-		        <c:when test="${dto.tagSet.contains(tagList.get(k).name())}">
-			        tagList.push("${tagList.get(k).name()}");
-		        </c:when>
-	        </c:choose>
+			<c:choose>
+				<c:when test="${dto.tagSet.contains(tagList.get(k).name())}">
+					tagList.push("${tagList.get(k).name()}");
+				</c:when>
+			</c:choose>
         </c:forEach>
 
         // console.log(tagList)
@@ -1108,7 +1112,7 @@
     // let selectedLocationParent = null;
     let selectedLocationIndex = null;
     let selectedLocation = null;
-    let currentLocationLength = ${dto.location_count};
+    let currentLocationLength = ${locList.size()};
     let locationMap = null;
 
     function onClearSelectLocation() {
@@ -1462,7 +1466,7 @@
             // console.log(locNo);
             // console.log(locID);
 
-            if (locNo.innerText === locationMap["locNo"] || locID.innerText === locationMap["locID"]) {
+            if (locNo.value === locationMap["locNo"] || locID.value === locationMap["locID"]) {
                 return true;
 			}
 		}

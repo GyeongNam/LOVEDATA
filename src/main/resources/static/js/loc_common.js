@@ -351,6 +351,6 @@ function addURLParam(keyword, value) {
     // console.log(url);
 
     /* https://stackoverflow.com/questions/22753052/remove-url-parameters-without-refreshing-page */
-    // window.history.pushState(null, null, url);
-    window.history.replaceState(null, null, url);
+    window.history.pushState(null, null, url);
+    // window.history.replaceState(null, null, url);
 }

@@ -1202,7 +1202,7 @@
             // console.log(locNo);
             // console.log(locID);
 
-            if (locNo.innerText === locationMap["locNo"] || locID.innerText === locationMap["locID"]) {
+            if (locNo.value === locationMap["locNo"] || locID.value === locationMap["locID"]) {
                 return true;
 			}
 		}

@@ -362,37 +362,72 @@
 									</c:choose>
 								</c:otherwise>
 							</c:choose>
+							<c:choose>
+								<c:when test="${locList.get(i) eq null}">
 									<div class="container mt-0">
-									<div class="d-flex justify-content-start row">
-										<div class="col-md-10">
-											<div class="d-flex my-lg-4 flex-column">
-												<button class="btn-lg btn-primary" onclick="location.href='/service/loc_detail?locNo=${locList.get(i).loc_no}'">장소 바로 가기</button>
-												<div class="row my-lg-4">
-													<div class="col-md-7">
-														<div class="card shadow-sm">
-															<div class="d-flex justify-content-center">
-																<img class="bd-placeholder-img card-img" width="70%"
-																	 height="300"
-																	 alt="${locList.get(i).loc_name}"
-																	 src="${locList.get(i).thumbnail}"
-																	 id="loc_img_${i}"
-																	 name="loc_img_${i}"
-																	 preserveAspectRatio="xMidYMid slice" focusable="false">
+										<div class="d-flex justify-content-start row">
+											<div class="col-md-10">
+												<div class="d-flex my-lg-4 flex-column">
+<%--													<button class="btn-lg btn-primary" onclick="location.href='/service/loc_detail?locNo=${locList.get(i).loc_no}'">장소 바로 가기</button>--%>
+													<div class="row my-lg-4">
+<%--														<div class="col-md-7">--%>
+<%--															<div class="card shadow-sm">--%>
+<%--																<div class="d-flex justify-content-center">--%>
+<%--																	<img class="bd-placeholder-img card-img" width="70%"--%>
+<%--																		 height="300"--%>
+<%--																		 alt="${locList.get(i).loc_name}"--%>
+<%--																		 src="${locList.get(i).thumbnail}"--%>
+<%--																		 id="loc_img_${i}"--%>
+<%--																		 name="loc_img_${i}"--%>
+<%--																		 preserveAspectRatio="xMidYMid slice" focusable="false">--%>
+<%--																</div>--%>
+<%--															</div>--%>
+<%--														</div>--%>
+														<div class="col d-flex">
+															<div class="row mt-3 d-flex justify-content-center">
+																<span>삭제된 장소입니다.</span>
 															</div>
-														</div>
-													</div>
-													<div class="col d-flex">
-														<div class="row mt-3 d-flex justify-content-center">
-															<span>${i+1}번째 장소</span>
-															<span>장소 이름 : ${locList.get(i).loc_name}</span>
-															<span>장소 설명 : ${locList.get(i).info}</span>
 														</div>
 													</div>
 												</div>
 											</div>
 										</div>
 									</div>
-								</div>
+								</c:when>
+								<c:otherwise>
+									<div class="container mt-0">
+										<div class="d-flex justify-content-start row">
+											<div class="col-md-10">
+												<div class="d-flex my-lg-4 flex-column">
+													<button class="btn-lg btn-primary" onclick="location.href='/service/loc_detail?locNo=${locList.get(i).loc_no}'">장소 바로 가기</button>
+													<div class="row my-lg-4">
+														<div class="col-md-7">
+															<div class="card shadow-sm">
+																<div class="d-flex justify-content-center">
+																	<img class="bd-placeholder-img card-img" width="70%"
+																		 height="300"
+																		 alt="${locList.get(i).loc_name}"
+																		 src="${locList.get(i).thumbnail}"
+																		 id="loc_img_${i}"
+																		 name="loc_img_${i}"
+																		 preserveAspectRatio="xMidYMid slice" focusable="false">
+																</div>
+															</div>
+														</div>
+														<div class="col d-flex">
+															<div class="row mt-3 d-flex justify-content-center">
+																<span>${i+1}번째 장소</span>
+																<span>장소 이름 : ${locList.get(i).loc_name}</span>
+																<span>장소 설명 : ${locList.get(i).info}</span>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</c:otherwise>
+							</c:choose>
 							</div>
 						</c:forEach>
 					</c:when>

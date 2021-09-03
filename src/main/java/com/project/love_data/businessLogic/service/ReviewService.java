@@ -279,4 +279,9 @@ public class ReviewService {
         Optional<List<Review>> items = repository.findAllByCor_no(corNo);
         return items.orElse(null);
     }
+
+    public List<Review> getLiveReviewsByCorNo(Long corNo) {
+        Optional<List<Review>> items = repository.findLiveByCor_no(corNo);
+        return items.orElse(null);
+    }
 }

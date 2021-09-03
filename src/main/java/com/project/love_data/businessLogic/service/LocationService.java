@@ -385,6 +385,18 @@ public class LocationService {
         }
     }
 
+    public Location selectLiveLoc(Long loc_no) {
+        Optional<Location> result = repository.findLiveLocByLoc_no(loc_no);
+
+        return result.isPresent() ? result.get() : null;
+    }
+
+    public Location selectLiveLoc(String loc_uuid) {
+        Optional<Location> result = repository.findLiveLocByUUID(loc_uuid);
+
+        return result.isPresent() ? result.get() : null;
+    }
+
     public Location selectLoc(String loc_uuid) {
         Optional<Location> result = repository.findLocByUUID(loc_uuid);
 
@@ -393,6 +405,18 @@ public class LocationService {
 
     public LocationDTO selectLocDTO(String loc_uuid) {
         Optional<Location> result = repository.findLocByUUID(loc_uuid);
+
+        return result.isPresent() ? entityToDto(result.get()) : null;
+    }
+
+    public LocationDTO selectLiveLocDTO(String loc_uuid) {
+        Optional<Location> result = repository.findLiveLocByUUID(loc_uuid);
+
+        return result.isPresent() ? entityToDto(result.get()) : null;
+    }
+
+    public LocationDTO selectLiveLocDTO(Long loc_no) {
+        Optional<Location> result = repository.findLiveLocByLoc_no(loc_no);
 
         return result.isPresent() ? entityToDto(result.get()) : null;
     }

@@ -48,6 +48,12 @@ public interface LocationRepository extends JpaRepository<Location, Long>
     @Query(value = "SELECT l FROM Location l WHERE l.user_no IN :user_no")
     Optional<List<Location>> findByAllUser_no(@Param("user_no")Long userNo);
 
+    @Query(value = "SELECT * from Location l WHERE  l.loc_no = :loc_no AND l.is_deleted = false", nativeQuery = true)
+    Optional<Location> findLiveLocByLoc_no(@Param("loc_no") Long loc_no);
+
+    @Query(value = "SELECT * from Location l WHERE  l.loc_uuid = :loc_uuid AND l.is_deleted = false", nativeQuery = true)
+    Optional<Location> findLiveLocByUUID(@Param("loc_uuid") String loc_uuid);
+
 //    @Query(value = "SELECT DISTINCT ls.location_loc_no from location_tag_set ls WHERE ls.tag_set LIKE :tag")
 //    Long findLocationNoByTag(@Param("tag")String tag);
 
