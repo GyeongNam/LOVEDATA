@@ -41,18 +41,130 @@ public class ServiceCenterController {
     @GetMapping(value = "/ServiceCenter/Notice/{page}")
     public String Notice(@PathVariable("page") String page, Model model, HttpServletResponse response) {
         List<Notice> notice = serviceCenterService.not_select_all();
-        long notice_page = notice.size()/15;
-        long notice_page_na = notice.size()%15;
-        if(notice_page_na <= 1){
-            notice_page = notice_page+1;
-            model.addAttribute("notice_page",notice_page);
+        List<Notice> notice_page = null;
+        model.addAttribute("search", false);
+        long no_size = notice.size();
+        long no_page = notice.size()/15;
+        long no_page_na = notice.size()%15;
+        long no_page_size = no_page/10;
+        long no_page_size_na = no_page%10;
+
+        Date today = new Date();
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+        model.addAttribute("no_time", format1.format(today));
+
+        if(no_page_size_na >= 1){
+            no_page_size = no_page_size+1;
+            model.addAttribute("no_page_size",no_page_size);
         }
         else {
-            model.addAttribute("notice_page",notice_page);
+            model.addAttribute("no_page_size",no_page_size);
         }
-        model.addAttribute("nots_size",notice.size());
 
-        model.addAttribute("nots",notice);
+        if(no_page_na >= 1){
+            no_page = no_page+1;
+            model.addAttribute("no_page",no_page);
+        }
+        else {
+            model.addAttribute("no_page",no_page);
+        }
+        model.addAttribute("no_size",notice.size());
+
+        // 페이지네이션
+        long j=0;
+
+        if(notice.size()<15){
+            model.addAttribute("noti",notice);
+        }else {
+            for (int i = 0; i < no_size; i++) {
+                notice_page = notice.subList(0,15);
+
+                if (i % 15 == 0) {
+                    j = j + 1;
+                    if (j == Long.parseLong(page)) {
+                        model.addAttribute("noti",notice_page);
+                        break;
+                    } else {
+                        notice.subList(0,15).clear();
+
+                        if(notice.size()<15){
+                            model.addAttribute("noti",notice);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return "/user/Service_center_no";
+    }
+
+    @GetMapping(value = "/ServiceCenter/Notice/search/{menu}/{text}/{page}")
+    public String Nsearch( @PathVariable("page") String page,
+                           @PathVariable("text") String text,
+                           @PathVariable("menu") String menu,
+                           Model model,
+                           Principal principal)  {
+        List<Notice> notice = serviceCenterService.no_search_all(menu, text);
+        model.addAttribute("search", true);
+        model.addAttribute("text", text);
+        model.addAttribute("menu", menu);
+
+        List<Notice> notice_page = null;
+        model.addAttribute("search", false);
+        long no_size = notice.size();
+        long no_page = notice.size()/15;
+        long no_page_na = notice.size()%15;
+        long no_page_size = no_page/10;
+        long no_page_size_na = no_page%10;
+
+        Date today = new Date();
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+        model.addAttribute("no_time", format1.format(today));
+
+        if(no_page_size_na >= 1){
+            no_page_size = no_page_size+1;
+            model.addAttribute("no_page_size",no_page_size);
+        }
+        else {
+            model.addAttribute("no_page_size",no_page_size);
+        }
+
+        if(no_page_na >= 1){
+            no_page = no_page+1;
+            model.addAttribute("no_page",no_page);
+        }
+        else {
+            model.addAttribute("no_page",no_page);
+        }
+        model.addAttribute("no_size",notice.size());
+
+        // 페이지네이션
+        long j=0;
+
+        if(notice.size()<15){
+            model.addAttribute("noti",notice);
+        }else {
+            for (int i = 0; i < no_size; i++) {
+                notice_page = notice.subList(0,15);
+
+                if (i % 15 == 0) {
+                    j = j + 1;
+                    if (j == Long.parseLong(page)) {
+                        model.addAttribute("noti",notice_page);
+                        break;
+                    } else {
+                        notice.subList(0,15).clear();
+
+                        if(notice.size()<15){
+                            model.addAttribute("noti",notice);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
         return "/user/Service_center_no";
     }
 
@@ -62,7 +174,7 @@ public class ServiceCenterController {
         notice.setNoti_viewCount(notice.getNoti_viewCount()+1);
         serviceCenterService.not_update(notice);
         model.addAttribute("noti",notice);
-        return "/service/noti_detaill";
+        return "/service/noti_detail";
     }
 
     @GetMapping(value = "/ServiceCenter/Questions/{page}")
@@ -125,6 +237,7 @@ public class ServiceCenterController {
 
         return "/user/Service_center_qu";
     }
+
 
     @GetMapping(value = "/ServiceCenter/Policy")
     public String Policy(Model model, HttpServletResponse response)  {
@@ -340,8 +453,17 @@ public class ServiceCenterController {
                 }
             }
         }
-
         return "redirect:/ServiceCenter/Questions_Post/"+request.getParameter("qu_no");
+    }
+
+    @PreAuthorize("hasRole('ROLE_MANAGER')")
+    @GetMapping(value = "/ServiceCenter/Notice_Post_add")
+    public String Post_add_noti(Principal principal, HttpServletResponse response) throws IOException {
+        if(principal == null){
+            ScriptUtils scriptUtils = new ScriptUtils();
+            scriptUtils.alertAndMovePage(response, "로그인 해주세요.", "/login");
+        }
+        return "/service/noti_Post_add";
     }
 
     @GetMapping(value = "/ServiceCenter/Questions_Post_add")
@@ -397,6 +519,11 @@ public class ServiceCenterController {
             }
         }
         return "redirect:/ServiceCenter/Questions_Post/"+num;
+    }
+
+    @GetMapping(value = "/smartditor2/popup/photo_uploader.jsp")
+    public String No_Upload(){
+        return "popup/photo_uploader";
     }
 
 

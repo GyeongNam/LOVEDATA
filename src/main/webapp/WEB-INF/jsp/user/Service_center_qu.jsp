@@ -13,9 +13,8 @@
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
-    <link href="/css/ServiceCenter.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/service/loc.css">
-
+    <link rel="stylesheet" href="/css/ServiceCenter.css" >
     <meta name="_csrf" content="${_csrf.token}">
     <meta name="_csrf_header" content="${_csrf.headerName}">
     <title>LOVEDATA:ServiceCenter</title>
@@ -54,9 +53,9 @@
         <div class="col" id="top_navbar">
             <nav class="navbar navbar-expand-sm navbar-light bg-light static-top">
                 <h3 class="mx-3">문의사항</h3>
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="navbar-nav col-9">
-                        <ul class="navbar-nav col-11"></ul>
+                <div class="collapse navbar-collapse d-flex justify-content-end" id="bs-example-navbar-collapse-1">
+                    <ul class="navbar-nav ">
+                        <ul class="navbar-nav"></ul>
                         <select class="select2-dropdown mx-2" id="Notice_select">
                             <option value="1" selected>제목+내용</option>
                             <option value="2">제목</option>
@@ -123,11 +122,10 @@
             <div class="container d-flex" id="">
                 <div class="col" id="page_number">
                     <nav aria-label="Page navigation example">
-
                         <input id="qu_pages" value="${qu_page_size}" type="hidden">
                         <input id="qu_pagess" value="${qu_page}" type="hidden">
                         <div class="pagination justify-content-center" , id="pagination justify-content-center">
-                            <p onclick="subpage()">이전</p>
+                            <p onclick="subpage()"> < </p>
                             <c:choose>
                                 <c:when test="${search eq false}">
                                     <c:forEach var="qu_pages" begin="1" end="${qu_page}" step="1">
@@ -148,12 +146,14 @@
                                     </c:forEach>
                                 </c:when>
                             </c:choose>
-                            <p onclick="plupage()">다음</p>
+                            <p onclick="plupage()"> > </p>
                         </div>
                     </nav>
                 </div>
             </div>
+            <div class="d-flex justify-content-end">
             <button onclick="location.href='/ServiceCenter/Questions_Post_add'" class="btn btn-primary m-2 float-right">글쓰기</button>
+            </div>
         </div>
     </div>
 </div>

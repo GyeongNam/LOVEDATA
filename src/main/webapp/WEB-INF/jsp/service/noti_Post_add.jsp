@@ -8,11 +8,14 @@
 
 <html>
 <head>
+    <frame-options disabled="true"/>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="_csrf" content="${_csrf.token}">
     <meta name="_csrf_header" content="${_csrf.headerName}">
+    <script type="text/javascript" src="/smartditor2/js/HuskyEZCreator.js" charset="utf-8"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/service/loc.css">
     <style>
@@ -22,7 +25,7 @@
             font-family: 'Jua', sans-serif;
         }
     </style>
-    <title>Home</title>
+    <title>Notice add</title>
 </head>
 <%@ include file="../layout/header.jsp" %>
 <body>
@@ -43,8 +46,8 @@
                     </div>
                     <div id="loc_collapse" class="collapse show" aria-labelledby="headingLoc" data-parent="#loc">
                         <div class="card-body center-pill">
-                            <p><a href="/ServiceCenter/Notice/1" class="loc_highlight-selected-text-menu ">- 공지 사항</a></p>
-                            <p><a href="/ServiceCenter/Questions/1" class="loc_highlight-not-selected-text-menu">- 문의 사항</a></p>
+                            <p><a href="/ServiceCenter/Notice/1" class="loc_highlight-not-selected-text-menu ">- 공지 사항</a></p>
+                            <p><a href="/ServiceCenter/Questions/1" class="loc_highlight-selected-text-menu">- 문의 사항</a></p>
                             <p><a href="/ServiceCenter/Policy" class="loc_highlight-not-selected-text-menu">- LOVEDATA 정책</a></p>
                             <p><a href="#" class="loc_highlight-not-selected-text-menu">- 회원 탈퇴</a></p>
                         </div>
@@ -53,15 +56,26 @@
             </div>
         </ul>
     </div>
-    <div class="container col-lg-6 ">
-       <span> ${noti.noti_no}</span>
-       <span> ${noti.noti_title}</span>
-       <span> ${noti.noti_manager}</span>
-       <span> ${noti.noti_text}</span>
-       <span> ${noti.noti_date}</span>
-       <span> ${noti.noti_viewCount}</span>
-       <span> ${noti.noti_activation}</span>
+    <div class="container-fluid" id="display_center" style="margin-right: 30px">
+        <div class="col" id="top_navbar">
+            <div class="d-flex container" >
+                <textarea name="notice_content" id="smartEditor" style="width: auto; height: auto;"></textarea>
+            </div>
+             <div class="col" id="pu_navbar">
+                <div class="container d-flex justify-content-center" id="">
+                    <input type="button"  onclick="save();" value="본문 내용 가져오기">
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>
+
+<script defer src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+        crossorigin="anonymous"></script>
+<script src="/js/qu_post_add.js"></script>
+<script src="/js/SmartEditor2.js"></script>
+
+
 </html>
