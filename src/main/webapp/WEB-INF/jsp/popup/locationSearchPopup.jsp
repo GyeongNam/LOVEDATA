@@ -40,7 +40,7 @@
 				<table class="table" id="searchResultTable">
 					<thead>
 					<th scope="col">#</th>
-					<th scope="col">장소 제목</th>
+					<th scope="col">장소 이름</th>
 					<th scope="col">장소 주소</th>
 					<th scope="col">등록 유저</th>
 					<th scope="col">조회수</th>

@@ -15,7 +15,7 @@ import java.util.Optional;
 @Log4j2
 @Service
 @RequiredArgsConstructor
-public class NoticeService {
+public class ServiceCenterService {
     @Autowired
     QuestionsRepository questionsRepository;
     @Autowired

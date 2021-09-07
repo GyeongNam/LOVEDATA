@@ -4,7 +4,11 @@ import com.project.love_data.dto.CourseDTO;
 import com.project.love_data.dto.PageRequestDTO;
 import com.project.love_data.dto.PageResultDTO;
 import com.project.love_data.model.resource.CourseImage;
+import com.project.love_data.model.resource.LocationImage;
+import com.project.love_data.model.service.CorLocMapper;
 import com.project.love_data.model.service.Course;
+import com.project.love_data.model.service.Location;
+import com.project.love_data.model.service.QCourse;
 import com.project.love_data.repository.CourseImageRepository;
 import com.project.love_data.repository.CourseRepository;
 import com.querydsl.core.BooleanBuilder;
@@ -18,8 +22,6 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.function.Function;
 
-import static org.reflections.util.ConfigurationBuilder.build;
-
 @Service
 @RequiredArgsConstructor
 @Log4j2
@@ -29,6 +31,56 @@ public class CourseService {
     private final CourseImageService imgService;
     private final ReviewService revService;
     private final CorLocMapperService corLocMapperService;
+
+    public Course update(Map<String, String> reqParam, List<String> tagList, List<String> filePath) {
+        CourseDTO dto = updateCourseDto(reqParam, tagList);
+        List<CourseImage> imgList = new ArrayList<>();
+        Course entity = dtoToEntity(dto);
+        CourseImage courseImage;
+        List<Long> locNoList = new ArrayList<>();
+
+        repository.save(entity);
+
+        Optional<Course> item = repository.findCorByUUID(entity.getCor_uuid());
+
+        entity = item.orElse(null);
+
+        imgList = imgService.getLiveImagesByCorNo(Long.valueOf(reqParam.get("cor_no")));
+
+        for (int i = 0; i < imgList.size(); i++) {
+            imgService.delete(imgList.get(i).getImg_uuid());
+        }
+        imgList.clear();
+
+        for (int i = 0; i < filePath.size(); i += 2) {
+            // filePath.get(i)  ==  Parent Folder (URI)
+            // filePath.get(i+1)  ==  fileNames
+            CourseImage locImage = imgService.getImageEntity(reqParam.get("user_no"),
+                    filePath.get(i), filePath.get(i+1), entity.getCor_no(), (i/2));
+            CourseImage imgEntity = imgService.update(locImage);
+            imgList.add(imgEntity);
+        }
+
+        entity.setThumbnail(imgList.get(0).getImg_url());
+
+        List<CorLocMapper> corLocMappers = corLocMapperService.getLocationsByCorNo(Long.valueOf(reqParam.get("cor_no")));
+
+        for (int i = 0; i < corLocMappers.size(); i++) {
+            corLocMapperService.permaDelete(corLocMappers.get(i).getClm_No());
+        }
+
+        for (int i = 1; i <= Integer.parseInt(reqParam.get("location_length")); i++) {
+            locNoList.add(Long.parseLong(reqParam.get("loc_no_" + i)));
+        }
+
+        corLocMapperService.register(entity.getCor_no(),locNoList);
+
+        repository.save(entity);
+
+        log.info("entity : " + entity);
+
+        return entity;
+    }
 
     public Course register(Map<String, String> reqParam, List<String> tagList, List<String> filePath) {
         CourseDTO dto = getCourseDto(reqParam, tagList);
@@ -43,18 +95,16 @@ public class CourseService {
 
         entity = item.orElse(null);
 
-        for (int i = 1; i < filePath.size(); i++) {
-            // filePath.get(0)  ==  Parent Folder (URI)
-            // filePath.get(i)  ==  fileNames
-            imgList.add(imgService.getImageEntity(reqParam.get("user_no"),
-                    filePath.get(0), filePath.get(i), entity.getCor_no(), i-1));
+        for (int i = 0; i < filePath.size(); i += 2) {
+            // filePath.get(i)  ==  Parent Folder (URI)
+            // filePath.get(i+1)  ==  fileNames
+            CourseImage locImage = imgService.getImageEntity(reqParam.get("user_no"),
+                    filePath.get(i), filePath.get(i+1), entity.getCor_no(), (i/2));
+            CourseImage imgEntity = imgService.update(locImage);
+            imgList.add(imgEntity);
         }
 
         entity.setThumbnail(imgList.get(0).getImg_url());
-
-        for (CourseImage CourseImage : imgList) {
-            imgRepository.save(CourseImage);
-        }
 
         for (int i = 1; i <= Integer.parseInt(reqParam.get("location_length")); i++) {
             locNoList.add(Long.parseLong(reqParam.get("loc_no_" + i)));
@@ -73,6 +123,7 @@ public class CourseService {
         Course entity = Course.builder()
                 .cor_no(dto.getCor_no())
                 .cor_name(dto.getCor_name())
+                .cor_uuid(dto.getCor_uuid())
                 .user_no(dto.getUser_no())
                 .cost(dto.getCost())
                 .location_count(dto.getLocation_count())
@@ -86,6 +137,7 @@ public class CourseService {
                 .thumbnail(dto.getThumbnail())
                 .viewCount(dto.getViewCount())
                 .is_deleted(dto.is_deleted())
+                .accommodations_info(dto.getAccommodations_info())
                 .build();
 
         return entity;
@@ -110,79 +162,38 @@ public class CourseService {
                 .is_deleted(entity.is_deleted())
                 .modDate(entity.getModDate())
                 .regDate(entity.getRegDate())
+                .accommodations_info(entity.getAccommodations_info())
                 .build();
 
-        // Image List 변환 및 정렬
-        // idx 기준 정렬
-        List<CourseImage> tempList = new ArrayList<>();
-        List<CourseImage> imgList = new ArrayList<>();
-        boolean sortedFlag = false;
-        int count = 0;
-
-        // Image 리스트 불러오기
-//        for (CourseImage img :
-//                entity.getImgSet()) {
-//            tempList.add(img);
-//        }
-
-//        for (int i = 0; i < tempList.size(); i++) {
-//            for (int j = 0; j < tempList.size(); j++) {
-//                if (tempList.get(j).getIdx() == i) {
-//                    imgList.add(tempList.get(j));
-//                    break;
-//                }
-//            }
-//        }
-
-        // idx가 전부 0일 경우 정리가 되지 않은 것이므로
-        for (int i = 0; i < tempList.size(); i++) {
-            if (tempList.get(i).getIdx() == 0) {
-                count++;
-            }
-        }
-
-        // 플래그 설정
-        if (count > 1) {
-            sortedFlag = false;
-        } else {
-            sortedFlag = true;
-        }
-
-        if (!sortedFlag) {
-            for (int i = 0; i < tempList.size(); i++) {
-                tempList.get(i).setIdx((long) i);
-                imgList.add(tempList.get(i));
-            }
-        } else {
-            for (int i = 0; i < tempList.size(); i++) {
-                for (int j = 0; j < tempList.size(); j++) {
-                    if (tempList.get(j).getIdx() == i) {
-                        imgList.add(tempList.get(j));
-                        break;
-                    }
-                }
-            }
-        }
-
-
-//        // Comment List 변환 및 정렬
-//        // cmd_idx 기준 정렬
-//        List<Comment> tempCmtList = new ArrayList<>(entity.getCmtSet());
-//        List<Comment> cmtList = new ArrayList<>();
-//
-//        for (int i = 0; i < tempCmtList.size(); i++) {
-//            for (int j = 0; j < tempCmtList.size(); j++) {
-//                if (tempCmtList.get(j).getCmtIdx() == i) {
-//                    cmtList.add(tempCmtList.get(j));
-//                    break;
-//                }
-//            }
-//        }
-//
-//        dto.setImgList(imgList);
-//        dto.setCmtList(cmtList);
-
         return dto;
+    }
+
+    public CourseDTO updateCourseDto(Map<String, String> reqParam, List<String> tagList) {
+        CourseDTO courseDTO = CourseDTO.builder()
+                .cor_no(Long.valueOf(reqParam.get("cor_no")))
+                .cor_uuid(reqParam.get("cor_uuid"))
+                .cor_name(reqParam.get("name"))
+                .user_no(Long.valueOf(reqParam.get("user_no")))
+                .info(reqParam.get("info"))
+                .transportation(reqParam.get("transportation"))
+                .cost(reqParam.get("cost"))
+                .location_count(Integer.parseInt(reqParam.get("location_length")))
+                .est_type(reqParam.get("est_type"))
+                .est_value(reqParam.get("est_value"))
+                .build();
+
+        if ("date".equals(courseDTO.getEst_type())) {
+            courseDTO.setAccommodations_info(reqParam.get("accommodations"));
+        }
+
+        Set<String> tags = new HashSet<>();
+        for (String item : tagList) {
+            tags.add(item);
+        }
+
+        courseDTO.setTagSet(tags);
+
+        return courseDTO;
     }
 
     // Todo 해당 부분 수정하기
@@ -198,6 +209,10 @@ public class CourseService {
                 .est_value(reqParam.get("est_value"))
                 .build();
 
+        if ("date".equals(courseDTO.getEst_type())) {
+            courseDTO.setAccommodations_info(reqParam.get("accommodations"));
+        }
+
         Set<String> tags = new HashSet<>();
         for (String item : tagList) {
             tags.add(item);
@@ -208,13 +223,7 @@ public class CourseService {
         return courseDTO;
     }
 
-//    public PageResultDTO<CourseDTO, Course> getList(PageRequestDTO requestDTO) {
-//        return getList(requestDTO, SearchType.NONE,
-//                SortCriterion.VIEW, SortingOrder.DES);
-//    }
-
     public PageResultDTO<CourseDTO, Course> getList(PageRequestDTO requestDTO) {
-//        Pageable pageable = requestDTO.getPageable(Sort.by("viewCount").descending());
         boolean flagASC = false;
 
         Pageable pageable;
@@ -259,71 +268,69 @@ public class CourseService {
         }
 
         // Todo 추후 추가하기
-//        BooleanBuilder booleanBuilder = getSearch(requestDTO);
-        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        BooleanBuilder booleanBuilder = getSearch(requestDTO);
         Page<Course> result = repository.findAll(booleanBuilder, pageable);
-
-//        switch (requestDTO.getSearchType()){
-//            case USER:
-//                booleanBuilder =
-////                result = repository.findByAllUser_no(pageable);
-//                break;
-//            case TITLE:
-//                result = repository.findAll(pageable);
-//                break;
-//            case NONE:
-//            default:
-//                result = repository.findAll(pageable);
-//                break;
-//        }
 
         Function<Course, CourseDTO> fn = (entity -> entityToDto(entity));
 
         return new PageResultDTO<>(result, fn);
     }
 
-//    public BooleanBuilder getSearch(PageRequestDTO requestDTO) {
-//        Long userNo = requestDTO.getUserNo();
-//        Long locNo = requestDTO.getLocNo();
-//        String keyword = requestDTO.getKeyword();
-//        List<String> tagList = requestDTO.getTagList();
-//        BooleanBuilder conditionBuilder = new BooleanBuilder();
-//        QCourse qCourse = QCourse.Course;
-//
-//        switch (requestDTO.getSearchType()){
-//            case USER:
-//                conditionBuilder.and(qCourse.loc_no.eq(userNo));
-//                break;
-//            case USER_TAG:
-//                conditionBuilder.and(qCourse.loc_no.eq(userNo));
-//                for (String s : tagList) {
-//                    conditionBuilder.and(qCourse.tagSet.contains(s));
-//                }
-//                break;
-//            case TITLE:
-//                conditionBuilder.and(qCourse.loc_name.contains(keyword));
-//                break;
-//            case TITLE_TAG:
-//                conditionBuilder.and(qCourse.loc_name.contains(keyword));
-//                for (String s : tagList) {
-//                    conditionBuilder.and(qCourse.tagSet.contains(s));
-//                }
-//                break;
-//            case TAG:
-//                for (String s : tagList) {
-//                    conditionBuilder.and(qCourse.tagSet.contains(s));
-//                }
-//                break;
-//            case DISABLED:
-//                conditionBuilder.and(qCourse.is_deleted.eq(true));
-//                break;
-//            case NONE:
-//            default:
-//                return conditionBuilder.and(qCourse.is_deleted.ne(true));
-//        }
-//
-//        return conditionBuilder.and(qCourse.is_deleted.ne(true));
-//    }
+    public BooleanBuilder getSearch(PageRequestDTO requestDTO) {
+        Long userNo = requestDTO.getUserNo();
+        Long corNo = requestDTO.getLocNo();
+        String keyword = requestDTO.getKeyword();
+        List<String> tagList = requestDTO.getTagList();
+        BooleanBuilder conditionBuilder = new BooleanBuilder();
+        QCourse qCourse = QCourse.course;
+        boolean isContainDeletedCourse = false;
+
+        switch (requestDTO.getSearchType()){
+            case DISABLED_USER:
+                isContainDeletedCourse = true;
+            case USER:
+                conditionBuilder.and(qCourse.user_no.eq(userNo));
+                break;
+            case USER_TAG:
+                conditionBuilder.and(qCourse.user_no.eq(userNo));
+                for (String s : tagList) {
+                    conditionBuilder.and(qCourse.tagSet.contains(s));
+                }
+                break;
+            case DISABLED_TITLE:
+                isContainDeletedCourse = true;
+            case TITLE:
+                conditionBuilder.and(qCourse.cor_name.contains(keyword));
+                break;
+            case DISABLED_TITLE_TAG:
+                isContainDeletedCourse = true;
+            case TITLE_TAG:
+                conditionBuilder.and(qCourse.cor_name.contains(keyword));
+                for (String s : tagList) {
+                    conditionBuilder.and(qCourse.tagSet.contains(s));
+                }
+                break;
+            case DISABLED_TAG:
+                isContainDeletedCourse = true;
+            case TAG:
+                for (String s : tagList) {
+                    conditionBuilder.and(qCourse.tagSet.contains(s));
+                }
+                break;
+            case DISABLED:
+                isContainDeletedCourse = true;
+                break;
+            case NONE:
+            default:
+                return conditionBuilder.and(qCourse.is_deleted.ne(true));
+        }
+
+        if (isContainDeletedCourse) {
+            return conditionBuilder;
+        } else {
+            return conditionBuilder.and(qCourse.is_deleted.ne(true));
+        }
+    }
 
     public Course selectCor(Long corNo) {
         Optional<Course> result = repository.findById(corNo);
@@ -331,7 +338,7 @@ public class CourseService {
         return result.orElse(null);
     }
 
-    public CourseDTO selectLocDTO(Long corNo) {
+    public CourseDTO selectCorDTO(Long corNo) {
         Optional<Course> result = repository.findById(corNo);
 
         if (result.isPresent()) {
@@ -348,29 +355,30 @@ public class CourseService {
         return result.orElse(null);
     }
 
-    public CourseDTO selectLocDTO(String cor_uuid) {
+    public CourseDTO selectCorDTO(String cor_uuid) {
         Optional<Course> result = repository.findCorByUUID(cor_uuid);
 
         return result.isPresent() ? entityToDto(result.get()) : null;
     }
 
-    public void update(Course cor) {
-        repository.save(cor);
+    public Course update(Course cor) {
+        return repository.save(cor);
     }
 
-//    public void permaDelete(Course cor) {
-//        List<CourseImage> list = new ArrayList<CourseImage>(cor.getImgSet());
-//        // Todo 리뷰 항목도 지워지도록 리뷰 리포지토리 추가후 추가작업 진행하기
-////        Set<Comment> cmtSet = cor.getCmtSet();
-//
-//        for (CourseImage CourseImage : list) {
-//            CourseImage.setCor_no(null);
-//
-//            imgService.update(CourseImage);
-//
-//            imgService.permaDelete(CourseImage.getImg_uuid());
-//        }
-//
+    public void permaDelete(Course cor) {
+        List<CourseImage> list = new ArrayList<CourseImage>();
+        list = imgService.getAllImagesByCorNo(cor.getCor_no());
+        // Todo 리뷰 항목도 지워지도록 리뷰 리포지토리 추가후 추가작업 진행하기
+//        Set<Comment> cmtSet = cor.getCmtSet();
+
+        for (CourseImage CourseImage : list) {
+            CourseImage.setCor_no(null);
+
+            imgService.update(CourseImage);
+
+            imgService.permaDelete(CourseImage.getImg_uuid());
+        }
+
 //        for (Comment cmt : cmtSet) {
 //            revService.permaDelete(cmt);
 //        }
@@ -378,20 +386,24 @@ public class CourseService {
 //        cor.setImgSet(null);
 //
 //        update(cor);
-//
-//        repository.deleteByCor_uuid(cor.getCor_uuid());
-//    }
 
-//    public void delete(Long corNo) {
-//        Course cor = selectCor(corNo);
-//
-//        if (!cor.is_deleted()) {
-//            disableCourse(cor);
-//            for (CourseImage CourseImage : cor.getImgSet()) {
-//                imgService.delete(CourseImage.getImg_no());
-//            }
-//        }
-//    }
+        repository.deleteByCor_uuid(cor.getCor_uuid());
+    }
+
+    public void delete(Long corNo) {
+        Course cor = selectCor(corNo);
+
+        if (!cor.is_deleted()) {
+            disableCourse(cor);
+
+            List<CourseImage> list = new ArrayList<CourseImage>();
+            list = imgService.getLiveImagesByCorNo(cor.getCor_no());
+
+            for (CourseImage CourseImage : list) {
+                imgService.delete(CourseImage.getImg_no());
+            }
+        }
+    }
 
     public void delete(String uuid) {
         Course cor = selectCor(uuid);
@@ -457,47 +469,6 @@ public class CourseService {
         update(entity);
     }
 
-//    public Course edit(Map<String, String> reqParam, List<String> tagList, List<String> filePath) {
-//        List<CourseImage> imgList = new ArrayList<>();
-//        Course entity = selectCor(reqParam.get("loc_uuid"));
-//
-//        // 업데이트 된 태그 정보 삽입
-//        HashSet<String> tags = new HashSet<>(tagList);
-//        entity.setTagSet(tags);
-//
-//        CourseDTO dto = entityToDto(entity);
-////        boolean flag = false;
-//        // Todo 기존에 장소에 등록된 이미지가 업데이트 된 장소와 연결이 끊여졌을 때 어떻게 동작할 지
-//
-//        for (int i = 1; i < filePath.size(); i++) {
-//            // filePath.get(0)  ==  Parent Folder (URI)
-//            // filePath.get(i)  ==  fileNames
-////            if (dto.getImgList().size() > i) {
-////                for (int j = 0; j < dto.getImgList().size(); j++) {
-////                    if (dto.getImgList().get(j).getImg_uuid().equals(filePath.get(i))){
-////                        imgList.add(imgService.editImageEntityIndex(filePath.get(i), (long) (i - 1)));
-//////                        flag = true;
-////                        continue;
-////                    }
-////                }
-////            }
-//            log.info(filePath.get(i));
-//            // Todo 현재는 기존에 이미 등록되어 있던 이미지는 삭제하고, 새로 등록하도록 했음
-//            // 나중에는 기존에 이미  등록되어 있던 이미지를 삭제하지 않고, 업데이트해서 등록하도록 바꿀것
-//            imgService.permaDelete(filePath.get(i));
-//            imgList.add(imgService.getImageEntity(reqParam.get("user_no"), filePath.get(0), filePath.get(i), entity.getCor_no(), i-1));
-//        }
-//
-//        entity.setImgSet(new HashSet<>(imgList));
-//        entity.setThumbnail(imgList.get(0).getImg_url());
-//
-//        repository.save(entity);
-//
-////        log.info("entity : " + entity);
-//
-//        return entity;
-//    }
-
     public List<Course> findCorByUserNo(Long userNo) {
         Optional<List<Course>> CourseList = repository.findByAllUser_no(userNo);
 
@@ -518,5 +489,35 @@ public class CourseService {
         update(loc);
 
         return selectCor(loc.getCor_no());
+    }
+
+    public List<Course> courseNameSearch(String cor_name){
+        return courseNameSearch(cor_name, MatchOption.CONTAIN);
+    }
+
+    // TODO 안쓰는거 지워야할 거
+    public List<Course> courseNameSearch(String cor_name, MatchOption matchOption) {
+        StringBuilder sb = new StringBuilder();
+        switch (matchOption) {
+            case START_WITH:
+                sb.append(cor_name);
+                sb.insert(0, "%");
+                break;
+            case END_WITH:
+                sb.append(cor_name);
+                sb.append("%");
+                break;
+            case CONTAIN:
+                sb.append(cor_name);
+                sb.insert(0, "%");
+                sb.append("%");
+                break;
+            default:
+                return null;
+        }
+
+        Optional<List<Course>> lists = repository.findByCor_nameContaining(sb.toString());
+
+        return lists.orElse(null);
     }
 }

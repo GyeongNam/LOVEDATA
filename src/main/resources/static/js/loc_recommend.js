@@ -32,6 +32,58 @@ function changeSort(sortType) {
     }
 }
 
+function onClickSearch_Course() {
+    let form;
+    form = document.createElement("form");
+    form.method = "get";
+    form.action="/service/cor_recommend/search"
+
+    let keyword = document.getElementById("keyword").value;
+
+    // console.log("keyword : " + keyword);
+    // console.log("sortOrder : " + sortOrder);
+    // console.log("tags : " + tagList);
+
+    let input = [];
+    for (let i = 0; i < 4; i++) {
+        input[i] = document.createElement("input");
+        $(input[i]).attr("type", "hidden");
+
+        if (i === 0) {
+            $(input[0]).attr("name", "keyword");
+            $(input[0]).attr("value", keyword);
+        }
+
+        if (i === 1) {
+            $(input[1]).attr("name", "sortOrder");
+            $(input[1]).attr("value", sortOrder);
+        }
+
+        if (i === 2) {
+            $(input[2]).attr("name", "tags");
+            $(input[2]).attr("value", tagList);
+        }
+
+        if (i === 3) {
+            $(input[3]).attr("name", "searchType");
+            if (keyword !== "") {
+                if (tagList.length !== 0) {
+                    $(input[3]).attr("value", "TITLE_TAG");
+                } else {
+                    $(input[3]).attr("value", "TITLE");
+                }
+            } else {
+                $(input[3]).attr("value", "TAG");
+            }
+        }
+
+        form.appendChild(input[i]);
+    }
+
+    document.body.appendChild(form);
+    form.submit();
+}
+
 function onClickSearch() {
     let form;
     form = document.createElement("form");

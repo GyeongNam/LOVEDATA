@@ -23,77 +23,136 @@
 <%@ include file="../layout/header.jsp" %>
 <body>
 
-<div class="container col-lg-6 ">
-    <div class="top-100" style="padding:50px;">
-    </div>
-    <h2> 질문:${qu.qu_no}</h2>
-    <div class="card" style="padding:20px; border-radius: 15px; margin: 20px auto;">
-        <div class="form-group" >
-            <label>제목</label>
-            <div class="form-control">
-                <div class="col-sm-12">
-                    ${qu.qu_title}
-                </div>
-            </div>
-        </div>
-        <div class="form-group" >
-            <label>작성 시간</label>
-            <div class="form-control">
-                <div class="col-sm-12">
-                    ${qu.qu_date}
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label>작성자</label>
-            <div class="form-control">
-                <div class="col-sm-12">
-                    ${qu.qu_user}
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label>내용</label>
-            <div class="form-control">
-                <div class="col-sm-12">
-                    ${qu.qu_text}
-                </div>
-                <c:forEach var="img" items="${qu_img}">
-                    <img class="bd-placeholder-img card-img" width="100%"
-                         height="400"
-                         src="/image/upload/${img.qu_img_url}"
-                         id="imgDisplay"
-                         name="imgDisplay"
-                         preserveAspectRatio="xMidYMid slice" focusable="false">
-                    <div style="padding: 10px"></div>
-                </c:forEach>
-            </div>
-        </div>
-    </div>
-    <c:choose>
-        <c:when test="${qu.qu_answer eq true}">
-            <h2> 답변 </h2>
-            <div class="card" style="padding:20px; border-radius: 15px; margin: 20px auto;">
-                <div class="form-group">
-                    <label>작성자</label>
-                    <div class="form-control">
-                        <div class="col-sm-12">
-                                ${qu.qu_answer_manager}
-                        </div>
+<div class="container-fluid d-flex" style="padding-top: 100px">
+    <div class="col-2" id="sidebar">
+        <ul class="nav nav-pills flex-column col-2 position-fixed" style="top: 40%">
+            <div class="accordion text-center" id="loc">
+                <hr>
+                <div class="card">
+                    <div class="card-header" id="headingLoc">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link btn-block" type="button" data-toggle="collapse"
+                                    data-target="#loc_collapse" aria-expanded="true" aria-controls="collapseOne"
+                                    style="text-decoration: none; color: #FF6699; font-weight: bold">
+                                고객센터
+                            </button>
+                        </h2>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label>답변내용</label>
-                    <div class="form-control">
-                        <div class="col-sm-12">
-                                ${qu.qu_answer_text}
+                    <div id="loc_collapse" class="collapse show" aria-labelledby="headingLoc" data-parent="#loc">
+                        <div class="card-body center-pill">
+                            <p><a href="/ServiceCenter/Notice/1" class="loc_highlight-not-selected-text-menu ">- 공지 사항</a></p>
+                            <p><a href="/ServiceCenter/Questions/1" class="loc_highlight-selected-text-menu">- 문의 사항</a></p>
+                            <p><a href="/ServiceCenter/Policy" class="loc_highlight-not-selected-text-menu">- LOVEDATA 정책</a></p>
+                            <p><a href="#" class="loc_highlight-not-selected-text-menu">- 회원 탈퇴</a></p>
                         </div>
                     </div>
                 </div>
             </div>
-        </c:when>
-    </c:choose>
-
+        </ul>
+    </div>
+    <div class="container col-lg-6 ">
+        <h2> 질문:${qu.qu_no}</h2>
+        <div class="card" style="padding:20px; border-radius: 15px; margin: 20px auto;">
+            <div class="form-group" >
+                <label>제목</label>
+                <sec:authorize access="isAuthenticated()">
+                    <c:set var="name"><sec:authentication property="principal.user_nic"/></c:set>
+                    <c:if test="${qu.qu_user eq name}">
+                        <c:if test="${qu.qu_answer eq false}">
+                            <button onclick="onclick=location.href='/ServiceCenter/Questions_Update/'+${qu.qu_no}">수정하기</button>
+                            <button onclick="onclick=location.href='/ServiceCenter/Questions_Delete/'+${qu.qu_no}">삭제하기</button>
+                        </c:if>
+                    </c:if>
+                </sec:authorize>
+                <div class="form-control">
+                    <div class="col-sm-12">
+                        ${qu.qu_title}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" >
+                <label>작성 시간</label>
+                <div class="form-control">
+                    <div class="col-sm-12">
+                        ${qu.qu_date}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>작성자</label>
+                <div class="form-control">
+                    <div class="col-sm-12">
+                        ${qu.qu_user}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>내용</label>
+                <div class="form-control">
+                    <div class="col-sm-12">
+                        ${qu.qu_text}
+                    </div>
+                    <c:forEach var="img" items="${qu_img}">
+                        <img class="bd-placeholder-img card-img" width="100%"
+                             height="400"
+                             src="/image/upload/${img.qu_img_url}"
+                             id="imgDisplay"
+                             name="imgDisplay"
+                             preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <div style="padding: 10px"></div>
+                    </c:forEach>
+                </div>
+            </div>
+        </div>
+        <c:choose>
+            <c:when test="${qu.qu_answer eq true}">
+                <h2> 답변 </h2>
+                <div class="card" style="padding:20px; border-radius: 15px; margin: 20px auto;">
+                    <div class="form-group">
+                        <label>작성자</label>
+                        <div class="form-control">
+                            <div class="col-sm-12">
+                                    ${qu.qu_answer_manager}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>답변내용</label>
+                        <div class="form-control">
+                            <div class="col-sm-12">
+                                    ${qu.qu_answer_text}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </c:when>
+        </c:choose>
+        <sec:authorize access="isAuthenticated()">
+            <sec:authorize access="hasAnyRole('MANAGER')">
+                <c:choose>
+                <c:when test="${qu.qu_answer eq false}">
+                    <form action="/ServiceCenter/Questions_answer/${qu.qu_no}" method="post">
+                        <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
+                    <h2> 답변 </h2>
+                    <div class="card" style="padding:20px; border-radius: 15px; margin: 20px auto;">
+                        <div class="form-group">
+                            <label>작성자</label>
+                            <input class="form-control" type="text" id="title" name="title" value="<sec:authentication property="principal.user_nic"/>" readonly  >
+                        </div>
+                        <div class="form-group">
+                            <label>답변내용</label>
+                            <textarea class="form-control" rows="10" maxlength="150" name="info" id="info" required></textarea>
+                        </div>
+                        <div class="btn_wrap text-center">
+                            <button type="submit" id="post_add" name="post_add">답변하기</button>
+                        </div>
+                    </div>
+                    </form>
+                </c:when>
+                </c:choose>
+            </sec:authorize>
+        </sec:authorize>
+    </div>
 </div>
 </body>
 </html>

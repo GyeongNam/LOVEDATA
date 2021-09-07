@@ -16,7 +16,7 @@ public interface CourseRepository extends JpaRepository<Course, Long>
     List<Course> findAllByName(@Param("name") String name);
 
     @Query(value = "SELECT * from Course c WHERE  c.cor_no = :cor_no", nativeQuery = true)
-    Optional<Course> findLocByCor_no(@Param("cor_no") Long cor_no);
+    Optional<Course> findCorByCor_no(@Param("cor_no") Long cor_no);
 
     @Query(value = "SELECT * from Course c WHERE  c.cor_uuid = :cor_uuid", nativeQuery = true)
     Optional<Course> findCorByUUID(@Param("cor_uuid") String cor_uuid);

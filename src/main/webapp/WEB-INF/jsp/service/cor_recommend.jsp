@@ -38,15 +38,15 @@
 							<button class="btn btn-link btn-block loc_highlight-selected-nav-menu" type="button"
 									data-toggle="collapse"
 									data-target="#loc_collapse" aria-expanded="true" aria-controls="collapseOne">
-								장소
+								코스
 							</button>
 						</h2>
 					</div>
 					<div id="loc_collapse" class="collapse show" aria-labelledby="headingLoc" data-parent="#loc">
 						<div class="card-body center-pill">
-							<p><a href="/service/cor_recommend" class="loc_highlight-selected-text-menu">- 추천 코스</a></p>
-							<p><a href="/service/cor_registration" class="loc_highlight-not-selected-text-menu">- 코스 등록</a></p>
-							<p><a href="" class="loc_highlight-not-selected-text-menu">- 코스 편집</a></p>
+							<p><a href="/service/cor_recommend" class="highlight-selected-text-menu">- 추천 코스</a></p>
+							<p><a href="/service/cor_registration" class="highlight-not-selected-text-menu">- 코스 등록</a></p>
+							<p><a href="" class="highlight-not-selected-text-menu">- 코스 편집</a></p>
 						</div>
 					</div>
 				</div>
@@ -80,8 +80,8 @@
 					</ul>
 					<%--					@Todo 인풋 값이 ""일 경우 버튼 활성화 x--%>
 <%--					<form action="/service/loc_recommend/search" method="get">--%>
-						<input type="text" placeholder="장소 검색" id="keyword" name="keyword"/>
-						<button class="btn btn-primary mx-2" type="button" id="searchBtn" onclick="onClickSearch()">Search</button>
+						<input type="text" placeholder="코스 검색" id="keyword" name="keyword"/>
+						<button class="btn btn-primary mx-2" type="button" id="searchBtn" onclick="onClickSearch_Course()">Search</button>
 <%--					</form>--%>
 				</div>
 			</nav>
@@ -136,10 +136,10 @@
 									<c:set var="cor_thumbnail" value="${result.dtoList.get(i).thumbnail}"></c:set>
 									<c:choose>
 										<c:when test="${cor_thumbnail ne ''}">
-									<img class="bd-placeholder-img card-img-top" width="100%" height="225"
-										 alt="${result.dtoList.get(i).cor_name}"
-										 src="${result.dtoList.get(i).thumbnail}"
-										 preserveAspectRatio="xMidYMid slice" focusable="false">
+											<img class="bd-placeholder-img card-img-top" width="100%" height="225"
+												 alt="${result.dtoList.get(i).cor_name}"
+												 src="${result.dtoList.get(i).thumbnail}"
+												 preserveAspectRatio="xMidYMid slice" focusable="false">
 										</c:when>
 										<c:otherwise>
 											<svg class="bd-placeholder-img card-img-top" width="100%" height="225"
@@ -153,6 +153,16 @@
 											</svg>
 										</c:otherwise>
 									</c:choose>
+									<c:choose>
+										<c:when test="${result.dtoList.get(i)._deleted eq true}">
+											<div class="d-flex justify-content-end card-img-overlay" style="outline: dotted 3px red">
+												<img class="bd-placeholder-img" width="30" height="30"
+													 alt="삭제된 장소 아이콘"
+													 src="/image/icon/trash.png"
+													 preserveAspectRatio="xMidYMid slice" focusable="false">
+											</div>
+										</c:when>
+									</c:choose>
 								</a>
 
 								<div class="card-body p-2">
@@ -164,11 +174,9 @@
 										<div class="d-flex align-items-center">
 											<img src="/image/icon/view.png" class="loc_icon" alt="조회수">
 											<span class="align-middle">${result.dtoList.get(i).viewCount}</span>
-											<img src="/image/icon/comment.png" class="loc_icon" alt="댓글">
-												<%--									Todo리뷰 항목 Course Entity에 추가하기--%>
-<%--											<span class="align-middle">${result.dtoList.get(i).cmtList.size()}</span>--%>
+											<img src="/image/icon/comment.png" class="loc_icon" alt="리뷰">
+											<span class="align-middle">${liveRevCountList.get(i)}</span>
 											<sec:authorize access="isAuthenticated()">
-<%--												Todo 코스 찜하기 리스트 컨트롤러 수정후 jsp도 수정하기--%>
 												<c:choose>
 													<c:when test="${isLikedList.get(i) eq true}">
 														<img src="/image/icon/like/love_color.png" class="loc_icon" alt="찜하기"

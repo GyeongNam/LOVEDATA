@@ -57,7 +57,7 @@ public class LocationTest {
         for (int i = 0; i < 3; i++) {
             img = LocationImage.builder()
                     .location(loc)
-                    .img_uuid("Jungbu_Chungnam_" + i + ".jpg")
+                    .img_uuid("Jungbu-Chungnam-" + i + ".jpg")
                     .user_no(user_no)
                     .img_url("/image/init/Jungbu-Chungnam-" + i + ".jpg")
                     .build();
@@ -163,26 +163,216 @@ public class LocationTest {
 
         locationRepository.save(loc);
 
-        Optional<Location> temp = locationRepository.findLocByUUID(loc.getLoc_uuid());
+        loc = Location.builder()
+                .loc_name("광화문")
+                .user_no(user_no)
+                .roadAddr("서울 종로구 효자로 12 국립고궁박물관")
+                .addrDetail("국립고궁박물관")
+                .siDo("서울특별시")
+                .siGunGu("종로구")
+                .info("경복궁의 동서남북을 둘러싸고 있는 4개의 대문 중 남쪽에 위치한 정문(正門)이다." +
+                        " 1865년 고종 중건 당시의 모습과 원래 축에서 틀어졌던 각도를 원래 위치로 돌려 2010년 8월 15일 광화문 복원공사를 마친 바 있다.")
+                .loc_uuid(UUID.randomUUID().toString())
+                .tel("02-3700-3901")
+                .zipNo("03045")
+                .build();
 
-        if(temp.isPresent()){
-            Location item = temp.get();
+        loc.addLocTag(String.valueOf(LocationTag.체험));
+        loc.addLocTag(String.valueOf(LocationTag.야외));
+        loc.addLocTag(String.valueOf(LocationTag.박물관));
+        loc.addLocTag(String.valueOf(LocationTag.한옥));
 
-            img = null;
+        locationRepository.save(loc);
+
+        img = null;
+        for (int i = 0; i < 4; i++) {
             img = LocationImage.builder()
-                    .location(item)
-                    .img_uuid("Seoul-Forest-03.jpg")
+                    .location(loc)
+                    .img_uuid("Gwanghwamun-" + i + ".jpg")
                     .user_no(user_no)
-                    .img_url("/image/init/Seoul-Forest-03.jpg")
+                    .img_url("/image/init/Gwanghwamun-" + i + ".jpg")
                     .build();
-            img.setLocation(item);
+            img.setLocation(loc);
 
             locationImageRepository.save(img);
 
-            item.addImg(img);
+            loc.addImg(img);
 
-            locService.update(item);
+            if ("".equals(loc.getThumbnail())) {
+                loc.setThumbnail(img.getImg_url());
+            }
         }
+
+        locationRepository.save(loc);
+
+        loc = Location.builder()
+                .loc_name("하늘공원")
+                .user_no(user_no)
+                .roadAddr("서울 마포구 하늘공원로 95")
+                .addrDetail("하늘공원로")
+                .siDo("서울특별시")
+                .siGunGu("마포구")
+                .info("서울특별시 마포구 상암동에 있는 생태환경공원.")
+                .loc_uuid(UUID.randomUUID().toString())
+                .tel("02-300-5501")
+                .zipNo("03900")
+                .build();
+
+        loc.addLocTag(String.valueOf(LocationTag.체험));
+        loc.addLocTag(String.valueOf(LocationTag.야외));
+        loc.addLocTag(String.valueOf(LocationTag.숲));
+        loc.addLocTag(String.valueOf(LocationTag.기념일));
+        loc.addLocTag(String.valueOf(LocationTag.공원));
+        loc.addLocTag(String.valueOf(LocationTag.가로수길));
+
+        locationRepository.save(loc);
+
+        img = null;
+        for (int i = 0; i < 4; i++) {
+            img = LocationImage.builder()
+                    .location(loc)
+                    .img_uuid("SkyPark-0" + i + ".jpg")
+                    .user_no(user_no)
+                    .img_url("/image/init/SkyPark-0" + i + ".jpg")
+                    .build();
+            img.setLocation(loc);
+
+            locationImageRepository.save(img);
+
+            loc.addImg(img);
+
+            if ("".equals(loc.getThumbnail())) {
+                loc.setThumbnail(img.getImg_url());
+            }
+        }
+
+        locationRepository.save(loc);
+
+        loc = Location.builder()
+                .loc_name("전쟁기념관")
+                .user_no(user_no)
+                .roadAddr("서울 용산구 이태원로 29 전쟁기념관")
+                .addrDetail("전쟁기념관")
+                .siDo("서울특별시")
+                .siGunGu("용산구")
+                .info("서울의 중심, 용산에 위치한 전쟁기념관은 전쟁을 단일 주제로, 5천년 민족사를 조망한 대한민국 유일의 전쟁사 종합박물관입니다.")
+                .loc_uuid(UUID.randomUUID().toString())
+                .tel("02-709-3114")
+                .zipNo("04391")
+                .build();
+
+        loc.addLocTag(String.valueOf(LocationTag.체험));
+        loc.addLocTag(String.valueOf(LocationTag.박물관));
+        loc.addLocTag(String.valueOf(LocationTag.실내));
+
+        locationRepository.save(loc);
+
+        img = null;
+        for (int i = 0; i < 4; i++) {
+            img = LocationImage.builder()
+                    .location(loc)
+                    .img_uuid("WarMemorial-0" + i + ".jpg")
+                    .user_no(user_no)
+                    .img_url("/image/init/WarMemorial-0" + i + ".jpg")
+                    .build();
+            img.setLocation(loc);
+
+            locationImageRepository.save(img);
+
+            loc.addImg(img);
+
+            if ("".equals(loc.getThumbnail())) {
+                loc.setThumbnail(img.getImg_url());
+            }
+        }
+
+        locationRepository.save(loc);
+
+        loc = Location.builder()
+                .loc_name("남산타워")
+                .user_no(user_no)
+                .roadAddr("서울 용산구 남산공원길 105")
+                .addrDetail("남산공원길 105")
+                .siDo("서울특별시")
+                .siGunGu("용산구")
+                .info("서울의 중심에서 만나는 특별한 순간! NAMSAN SEOUL TOWER. 서울을 대표하는 복합문화공간 남산서울타워에서 잊지 못할 순간을 경험하세요.")
+                .loc_uuid(UUID.randomUUID().toString())
+                .tel("02-756-2486")
+                .zipNo("04340")
+                .build();
+
+        loc.addLocTag(String.valueOf(LocationTag.체험));
+        loc.addLocTag(String.valueOf(LocationTag.기념일));
+        loc.addLocTag(String.valueOf(LocationTag.실내));
+        loc.addLocTag(String.valueOf(LocationTag.산));
+        loc.addLocTag(String.valueOf(LocationTag.야경));
+        loc.addLocTag(String.valueOf(LocationTag.전망대));
+
+        locationRepository.save(loc);
+
+        img = null;
+        for (int i = 0; i < 4; i++) {
+            img = LocationImage.builder()
+                    .location(loc)
+                    .img_uuid("Namsan-Ntower-0" + i + ".jpg")
+                    .user_no(user_no)
+                    .img_url("/image/init/Namsan-Ntower-0" + i + ".jpg")
+                    .build();
+            img.setLocation(loc);
+
+            locationImageRepository.save(img);
+
+            loc.addImg(img);
+
+            if ("".equals(loc.getThumbnail())) {
+                loc.setThumbnail(img.getImg_url());
+            }
+        }
+
+        locationRepository.save(loc);
+
+        loc = Location.builder()
+                .loc_name("독립기념관")
+                .user_no(user_no)
+                .roadAddr("충남 천안시 동남구 목천읍 독립기념관로 1")
+                .addrDetail("독립기념관로 1")
+                .siDo("충청남도")
+                .siGunGu("천안시")
+                .info("독립기념관은 정신적 힘을 뿜어내고 생산하는 곳입니다. " +
+                        "식민지지배라는 수난과 시련을 이겨낸 민족의 저력을 확인하는 곳," +
+                        " 불가능한 것을 가능한 것으로 만들어낸 독립정신을 재생산하는 곳, 이것이 독립기념관입니다.")
+                .loc_uuid(UUID.randomUUID().toString())
+                .tel("041-560-0114")
+                .zipNo("31232")
+                .build();
+
+        loc.addLocTag(String.valueOf(LocationTag.체험));
+        loc.addLocTag(String.valueOf(LocationTag.박물관));
+        loc.addLocTag(String.valueOf(LocationTag.실내));
+        loc.addLocTag(String.valueOf(LocationTag.전시));
+
+        locationRepository.save(loc);
+
+        img = null;
+        for (int i = 0; i < 4; i++) {
+            img = LocationImage.builder()
+                    .location(loc)
+                    .img_uuid("IndependenceHallofKorea-0" + i + ".jpg")
+                    .user_no(user_no)
+                    .img_url("/image/init/IndependenceHallofKorea-0" + i + ".jpg")
+                    .build();
+            img.setLocation(loc);
+
+            locationImageRepository.save(img);
+
+            loc.addImg(img);
+
+            if ("".equals(loc.getThumbnail())) {
+                loc.setThumbnail(img.getImg_url());
+            }
+        }
+
+        locationRepository.save(loc);
 
         System.out.println("Location 저장 완료");
     }
@@ -271,7 +461,7 @@ public class LocationTest {
 
     @Test
     public void testLocName_Read() {
-        List<Location> list = locationRepository.findAllByName("Location_0001");
+        List<Location> list = locationRepository.findAllByName("중부대학교");
 
         for (Location location : list) {
             System.out.println("location = " + location);

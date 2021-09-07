@@ -16,6 +16,8 @@ import com.project.love_data.util.EmailParser;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -27,6 +29,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.persistence.NonUniqueResultException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.*;
@@ -47,7 +50,7 @@ public class OAuthController {
     public String kakaoLogin(
             HttpServletRequest request,
             HttpSessionCsrfTokenRepository csrfTokenRepository
-    ){
+    ) {
         decodedURL = null;
         acessCodeRequest = new AcessCodeRequestKakao();
 
@@ -69,7 +72,7 @@ public class OAuthController {
             RedirectAttributes redirectAttributes,
             HttpSession session,
             Model model
-    ){
+    ) {
         token = new KakaoAuthToken();
         decodedURL = "/";
         tokenRequest = new TokenRequestKakao();
@@ -94,7 +97,7 @@ public class OAuthController {
             kakaoUserInfo = infoKakao.excute(request, token);
             // https://cusonar.tistory.com/17
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                    kakaoUserInfo.getEmail(), kakaoUserInfo.getId()+"!@#$");
+                    kakaoUserInfo.getEmail(), kakaoUserInfo.getId() + "!@#$");
             Authentication authentication = authenticationManager.authenticate(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
@@ -106,7 +109,7 @@ public class OAuthController {
             log.info("UserInfo Not in the DB");
             log.info("Redirect to signUp page");
 
-            
+
             email = new EmailParser().emailParser(kakaoUserInfo.getEmail());
 
             if (!email.isEmpty()) {
@@ -115,7 +118,7 @@ public class OAuthController {
             }
 
             if (kakaoUserInfo.getId() != null) {
-                redirectAttributes.addFlashAttribute("pwd", kakaoUserInfo.getId()+"!@#$");
+                redirectAttributes.addFlashAttribute("pwd", kakaoUserInfo.getId() + "!@#$");
             }
 
             if (kakaoUserInfo.getNickname() != null) {
@@ -130,14 +133,14 @@ public class OAuthController {
 
         log.info("Kakao Login Successful");
 
-        return "redirect:"+decodedURL;
+        return "redirect:" + decodedURL;
     }
 
     @GetMapping(value = "/login_naver")
     public String naverLogin(
             HttpServletRequest request,
             HttpSessionCsrfTokenRepository csrfTokenRepository
-    ){
+    ) {
         decodedURL = null;
         acessCodeRequest = new AcessCodeRequestNaver();
 
@@ -159,7 +162,7 @@ public class OAuthController {
             HttpServletRequest request,
             HttpSession session,
             RedirectAttributes redirectAttributes
-    ){
+    ) {
         token = new NaverAuthToken();
         TokenRequestNaver tokenRequest = new TokenRequestNaver();
         RequestUserInfoNaver infoNaver = new RequestUserInfoNaver();
@@ -189,7 +192,11 @@ public class OAuthController {
             session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
                     SecurityContextHolder.getContext());
             AuthUserModel authUserModel = (AuthUserModel) userDetailsService.loadUserByUsername(naverUserInfo.getEmail());
-        } catch (AuthenticationException e) {
+        } catch (NonUniqueResultException e) {
+            log.warn("Non Unique User Result Find");
+            log.warn("Please Check DB");
+            log.warn(e.getStackTrace());
+        } catch (InternalAuthenticationServiceException e) {
             log.info(e.getMessage());
 
             log.info("UserInfo Not in the DB");
@@ -214,6 +221,11 @@ public class OAuthController {
             redirectAttributes.addFlashAttribute("social_info", "naver");
 
             return "redirect:/signup";
+        } catch (AuthenticationException e) {
+            log.warn(e.getMessage());
+            log.warn(e.getStackTrace());
+
+            return "redirect:/";
         }
 
         return "redirect:/";
@@ -223,18 +235,18 @@ public class OAuthController {
     public String kakaoLogout(
             HttpServletRequest request,
             HttpSessionCsrfTokenRepository csrfTokenRepository
-    ){
+    ) {
         LogoutUser logoutUser = new LogoutUserKakao();
         LogoutProcess logoutProcess = new LogoutProcessKakao();
         decodedURL = null;
         String csrf = null;
 
-        decodedURL =logoutUser.execute(request, csrfTokenRepository);
+        decodedURL = logoutUser.execute(request, csrfTokenRepository);
         logoutProcess.execute(decodedURL);
 
         return "redirect:/logout";
     }
-    
+
     // @Todo 네이버 로그아웃도 만들기
     // @Todo 카카오, 네이버 연결끊기 생각해보기
     // 현재는 도메인이 https가 아니라서 안됨

@@ -1,14 +1,12 @@
 package com.project.love_data.businessLogic.service;
 
-import com.project.love_data.dto.LocationDTO;
-import com.project.love_data.dto.PageRequestDTO;
-import com.project.love_data.dto.PageResultDTO;
-import com.project.love_data.dto.UserDTO;
+import com.project.love_data.dto.*;
 import com.project.love_data.model.resource.LocationImage;
 import com.project.love_data.model.service.Comment;
 import com.project.love_data.model.service.Location;
 import com.project.love_data.model.service.QLocation;
 import com.project.love_data.model.user.User;
+import com.project.love_data.repository.CommentRepository;
 import com.project.love_data.repository.LocationImageRepository;
 import com.project.love_data.repository.LocationRepository;
 import com.querydsl.core.BooleanBuilder;
@@ -31,17 +29,21 @@ public class LocationService {
     private final LocationImageRepository imgRepository;
     private final LocationImageService imgService;
     private final CommentService cmtService;
-
+    private final CommentRepository cmtRepository;
 
     public Location register(Map<String, String> reqParam, List<String> tagList, List<String> filePath) {
         LocationDTO dto = getLocationDto(reqParam, tagList);
         List<LocationImage> imgList = new ArrayList<>();
         Location entity = dtoToEntity(dto);
 
-        for (int i = 1; i < filePath.size(); i++) {
-            // filePath.get(0)  ==  Parent Folder (URI)
-            // filePath.get(i)  ==  fileNames
-            imgList.add(imgService.getImageEntity(reqParam.get("user_no"), filePath.get(0), filePath.get(i), entity, i-1));
+        repository.save(entity);
+
+        for (int i = 0; i < filePath.size(); i+=2) {
+            // filePath.get(i)  ==  Parent Folder (URI)
+            // filePath.get(i+1)  ==  fileNames
+            LocationImage locImage = imgService.getImageEntity(reqParam.get("user_no"), filePath.get(i), filePath.get(i+1), entity, i/2);
+            LocationImage imgEntity = imgService.update(locImage);
+            imgList.add(imgEntity);
         }
 
         entity.setImgSet(new HashSet<>(imgList));
@@ -161,8 +163,15 @@ public class LocationService {
         // cmd_idx 기준 정렬
         List<Comment> tempCmtList = new ArrayList<>(entity.getCmtSet());
         List<Comment> cmtList = new ArrayList<>();
+        Long cmtMaxCounter = cmtRepository.findMaxIdxByLoc_no(entity.getLoc_no());
 
-        for (int i = 0; i < tempCmtList.size(); i++) {
+        if (cmtMaxCounter == null) {
+            cmtMaxCounter = 0L;
+        }
+        int maxCmtIndex = Math.toIntExact(cmtMaxCounter);
+        int liveCmtCount = 0;
+
+        for (int i = 0; i <= maxCmtIndex; i++) {
             for (int j = 0; j < tempCmtList.size(); j++) {
                 if (tempCmtList.get(j).getCmtIdx() == i) {
                     cmtList.add(tempCmtList.get(j));
@@ -171,8 +180,15 @@ public class LocationService {
             }
         }
 
+        for (Comment comment : cmtList) {
+            if (!comment.is_deleted()) {
+                liveCmtCount++;
+            }
+        }
+
         dto.setImgList(imgList);
         dto.setCmtList(cmtList);
+        dto.setLiveCmtCount(liveCmtCount);
 
         return dto;
     }
@@ -276,10 +292,13 @@ public class LocationService {
         List<String> tagList = requestDTO.getTagList();
         BooleanBuilder conditionBuilder = new BooleanBuilder();
         QLocation qLocation = QLocation.location;
+        boolean isContainDeletedLocation = false;
 
         switch (requestDTO.getSearchType()){
+            case DISABLED_USER:
+                isContainDeletedLocation = true;
             case USER:
-                conditionBuilder.and(qLocation.loc_no.eq(userNo));
+                conditionBuilder.and(qLocation.user_no.eq(userNo));
                 break;
             case USER_TAG:
                 conditionBuilder.and(qLocation.loc_no.eq(userNo));
@@ -287,29 +306,40 @@ public class LocationService {
                     conditionBuilder.and(qLocation.tagSet.contains(s));
                 }
                 break;
+            case DISABLED_TITLE:
+                isContainDeletedLocation = true;
             case TITLE:
                 conditionBuilder.and(qLocation.loc_name.contains(keyword));
                 break;
+            case DISABLED_TITLE_TAG:
+                isContainDeletedLocation = true;
             case TITLE_TAG:
                 conditionBuilder.and(qLocation.loc_name.contains(keyword));
                 for (String s : tagList) {
                     conditionBuilder.and(qLocation.tagSet.contains(s));
                 }
                 break;
+            case DISABLED_TAG:
+               isContainDeletedLocation = true;
             case TAG:
                 for (String s : tagList) {
                     conditionBuilder.and(qLocation.tagSet.contains(s));
                 }
                 break;
             case DISABLED:
-                conditionBuilder.and(qLocation.is_deleted.eq(true));
+                isContainDeletedLocation = true;
                 break;
-            case NONE:
-            default:
-                return conditionBuilder.and(qLocation.is_deleted.ne(true));
         }
 
-        return conditionBuilder.and(qLocation.is_deleted.ne(true));
+        if (isContainDeletedLocation) {
+            return conditionBuilder;
+        } else {
+            return conditionBuilder.and(qLocation.is_deleted.ne(true));
+        }
+    }
+
+    public List<Location> locationNameSearch(String loc_name){
+        return locationNameSearch(loc_name, MatchOption.CONTAIN);
     }
 
     // TODO 안쓰는거 지워야할 거
@@ -355,6 +385,18 @@ public class LocationService {
         }
     }
 
+    public Location selectLiveLoc(Long loc_no) {
+        Optional<Location> result = repository.findLiveLocByLoc_no(loc_no);
+
+        return result.isPresent() ? result.get() : null;
+    }
+
+    public Location selectLiveLoc(String loc_uuid) {
+        Optional<Location> result = repository.findLiveLocByUUID(loc_uuid);
+
+        return result.isPresent() ? result.get() : null;
+    }
+
     public Location selectLoc(String loc_uuid) {
         Optional<Location> result = repository.findLocByUUID(loc_uuid);
 
@@ -363,6 +405,18 @@ public class LocationService {
 
     public LocationDTO selectLocDTO(String loc_uuid) {
         Optional<Location> result = repository.findLocByUUID(loc_uuid);
+
+        return result.isPresent() ? entityToDto(result.get()) : null;
+    }
+
+    public LocationDTO selectLiveLocDTO(String loc_uuid) {
+        Optional<Location> result = repository.findLiveLocByUUID(loc_uuid);
+
+        return result.isPresent() ? entityToDto(result.get()) : null;
+    }
+
+    public LocationDTO selectLiveLocDTO(Long loc_no) {
+        Optional<Location> result = repository.findLiveLocByLoc_no(loc_no);
 
         return result.isPresent() ? entityToDto(result.get()) : null;
     }
@@ -417,7 +471,11 @@ public class LocationService {
         Location loc = selectLoc(locNo);
 
         if (loc.is_deleted()){
-            enableLocation(loc);
+            loc = enableLocation(loc);
+            List<LocationImage> locImageList = imgService.getLastDeletedImageList(locNo);
+            for (LocationImage image : locImageList) {
+                imgService.rollback(image.getImg_no());
+            }
         }
     }
 
@@ -425,7 +483,11 @@ public class LocationService {
         Location loc = selectLoc(uuid);
 
         if (loc.is_deleted()){
-            enableLocation(loc);
+            loc = enableLocation(loc);
+            List<LocationImage> locImageList = imgService.getLastDeletedImageList(imgService.getFirstIndexOfLastDeletedLocationImage(loc.getLoc_no()));
+            for (LocationImage image : locImageList) {
+                imgService.rollback(image.getImg_no());
+            }
         }
     }
 
@@ -483,7 +545,7 @@ public class LocationService {
 //        boolean flag = false;
         // Todo 기존에 장소에 등록된 이미지가 업데이트 된 장소와 연결이 끊여졌을 때 어떻게 동작할 지
 
-        for (int i = 1; i < filePath.size(); i++) {
+        for (int i = 0; i < filePath.size(); i+=2) {
             // filePath.get(0)  ==  Parent Folder (URI)
             // filePath.get(i)  ==  fileNames
 //            if (dto.getImgList().size() > i) {
@@ -495,11 +557,14 @@ public class LocationService {
 //                    }
 //                }
 //            }
-            log.info(filePath.get(i));
+//            log.info(filePath.get(i));
             // Todo 현재는 기존에 이미 등록되어 있던 이미지는 삭제하고, 새로 등록하도록 했음
             // 나중에는 기존에 이미  등록되어 있던 이미지를 삭제하지 않고, 업데이트해서 등록하도록 바꿀것
-            imgService.permaDelete(filePath.get(i));
-            imgList.add(imgService.getImageEntity(reqParam.get("user_no"), filePath.get(0), filePath.get(i), entity, i-1));
+            imgService.delete(filePath.get(i+1));
+
+            LocationImage locImage = imgService.getImageEntity(reqParam.get("user_no"), filePath.get(i), filePath.get(i+1), entity, i/2);
+            LocationImage imgEntity = imgService.update(locImage);
+            imgList.add(imgEntity);
         }
 
         entity.setImgSet(new HashSet<>(imgList));

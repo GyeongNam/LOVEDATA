@@ -1,10 +1,10 @@
-.loc_highlight-selected-text-menu {
+.highlight-selected-text-menu {
     text-decoration: none;
     color: #ff5f5f;
     font-weight: bold;
 }
 
-.loc_highlight-not-selected-text-menu{
+.highlight-not-selected-text-menu{
     text-decoration: none;
     color: #BB8BD9;
 }

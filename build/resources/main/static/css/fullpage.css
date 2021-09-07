@@ -68,7 +68,7 @@ ul, li{
     height:10px;
     margin-bottom:10px;
     border-radius:15px;
-    border:2px solid #FFA3C2;
+    background:  #FFA3C2;
     cursor:pointer;
 }
 .quick .on {

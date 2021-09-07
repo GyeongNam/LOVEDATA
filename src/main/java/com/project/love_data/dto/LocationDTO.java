@@ -42,9 +42,7 @@ public class LocationDTO {
     @Builder.Default
     private List<Comment> cmtList = new ArrayList<>();
     @Builder.Default
-    private List<Location> likeLocList = new ArrayList<>();
-    @Builder.Default
-    private List<Location> recentLocList = new ArrayList<>();
+    private int liveCmtCount = 0;
     @Builder.Default
     private String thumbnail = "";
     @Builder.Default

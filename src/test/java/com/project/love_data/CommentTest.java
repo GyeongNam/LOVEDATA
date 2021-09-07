@@ -28,12 +28,13 @@ public class CommentTest {
         Location loc = locService.locationNameSearch("중부대학교 충청", MatchOption.CONTAIN).get(0);
 
         Comment entity = new Comment();
-        for (int i = 0; i < 45; i++) {
-            entity = new Comment();
+        for (int i = 0; i < 25; i++) {
             entity = Comment.builder()
                     .cmtContent("Comment Content " + i)
-                    .user(userRepository.findById(loc.getUser_no()).get())
-                    .location(loc).build();
+                    .user(userRepository.findById(1L).get())
+                    .location(loc)
+                    .cmtIdx((long) i)
+                    .build();
 
             cmtRepository.save(entity);
 
@@ -46,12 +47,13 @@ public class CommentTest {
 
         loc = locService.locationNameSearch("중부대학교 고양", MatchOption.CONTAIN).get(0);
 
-        for (int i = 0; i < 45; i++) {
-            entity = new Comment();
+        for (int i = 0; i < 25; i++) {
             entity = Comment.builder()
                     .cmtContent("Comment Content " + i)
-                    .user(userRepository.findById(loc.getUser_no()).get())
-                    .location(loc).build();
+                    .user(userRepository.findById(1L).get())
+                    .location(loc)
+                    .cmtIdx((long) i)
+                    .build();
 
             cmtRepository.save(entity);
 
@@ -135,14 +137,33 @@ public class CommentTest {
 
     @Test
     public void deleteComment() {
-        Location loc = locService.locationNameSearch(String.valueOf(0), MatchOption.CONTAIN).get(0);
+        Location loc = locService.locationNameSearch("중부대학교 고양캠퍼스", MatchOption.CONTAIN).get(0);
 
         System.out.println("삭제 전 댓글");
         System.out.println(loc.getLoc_no() + " : " + loc.getCmtSet());
 
-        for (Comment cmt : loc.getCmtSet()) {
-            cmtService.permaDelete(cmt);
-        }
+//        for (Comment cmt : loc.getCmtSet()) {
+//            cmtService.delete(cmt.getCmtNo());
+//        }
+
+        cmtService.delete(cmtService.selectByLocNoAndCmtIdx(loc.getLoc_no(), 1L).getCmtNo());
+
+        System.out.println("삭제 후 댓글");
+        System.out.println(loc.getLoc_no() + " : " + loc.getCmtSet());
+    }
+
+    @Test
+    public void permaDeleteComment() {
+        Location loc = locService.locationNameSearch("중부대학교 고양캠퍼스", MatchOption.CONTAIN).get(0);
+
+        System.out.println("삭제 전 댓글");
+        System.out.println(loc.getLoc_no() + " : " + loc.getCmtSet());
+
+//        for (Comment cmt : loc.getCmtSet()) {
+//            cmtService.delete(cmt.getCmtNo());
+//        }
+
+        cmtService.permaDelete(cmtService.selectByLocNoAndCmtIdx(loc.getLoc_no(), 22L));
 
         System.out.println("삭제 후 댓글");
         System.out.println(loc.getLoc_no() + " : " + loc.getCmtSet());
@@ -166,7 +187,7 @@ public class CommentTest {
                 .build();
 
         PageResultDTO<CommentDTO, Comment> resultDTO
-                = cmtService.getCmtPage(pageRequestDTO, CommentPageType.ALL, CommentSortType.IDX_ASC);
+                = cmtService.getCmtPage(pageRequestDTO, CommentPageType.ALL, CommentSortType.IDX_ASC, CommentSearchType.Live);
 
         System.out.println("PREV = " + resultDTO.isPrev());
         System.out.println("NEXT = " + resultDTO.isNext());
@@ -191,7 +212,7 @@ public class CommentTest {
                 .build();
 
         PageResultDTO<CommentDTO, Comment> resultDTO
-                = cmtService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION, CommentSortType.IDX_ASC);
+                = cmtService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION, CommentSortType.IDX_ASC, CommentSearchType.Live);
 
         System.out.println("PREV = " + resultDTO.isPrev());
         System.out.println("NEXT = " + resultDTO.isNext());

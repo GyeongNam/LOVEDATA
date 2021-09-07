@@ -22,6 +22,8 @@ public class QCourse extends EntityPathBase<Course> {
 
     public final com.project.love_data.model.base.QTimeEntity _super = new com.project.love_data.model.base.QTimeEntity(this);
 
+    public final StringPath accommodations_info = createString("accommodations_info");
+
     public final StringPath cor_name = createString("cor_name");
 
     public final NumberPath<Long> cor_no = createNumber("cor_no", Long.class);

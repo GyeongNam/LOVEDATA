@@ -4,22 +4,22 @@ package com.project.love_data.controller;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.project.love_data.businessLogic.service.*;
+import com.project.love_data.dto.CourseDTO;
 import com.project.love_data.dto.LocationDTO;
 import com.project.love_data.dto.PageRequestDTO;
 import com.project.love_data.dto.PageResultDTO;
-import com.project.love_data.model.service.Location;
-import com.project.love_data.model.service.LocationTag;
-import com.project.love_data.model.service.UserLikeCor;
-import com.project.love_data.model.service.UserLikeLoc;
+import com.project.love_data.model.service.*;
 import com.project.love_data.model.user.User;
 import com.project.love_data.util.DefaultLocalDateTimeFormatter;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -270,7 +270,7 @@ public class RestController {
 
             User user = userService.select(resultDTO.getDtoList().get(i).getUser_no());
             if (user == null) {
-                response.put("locUserName_" + i, "null");
+                response.put("locUserName_" + i, "");
             } else {
                 response.put("locUserName_" + i, user.getUser_nic());
             }
@@ -324,6 +324,81 @@ public class RestController {
         String jsonObject = gson.toJson(response);
 
 //        log.info(jsonObject);
+
+        return jsonObject;
+    }
+
+    @PostMapping("/service/cor/search")
+    @ResponseBody
+    public String onSearchCourse(HttpServletRequest request, @RequestBody HashMap<String, String> data) {
+        String keyword = data.get("keyword");
+        String sortOrder = data.get("sortOrder");
+        String type = data.get("searchType");
+
+        SortingOrder sortingOrder = null;
+        SortCriterion sortCriterion = null;
+        SearchType searchType = SearchType.valueOf(type);
+
+        switch (sortOrder){
+            case "LIKE_DES" :
+                // 좋아요 순
+                sortCriterion = SortCriterion.LIKE;
+                sortingOrder = SortingOrder.DES;
+                break;
+            case "DATE_DES" :
+                // 최신 등록순
+                sortCriterion = SortCriterion.DATE;
+                sortingOrder = SortingOrder.DES;
+                break;
+            case "DATE_ASC" :
+                // 오래된 등록순
+                sortCriterion = SortCriterion.DATE;
+                sortingOrder = SortingOrder.ASC;
+                break;
+            case "VIEW_DES" :
+                // 조회순
+            default:
+                sortCriterion = SortCriterion.VIEW;
+                sortingOrder = SortingOrder.DES;
+                break;
+        }
+
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+                .size(Integer.MAX_VALUE)
+                .searchType(searchType)
+                .keyword(keyword)
+                .tagList(null)
+                .sortCriterion(sortCriterion)
+                .sortingOrder(sortingOrder)
+                .page(1)
+                .build();
+
+        PageResultDTO<CourseDTO, Course> resultDTO = corService.getList(pageRequestDTO);
+
+        HashMap<String, String> response = new HashMap<>();
+
+        response.put("size", String.valueOf(resultDTO.getDtoList().size()));
+        for (int i = 0; i < resultDTO.getDtoList().size(); i++) {
+            response.put("corName_" + i, resultDTO.getDtoList().get(i).getCor_name());
+//            response.put("locAddr_" + i, resultDTO.getDtoList().get(i).getRoadAddr());
+            response.put("corNo_" + i, String.valueOf(resultDTO.getDtoList().get(i).getCor_no()));
+            response.put("corID_" + i, String.valueOf(resultDTO.getDtoList().get(i).getCor_uuid()));
+            response.put("corRegDate_" + i,
+                    String.valueOf(resultDTO.getDtoList().get(i).getRegDate().format(defaultDateTimeFormatter.getDateTimeFormatter())));
+            response.put("corLikeCount_" + i, String.valueOf(resultDTO.getDtoList().get(i).getLikeCount()));
+            response.put("corViewCount_" + i, String.valueOf(resultDTO.getDtoList().get(i).getViewCount()));
+
+            User user = userService.select(resultDTO.getDtoList().get(i).getUser_no());
+            if (user == null) {
+                response.put("corUserName_" + i, "");
+            } else {
+                response.put("corUserName_" + i, user.getUser_nic());
+            }
+        }
+
+        Gson gson = new Gson();
+
+        String jsonObject = gson.toJson(response);
 
         return jsonObject;
     }

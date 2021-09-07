@@ -1,6 +1,16 @@
 let input = document.getElementById("imgInput");
 let isBuffered = false;
 
+$(document).ready(function(){
+    qu_secret = $("#qu_secret").val();
+    if(qu_secret=="true"){
+        $("#qu_select").val("1");
+    }else {
+        $("#qu_select").val("0");
+    }
+})
+
+
 function onClickAddImage() {
     $('#imgInput').trigger('click');
 }
@@ -260,7 +270,7 @@ function onClickImgMoveRight() {
     let rightObjImg = document.getElementById("img_" + (selectedImageIndex+1)).src;
     let selectedObjImg = document.getElementById("img_" + (selectedImageIndex)).src;
 
-    console.log(selectedImageIndex);
+    console.log("이미지"+selectedImageIndex);
     for (let i = 0; i < input.files.length; i++) {
         if (selectedImageIndex -1 === i) {
             dt.items.add(rightObj);

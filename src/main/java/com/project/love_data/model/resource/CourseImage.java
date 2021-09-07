@@ -10,6 +10,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.util.Lazy;
 
 import javax.persistence.*;
+import java.util.*;
 
 @Entity
 @Table (name = "cor_image")
@@ -40,7 +41,8 @@ public class CourseImage extends TimeEntity {
     private String img_url;
 
     @Column(name = "img_uuid", nullable = false, length = 45)
-    private String img_uuid;
+    @Builder.Default
+    private String img_uuid = UUID.randomUUID().toString();
 
     @Column(name = "is_deleted", nullable = false)
     @Builder.Default

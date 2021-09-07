@@ -7,5 +7,9 @@ public enum SearchType {
     TITLE_TAG,
     USER_TAG,
     DISABLED,
+    DISABLED_TITLE,
+    DISABLED_USER,
+    DISABLED_TAG,
+    DISABLED_TITLE_TAG,
     NONE
 }

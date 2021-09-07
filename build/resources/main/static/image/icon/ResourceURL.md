@@ -32,3 +32,21 @@
 
 11. Up Arrow Icon
 <ol><a> https://www.flaticon.com/free-icon/up-arrow_271237?related_id=271237&origin=pack </a></ol>
+
+12.Trash Icon
+<ol><a> https://www.flaticon.com/free-icon/trash_3096687?term=delete&page=1&position=3&page=1&position=3&related_id=3096687&origin=search </a></ol>
+
+13.Rollback icon
+<ol><a> https://www.flaticon.com/free-icon/reload-time_81681?term=restore&page=1&position=37&page=1&position=37&related_id=81681&origin=search </a></ol>
+
+14.Star_Color icon
+<ol><a> https://www.flaticon.com/free-icon/star_1828884?term=star&related_id=1828884 </a></ol>
+
+15.Star_Black icon
+<ol><a> https://www.flaticon.com/free-icon/star_1828970?term=star&related_id=1828970 </a></ol>
+
+16.Thinking icon
+<ol><a> https://www.flaticon.com/free-icon/thinking_982997?term=thinking&related_id=982997 </a></ol>
+
+17. Thinking gif
+<ol><a> https://cliply.co/clip/thinking-face/ </a></ol>

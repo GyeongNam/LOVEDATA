@@ -2,9 +2,6 @@ package com.project.love_data.businessLogic.service;
 
 import com.project.love_data.dto.CourseImageDTO;
 import com.project.love_data.model.resource.CourseImage;
-import com.project.love_data.model.service.Course;
-import com.project.love_data.model.service.Location;
-import com.project.love_data.repository.CourseImageRepository;
 import com.project.love_data.repository.CourseImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,9 +21,21 @@ public class CourseImageService {
     }
 
     public CourseImage getImage(String uuid) {
-        Optional<CourseImage> item = repository.findImageByImg_uuid(uuid);
+        Optional<CourseImage> item = repository.findLiveImageByImg_uuid(uuid);
 
         return item.isPresent() ? item.get() : null;
+    }
+
+    public List<CourseImage> getAllImagesByCorNo(Long corNo) {
+        Optional<List<CourseImage>> itmes = repository.findAllImageByCor_no(corNo);
+
+        return itmes.orElse(null);
+    }
+
+    public List<CourseImage> getLiveImagesByCorNo(Long corNo) {
+        Optional<List<CourseImage>> itmes = repository.findAllLiveImageByCor_no(corNo);
+
+        return itmes.orElse(null);
     }
 
     public CourseImage getImageEntity(String user_no, String fileRootPath, String fileName, Long corNo, long img_index) {
@@ -46,8 +55,8 @@ public class CourseImageService {
         return entity;
     }
 
-    public void update(CourseImage img) {
-        repository.save(img);
+    public CourseImage update(CourseImage img) {
+        return repository.save(img);
     }
 
     public CourseImage dtoToEntity(CourseImageDTO dto) {

@@ -47,17 +47,22 @@
 					</div>
 					<div id="loc_collapse" class="collapse show" aria-labelledby="headingLoc" data-parent="#loc">
 						<div class="card-body center-pill">
-							<p><a href="/service/cor_recommend" class="loc_highlight-not-selected-text-menu">- 추천 코스</a>
+							<p><a href="/service/cor_recommend" class="highlight-not-selected-text-menu">- 추천 코스</a>
 							</p>
-							<p><a href="/service/cor_registration" class="loc_highlight-selected-text-menu">- 코스 등록</a>
+							<p><a href="/service/cor_registration" class="highlight-selected-text-menu">- 코스 등록</a>
 							</p>
-							<p><a href="#" class="loc_highlight-not-selected-text-menu">- 코스 편집</a></p>
+							<p><a href="#" class="highlight-not-selected-text-menu">- 코스 편집</a></p>
 						</div>
 					</div>
 				</div>
 			</div>
 		</ul>
 	</div>
+
+	<c:set value="3" var="minCorImgCount"></c:set>
+	<c:set value="10" var="maxCorImgCount"></c:set>
+	<c:set value="7" var="maxCorCount"></c:set>
+	<c:set value="2" var="minCorCount"></c:set>
 	<div class="container m-5" id="display_center" style="margin-right: 30px; margin-top: 30px">
 		<h1>코스 등록</h1>
 		<div class="container-fluid">
@@ -211,10 +216,10 @@
 					</div>
 					<div>
 						<div id="canvas" class="row flex-nowrap mx-0 my-3"
-							 style="/*overflow-x: scroll; outline: blue thick solid;*/">
+							 style="overflow-x: scroll; /*outline: blue thick solid;*/">
 							<input class="visually-hidden" id="imgInput" name="files" type="file" multiple
 								   accept="image/*" onchange="readImage()">
-							<c:forEach var="i" begin="1" end="10">
+							<c:forEach var="i" begin="1" end="${maxCorImgCount}">
 								<c:choose>
 									<c:when test="${i eq 1}">
 										<div class="card col-3 p-0 m-2">
@@ -290,7 +295,7 @@
 					<div>
 						<input class="visually-hidden" id="imgInput" name="files" type="file" multiple accept="image/*"
 							   onchange="readImage()">
-						<c:forEach var="i" begin="1" end="10">
+						<c:forEach var="i" begin="1" end="${maxCorCount}">
 							<c:choose>
 								<c:when test="${i eq 1}">
 									<div class="card p-0 m-2" id="loc_add_${i}">
@@ -569,13 +574,17 @@
         console.log(fileList);
         fileList.forEach((file, index) => {
             let reader = new FileReader();
+            if (index > ${maxCorImgCount}) {
+                deleteFileListImage();
+                return false;
+            }
             // console.log(i + "번 째 아이템이 등록되었습니다.");
             let item = document.getElementById("img_" + (index + 1));
             reader.onload = e => {
                 item.src = e.target.result;
                 item.parentElement.setAttribute("class", "card col-3 p-0 m-2");
             }
-            if (index != 9) {
+            if (index < ${maxCorImgCount} - 1) {
                 document.getElementById("img_" + (index + 2)).parentElement.setAttribute("class", "card col-3 p-0 m-2");
             }
             reader.readAsDataURL(file);
@@ -583,7 +592,7 @@
         })
 
         // // 기존에 있던 이미지 지우기
-        for (let i = fileList.length + 1; i <= 10; i++) {
+        for (let i = fileList.length + 1; i <= ${maxCorImgCount}; i++) {
             if (i === (fileList.length + 1)) {
                 document.getElementById("img_" + i).parentElement.setAttribute("class", "card col-3 p-0 m-2");
             } else {
@@ -594,6 +603,19 @@
         }
         toggleAddDelBtn(fileList.length);
         // onSelectImage(selectedImageIndex + 1);
+    }
+
+    function deleteFileListImage() {
+        let dt = new DataTransfer();
+        dt.files = input.files;
+
+        for (let i = 0; i < ${maxCorImgCount}; i++) {
+            dt.items.add(input.files[i]);
+        }
+
+        input.files = dt.files;
+        console.log(dt.files);
+        console.log(input.files);
     }
 
     function deleteImage(obj) {
@@ -623,9 +645,9 @@
             }
         }
 
-        for (let i = 1; i <= 10; i++) {
+        for (let i = 1; i <= ${maxCorImgCount}; i++) {
             if (i >= index) {
-                if (i !== 10) {
+                if (i !== ${maxCorImgCount}) {
                     document.getElementById("img_" + i).src = document.getElementById("img_" + (i + 1)).src;
                 } else {
                     document.getElementById("img_" + i).src = "/image/icon/480px-Solid_white.png";
@@ -646,7 +668,7 @@
         console.log(dt.files);
         console.log(input.files);
 
-        for (let i = input.files.length + 1; i <= 10; i++) {
+        for (let i = input.files.length + 1; i <= ${maxCorImgCount}; i++) {
             let img = document.getElementById("img_" + i);
             img.src = "/image/icon/480px-Solid_white.png";
         }
@@ -700,9 +722,9 @@
 
                 if (response) {
                     if (parseInt($fileUpload.get(0).files.length) < 3) {
-                        alert("최소 3개의 이미지 파일은 업로드 해야합니다.")
+                        alert("최소 ${minCorImgCount}개의 이미지 파일은 업로드 해야합니다.")
                     } else if (parseInt($fileUpload.get(0).files.length) > 10) {
-                        alert("최대 10개의 이미지 파일만 업로드 가능합니다.");
+                        alert("최대 ${maxCorImgCount}개의 이미지 파일만 업로드 가능합니다.");
                     } else {
                         // Todo 디버깅 모드 (추후에 주석 해제하기)
                         // if (currentLocationLength < 3) {
@@ -1069,7 +1091,7 @@
 	function pullNextLocationInfo(index) {
 
         for (let i = index; i < currentLocationLength; i++) {
-            if (index === 10) {
+            if (index === ${maxCorCount}) {
                 return;
 			}
 
@@ -1180,7 +1202,7 @@
             // console.log(locNo);
             // console.log(locID);
 
-            if (locNo.innerText === locationMap["locNo"] || locID.innerText === locationMap["locID"]) {
+            if (locNo.value === locationMap["locNo"] || locID.value === locationMap["locID"]) {
                 return true;
 			}
 		}
@@ -1237,7 +1259,7 @@
 
     function enableNewLocationAddBtn(index) {
 
-        if (index <= 10) {
+        if (index <= ${maxCorCount}) {
             let loc_add = document.getElementById("loc_add_" + index);
 
             // console.log(index);

@@ -150,3 +150,5 @@ fabric.properties
 build/resources/main/static/image/upload/
 src/main/resources/static/image/upload/
 build/*
+contribution.sh
+logs.txt

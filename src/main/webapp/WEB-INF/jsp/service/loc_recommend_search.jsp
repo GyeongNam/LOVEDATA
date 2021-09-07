@@ -45,10 +45,10 @@
 					</div>
 					<div id="loc_collapse" class="collapse show" aria-labelledby="headingLoc" data-parent="#loc">
 						<div class="card-body center-pill">
-							<p><a href="/service/loc_recommend" class="loc_highlight-selected-text-menu">- 추천 장소</a></p>
-							<p><a href="/service/loc_registration" class="loc_highlight-not-selected-text-menu">- 장소
+							<p><a href="/service/loc_recommend" class="highlight-selected-text-menu">- 추천 장소</a></p>
+							<p><a href="/service/loc_registration" class="highlight-not-selected-text-menu">- 장소
 								등록</a></p>
-							<p><a href="" class="loc_highlight-not-selected-text-menu">- 장소
+							<p><a href="" class="highlight-not-selected-text-menu">- 장소
 								편집</a></p>
 						</div>
 					</div>
@@ -168,6 +168,13 @@
 		</div>
 		<div class="row justify-content-md-center">
 			<c:choose>
+				<%--		요청한 페이지 넘버가 최대 페이지 수를 넘어갈 경우		--%>
+				<c:when test="${isRequestPageNumberExceed eq true}">
+					<span>요청한 페이지 번호는 존재하지 않습니다.</span>
+					<%
+						if( true ) return;
+					%>
+				</c:when>
 				<c:when test="${result.end ne 0}">
 					<c:forEach var="i" begin="0" end="${result.dtoList.size()-1}">
 						<c:if test="${i eq 2}">
@@ -211,15 +218,20 @@
 											<img src="/image/icon/view.png" class="loc_icon" alt="조회수">
 											<span class="align-middle">${result.dtoList.get(i).viewCount}</span>
 											<img src="/image/icon/comment.png" class="loc_icon" alt="댓글">
-												<%--									Todo 댓글 항목 Location Entity에 추가하기--%>
-											<span class="align-middle">${result.dtoList.get(i).cmtList.size()}</span>
-											<img src="/image/icon/like/love_black.png" class="loc_icon" alt="찜하기"
-												 onclick="onClickLike(this, <sec:authentication property="principal.user_no"/>, 'loc')">
+											<span class="align-middle">${result.dtoList.get(i).liveCmtCount}</span>
+											<sec:authorize access="isAuthenticated()">
+												<c:set var="user_no"><sec:authentication property="principal.user_no"></sec:authentication></c:set>
+												<img src="/image/icon/like/love_black.png" class="loc_icon" alt="찜하기"
+												 	onclick="onClickLike(this, ${user_no}, 'loc')">
+											</sec:authorize>
+											<sec:authorize access="isAnonymous()">
+												<c:set var="user_no" value="null"></c:set>
+												<img src="/image/icon/like/love_black.png" class="loc_icon" alt="찜하기">
+											</sec:authorize>
 											<span class="align-middle" id="loc_like_count" name="loc_like_count">${result.dtoList.get(i).likeCount}</span>
 											<span class="d-none">${result.dtoList.get(i).loc_no}</span>
 											<span class="d-none">${result.dtoList.get(i).loc_uuid}</span>
 											<sec:authorize access="isAuthenticated()">
-												<c:set var="user_no"><sec:authentication property="principal.user_no"></sec:authentication></c:set>
 												<span class="d-none">${user_no}</span>
 											</sec:authorize>
 											<sec:authorize access="isAnonymous()">

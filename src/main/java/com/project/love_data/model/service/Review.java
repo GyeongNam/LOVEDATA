@@ -1,5 +1,6 @@
 package com.project.love_data.model.service;
 
+import com.project.love_data.model.base.TimeEntity;
 import com.project.love_data.model.user.User;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
@@ -16,7 +17,7 @@ import java.util.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Review {
+public class Review extends TimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -37,11 +38,51 @@ public class Review {
     @Builder.Default
     private boolean is_deleted = false;
 
-    @Column(name = "rev_point", nullable = false)
-    private float rev_point;
+    @Column(name = "is_reported", nullable = false)
+    @Builder.Default
+    private Long reported_count = 0L;
+
+    @Column(name = "sc_total", nullable = false)
+    @Builder.Default
+    private float sc_total = 0f;
+
+    @Column(name = "sc_move")
+    @Builder.Default
+    private int sc_move = 0;
+
+    @Column(name = "sc_loc")
+    @Builder.Default
+    private int sc_loc = 0;
+
+    @Column(name = "sc_time")
+    @Builder.Default
+    private int sc_time = 0;
+
+    @Column(name = "sc_revisit")
+    @Builder.Default
+    private int sc_revisit = 0;
+
+    @Column(name ="is_modified")
+    @Builder.Default
+    private boolean is_modified = false;
 
     @Column(name = "user_no", nullable = false)
     private Long user_no;
+
+    @Column(name = "user_name", nullable = false)
+    private String user_name;
+
+    @Column(name = "rev_like", nullable = false)
+    @Builder.Default
+    private Long rev_like = 0L;
+
+    @Column(name = "rev_dislike", nullable = false)
+    @Builder.Default
+    private Long rev_dislike = 0L;
+
+    @Column(name = "view_count", nullable = false)
+    @Builder.Default
+    private Long view_count = 0L;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Cascade(value = org.hibernate.annotations.CascadeType.ALL)

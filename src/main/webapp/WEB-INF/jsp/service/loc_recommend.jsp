@@ -44,10 +44,10 @@
 					</div>
 					<div id="loc_collapse" class="collapse show" aria-labelledby="headingLoc" data-parent="#loc">
 						<div class="card-body center-pill">
-							<p><a href="/service/loc_recommend" class="loc_highlight-selected-text-menu">- 추천 장소</a></p>
-							<p><a href="/service/loc_registration" class="loc_highlight-not-selected-text-menu">- 장소
+							<p><a href="/service/loc_recommend" class="highlight-selected-text-menu">- 추천 장소</a></p>
+							<p><a href="/service/loc_registration" class="highlight-not-selected-text-menu">- 장소
 								등록</a></p>
-							<p><a href="" class="loc_highlight-not-selected-text-menu">- 장소
+							<p><a href="" class="highlight-not-selected-text-menu">- 장소
 								편집</a></p>
 						</div>
 					</div>
@@ -138,10 +138,10 @@
 									<c:set var="imgList" value="${result.dtoList.get(i).imgList}"></c:set>
 									<c:choose>
 										<c:when test="${!empty imgList}">
-									<img class="bd-placeholder-img card-img-top" width="100%" height="225"
-										 alt="${result.dtoList.get(i).loc_name}"
-										 src="${result.dtoList.get(i).thumbnail}"
-										 preserveAspectRatio="xMidYMid slice" focusable="false">
+											<img class="bd-placeholder-img card-img-top" width="100%" height="225"
+												 alt="${result.dtoList.get(i).loc_name}"
+												 src="${result.dtoList.get(i).thumbnail}"
+												 preserveAspectRatio="xMidYMid slice" focusable="false">
 										</c:when>
 										<c:otherwise>
 											<svg class="bd-placeholder-img card-img-top" width="100%" height="225"
@@ -154,6 +154,16 @@
 													  dy=".3em">${result.dtoList.get(i).loc_name}</text>
 											</svg>
 										</c:otherwise>
+									</c:choose>
+									<c:choose>
+										<c:when test="${result.dtoList.get(i)._deleted eq true}">
+											<div class="d-flex justify-content-end card-img-overlay" style="outline: dotted 3px red">
+												<img class="bd-placeholder-img" width="30" height="30"
+													 alt="삭제된 장소 아이콘"
+													 src="/image/icon/trash.png"
+													 preserveAspectRatio="xMidYMid slice" focusable="false">
+											</div>
+										</c:when>
 									</c:choose>
 								</a>
 
@@ -168,7 +178,7 @@
 											<span class="align-middle">${result.dtoList.get(i).viewCount}</span>
 											<img src="/image/icon/comment.png" class="loc_icon" alt="댓글">
 												<%--									Todo 댓글 항목 Location Entity에 추가하기--%>
-											<span class="align-middle">${result.dtoList.get(i).cmtList.size()}</span>
+											<span class="align-middle">${result.dtoList.get(i).liveCmtCount}</span>
 											<sec:authorize access="isAuthenticated()">
 												<c:choose>
 													<c:when test="${isLikedList.get(i) eq true}">

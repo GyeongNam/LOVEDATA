@@ -5,6 +5,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page session="false" %>
 <jsp:useBean id="defaultDateTimeFormatter" class="com.project.love_data.util.DefaultLocalDateTimeFormatter"></jsp:useBean>
+<jsp:useBean id="simpleDateTimeFormatter" class="com.project.love_data.util.SimpleLocalDateTimeFormatter"></jsp:useBean>
 
 <html>
 <head>
@@ -46,10 +47,10 @@
 					</div>
 					<div id="loc_collapse" class="collapse show" aria-labelledby="headingLoc" data-parent="#loc">
 						<div class="card-body center-pill">
-							<p><a href="/service/loc_recommend" class="loc_highlight-selected-text-menu">- 추천 장소</a></p>
-							<p><a href="/service/loc_registration" class="loc_highlight-not-selected-text-menu">- 장소
+							<p><a href="/service/loc_recommend" class="highlight-selected-text-menu">- 추천 장소</a></p>
+							<p><a href="/service/loc_registration" class="highlight-not-selected-text-menu">- 장소
 								등록</a></p>
-							<p><a href="#" class="loc_highlight-not-selected-text-menu">- 장소 편집</a></p>
+							<p><a href="#" class="highlight-not-selected-text-menu">- 장소 편집</a></p>
 						</div>
 					</div>
 				</div>
@@ -152,7 +153,7 @@
 <%--						<h5 class="text-truncate">설명 : ${dto.info}</h5>--%>
 <%--					</div>--%>
 					<div class="row d-flex">
-						<h5>등록일 : ${dto.regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}</h5>
+						<h5>등록일 : ${dto.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</h5>
 					</div>
 					<div class="row d-flex">
 						<h5>연락처 : ${dto.tel}</h5>
@@ -180,12 +181,30 @@
 					</sec:authorize>
 					<span class="text-center align-middle fs-3 me-4" id="likeCount">${dto.likeCount}</span>
 					<img src="/image/icon/comment.png" class="loc_icon_big me-2" alt="댓글">
-					<span class="text-center align-middle fs-3 me-4">${dto.cmtList.size()}</span>
+					<span class="text-center align-middle fs-3 me-4">${dto.liveCmtCount}</span>
 <%--					Todo 추후에 위치 수정하기--%>
 <%--				loc_common onClickLike	--%>
 					<span class="visually-hidden">${dto.user_no}</span>
 					<button class="btn btn-outline-danger col-3" style="max-height: 56px" onclick="copyURL()">공유</button>
 					<button class="btn btn-outline-danger col-3" style="max-height: 56px;" onclick="location.href='/service/loc_edit?locNo=${dto.loc_no}'">수정</button>
+					<sec:authorize access="isAuthenticated()">
+<%--						<span><sec:authentication property="principal.user_no"></sec:authentication></span>--%>
+					<c:set var="currUserNo"><sec:authentication property="principal.user_no"></sec:authentication></c:set>
+					<c:choose>
+						<c:when test="${dto.user_no eq currUserNo}">
+							<img src="/image/icon/trash.png" class="loc_icon_big me-2" alt="장소 삭제"
+							 onclick="onClickRemoveLocation()">
+						</c:when>
+						<c:otherwise>
+							<sec:authorize access="hasRole('ADMIN')">
+								<img src="/image/icon/trash.png" class="loc_icon_big me-2" alt="장소 삭제"
+									 onclick="onClickRemoveLocation()">
+								<img src="/image/icon/rollback.png" class="loc_icon_big me-2" alt="장소 복원"
+									 onclick="onClickRollbackLocation()">
+							</sec:authorize>
+						</c:otherwise>
+					</c:choose>
+				</sec:authorize>
 				</div>
 				<span class="d-none" id="loc_no">${dto.loc_no}</span>
 			</div>
@@ -194,21 +213,44 @@
 			<ul class="nav nav-pills nav-fill col-5" id="pills-tab" role="tablist"
 				style="height:50px; padding-top: 5px; padding-bottom: 5px">
 				<li class="nav-item" role="presentation">
-					<button class="nav-link active" id="location-info-tab" data-bs-toggle="pill"
-							data-bs-target="#location-info" type="button" role="tab" aria-controls="location-info"
-							aria-selected="true">설명
-					</button>
+					<c:choose>
+						<c:when test="${param.containsKey('page') eq true}">
+						<button class="nav-link" id="location-info-tab" data-bs-toggle="pill"
+								data-bs-target="#location-info" type="button" role="tab" aria-controls="location-info" onclick="removeURLParam('page')"
+								aria-selected="true">설명</button>
+						</c:when>
+						<c:otherwise>
+							<button class="nav-link active" id="location-info-tab" data-bs-toggle="pill"
+									data-bs-target="#location-info" type="button" role="tab" aria-controls="location-info" onclick="removeURLParam('page')"
+									aria-selected="true">설명</button>
+						</c:otherwise>
+					</c:choose>
 				</li>
 				<li class="nav-item" role="presentation">
-					<button class="mw-100 mh-100 nav-link" id="location-comment-tab" data-bs-toggle="pill"
-							data-bs-target="#location-comment" type="button" role="tab" aria-controls="location-comment"
-							aria-selected="false">댓글
-					</button>
+					<c:choose>
+						<c:when test="${param.containsKey('page') eq true}">
+							<button class="mw-100 mh-100 nav-link active" id="location-comment-tab" data-bs-toggle="pill"
+									data-bs-target="#location-comment" type="button" role="tab" aria-controls="location-comment"
+									aria-selected="false" onclick="addURLParam('page', '1')">댓글</button>
+						</c:when>
+						<c:otherwise>
+							<button class="mw-100 mh-100 nav-link" id="location-comment-tab" data-bs-toggle="pill"
+									data-bs-target="#location-comment" type="button" role="tab" aria-controls="location-comment"
+									aria-selected="false" onclick="addURLParam('page', '1')">댓글</button>
+						</c:otherwise>
+					</c:choose>
 				</li>
 			</ul>
 			<div class="tab-content" id="pills-tabContent">
 				<%--      설명--%>
-				<div class="tab-pane fade show active" id="location-info" role="tabpanel" aria-labelledby="location-info-tab">
+					<c:choose>
+						<c:when test="${param.containsKey('page') eq true}">
+							<div class="tab-pane fade" id="location-info" role="tabpanel" aria-labelledby="location-info-tab">
+						</c:when>
+						<c:otherwise>
+							<div class="tab-pane fade show active" id="location-info" role="tabpanel" aria-labelledby="location-info-tab">
+						</c:otherwise>
+					</c:choose>
 					<div class="container">
 						<div class="d-flex mt-3">
 							<span class="fs-5" style="white-space: pre-wrap;">${dto.info}</span>
@@ -216,7 +258,14 @@
 					</div>
 				</div>
 				<%--    댓글--%>
-				<div class="tab-pane fade" id="location-comment" role="tabpanel" aria-labelledby="location-comment-tab">
+				<c:choose>
+					<c:when test="${param.containsKey('page') eq true}">
+						<div class="tab-pane fade active show" id="location-comment" role="tabpanel" aria-labelledby="location-comment-tab">
+					</c:when>
+					<c:otherwise>
+						<div class="tab-pane fade" id="location-comment" role="tabpanel" aria-labelledby="location-comment-tab">
+					</c:otherwise>
+				</c:choose>
 					<div class="container mt-0">
 						<div class="d-flex justify-content-start row">
 							<div class="col-md-10">
@@ -226,8 +275,9 @@
 										<c:when test="${0 != cmtDTO.size()}">
 											<c:forEach var="c" begin="0" end="${cmtDTO.size()-1}">
 												<div class="bg-white p-2">
-													<div class="d-flex flex-row align-items-center"><img
-															src="/image/icon/user/user.png"
+													<div class="d-flex flex-row align-items-center">
+														<img
+															src="${cmtDTO.get(c).user.profile_pic}"
 															class="loc_comment-profile-image-wh">
 														<div class="flex-column">
 															<p class="visually-hidden" id="cmt_id_${c}">${cmtDTO.get(c).cmtUuid}</p>
@@ -250,6 +300,11 @@
 															<c:choose>
 																<c:when test="${cmtDTO.get(c).regDate ne cmtDTO.get(c).modDate}">
 																	<span class="date text-black-50 ml-5">(수정됨)</span>
+																</c:when>
+															</c:choose>
+															<c:choose>
+																<c:when test="${cmtDTO.get(c)._deleted eq true}">
+																	<span class="date text-black-50 ml-5">(삭제됨)</span>
 																</c:when>
 															</c:choose>
 														</div>
@@ -362,6 +417,29 @@
 <script defer src="/js/bootstrap.js"></script>
 <script defer src="/js/loc_detail.js"></script>
 <script defer src="/js/loc_common.js"></script>
+<script>
+	window.onload = function() {
+        let params = new URLSearchParams(location.search);
+        // console.log(params);
+        // console.log(params.get("locNo"));
+        // console.log(params.get("page"));
+
+		if (params.has("page")) {
+            let offsetTop = document.querySelector("#pills-tab").offsetTop - 100;
+
+		    window.scrollTo({top:offsetTop, behavior: 'smooth'});
+<%--		    let location_info = document.getElementById("location-info");--%>
+<%--		    let location_info_tab = document.getElementById("location-info-tab");--%>
+<%--		    let location_comment = document.getElementById("location-comment");--%>
+<%--		    let location_comment_tab = document.getElementById("location-comment-tab");--%>
+
+<%--		    location_info_tab.setAttribute("class", "nav-link");--%>
+<%--		    location_comment_tab.setAttribute("class", "mw-100 mh-100 nav-link active");--%>
+<%--            location_info.setAttribute("class", "tab-pane fade");--%>
+<%--            location_comment.setAttribute("class", "tab-pane fade active show");--%>
+		}
+	}
+</script>
 <script defer>
     function clickImgNext() {
         var imgDisplay = document.getElementById("imgDisplay");
@@ -537,6 +615,43 @@
         document.body.appendChild(form);
         form.submit();
 	}
+</script>
+<script defer>
+	function onClickRemoveLocation() {
+        if (!window.confirm("장소를 삭제하시겠습니까?")) {
+            return;
+		}
+
+	    let param = location.search;
+
+        console.log(param);
+        console.log('/service/loc_delete' + param);
+
+        let form;
+        form = document.createElement("form");
+        form.method = "post";
+        form.action= "/service/loc_delete" + param;
+
+        document.body.appendChild(form);
+        form.submit();
+	}
+
+    function onClickRollbackLocation() {
+        alert('장소를 복원하시겠습니까?');
+
+        let param = location.search;
+
+        console.log(param);
+        console.log('/service/loc_rollback' + param);
+
+        let form;
+        form = document.createElement("form");
+        form.method = "post";
+        form.action= "/service/loc_rollback" + param;
+
+        document.body.appendChild(form);
+        form.submit();
+    }
 </script>
 </body>
 <%--<%@ include file="../layout/footer.jsp" %>--%>

@@ -5,11 +5,13 @@ import com.project.love_data.model.resource.LocationImage;
 import com.project.love_data.model.service.Location;
 import com.project.love_data.repository.LocationImageRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import java.io.File;
 import java.util.*;
 
 @Service
+@Log4j2
 @RequiredArgsConstructor
 public class LocationImageService {
     private final LocationImageRepository repository;
@@ -21,7 +23,7 @@ public class LocationImageService {
     }
 
     public LocationImage getImage(String uuid) {
-        Optional<LocationImage> item = repository.findImageByImg_uuid(uuid);
+        Optional<LocationImage> item = repository.findLiveImageByImg_uuid(uuid);
 
         return item.isPresent() ? item.get() : null;
     }
@@ -43,8 +45,8 @@ public class LocationImageService {
         return entity;
     }
 
-    public void update(LocationImage img) {
-        repository.save(img);
+    public LocationImage update(LocationImage img) {
+        return repository.save(img);
     }
 
     public LocationImage dtoToEntity(LocationImageDTO dto) {
@@ -88,6 +90,10 @@ public class LocationImageService {
     }
 
     private LocationImage disable(LocationImage img) {
+        if (img == null) {
+            return null;
+        }
+
         img.set_deleted(true);
 
         update(img);
@@ -96,6 +102,10 @@ public class LocationImageService {
     }
 
     private LocationImage enable(LocationImage img) {
+        if (img == null) {
+            return null;
+        }
+
         img.set_deleted(false);
 
         update(img);
@@ -103,8 +113,28 @@ public class LocationImageService {
         return getImage(img.getImg_no());
     }
 
+    public void rollback(Long imgNo) {
+        LocationImage img = getImage(imgNo);
+
+        if (img == null) {
+            log.warn("존재 하지 않는 imgNo 입니다.");
+            log.warn("롤백 과정이 취소됩니다.");
+            return;
+        }
+
+        if (img.is_deleted()) {
+            enable(img);
+        }
+    }
+
     public void delete(Long imgNo) {
         LocationImage img = getImage(imgNo);
+
+        if (img == null) {
+            log.warn("존재 하지 않는 imgNo 입니다.");
+            log.warn("삭제 과정이 취소됩니다.");
+            return;
+        }
 
         if (!img.is_deleted()) {
             disable(img);
@@ -117,6 +147,24 @@ public class LocationImageService {
         if (!img.is_deleted()) {
             disable(img);
         }
+    }
+
+    public Long getFirstIndexOfLastDeletedLocationImage(Long locNo) {
+        Optional<Long> imgNo = repository.findFirstIndexOfLastDeletedLocationImageByLocNo(locNo);
+
+        return imgNo.orElse(0L);
+    }
+
+    public List<LocationImage> getLastDeletedImageList(Long locNo) {
+        Long imgNoFI = getFirstIndexOfLastDeletedLocationImage(locNo);
+
+        if (imgNoFI == 0) {
+            return null;
+        }
+
+        Optional<List<LocationImage>> item = repository.findLocationImageListOfLocNoAndImgNo(locNo, imgNoFI);
+
+        return item.orElse(null);
     }
 
     public void permaDelete(String img_uuid) {
