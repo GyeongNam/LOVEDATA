@@ -14,4 +14,13 @@ public interface NoticeRepository extends JpaRepository<Notice, Long> {
 
     @Query(value = "select * from Notice where noti_no = :no", nativeQuery = true)
     Notice noti_find_no(String no);
+
+    @Query(value = "select * from Notice q where q.noti_activation=true and q.noti_title LIKE :text or q.noti_text LIKE :text order by q.noti_no desc ", nativeQuery = true)
+    Optional<List<Notice>> no_search_all(String text);
+
+    @Query(value = "select * from Notice q where q.noti_title LIKE :text and q.noti_activation=true order by q.noti_no desc ", nativeQuery = true)
+    Optional<List<Notice>> no_search_title(String text);
+
+    @Query(value = "select * from Notice q where q.noti_text LIKE :text and q.noti_activation=true order by q.noti_no desc", nativeQuery = true)
+    Optional<List<Notice>> no_search_text(String text);
 }

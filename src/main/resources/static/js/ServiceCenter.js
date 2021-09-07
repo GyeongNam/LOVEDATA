@@ -55,6 +55,23 @@ function Qsearch(){
         }
     }
 }
+
+function Nsearch(){
+    var select =$('#Notice_select').val();
+    var text =$('#keyword').val();
+
+    var special_pattern = /[`~!@#$%^&*|\\\'\";:\/?]/gi;
+    if( text == '' ||text == null ){
+        alert( '값을 입력해주세요' );
+    }
+    else {
+        if(special_pattern.test(text) == true) {
+            alert("특수문자는 안됩니다.")
+        } else {
+            return location.href="/ServiceCenter/Notice/search/"+select+"/"+text+"/1";
+        }
+    }
+}
 var setCookie = function(name, value, exp) {
     var date = new Date();
     date.setTime(date.getTime() + exp*24*60*60*1000);

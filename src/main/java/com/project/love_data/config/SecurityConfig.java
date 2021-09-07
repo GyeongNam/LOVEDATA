@@ -47,6 +47,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 //        http.csrf().disable();
 
+        //
+        http.headers().frameOptions().disable();
+//        http.headers().frameOptions().sameOrigin();
+
       //로그인 화면 비활성화
       http.httpBasic().disable();
       http.rememberMe().tokenValiditySeconds(60 * 60 * 24 * 7).userDetailsService(userDetailsService);

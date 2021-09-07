@@ -77,4 +77,20 @@ public class ServiceCenterService {
             return questions.orElse(new ArrayList<>());
         }
     }
+
+    public List<Notice> no_search_all(String no, String text){
+        Optional<List<Notice>> notices;
+        if(no.equals("1")){
+            notices = noticeRepository.no_search_all("%"+text+"%");
+            return notices.orElse(new ArrayList<>());
+        }
+        else if(no.equals("2")){
+            notices = noticeRepository.no_search_title("%"+text+"%");
+            return notices.orElse(new ArrayList<>());
+        }
+        else {
+            notices = noticeRepository.no_search_text("%"+text+"%");
+            return notices.orElse(new ArrayList<>());
+        }
+    }
 }
