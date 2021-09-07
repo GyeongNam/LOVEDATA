@@ -458,7 +458,6 @@ public class ServiceCenterController {
     @GetMapping(value = "/ServiceCenter/Notice_Post_add")
     public String Post_add_noti(Principal principal, HttpServletResponse response) throws IOException {
         if(principal == null){
-            ScriptUtils scriptUtils = new ScriptUtils();
             scriptUtils.alertAndMovePage(response, "로그인 해주세요.", "/login");
         }
         return "/service/noti_Post_add";
