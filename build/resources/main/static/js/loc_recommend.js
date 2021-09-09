@@ -34,9 +34,21 @@ function changeSort(sortType) {
 
 function onClickSearch_Course() {
     let form;
+    let url;
+    let admin;
+
+    url = new URL(window.location.href);
+
     form = document.createElement("form");
     form.method = "get";
-    form.action="/service/cor_recommend/search"
+
+    if (url.pathname.split('/')[1] === "admin") {
+        isAdmin = true;
+        form.action="/admin/cor_recommend/search";
+    } else {
+        isAdmin = false;
+        form.action="/service/cor_recommend/search";
+    }
 
     let keyword = document.getElementById("keyword").value;
 
@@ -66,14 +78,26 @@ function onClickSearch_Course() {
 
         if (i === 3) {
             $(input[3]).attr("name", "searchType");
-            if (keyword !== "") {
-                if (tagList.length !== 0) {
-                    $(input[3]).attr("value", "TITLE_TAG");
+            if (isAdmin) {
+                if (keyword !== "") {
+                    if (tagList.length !== 0) {
+                        $(input[3]).attr("value", "DISABLED_TITLE_TAG");
+                    } else {
+                        $(input[3]).attr("value", "DISABLED_TITLE");
+                    }
                 } else {
-                    $(input[3]).attr("value", "TITLE");
+                    $(input[3]).attr("value", "DISABLED_TAG");
                 }
             } else {
-                $(input[3]).attr("value", "TAG");
+                if (keyword !== "") {
+                    if (tagList.length !== 0) {
+                        $(input[3]).attr("value", "TITLE_TAG");
+                    } else {
+                        $(input[3]).attr("value", "TITLE");
+                    }
+                } else {
+                    $(input[3]).attr("value", "TAG");
+                }
             }
         }
 
@@ -86,9 +110,21 @@ function onClickSearch_Course() {
 
 function onClickSearch() {
     let form;
+    let url;
+    let isAdmin;
+
+    url = new URL(window.location.href);
+
     form = document.createElement("form");
     form.method = "get";
-    form.action="/service/loc_recommend/search"
+
+    if (url.pathname.split('/')[1] === "admin") {
+        isAdmin = true;
+        form.action="/admin/loc_recommend/search";
+    } else {
+        isAdmin = false;
+        form.action="/service/loc_recommend/search";
+    }
 
     let keyword = document.getElementById("keyword").value;
 
@@ -118,14 +154,26 @@ function onClickSearch() {
 
         if (i === 3) {
             $(input[3]).attr("name", "searchType");
-            if (keyword !== "") {
-                if (tagList.length !== 0) {
-                    $(input[3]).attr("value", "TITLE_TAG");
+            if (isAdmin) {
+                if (keyword !== "") {
+                    if (tagList.length !== 0) {
+                        $(input[3]).attr("value", "DISABLED_TITLE_TAG");
+                    } else {
+                        $(input[3]).attr("value", "DISABLED_TITLE");
+                    }
                 } else {
-                    $(input[3]).attr("value", "TITLE");
+                    $(input[3]).attr("value", "DISABLED_TAG");
                 }
             } else {
-                $(input[3]).attr("value", "TAG");
+                if (keyword !== "") {
+                    if (tagList.length !== 0) {
+                        $(input[3]).attr("value", "TITLE_TAG");
+                    } else {
+                        $(input[3]).attr("value", "TITLE");
+                    }
+                } else {
+                    $(input[3]).attr("value", "TAG");
+                }
             }
         }
 

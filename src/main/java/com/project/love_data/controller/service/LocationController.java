@@ -326,6 +326,22 @@ public class LocationController {
             }
         }
 
+        // 일반 유저는 삭제된 장소 항목을 볼 수 없음
+        switch(searchType) {
+            case DISABLED:
+                searchType = SearchType.NONE;
+                break;
+            case DISABLED_TAG:
+                searchType = SearchType.TAG;
+                break;
+            case DISABLED_TITLE:
+                searchType = SearchType.TITLE;
+                break;
+            case DISABLED_TITLE_TAG:
+                searchType = SearchType.TITLE_TAG;
+                break;
+        }
+
         switch (order){
             case "LIKE_DES" :
                 // 좋아요 순

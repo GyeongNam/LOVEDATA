@@ -206,6 +206,16 @@
 											</svg>
 										</c:otherwise>
 									</c:choose>
+									<c:choose>
+										<c:when test="${result.dtoList.get(i)._deleted eq true}">
+											<div class="d-flex justify-content-end card-img-overlay" style="outline: dotted 3px red">
+												<img class="bd-placeholder-img" width="30" height="30"
+													 alt="삭제된 장소 아이콘"
+													 src="/image/icon/trash.png"
+													 preserveAspectRatio="xMidYMid slice" focusable="false">
+											</div>
+										</c:when>
+									</c:choose>
 								</a>
 
 								<div class="card-body p-2">
@@ -272,8 +282,11 @@
 				<c:set var="tagStr" value=""></c:set>
 			</c:otherwise>
 		</c:choose>
+
 		<div class="container d-flex" id="">
 			<div class="col" id="page_number">
+		<c:choose>
+			<c:when test="${isAdminPage eq null}">
 				<nav aria-label="Page navigation example">
 					<ul class="pagination justify-content-center">
 						<c:if test="${result.next eq true}">
@@ -305,15 +318,62 @@
 							<li class="page-item">
 								<a class="page-link"
 								   href="/service/loc_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&page=${result.end + 1}">
-								   aria-label="Previous">
+									aria-label="Previous">
 									<span aria-hidden="true">&raquo;</span>
 								</a>
 							</li>
 						</c:if>
 					</ul>
 				</nav>
+			</c:when>
+			<c:otherwise>
+				<c:choose>
+					<c:when test="${isAdminPage eq true}">
+						<nav aria-label="Page navigation example">
+							<ul class="pagination justify-content-center">
+								<c:if test="${result.next eq true}">
+									<li class="page-item">
+										<a class="page-link"
+										   href="/amdin/service/loc_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&page=${result.start - 1}"
+										   aria-label="Previous">
+											<span aria-hidden="true">&laquo;</span>
+										</a>
+									</li>
+								</c:if>
+								<c:forEach var="j" begin="${result.start}" end="${result.end}">
+								<c:choose>
+								<c:when test="${result.page eq j}">
+								<li class="page-item active">
+									<a class="page-link"
+									   href="/admin/service/loc_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>
+									</c:when>
+									<c:otherwise>
+								<li class="page-item">
+									<a class="page-link"
+									   href="/admin/service/loc_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&page=${result.pageList.get(j-1)}">
+											${result.pageList.get(j-1)}</a>
+									</c:otherwise>
+									</c:choose>
+									</c:forEach>
+								</li>
+								<c:if test="${result.next eq true}">
+									<li class="page-item">
+										<a class="page-link"
+										   href="/admin/service/loc_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&page=${result.end + 1}">
+											aria-label="Previous">
+											<span aria-hidden="true">&raquo;</span>
+										</a>
+									</li>
+								</c:if>
+							</ul>
+						</nav>
+					</c:when>
+				</c:choose>
+			</c:otherwise>
+		</c:choose>
 			</div>
 		</div>
+
 
 		<div class="modal" tabindex="-1" role="dialog">
 			<div class="modal-dialog" role="document">

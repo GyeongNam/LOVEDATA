@@ -55,7 +55,7 @@
 	</div>
 	<div class="container-fluid" id="display_center" style="margin-right: 30px">
 		<div class="col" id="top_navbar">
-			<nav class="navbar navbar-expand-sm navbar-light bg-light static-top">
+			<nav class="navbar navbar-expand-sm navbar-light static-top">
 				<button class="navbar-toggler" type="button" data-toggle="collapse"
 						data-target="#bs-example-navbar-collapse-1">
 				</button>
@@ -87,7 +87,7 @@
 			</nav>
 		</div>
 		<div class="col" id="top_hashtag">
-			<nav class="navbar navbar-expand-sm navbar-light bg-light static-top">
+			<nav class="navbar navbar-expand-sm navbar-light static-top">
 				<div class="collapse navbar-collapse" id="tag-navbar-collapse">
 					<ul class="navbar-nav">
 						<li class="nav-item dropdown">
@@ -212,47 +212,91 @@
 					<h1 class="text-center">등록된 정보가 없습니다.</h1>
 				</c:otherwise>
 			</c:choose>
-
 		</div>
 
 		<%--	PageNumber	--%>
 		<div class="container d-flex" id="">
 			<div class="col" id="page_number">
-				<nav aria-label="Page navigation example">
-					<ul class="pagination justify-content-center">
-						<c:if test="${result.next eq true}">
-							<li class="page-item">
-								<a class="page-link" href="/service/cor_recommend/list?page=${result.start - 1}"
-								   aria-label="Previous">
-									<span aria-hidden="true">&laquo;</span>
-								</a>
-							</li>
-						</c:if>
-						<c:forEach var="j" begin="${result.start}" end="${result.end}">
+				<c:choose>
+					<c:when test="${isAdminPage eq null}">
+						<nav aria-label="Page navigation example">
+							<ul class="pagination justify-content-center">
+								<c:if test="${result.next eq true}">
+									<li class="page-item">
+										<a class="page-link" href="/service/cor_recommend/list?page=${result.start - 1}"
+										   aria-label="Previous">
+											<span aria-hidden="true">&laquo;</span>
+										</a>
+									</li>
+								</c:if>
+								<c:forEach var="j" begin="${result.start}" end="${result.end}">
+								<c:choose>
+								<c:when test="${result.page eq j}">
+								<li class="page-item active">
+									<a class="page-link"
+									   href="/service/cor_recommend/list?page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>
+									</c:when>
+									<c:otherwise>
+								<li class="page-item">
+									<a class="page-link"
+									   href="/service/cor_recommend/list?page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>
+									</c:otherwise>
+									</c:choose>
+									</c:forEach>
+								</li>
+								<c:if test="${result.next eq true}">
+									<li class="page-item">
+										<a class="page-link" href="/service/cor_recommend/list?page=${result.end + 1}"
+										   aria-label="Previous">
+											<span aria-hidden="true">&raquo;</span>
+										</a>
+									</li>
+								</c:if>
+							</ul>
+						</nav>
+					</c:when>
+					<c:otherwise>
 						<c:choose>
-						<c:when test="${result.page eq j}">
-						<li class="page-item active">
-							<a class="page-link"
-							   href="/service/cor_recommend/list?page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>
+							<c:when test="${isAdminPage eq true}">
+								<nav aria-label="Page navigation example">
+									<ul class="pagination justify-content-center">
+										<c:if test="${result.next eq true}">
+											<li class="page-item">
+												<a class="page-link" href="/admin/service/cor_recommend/list?page=${result.start - 1}"
+												   aria-label="Previous">
+													<span aria-hidden="true">&laquo;</span>
+												</a>
+											</li>
+										</c:if>
+										<c:forEach var="j" begin="${result.start}" end="${result.end}">
+										<c:choose>
+										<c:when test="${result.page eq j}">
+										<li class="page-item active">
+											<a class="page-link"
+											   href="/admin/service/cor_recommend/list?page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>
+											</c:when>
+											<c:otherwise>
+										<li class="page-item">
+											<a class="page-link"
+											   href="/admin/service/cor_recommend/list?page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>
+											</c:otherwise>
+											</c:choose>
+											</c:forEach>
+										</li>
+										<c:if test="${result.next eq true}">
+											<li class="page-item">
+												<a class="page-link" href="/admin/service/cor_recommend/list?page=${result.end + 1}"
+												   aria-label="Previous">
+													<span aria-hidden="true">&raquo;</span>
+												</a>
+											</li>
+										</c:if>
+									</ul>
+								</nav>
 							</c:when>
-							<c:otherwise>
-						<li class="page-item">
-							<a class="page-link"
-							   href="/service/cor_recommend/list?page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>
-							</c:otherwise>
-							</c:choose>
-							</c:forEach>
-						</li>
-						<c:if test="${result.next eq true}">
-							<li class="page-item">
-								<a class="page-link" href="/service/cor_recommend/list?page=${result.end + 1}"
-								   aria-label="Previous">
-									<span aria-hidden="true">&raquo;</span>
-								</a>
-							</li>
-						</c:if>
-					</ul>
-				</nav>
+						</c:choose>
+					</c:otherwise>
+				</c:choose>
 			</div>
 		</div>
 

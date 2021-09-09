@@ -231,7 +231,7 @@
 																	 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png"
 																	 style="z-index: 2">
 															</div>
-															<div class="d-flex justify-content-center card-img-overlay p-0 visually-hidden"
+															<div class="d-flex justify-content-center card-img-overlay p-0"
 																 style="align-items: center">
 																<img class="w-100 h-100" id="imgSel_${i}" onclick="onSelectImage(${i})"
 																	 src="/image/icon/480px-Solid_white.png"
@@ -258,7 +258,7 @@
 																	 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png"
 																	 style="z-index: 2">
 															</div>
-															<div class="d-flex justify-content-center card-img-overlay p-0 visually-hidden"
+															<div class="d-flex justify-content-center card-img-overlay p-0"
 																 style="align-items: center">
 																<img class="w-100 h-100" id="imgSel_${i}" onclick="onSelectImage(${i})"
 																	 src="/image/icon/480px-Solid_white.png"

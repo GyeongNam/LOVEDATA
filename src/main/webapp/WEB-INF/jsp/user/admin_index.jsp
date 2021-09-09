@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>Admin Index</h1>
-<a href="/admin/service/loc_recommend">어드민 장소 추천</a>
-<a href="/admin/service/cor_recommend">어드민 코스 추천</a>
+<a href="/admin/loc_recommend">어드민 장소 추천</a>
+<a href="/admin/cor_recommend">어드민 코스 추천</a>
 </body>
 </html>
