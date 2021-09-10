@@ -12,28 +12,28 @@ import java.util.*;
 
 public interface ReviewRepository extends JpaRepository<Review, Long>,
         QuerydslPredicateExecutor<Review> {
-    @Query(value = "SELECT * FROM Review r WHERE r.cor_no = :cor_no", nativeQuery = true)
+    @Query(value = "SELECT * FROM review r WHERE r.cor_no = :cor_no", nativeQuery = true)
     Optional<List<Review>> findAllByCor_no(@Param("cor_no") Long corNo);
 
-    @Query(value = "SELECT * FROM Review r WHERE r.user_no = :user_no", nativeQuery = true)
+    @Query(value = "SELECT * FROM review r WHERE r.user_no = :user_no", nativeQuery = true)
     List<Review> findAllByUser_no(@Param("user_no") Long userNo);
 
-    @Query(value = "SELECT * FROM Review r WHERE r.rev_uuid = :rev_uuid", nativeQuery = true)
+    @Query(value = "SELECT * FROM review r WHERE r.rev_uuid = :rev_uuid", nativeQuery = true)
     Optional<Review> findByRev_uuid(@Param("rev_uuid") String revUuid);
 
-    @Query(value = "SELECT * FROM Review r WHERE r.rev_no = :rev_no", nativeQuery = true)
+    @Query(value = "SELECT * FROM review r WHERE r.rev_no = :rev_no", nativeQuery = true)
     Optional<Review> findByRev_no(@Param("rev_no") Long revNo);
 
-    @Query(value = "SELECT * FROM Review r WHERE r.cor_no = :cor_no AND r.is_deleted = false", nativeQuery = true)
+    @Query(value = "SELECT * FROM review r WHERE r.cor_no = :cor_no AND r.is_deleted = false", nativeQuery = true)
     Optional<List<Review>> findLiveByCor_no(@Param("cor_no") Long corNo);
 
     @Modifying
-    @Query(value = "DELETE FROM Review WHERE rev_no = :rev_no", nativeQuery = true)
+    @Query(value = "DELETE FROM review WHERE rev_no = :rev_no", nativeQuery = true)
     @Transactional
     void deleteByRev_no(@Param("rev_no") Long rev_no);
 
     @Modifying
-    @Query(value = "DELETE FROM Review WHERE rev_uuid = :rev_uuid", nativeQuery = true)
+    @Query(value = "DELETE FROM review WHERE rev_uuid = :rev_uuid", nativeQuery = true)
     @Transactional
     void deleteByRev_uuid(@Param("rev_uuid") String revUuid);
 }

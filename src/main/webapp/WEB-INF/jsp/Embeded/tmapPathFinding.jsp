@@ -57,6 +57,7 @@
         var city_do = city_do;
         var gu_gun = gu_gun;
         var dong = road_addr;
+        let corList = [];
 
         // 시구가 동시에 있어도 가능!
         // var city_do = "경기도";
@@ -90,12 +91,8 @@
                 // console.log("위도(latitude) : " + lat);
                 // console.log("경도(logitude) : " + lon);
 
-                let corList = [];
-
-                corList.push(lat);
-                corList.push(lon);
-
-                return corList;
+                corList.push(Number(lat));
+                corList.push(Number(lon));
             },
             error : function(request, status, error) {
                 console.log("code:"
@@ -103,8 +100,12 @@
                 + "message:"
                 + request.responseText
                 + "\n" + "error:" + error);
+
+                return null;
             }
         });
+
+        return corList;
     }
 
     function initTmap() {
@@ -113,25 +114,45 @@
         <c:forEach var="i" begin="0" end="${locDTOList.size()-1}">
 			corList.push(getCoordinates('${locDTOList.get(i).siDo}', '${locDTOList.get(i).siGunGu}', '${locDTOList.get(i).roadAddr}'));
 		</c:forEach>
+        // console.log(corList);
 
+		let mapInitXCor = 0;
+        let mapInitYCor = 0;
+        for (let x of corList) {
+			mapInitXCor += x[0];
+            mapInitYCor += x[1];
+        }
+		mapInitXCor = mapInitXCor / corList.length;
+        mapInitYCor = mapInitYCor / corList.length;
+
+        console.log(mapInitXCor, mapInitYCor);
+        console.log("시작점 좌표 (x) : " + corList[0][0] + "\t\t(y) : " + corList[0][1]);
+        console.log("끝점 좌표 (x) : " + corList[corList.length-1][0] + "\t\t(y) : " + corList[corList.length-1][1]);
+
+        //lonlat 인스턴스 생성.
+        var lonlat =  new Tmapv2.LatLng(corList[0][0], corList[0][1]);
+        var lonlat2 = new Tmapv2.LatLng(corList[corList.length-1][0], corList[corList.length-1][1]);
+        //bounds 인스턴스를 생성합니다.
+        var latlngBounds = new Tmapv2.LatLngBounds(lonlat, lonlat2);
         // 1. 지도 띄우기
         // 지도 센터는 (시작지점 + 도착지점 )/2로 계산하기
         // 줌 레벨은 어떻게 설정할 건지 생각해보기
         map = new Tmapv2.Map("map_div", {
-            center : new Tmapv2.LatLng(37.4848083111017195, 127.044178119818575),
+            center : new Tmapv2.LatLng(corList[0][0], corList[0][1]),
             width : "100%",
             height : "500px",
-            zoom : 11,
+			zoom: 11,
             zoomControl : true,
             scrollwheel : true
         });
+        // map.fitBounds(latlngBounds);
+        // map.zoomToMaxExtent( );
 
         // 2. 시작, 도착 심볼찍기
         // 시작
         marker_s = new Tmapv2.Marker(
             {
-                position : new Tmapv2.LatLng(37.566567545861645,
-                    126.9850380932383),
+                position : new Tmapv2.LatLng(corList[0][0], corList[0][1]),
                 icon : "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
                 iconSize : new Tmapv2.Size(24, 38),
                 map : map
@@ -140,8 +161,7 @@
         //도착
         marker_e = new Tmapv2.Marker(
             {
-                position : new Tmapv2.LatLng(37.403049076341794,
-                    127.10331814639885),
+                position : new Tmapv2.LatLng(corList[corList.length-1][0], corList[corList.length-1][1]),
                 icon : "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png",
                 iconSize : new Tmapv2.Size(24, 38),
                 map : map
@@ -167,10 +187,12 @@
                             async : false,
                             data : {
                                 "appKey" : "l7xx3241520698ba4a96b002203c64d57242",
-                                "startX" : "126.9850380932383",
-                                "startY" : "37.566567545861645",
-                                "endX" : "127.10331814639885",
-                                "endY" : "37.403049076341794",
+                                "startX" : corList[0][1],
+                                "startY" : corList[0][0],
+								"startName" : "${locDTOList.get(0).loc_name}",
+                                "endX" : corList[corList.length-1][1],
+                                "endY" : corList[corList.length-1][0],
+								"endName" : "${locDTOList.get(locDTOList.size()-1).loc_name}",
                                 "reqCoordType" : "WGS84GEO",
                                 "resCoordType" : "EPSG3857",
                                 "searchOption" : searchOption,

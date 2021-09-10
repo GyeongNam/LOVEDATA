@@ -16,6 +16,7 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -26,11 +27,13 @@ import java.util.function.Function;
 
 @Service
 @Log4j2
-@RequiredArgsConstructor
 public class CommentService {
-    private final CommentRepository cmtRepository;
-    private final LocationRepository locRepository;
-    private final UserRepository userRepository;
+    @Autowired
+    CommentRepository cmtRepository;
+    @Autowired
+    LocationRepository locRepository;
+    @Autowired
+    UserRepository userRepository;
 
     public Comment dtoToEntity(CommentDTO dto){
         Comment entity = Comment.builder()

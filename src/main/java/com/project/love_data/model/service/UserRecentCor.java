@@ -11,7 +11,7 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
-@Table(name = "userRecentCor")
+@Table(name = "user_recent_cor")
 @Setter
 @Getter
 @Builder

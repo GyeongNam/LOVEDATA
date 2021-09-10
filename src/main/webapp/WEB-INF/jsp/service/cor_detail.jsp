@@ -440,10 +440,7 @@
 				</c:choose>
 				<%--      경로--%>
 				<div class="tab-pane fade" id="course-map" role="tabpanel" aria-labelledby="course-map-tab">
-<%--					<jsp:include page="/WEB-INF/jsp/sample/tmapPathFindingTest.jsp"></jsp:include>--%>
-<%--					<%@ include file="/WEB-INF/jsp/sample/tmapPathFindingTest.jsp" %>--%>
-<%--					<c:import url="/WEB-INF/jsp/sample/tmapPathFindingTest.jsp"></c:import>--%>
-					<iframe width="800" height="600" src="http://localhost:8080/embeded/pathFinding"></iframe>
+					<iframe width="800" height="600" src="/embeded/pathFinding?corNo=${dto.cor_no}"></iframe>
 				</div>
 				<%--      설명--%>
 				<div class="tab-pane fade" id="course-info" role="tabpanel" aria-labelledby="course-info-tab">

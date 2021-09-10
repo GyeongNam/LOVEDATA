@@ -14,6 +14,7 @@ public class URISetter {
     private static final  String kakao_LogoutRedirect = "/login_kakao/process";
     private static final String local_host = "http://localhost:8080";
     private static final String mon0mon_iptime = "http://mon0mon.iptime.org:18080";
+    private static final String mon0mon_iptime_2 = "http://mon0mon.iptime.org:28080";
     private static final String loveData_kr = "https://lovedata.kr";
     private static final String loveData_ddns = "https://lovedata.ddns.net";
     private static final String loveData_duck = "https://lovedata.duckdns.org";
@@ -30,6 +31,9 @@ public class URISetter {
                 return URL;
             case MON_IPTIME:
                 URL += mon0mon_iptime;
+                return URL;
+            case MON_IPTIME_2:
+                URL += mon0mon_iptime_2;
                 return URL;
             case LOVEDATA_DDNS:
                 URL += loveData_ddns;

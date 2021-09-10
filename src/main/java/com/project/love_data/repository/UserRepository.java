@@ -20,19 +20,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface UserRepository extends JpaRepository<User, Long>{
 
-	@Query(value = "select * from User where user_email = :email", nativeQuery = true)
+	@Query(value = "select * from user where user_email = :email", nativeQuery = true)
 	String email_check(@Param("email")String email);
 
-	@Query(value = "select user_email from User where user_email = :email", nativeQuery = true)
+	@Query(value = "select user_email from user where user_email = :email", nativeQuery = true)
 	String email_send(@Param("email")String email);
 
-	@Query(value = "select * from User where user_nic = :nickname", nativeQuery = true)
+	@Query(value = "select * from user where user_nic = :nickname", nativeQuery = true)
 	String nick_check(@Param("nickname")String nickname);
 
-	@Query(value = "select * from User u where user_email = :email", nativeQuery = true)
+	@Query(value = "select * from user u where user_email = :email", nativeQuery = true)
 	Optional<User> findUserByEmail(String email);
 
-	@Query(value = "select * from User u where user_email = :email AND user_social=:social", nativeQuery = true)
+	@Query(value = "select * from user u where user_email = :email AND user_social=:social", nativeQuery = true)
 	Optional<User> findUserByEmail_Social(String email, boolean social);
 
 	@EntityGraph(attributePaths = {"roleSet"}, type = EntityGraph.EntityGraphType.LOAD)
@@ -40,27 +40,27 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	Optional<User> findUserByEmail_Privilege(@Param("email") String email);
 
 	//CHOI
-	@Query(value = "select user_email from User where user_phone = :phonenumber", nativeQuery = true)
+	@Query(value = "select user_email from user where user_phone = :phonenumber", nativeQuery = true)
 	Optional<List<String>> findId(String phonenumber);
 
-	@Query(value = "select * from User u where user_email = :email", nativeQuery = true)
+	@Query(value = "select * from user u where user_email = :email", nativeQuery = true)
 	User findEmail(String email);
 
-	@Query(value = "select * from User u where user_pw = :pw", nativeQuery = true)
+	@Query(value = "select * from user u where user_pw = :pw", nativeQuery = true)
 	User findPw2(String pw);
 
-	@Query(value = "select * from User u where user_no = :no", nativeQuery = true)
+	@Query(value = "select * from user u where user_no = :no", nativeQuery = true)
 	User find_user_no(String no);
 
-	@Query(value = "select user_no from User u where user_email = :email", nativeQuery = true)
+	@Query(value = "select user_no from user u where user_email = :email", nativeQuery = true)
 	String finduserNo(String email);
 //	@Modifying
 //	@Transactional
-//	@Query(value = "DELETE  FROM User_role_set r WHERE r.user_user_no = :user_no", nativeQuery = true)
+//	@Query(value = "DELETE  FROM user_role_set r WHERE r.user_user_no = :user_no", nativeQuery = true)
 //	void deleteUserRoleByEmail(@Param("user_no") Long user_no);
 
 	@Modifying
-	@Query(value = "DELETE  FROM User  WHERE user_email = :email", nativeQuery = true)
+	@Query(value = "DELETE  FROM user  WHERE user_email = :email", nativeQuery = true)
 	@Transactional
 	void deleteUserByEmail(@Param("email") String email);
 

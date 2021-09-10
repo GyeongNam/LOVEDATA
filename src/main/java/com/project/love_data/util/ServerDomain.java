@@ -5,5 +5,6 @@ public enum ServerDomain {
     LOVEDATA_DDNS,
     LOVEDATA_DUCK,
     MON_IPTIME,
+    MON_IPTIME_2,
     LOCALHOST
 }

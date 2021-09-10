@@ -11,7 +11,7 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
-@Table(name = "userLikeCor")
+@Table(name = "user_like_cor")
 @Setter
 @Getter
 @Builder

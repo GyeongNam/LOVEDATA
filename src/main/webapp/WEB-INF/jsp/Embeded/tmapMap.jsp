@@ -86,8 +86,8 @@
 
                 //기존 마커 삭제
                 marker1.setMap(null);
-                // console.log("위도(latitude) : " + lat);
-                // console.log("경도(logitude) : " + lon);
+                console.log("위도(latitude) : " + lat);
+                console.log("경도(logitude) : " + lon);
 
                 var markerPosition = new Tmapv2.LatLng(
                     Number(lat), Number(lon));

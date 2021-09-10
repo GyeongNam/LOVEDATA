@@ -16,13 +16,13 @@ import java.util.*;
 
 public interface LocationRepository extends JpaRepository<Location, Long>
         , QuerydslPredicateExecutor<Location> {
-    @Query(value = "SELECT * from Location l WHERE  l.loc_name LIKE :name", nativeQuery = true)
+    @Query(value = "SELECT * from location l WHERE  l.loc_name LIKE :name", nativeQuery = true)
     List<Location> findAllByName(@Param("name") String name);
 
-    @Query(value = "SELECT * from Location l WHERE  l.loc_no = :loc_no", nativeQuery = true)
+    @Query(value = "SELECT * from location l WHERE  l.loc_no = :loc_no", nativeQuery = true)
     Optional<Location> findLocByLoc_no(@Param("loc_no") Long loc_no);
 
-    @Query(value = "SELECT * from Location l WHERE  l.loc_uuid = :loc_uuid", nativeQuery = true)
+    @Query(value = "SELECT * from location l WHERE  l.loc_uuid = :loc_uuid", nativeQuery = true)
     Optional<Location> findLocByUUID(@Param("loc_uuid") String loc_uuid);
 
     @Modifying
@@ -31,32 +31,32 @@ public interface LocationRepository extends JpaRepository<Location, Long>
     void deleteByLoc_uuid(@Param("loc_uuid") String loc_uuid);
 
 //    @EntityGraph(attributePaths = {"tagSet"}, type = EntityGraph.EntityGraphType.LOAD)
-//    @Query(value = "SELECT l from Location l WHERE l.loc_no = :loc_no")
+//    @Query(value = "SELECT l from location l WHERE l.loc_no = :loc_no")
 //    Optional<Location> findLoc_TagByNo(@Param("loc_no") Long loc_no);
 //
 //    @EntityGraph(attributePaths = {"tagSet"}, type = EntityGraph.EntityGraphType.LOAD)
-//    @Query(value = "SELECT l from Location l WHERE l.loc_uuid = :loc_uuid")
+//    @Query(value = "SELECT l from location l WHERE l.loc_uuid = :loc_uuid")
 //    Optional<Location> findLoc_TagByUUID(@Param("loc_uuid") String loc_uuid);
 
     List<Location> findByRoadAddrContaining(@Param("roadaddr") String roadaddr);
 
     List<Location> findAllByRoadAddrAndAddrDetail(@Param("roadaddr") String roadaddr, @Param("addrdetail") String addrdetail);
 
-    @Query(value = "SELECT l from Location l WHERE  l.loc_name LIKE :loc_name")
+    @Query(value = "SELECT * from location l WHERE  l.loc_name LIKE :loc_name", nativeQuery = true)
     Optional<List<Location>> findByLoc_nameContaining(@Param("loc_name") String loc_name);
 
-    @Query(value = "SELECT l FROM Location l WHERE l.user_no IN :user_no")
+    @Query(value = "SELECT * FROM location l WHERE l.user_no IN :user_no", nativeQuery = true)
     Optional<List<Location>> findByAllUser_no(@Param("user_no")Long userNo);
 
-    @Query(value = "SELECT * from Location l WHERE  l.loc_no = :loc_no AND l.is_deleted = false", nativeQuery = true)
+    @Query(value = "SELECT * from location l WHERE  l.loc_no = :loc_no AND l.is_deleted = false", nativeQuery = true)
     Optional<Location> findLiveLocByLoc_no(@Param("loc_no") Long loc_no);
 
-    @Query(value = "SELECT * from Location l WHERE  l.loc_uuid = :loc_uuid AND l.is_deleted = false", nativeQuery = true)
+    @Query(value = "SELECT * from location l WHERE  l.loc_uuid = :loc_uuid AND l.is_deleted = false", nativeQuery = true)
     Optional<Location> findLiveLocByUUID(@Param("loc_uuid") String loc_uuid);
 
 //    @Query(value = "SELECT DISTINCT ls.location_loc_no from location_tag_set ls WHERE ls.tag_set LIKE :tag")
 //    Long findLocationNoByTag(@Param("tag")String tag);
 
-//    @Query(value = "SELECT DISTINCT l from Location l WHERE l.tagSet IN :tag")
+//    @Query(value = "SELECT DISTINCT l from location l WHERE l.tagSet IN :tag")
 //    Optional<List<Location>> findLocationByTag(@Param("tag")Set<String> tag);
 }
