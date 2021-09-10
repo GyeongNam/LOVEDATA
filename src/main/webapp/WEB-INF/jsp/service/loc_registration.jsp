@@ -108,12 +108,14 @@
 						<form method="post" name="form" id="form">
 							<input type="button" onclick="goPopup()" value="주소검색">
 							<input type="text" placeholder="우편번호" id="zipNo" name="zipNo" readonly value="" required>
-							<input type="text" placeholder="도로명 주소" id="roadAddrPart1" name="roadAddrPart1" readonly
+							<input type="text" placeholder="전체 주소" id="fullRoadAddr" name="fullRoadAddr" readonly
 								   required>
 							<input type="text" placeholder="도로명 주소 (상세)" id="addrDetail" name="addrDetail" readonly
 								   required>
 							<input type="hidden" placeholder="시도명" id="siNm" name="siNm" readonly required>
 							<input type="hidden" placeholder="시군구명" id="sggNm" name="sggNm" readonly required>
+							<input type="hidden" placeholder="도로명 주소" id="roadAddr" name="roadAddr" readonly
+								   required>
 						</form>
 					</div>
 					<div class="input-box">
@@ -220,12 +222,13 @@
 
     function jusoCallBack(roadFullAddr, roadAddrPart1, addrDetail, roadAddrPart2, engAddr, jibunAddr, zipNo, admCd, rnMgtSn, bdMgtSn, detBdNmList, bdNm, bdKdcd, siNm, sggNm, emdNm, liNm, rn, udrtYn, buldMnnm, buldSlno, mtYn, lnbrMnnm, lnbrSlno, emdNo) {
         // 팝업페이지에서 주소입력한 정보를 받아서, 현 페이지에 정보를 등록합니다.
-        document.getElementById("roadAddrPart1").value = roadAddrPart1;
+        document.getElementById("fullRoadAddr").value = roadAddrPart1;
         document.getElementById("addrDetail").value = addrDetail;
         document.getElementById("addrDetail").removeAttribute("disabled");
         document.getElementById("zipNo").value = zipNo;
         document.getElementById("siNm").value = siNm;
         document.getElementById("sggNm").value = sggNm;
+        document.getElementById("roadAddr").value = rn + " " + buldMnnm + "-" + buldSlno;
         <%--// document.form.roadFullAddr.value = roadFullAddr;
         // document.form.roadAddrPart1.value = roadAddrPart1;
         // document.form.roadAddrPart2.value = roadAddrPart2;

@@ -227,6 +227,11 @@
 					</c:choose>
 				</li>
 				<li class="nav-item" role="presentation">
+					<button class="nav-link" id="location-map-tab" data-bs-toggle="pill"
+							data-bs-target="#location-map" type="button" role="tab" aria-controls="location-map" onclick="removeURLParam('page')"
+							aria-selected="true">위치</button>
+				</li>
+				<li class="nav-item" role="presentation">
 					<c:choose>
 						<c:when test="${param.containsKey('page') eq true}">
 							<button class="mw-100 mh-100 nav-link active" id="location-comment-tab" data-bs-toggle="pill"
@@ -256,6 +261,10 @@
 							<span class="fs-5" style="white-space: pre-wrap;">${dto.info}</span>
 						</div>
 					</div>
+				</div>
+<%--							위치--%>
+				<div class="tab-pane fade" id="location-map" role="tabpanel" aria-labelledby="location-map-tab">
+					<iframe name="location_map_embeded" width="1200" height="1000" src="/embeded/map?locNo=${dto.loc_no}"></iframe>
 				</div>
 				<%--    댓글--%>
 				<c:choose>

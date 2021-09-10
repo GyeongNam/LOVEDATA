@@ -26,6 +26,8 @@ public class QLocation extends EntityPathBase<Location> {
 
     public final SetPath<Comment, QComment> cmtSet = this.<Comment, QComment>createSet("cmtSet", Comment.class, QComment.class, PathInits.DIRECT2);
 
+    public final StringPath fullRoadAddr = createString("fullRoadAddr");
+
     public final SetPath<com.project.love_data.model.resource.LocationImage, com.project.love_data.model.resource.QLocationImage> imgSet = this.<com.project.love_data.model.resource.LocationImage, com.project.love_data.model.resource.QLocationImage>createSet("imgSet", com.project.love_data.model.resource.LocationImage.class, com.project.love_data.model.resource.QLocationImage.class, PathInits.DIRECT2);
 
     public final StringPath info = createString("info");

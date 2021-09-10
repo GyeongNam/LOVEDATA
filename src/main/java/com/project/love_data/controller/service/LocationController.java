@@ -78,7 +78,8 @@ public class LocationController {
         reqParam.put("tel", request.getParameter("tel"));
         reqParam.put("info", request.getParameter("info"));
         reqParam.put("zipNo", request.getParameter("zipNo"));
-        reqParam.put("roadAddr", request.getParameter("roadAddrPart1"));
+        reqParam.put("fullAddr", request.getParameter("fullRoadAddr"));
+        reqParam.put("roadAddr", request.getParameter("roadAddr"));
         reqParam.put("addrDetail", request.getParameter("addrDetail"));
         reqParam.put("siDoName", request.getParameter("siNm"));
         reqParam.put("siGunGuName", request.getParameter("sggNm"));
@@ -261,7 +262,8 @@ public class LocationController {
         reqParam.put("tel", request.getParameter("tel"));
         reqParam.put("info", request.getParameter("info"));
         reqParam.put("zipNo", request.getParameter("zipNo"));
-        reqParam.put("roadAddr", request.getParameter("roadAddrPart1"));
+        reqParam.put("fullAddr", request.getParameter("fullRoadAddr"));
+        reqParam.put("roadAddr", request.getParameter("roadAddr"));
         reqParam.put("addrDetail", request.getParameter("addrDetail"));
         reqParam.put("siDoName", request.getParameter("siNm"));
         reqParam.put("siGunGuName", request.getParameter("sggNm"));

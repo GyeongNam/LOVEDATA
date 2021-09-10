@@ -18,6 +18,7 @@ public class LocationDTO {
     private String loc_name;
     private Long user_no;
     private String tel;
+    private String fullRoadAddr;
     private String roadAddr;
     private String addrDetail;
     private String zipNo;

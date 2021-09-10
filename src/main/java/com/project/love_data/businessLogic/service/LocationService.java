@@ -66,6 +66,7 @@ public class LocationService {
                 .loc_name(dto.getLoc_name())
                 .loc_uuid(dto.getLoc_uuid())
                 .user_no(dto.getUser_no())
+                .fullRoadAddr(dto.getFullRoadAddr())
                 .roadAddr(dto.getRoadAddr())
                 .addrDetail(dto.getAddrDetail())
                 .siDo(dto.getSiDo())
@@ -91,6 +92,7 @@ public class LocationService {
                 .loc_name(entity.getLoc_name())
                 .loc_uuid(entity.getLoc_uuid())
                 .user_no(entity.getUser_no())
+                .fullRoadAddr(entity.getFullRoadAddr())
                 .roadAddr(entity.getRoadAddr())
                 .addrDetail(entity.getAddrDetail())
                 .siDo(entity.getSiDo())
@@ -197,6 +199,7 @@ public class LocationService {
         LocationDTO loc = LocationDTO.builder()
                 .loc_name(reqParam.get("name"))
                 .user_no(Long.valueOf(reqParam.get("user_no")))
+                .fullRoadAddr(reqParam.get("fullAddr"))
                 .roadAddr(reqParam.get("roadAddr"))
                 .addrDetail(reqParam.get("addrDetail"))
                 .siDo(reqParam.get("siDoName"))
@@ -534,16 +537,13 @@ public class LocationService {
     public Location edit(Map<String, String> reqParam, List<String> tagList, List<String> filePath) {
         List<LocationImage> imgList = new ArrayList<>();
         Location entity = selectLoc(reqParam.get("loc_uuid"));
+        entity = updateLocationEntity(entity, reqParam);
 
         // 업데이트 된 태그 정보 삽입
         entity.setTagSet(new HashSet<>());
         for (String item : tagList) {
             entity.addLocTag(item);
         }
-
-        LocationDTO dto = entityToDto(entity);
-//        boolean flag = false;
-        // Todo 기존에 장소에 등록된 이미지가 업데이트 된 장소와 연결이 끊여졌을 때 어떻게 동작할 지
 
         for (int i = 0; i < filePath.size(); i+=2) {
             // filePath.get(0)  ==  Parent Folder (URI)
@@ -573,6 +573,20 @@ public class LocationService {
         repository.save(entity);
 
 //        log.info("entity : " + entity);
+
+        return entity;
+    }
+
+    private Location updateLocationEntity(Location entity, Map<String, String> reqParam) {
+        entity.setLoc_name(reqParam.get("name"));
+        entity.setFullRoadAddr(reqParam.get("fullAddr"));
+        entity.setRoadAddr(reqParam.get("roadAddr"));
+        entity.setAddrDetail(reqParam.get("addrDetail"));
+        entity.setSiDo(reqParam.get("siDoName"));
+        entity.setSiGunGu(reqParam.get("siGunGuName"));
+        entity.setInfo(reqParam.get("info"));
+        entity.setTel(reqParam.get("tel"));
+        entity.setZipNo(reqParam.get("zipNo"));
 
         return entity;
     }

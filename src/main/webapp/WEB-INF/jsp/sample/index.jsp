@@ -17,6 +17,7 @@
     <button type="submit">response_body_value</button>
     <sec:csrfInput/>
 </form>
-<p><a href="/tmap">t맵</a></p>
+<p><a href="/sample/tmapTest">t맵</a></p>
+<p><a href="/sample/tmapPathFindingTest">t맵 경로찾기 샘플</a></p>
 </body>
 </html>

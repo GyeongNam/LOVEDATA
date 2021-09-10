@@ -42,6 +42,9 @@ public class Location extends TimeEntity {
     @Column(name = "tel", nullable = false)
     private String tel;
 
+    @Column(name = "fullroadaddr", length = 90, nullable = false)
+    private String fullRoadAddr;
+
     @Column(name = "roadaddr", length = 50, nullable = false)
     private String roadAddr;
 

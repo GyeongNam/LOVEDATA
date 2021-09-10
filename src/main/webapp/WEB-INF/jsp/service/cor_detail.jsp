@@ -321,6 +321,12 @@
 					</c:when>
 				</c:choose>
 				<li class="nav-item" role="presentation">
+					<button class="nav-link" id="course-map-tab" data-bs-toggle="pill"
+							data-bs-target="#course-map" type="button" role="tab" aria-controls="course-info" onclick="removeURLParam('page')"
+							aria-selected="true">경로
+					</button>
+				</li>
+				<li class="nav-item" role="presentation">
 					<button class="nav-link" id="course-info-tab" data-bs-toggle="pill"
 							data-bs-target="#course-info" type="button" role="tab" aria-controls="course-info" onclick="removeURLParam('page')"
 							aria-selected="true">설명
@@ -432,6 +438,13 @@
 						</c:forEach>
 					</c:when>
 				</c:choose>
+				<%--      경로--%>
+				<div class="tab-pane fade" id="course-map" role="tabpanel" aria-labelledby="course-map-tab">
+<%--					<jsp:include page="/WEB-INF/jsp/sample/tmapPathFindingTest.jsp"></jsp:include>--%>
+<%--					<%@ include file="/WEB-INF/jsp/sample/tmapPathFindingTest.jsp" %>--%>
+<%--					<c:import url="/WEB-INF/jsp/sample/tmapPathFindingTest.jsp"></c:import>--%>
+					<iframe width="800" height="600" src="http://localhost:8080/embeded/pathFinding"></iframe>
+				</div>
 				<%--      설명--%>
 				<div class="tab-pane fade" id="course-info" role="tabpanel" aria-labelledby="course-info-tab">
 					<div class="container">
@@ -679,7 +692,7 @@
 
     <c:choose>
 		<c:when test="${revImgStringURLList ne null}">
-    		console.log("${revImgStringURLList.size()}")
+    		<%--console.log("${revImgStringURLList.size()}")--%>
 			<c:forEach var="i" begin="0" end="${revImgStringURLList.size()-1}">
 				tempStr = "${revImgStringURLList.get(i)}";
     			revImgList.push(tempStr);
@@ -687,8 +700,8 @@
 		</c:when>
 	</c:choose>
 
-    console.log(revImgList);
-    console.log(revImgList[0]);
+    // console.log(revImgList);
+    // console.log(revImgList[0]);
 </script>
 <script defer>
     function clickImgNext() {
