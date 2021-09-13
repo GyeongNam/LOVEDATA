@@ -41,7 +41,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
               .antMatchers("/manager").hasRole("MANAGER")
               .antMatchers("/all").permitAll()
               .and()
-              .csrf().ignoringAntMatchers("/service/**").ignoringAntMatchers("/popup/**");
+              .csrf().ignoringAntMatchers("/service/**").ignoringAntMatchers("/popup/**").ignoringAntMatchers("/se2/**").ignoringAntMatchers("/multiImgUpload");
+
+
 //              .csrf().ignoringAntMatchers("/popup/**");
 //              .csrf().requireCsrfProtectionMatcher(new AllExceptUrlsStartedWith("/service/loc_registration"));
 
