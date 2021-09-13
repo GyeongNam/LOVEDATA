@@ -65,7 +65,6 @@ public class EmbededController {
         } else {
             corLocMapperList = corLocMapperService.getLocationsByCorNo(corNo);
             locDTOList = new ArrayList<>();
-            nullLocIdxList = new ArrayList<>();
 
             for (int i = 0; i < corLocMapperList.size(); i++) {
                 LocationDTO locDTO = locService.selectLiveLocDTO(corLocMapperList.get(i).getLoc_no());

@@ -169,18 +169,15 @@ public class CourseService {
     }
 
     public CourseDTO updateCourseDto(Map<String, String> reqParam, List<String> tagList) {
-        CourseDTO courseDTO = CourseDTO.builder()
-                .cor_no(Long.valueOf(reqParam.get("cor_no")))
-                .cor_uuid(reqParam.get("cor_uuid"))
-                .cor_name(reqParam.get("name"))
-                .user_no(Long.valueOf(reqParam.get("user_no")))
-                .info(reqParam.get("info"))
-                .transportation(reqParam.get("transportation"))
-                .cost(reqParam.get("cost"))
-                .location_count(Integer.parseInt(reqParam.get("location_length")))
-                .est_type(reqParam.get("est_type"))
-                .est_value(reqParam.get("est_value"))
-                .build();
+        CourseDTO courseDTO = selectCorDTO(Long.valueOf(reqParam.get("cor_no")));
+
+        courseDTO.setCor_name(reqParam.get("name"));
+        courseDTO.setInfo(reqParam.get("info"));
+        courseDTO.setTransportation(reqParam.get("transportation"));
+        courseDTO.setCost(reqParam.get("cost"));
+        courseDTO.setLocation_count(Integer.parseInt(reqParam.get("location_length")));
+        courseDTO.setEst_type(reqParam.get("est_type"));
+        courseDTO.setEst_value(reqParam.get("est_value"));
 
         if ("date".equals(courseDTO.getEst_type())) {
             courseDTO.setAccommodations_info(reqParam.get("accommodations"));

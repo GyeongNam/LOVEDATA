@@ -428,6 +428,9 @@ public class LocationController {
 
         locService.delete(entity.getLoc_no());
 
+        log.info(request.getRequestURL());
+        log.info(request.getRequestURI());
+
         return "redirect:/service/loc_recommend";
     }
 

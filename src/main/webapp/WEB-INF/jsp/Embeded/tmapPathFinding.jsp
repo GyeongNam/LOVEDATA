@@ -37,6 +37,7 @@
 </div>
 <div class="map_act_btn_wrap clear_box"></div>
 <p id="result"></p>
+<p id="nullLocationWarning"></p>
 </body>
 <script	src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx3241520698ba4a96b002203c64d57242"></script>
@@ -151,7 +152,7 @@
         map = new Tmapv2.Map("map_div", {
             center : new Tmapv2.LatLng(corList[0][0], corList[0][1]),
             width : "100%",
-            height : "500px",
+            height : "600px",
 			zoom: 13,
             zoomControl : true,
             scrollwheel : true
@@ -201,6 +202,7 @@
                     resettingMap();
 
                     var searchOption = $("#selectLevel").val();
+                    let nullLocIdx = [];
 
                     // var trafficInfochk = $("#year").val();
                     var trafficInfochk = 'N';
@@ -244,6 +246,25 @@
                                 $("#result").text(
                                 tDistance + tTime + tFare
                                 + taxiFare);
+                                
+                                <c:choose>
+									<c:when test="${!empty nullLocIdxList}">
+		                                // console.log("nullLocIdxList is not empty")
+
+										<c:forEach var="i" begin="0" end="${nullLocIdxList.size()-1}">
+											nullLocIdx.push(Number(${nullLocIdxList.get(i) + 1}));
+										</c:forEach>
+
+										console.log(nullLocIdx);
+										let tempString = "[ ";
+										for (let i = 0; i < nullLocIdx.length; i++) {
+											tempString += nullLocIdx[i] + ", ";
+										}
+                                        tempString = tempString.slice(0, tempString.length-2);
+                                        tempString += " ]";
+                                		$("#nullLocationWarning").text(tempString + "번째 장소들은 삭제되어 제외되었습니다.");
+									</c:when>
+								</c:choose>
 
                                 let iterationIndex = 0;
 

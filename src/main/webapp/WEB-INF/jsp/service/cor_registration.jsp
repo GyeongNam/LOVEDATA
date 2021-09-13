@@ -1056,9 +1056,7 @@
             disableVisualLocation(index);
 		}
 
-        if (index === 1) {
-            onClearSelectLocation();
-		} else {
+        if (index !== 1) {
             selectedLocationIndex -= 1;
 		}
 

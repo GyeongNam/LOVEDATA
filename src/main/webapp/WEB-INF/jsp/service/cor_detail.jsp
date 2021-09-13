@@ -440,7 +440,7 @@
 				</c:choose>
 				<%--      경로--%>
 				<div class="tab-pane fade" id="course-map" role="tabpanel" aria-labelledby="course-map-tab">
-					<iframe width="800" height="600" src="/embeded/pathFinding?corNo=${dto.cor_no}"></iframe>
+					<iframe width="1200" height="800" src="/embeded/pathFinding?corNo=${dto.cor_no}"></iframe>
 				</div>
 				<%--      설명--%>
 				<div class="tab-pane fade" id="course-info" role="tabpanel" aria-labelledby="course-info-tab">

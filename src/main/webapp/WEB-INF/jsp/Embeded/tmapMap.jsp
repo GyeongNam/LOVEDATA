@@ -36,7 +36,7 @@
         map = new Tmapv2.Map("map_div", {
             center : new Tmapv2.LatLng(37.570028, 126.986072),
             width : "100%",
-            height : "400px",
+            height : "600px",
             zoom : 15,
             zoomControl : true,
             scrollwheel : true
