@@ -14,7 +14,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="_csrf" content="${_csrf.token}">
     <meta name="_csrf_header" content="${_csrf.headerName}">
-    <script type="text/javascript" src="/smartditor2/js/HuskyEZCreator.js" charset="utf-8"></script>
+<%--    <script type="text/javascript" src="/smartditor2/js/HuskyEZCreator.js" charset="utf-8"></script>--%>
+    <script type="text/javascript" src="/se2/js/HuskyEZCreator.js" charset="utf-8"></script>
     <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/service/loc.css">

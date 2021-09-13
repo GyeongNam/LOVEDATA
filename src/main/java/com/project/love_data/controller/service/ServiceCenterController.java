@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.io.*;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -515,9 +515,71 @@ public class ServiceCenterController {
         return "redirect:/ServiceCenter/Questions_Post/"+num;
     }
 
-    @GetMapping(value = "/smartditor2/popup/photo_uploader.jsp")
-    public String No_Upload(){
-        return "popup/photo_uploader";
+    @PostMapping(value ="/imgUpload")
+    public String imgUpload(HttpServletRequest req, kr.iiac.bugs.web.ImgVO imgVO){
+        String result="";
+        try{
+            if(imgVO.getFiledata() != null && imgVO.getFiledata().getOriginalFilename() != null){
+
+                String path = req.getSession().getServletContext().getRealPath("/") + "resources\\img\\";
+                File file = new File(path);
+                System.out.print(path);
+                if(!file.exists()){
+                    file.mkdirs();
+                }
+                String realName = UUID.randomUUID().toString() + imgVO.getFiledata().getOriginalFilename();
+                imgVO.getFiledata().transferTo(new File(path + realName));
+                result += "&bNewLine=true&sFileName="+imgVO.getFiledata().getOriginalFilename()+"&sFileURL=/resources/img/"+realName;
+            }else{
+                result += "&errstr=error";
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return "redirect:" + imgVO.getCallback() +"?callback_func=" + imgVO.getCallback_func()+result;
+    }
+
+    @PostMapping(value = "/multiImgUpload")
+    public void multiImgUpload(HttpServletRequest req, HttpServletResponse res){
+        try{
+            log.info("여기 오긴오니?");
+            String sFileInfo = "";
+            String fileName = req.getHeader("file-name");
+            String prifix = fileName.substring(fileName.lastIndexOf(".")+1);
+            prifix = prifix.toLowerCase();
+            String path = req.getSession().getServletContext().getRealPath("/") + "\\img\\";
+            File file = new File(path);
+            System.out.print(path);
+            if(!file.exists()){
+                file.mkdirs();
+            }
+
+            String realName = UUID.randomUUID().toString() + "." +prifix;
+
+            InputStream is = req.getInputStream();
+            OutputStream os = new FileOutputStream(new File(path + realName));
+            int read = 0;
+            byte b[] = new byte[1024];
+            while( (read = is.read(b)) != -1){
+                os.write(b,0,read);
+            }
+
+            if(is != null){
+                is.close();
+            }
+            os.flush();
+            os.close();
+
+            sFileInfo += "&bNewLine=true";
+            sFileInfo += "&sFileName="+fileName;
+            sFileInfo += "&sFileURL="+"/img/"+realName;
+            PrintWriter print = res.getWriter();
+            print.print(sFileInfo);
+            print.flush();
+            print.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 }
 

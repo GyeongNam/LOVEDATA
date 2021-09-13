@@ -1,6 +1,10 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%--<%@ page import="com.oreilly.servlet.MultipartRequest, com.oreilly.servlet.multipart.DefaultFileRenamePolicy, java.util.*, java.io.*"%>--%>
-
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title>사진 첨부하기 :: SmartEditor2</title>
 <style type="text/css">
 /* NHN Web Standard 1Team JJS 120106 */ 
 /* Common */
@@ -38,21 +42,8 @@ h1{color:#333;font-size:14px;letter-spacing:-1px}
 .upload{margin:0 4px 0 0;_margin:0;padding:6px 0 4px 6px;border:solid 1px #d5d5d5;color:#a1a1a1;font-size:12px;border-right-color:#efefef;border-bottom-color:#efefef;length:300px;}
 :root  .upload{padding:6px 0 2px 6px;}
 </style>
-
-<script language="javascript">
-	function fn_imageUp() {
-		document.editor_upimage.submit();
-	}
-	
-	function fn_imageUp5() {
-		document.editor_upimage5.submit();
-	}
-	
-</script>
 </head>
 <body>
-<meta name="_csrf" content="${_csrf.token}">
-<meta name="_csrf_header" content="${_csrf.headerName}">
 <div id="pop_wrap">
 	<!-- header -->
     <div id="pop_header">
@@ -64,31 +55,21 @@ h1{color:#333;font-size:14px;letter-spacing:-1px}
     <!-- [D] HTML5인 경우 pop_container 클래스와 하위 HTML 적용
 	    	 그밖의 경우 pop_container2 클래스와 하위 HTML 적용      -->
 	<div id="pop_container2" class="pop_container2">
-    	
     	<!-- content -->
-		<form id="editor_upimage" name="editor_upimage" action="file_uploader.jsp" method="post" enctype="multipart/form-data" onSubmit="return false;">
-			<input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
-			<div id="pop_content2">
+		<form id="editor_upimage" name="editor_upimage" method="post" enctype="multipart/form-data" onSubmit="return false;">
+        <div id="pop_content2">
 			<input type="file" class="upload" id="uploadInputBox" name="Filedata">
             <p class="dsc" id="info"><strong>10MB</strong>이하의 이미지 파일만 등록할 수 있습니다.<br>(JPG, GIF, PNG, BMP)</p>
         </div>
 		</form>
-		
-		<div id="pop_footer">
-		    <div class="btn_area">
-	            <a href="javascript:fn_imageUp();"><img src="../../img/photoQuickPopup/btn_confirm.png" width="49" height="28" alt="확인" id="btn_confirm"></a>
-	            <a href="#"><img src="../../img/photoQuickPopup/btn_cancel.png" width="48" height="28" alt="취소" id="btn_cancel"></a>
-	        </div>
-    	</div>
         <!-- //content -->
-
     </div>
     <div id="pop_container" class="pop_container" style="display:none;">
     	<!-- content -->
-        <!-- <div id="pop_content">
+        <div id="pop_content">
 	        <p class="dsc"><em id="imageCountTxt">0장</em>/10장 <span class="bar">|</span> <em id="totalSizeTxt">0MB</em>/50MB</p>
-        	[D] 첨부 이미지 여부에 따른 Class 변화 
-            	 첨부 이미지가 있는 경우 : em에 "bg" 클래스 적용 //첨부 이미지가 없는 경우 : em에 "nobg" 클래스 적용  
+        	<!-- [D] 첨부 이미지 여부에 따른 Class 변화 
+            	 첨부 이미지가 있는 경우 : em에 "bg" 클래스 적용 //첨부 이미지가 없는 경우 : em에 "nobg" 클래스 적용   -->
 				 
             <div class="drag_area" id="drag_area">
 				<ul class="lst_type" >
@@ -97,29 +78,23 @@ h1{color:#333;font-size:14px;letter-spacing:-1px}
             </div>
 			<div style="display:none;" id="divImageList"></div>
             <p class="dsc dsc_v1"><em>한 장당 10MB, 1회에 50MB까지, 10개</em>의 이미지 파일을<br>등록할 수 있습니다. (JPG, GIF, PNG, BMP)</p>
-        </div> -->
-		<form id="editor_upimage5" name="editor_upimage5" action="file_uploader.jsp" method="post" enctype="multipart/form-data" onSubmit="return false;">
-        <div id="pop_content2">
-			<input type="file" class="upload" id="uploadInputBox" name="Filedata">
-            <p class="dsc" id="info"><strong>10MB</strong>이하의 이미지 파일만 등록할 수 있습니다.<br>(JPG, GIF, PNG, BMP)</p>
         </div>
-		</form>
-		
-		<div id="pop_footer">
-	    <div class="btn_area">
-            <a href="javascript:fn_imageUp5();"><img src="../../img/photoQuickPopup/btn_confirm.png" width="49" height="28" alt="확인" id="btn_confirm"></a>
-            <a href="#"><img src="../../img/photoQuickPopup/btn_cancel.png" width="48" height="28" alt="취소" id="btn_cancel"></a>
-        </div>
-    </div>
         <!-- //content -->
     </div>
 
     <!-- //container -->
     <!-- footer -->
-    
+    <div id="pop_footer">
+	    <div class="btn_area">
+            <a href="#"><img src="../../img/photoQuickPopup/btn_confirm.png" width="49" height="28" alt="확인" id="btn_confirm"></a>
+            <a href="#"><img src="../../img/photoQuickPopup/btn_cancel.png" width="48" height="28" alt="취소" id="btn_cancel"></a>
+        </div>
+    </div>
     <!-- //footer -->
 </div>
 <script type="text/javascript" src="jindo.min.js" charset="utf-8"></script>
 <script type="text/javascript" src="jindo.fileuploader.js" charset="utf-8"></script>
 <script type="text/javascript" src="attach_photo.js" charset="utf-8"></script>
 
+</body>
+</html>
