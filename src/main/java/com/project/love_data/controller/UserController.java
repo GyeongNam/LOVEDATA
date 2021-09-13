@@ -1,19 +1,23 @@
 package com.project.love_data.controller;
 
 import com.project.love_data.businessLogic.service.CalenderService;
+import com.project.love_data.businessLogic.service.LocationService;
 import com.project.love_data.businessLogic.service.UserService;
 import com.project.love_data.dto.CalenderDTO;
 import com.project.love_data.dto.UserDTO;
 import com.project.love_data.model.service.Calender;
+import com.project.love_data.model.service.Location;
 import com.project.love_data.model.user.User;
 import com.project.love_data.repository.CalenderRepository;
 import com.project.love_data.repository.UserRepository;
+import com.project.love_data.security.model.AuthUserModel;
 import com.project.love_data.security.model.UserRole;
 import com.project.love_data.businessLogic.SmsService;
 import com.project.love_data.businessLogic.account.UserAccountDelete;
 import lombok.extern.log4j.Log4j2;
 import org.apache.catalina.filters.ExpiresFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,6 +50,8 @@ public class UserController {
 	UserService userService;
 	@Autowired
 	CalenderService calenderService;
+	@Autowired
+	LocationService locService;
 
 	@RequestMapping(value = "/signup_add", method = RequestMethod.POST)
 	public String signup(
@@ -158,10 +164,89 @@ public class UserController {
 		} else {
 			UserDTO userDTO = userService.DTOselect(principal.getName());
 			model.addAttribute("UserDTO", userDTO);
-//		log.info("data : "+ request);
-//		log.info("data2 : "+ principal);
-//		log.info("DTOLOG : "+ userDTO);
+
 			return "user/mypage";
+		}
+	}
+
+	//CHOI
+	@GetMapping(value = "/mypage_myreview")
+	public String myreview(Principal principal, Model model) {
+		if (principal == null) {
+			return "redirect:/login";
+		} else {
+			UserDTO userDTO = userService.DTOselect(principal.getName());
+			model.addAttribute("UserDTO", userDTO);
+
+			return "user/mypage_myreview";
+		}
+	}
+
+	//CHOI
+	@GetMapping(value = "/mypage_mycorse")
+	public String mycorse(Principal principal, Model model) {
+		if (principal == null) {
+			return "redirect:/login";
+		} else {
+			UserDTO userDTO = userService.DTOselect(principal.getName());
+			model.addAttribute("UserDTO", userDTO);
+
+			return "user/mypage_mycorse";
+		}
+	}
+
+//	//CHOI
+//	@GetMapping(value = "/mypage_myplace")
+//	public String myplace(Principal principal, Model model) {
+//		if (principal == null) {
+//			return "redirect:/login";
+//		} else {
+////			String user_no = userService.finduserNo(principal.getName())
+////			principal.
+//			List<Location> location = locService.findLocByUserNo();
+//			model.addAttribute("my_place", location);
+//
+//			return "user/mypage_myplace";
+//		}
+//	}
+
+	//CHOI
+	@GetMapping(value = "/mypage_myplace")
+	public String myplace(Authentication authentication, Model model) {
+		if (authentication == null) {
+			return "redirect:/login";
+		}else {
+			AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
+			List<Location> myLocList = locService.findLocByUserNo(authUserModel.getUser_no());
+			model.addAttribute("my_place", myLocList);
+
+			return "user/mypage_myplace";
+		}
+	}
+
+	//CHOI
+	@GetMapping(value = "/mypage_mylike")
+	public String mylike(Principal principal, Model model) {
+		if (principal == null) {
+			return "redirect:/login";
+		} else {
+			UserDTO userDTO = userService.DTOselect(principal.getName());
+			model.addAttribute("UserDTO", userDTO);
+
+			return "user/mypage_mylike";
+		}
+	}
+
+	//CHOI
+	@GetMapping(value = "/mypage_recent_view_corse")
+	public String myrecview(Principal principal, Model model) {
+		if (principal == null) {
+			return "redirect:/login";
+		} else {
+			UserDTO userDTO = userService.DTOselect(principal.getName());
+			model.addAttribute("UserDTO", userDTO);
+
+			return "user/mypage_recent_view_corse";
 		}
 	}
 
