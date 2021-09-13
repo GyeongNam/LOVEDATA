@@ -30,35 +30,35 @@
 		<div class="tab">
 			<div>
 				<p>
-					<a href="/user/mypage" >내 정보</a>
+					<a href="/mypage" >내 정보</a>
 				</p>
 			</div>
 			<div>
 				<p>
-					<a href="/user/mypage_myreview" >나의 리뷰</a>
+					<a href="/mypage_myreview" >나의 리뷰</a>
 				</p>
 			</div>
 			<div>
 				<span>나의코스/장소</span>
 				<div>
 					<p>
-						<a href="/user/mypage_mycorse" >나의 코스</a>
+						<a href="/mypage_mycorse" >나의 코스</a>
 					</p>
 				</div>
 				<div>
 					<p>
-						<a href="/user/mypage_myplace" >나의 장소</a>
+						<a href="/mypage_myplace" >나의 장소</a>
 					</p>
 				</div>
 			</div>
 			<div>
 				<p>
-					<a href="/user/mypage_mylike" >나의 찜 목록</a>
+					<a href="/mypage_mylike" >나의 찜 목록</a>
 				</p>
 			</div>
 			<div>
 				<p>
-					<a href="/user/mypage_recent_view_corse" >최근 본 코스</a>
+					<a href="/mypage_recent_view_corse" >최근 본 코스</a>
 				</p>
 			</div>
 		</div>

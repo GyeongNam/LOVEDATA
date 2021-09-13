@@ -29,8 +29,10 @@ body{
 #jb-sidebar {
     text-align: center;
     width: 200px;
-    margin-bottom: 20px;
+    /*margin-bottom: 20px;*/
     float: left;
+    border: 1px solid #bcbcbc;
+    border-radius: 10px;
     /*border-top: 1px solid #bcbcbc;*/
     /*border-bottom: 1px solid #bcbcbc;*/
 }

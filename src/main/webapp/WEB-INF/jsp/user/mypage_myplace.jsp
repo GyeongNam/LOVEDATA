@@ -7,7 +7,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.Date" %>
 <%@ page session="false" %>
-
+<jsp:useBean id="defaultDateTimeFormatter" class="com.project.love_data.util.DefaultLocalDateTimeFormatter"></jsp:useBean>
+<jsp:useBean id="simpleDateTimeFormatter" class="com.project.love_data.util.SimpleLocalDateTimeFormatter"></jsp:useBean>
 <html>
 <head>
     <link href="/css/mypage.css" rel="stylesheet">
@@ -28,11 +29,39 @@
 	</div>
 	<div id="jb-sidebar">
 		<div class="tab">
-			<button class="tablinks" onclick="MenuTab(event, 'Myinfo')" id="defaultOpen">내 정보</button>
-			<button class="tablinks" onclick="MenuTab(event, 'MyReview')">나의 리뷰</button>
-			<button class="tablinks" onclick="MenuTab(event, 'MyPlace')">나의 코스/장소 <ul><li>나의코스</li><li>나의 장소</li></ul></button>
-			<button class="tablinks" onclick="MenuTab(event, 'LikeList')">찜 목록</button>
-			<button class="tablinks" onclick="MenuTab(event, 'RecView')">최근 본 코스</button>
+			<div>
+				<p>
+					<a href="/mypage" >내 정보</a>
+				</p>
+			</div>
+			<div>
+				<p>
+					<a href="/mypage_myreview" >나의 리뷰</a>
+				</p>
+			</div>
+			<div>
+				<span>나의코스/장소</span>
+				<div>
+					<p>
+						<a href="/mypage_mycorse" >나의 코스</a>
+					</p>
+				</div>
+				<div>
+					<p>
+						<a href="/mypage_myplace" >나의 장소</a>
+					</p>
+				</div>
+			</div>
+			<div>
+				<p>
+					<a href="/mypage_mylike" >나의 찜 목록</a>
+				</p>
+			</div>
+			<div>
+				<p>
+					<a href="/mypage_recent_view_corse" >최근 본 코스</a>
+				</p>
+			</div>
 		</div>
 	</div>
 	<div id="jb-content">
@@ -46,27 +75,17 @@
 					<th>조회수</th>
 				</tr>
 				</thead>
-				<tbody>
+				<c:forEach var="pla" items="${my_place}" >
+					<c:choose>
+					<c:when test="${pla._deleted eq false}">
 				<tr>
-					<td><span>2020-10-05</span></td>
-					<td>서울 삼청동 산책로</td>
-					<td>192</td>
+					<td><span>${pla.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</span></td>
+					<td>${pla.loc_name}</td>
+					<td>${pla.viewCount}</td>
 				</tr>
-				<tr>
-					<td><span>2021-02-01</span></td>
-					<td>제주 반시계방향 3박4일</td>
-					<td>365</td>
-				</tr>
-				<tr>
-					<td>2021-03-15</td>
-					<td>일산 밤리단길 카페투어</td>
-					<td>247</td>
-				</tr>
-				<tr>
-					<td>2020-05-07</td>
-					<td>운정호수공원 야당역 맛집</td>
-					<td>830</td>
-				</tr>
+					</c:when>
+					</c:choose>
+				</c:forEach>
 				</tbody>
 			</table>
 			<div class="pagination">

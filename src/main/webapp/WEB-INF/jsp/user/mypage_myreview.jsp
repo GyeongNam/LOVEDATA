@@ -28,11 +28,39 @@
 	</div>
 	<div id="jb-sidebar">
 		<div class="tab">
-			<button class="tablinks" onclick="MenuTab(event, 'Myinfo')" id="defaultOpen">내 정보</button>
-			<button class="tablinks" onclick="MenuTab(event, 'MyReview')">나의 리뷰</button>
-			<button class="tablinks" onclick="MenuTab(event, 'MyPlace')">나의 코스/장소 <ul><li>나의코스</li><li>나의 장소</li></ul></button>
-			<button class="tablinks" onclick="MenuTab(event, 'LikeList')">찜 목록</button>
-			<button class="tablinks" onclick="MenuTab(event, 'RecView')">최근 본 코스</button>
+			<div>
+				<p>
+					<a href="/mypage" >내 정보</a>
+				</p>
+			</div>
+			<div>
+				<p>
+					<a href="/mypage_myreview" >나의 리뷰</a>
+				</p>
+			</div>
+			<div>
+				<span>나의코스/장소</span>
+				<div>
+					<p>
+						<a href="/mypage_mycorse" >나의 코스</a>
+					</p>
+				</div>
+				<div>
+					<p>
+						<a href="/mypage_myplace" >나의 장소</a>
+					</p>
+				</div>
+			</div>
+			<div>
+				<p>
+					<a href="/mypage_mylike" >나의 찜 목록</a>
+				</p>
+			</div>
+			<div>
+				<p>
+					<a href="/mypage_recent_view_corse" >최근 본 코스</a>
+				</p>
+			</div>
 		</div>
 	</div>
 	<div id="jb-content">
