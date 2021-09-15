@@ -1,5 +1,6 @@
 package com.project.love_data.controller;
 
+import com.project.love_data.businessLogic.service.ControllerScriptUtils;
 import com.project.love_data.model.oauth.KakaoAuthToken;
 import com.project.love_data.model.oauth.NaverAuthToken;
 import com.project.love_data.model.oauth.OAuthToken;
@@ -31,7 +32,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.NonUniqueResultException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.*;
 
 @Log4j2
@@ -45,6 +48,8 @@ public class OAuthController {
     AuthenticationManager authenticationManager;
     @Autowired
     UserDetailsService userDetailsService;
+    @Autowired
+    ControllerScriptUtils scriptUtils;
 
     @GetMapping(value = "/login_kakao")
     public String kakaoLogin(
@@ -69,6 +74,7 @@ public class OAuthController {
     @RequestMapping(value = "/login_kakao/process")
     public String kakaoLogin_Process(
             HttpServletRequest request,
+            HttpServletResponse response,
             RedirectAttributes redirectAttributes,
             HttpSession session,
             Model model
@@ -95,6 +101,10 @@ public class OAuthController {
 
         try {
             kakaoUserInfo = infoKakao.excute(request, token);
+
+            if (kakaoUserInfo == null) {
+                scriptUtils.alertAndMovePage(response, "필수로 제공해야할 정보에 동의하지 않았습니다.", "/");
+            }
             // https://cusonar.tistory.com/17
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                     kakaoUserInfo.getEmail(), kakaoUserInfo.getId() + "!@#$");
@@ -103,7 +113,7 @@ public class OAuthController {
             session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
                     SecurityContextHolder.getContext());
             AuthUserModel authUserModel = (AuthUserModel) userDetailsService.loadUserByUsername(kakaoUserInfo.getEmail());
-        } catch (AuthenticationException e) {
+        } catch (AuthenticationException | IOException e) {
             log.info(e.getMessage());
 
             log.info("UserInfo Not in the DB");
@@ -160,6 +170,7 @@ public class OAuthController {
     @RequestMapping("/login_naver/process")
     public String naverLogin_Process(
             HttpServletRequest request,
+            HttpServletResponse response,
             HttpSession session,
             RedirectAttributes redirectAttributes
     ) {
@@ -184,6 +195,10 @@ public class OAuthController {
 
         try {
             naverUserInfo = infoNaver.excute(request, token);
+
+            if (naverUserInfo == null) {
+                scriptUtils.alertAndMovePage(response, "필수로 제공해야할 정보에 동의하지 않았습니다.", "/");
+            }
             // https://cusonar.tistory.com/17
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                     naverUserInfo.getEmail(), naverUserInfo.getId());
@@ -226,6 +241,8 @@ public class OAuthController {
             log.warn(e.getStackTrace());
 
             return "redirect:/";
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return "redirect:/";
