@@ -215,6 +215,7 @@ public class CourseController {
             List<List<ReviewImageDTO>> revImgDTOList = new ArrayList<>();
             List<String> revImgURLStringList = new ArrayList<>();
             String revImgURL = "";
+            List<String> revUserPicList = new ArrayList<>();
 
             for (int i = 0; i < resultReviewDTO.getDtoList().size(); i++) {
                 List<ReviewImage> revImgList = revImgService.getAllLiveImageByCorNoAndRevNo(corNo, resultReviewDTO.getDtoList().get(i).getRevNo());
@@ -240,6 +241,8 @@ public class CourseController {
                 }
 
                 revImgDTOList.add(reviewImageDTOS);
+
+                revUserPicList.add(userService.select(resultReviewDTO.getDtoList().get(i).getUserNo()).getProfile_pic());
             }
 
             for (String s : revImgURLStringList) {
@@ -256,6 +259,7 @@ public class CourseController {
             model.addAttribute("revCount", revCounter);
             model.addAttribute("revImgList", revImgDTOList);
             model.addAttribute("revImgStringURLList", revImgURLStringList);
+            model.addAttribute("revUserPicList", revUserPicList);
 
             return "/service/cor_detail";
         }

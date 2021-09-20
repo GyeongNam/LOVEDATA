@@ -22,6 +22,7 @@ public class AuthUserModel extends User {
     private String user_phone;
     private String user_birth;
     private String social_info;
+    private int social_id;
     private String user_profilePic;
     private LocalDateTime user_regDate;
     private boolean user_sex;
@@ -29,9 +30,12 @@ public class AuthUserModel extends User {
     private boolean user_emil_re;
     private boolean user_Activation;
 
-    public AuthUserModel(String user_email, String password, String user_profilePic, boolean social, Collection<? extends GrantedAuthority> authorities) {
+    public AuthUserModel(String user_email, String password, String user_profilePic, boolean social, String social_info, int social_id, Collection<? extends GrantedAuthority> authorities) {
         super(user_email, password, authorities);
         this.user_email = user_email;
         this.user_social = social;
+        this.social_info = social_info;
+        this.social_id = social_id;
+        this.user_profilePic = user_profilePic;
     }
 }

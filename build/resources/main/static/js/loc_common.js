@@ -121,6 +121,66 @@ function onClickLike(Like, user_no, type) {
     onLoginCheck(map);
 }
 
+function onClickLikeComment(like, cmt_index, user_no, type, cmt_no) {
+    var countChangeFlag = true;
+    var likeCount = document.getElementById("cmt_like_" + cmt_index);
+    var dislikeCount = document.getElementById("cmt_dislike_" + cmt_index);
+    var path_noparm = location.pathname;
+    var dislike = document.getElementById("cmt_btn_dislike_" + cmt_index);
+
+    countChangeFlag = true;
+
+    var jsonData = {"cmt_no": cmt_no, "user_no" : user_no, "type" : type}
+    var isClicked = false;
+    var map = new Map();
+
+    if (like.getAttribute("src") === "/image/icon/cmt_like_color.png") {
+        isClicked = true;
+    } else {
+        isClicked = false;
+    }
+    console.log("isClicked : " + isClicked);
+
+    map.set("likeCount", likeCount);
+    map.set("dislikeCount", dislikeCount);
+    map.set("jsonData", jsonData);
+    map.set("isClicked", isClicked);
+    map.set("like", like);
+    map.set("dislike", dislike);
+    map.set("countChangeFlag", countChangeFlag);
+    map.set("type", type);
+
+    onLoginCheck(map);
+}
+
+function onClickDislikeComment(dislike, cmt_index, user_no, type, cmt_no) {
+    var countChangeFlag = true;
+    var dislikeCount = document.getElementById("cmt_dislike_" + cmt_index);
+    var likeCount = document.getElementById("cmt_like_" + cmt_index);
+    var jsonData = {"cmt_no": cmt_no, "user_no" : user_no, "type" : type, "cmt_index" : cmt_index}
+    var isClicked = false;
+    var map = new Map();
+    var like = document.getElementById("cmt_btn_like_" + cmt_index);
+
+    if (dislike.getAttribute("src") === "/image/icon/cmt_dislike_color.png") {
+        isClicked = true;
+    } else {
+        isClicked = false;
+    }
+    console.log("isClicked : " + isClicked);
+
+    map.set("dislikeCount", dislikeCount)
+    map.set("likeCount", likeCount);
+    map.set("jsonData", jsonData);
+    map.set("isClicked", isClicked);
+    map.set("dislike", dislike);
+    map.set("like", like);
+    map.set("countChangeFlag", countChangeFlag);
+    map.set("type", type);
+
+    onLoginCheck(map);
+}
+
 function onLoginCheck(map) {
     var debugCheck = {"debug": false}
 
@@ -142,7 +202,13 @@ function onLoginCheck(map) {
             }
             console.log("Login Check Success")
             console.log("is login : " + response)
-            onClickLikeAction(map);
+
+            if (map.get('type') === 'cmt_like' || map.get('type') === 'cmt_dislike') {
+                onClickCmtAction(map);
+            } else {
+                onClickLikeAction(map);
+            }
+
             return true;
         },
         error: function (e) {
@@ -151,6 +217,120 @@ function onLoginCheck(map) {
             return false;
         }
     });
+}
+
+function onClickCmtAction(map) {
+    var user_no = map.get("user_no");
+    var jsonData = map.get("jsonData");
+    var isClicked = map.get("isClicked");
+    var type = map.get("type");
+    var like = map.get("like");
+    var dislike = map.get("dislike");
+    var countChangeFlag = map.get("countChangeFlag");
+    var likeCount = map.get("likeCount");
+    var dislikeCount = map.get("dislikeCount");
+
+    if (!isClicked) {
+        $.ajax({
+            type: "POST",
+            url: "/rest/onCmtBtnClicked",
+            data: JSON.stringify(jsonData),
+            dataType: 'json',
+            contentType: "application/json; charset=UTF-8",
+            beforeSend: function (xhr) {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                xhr.setRequestHeader(header, token);
+            },
+            success: function (response) {
+                // do something ...
+
+                if (response) {
+                    console.log("Like Success")
+
+                    if (countChangeFlag) {
+                        if ("cmt_like" === type) {
+                            like.src = "/image/icon/cmt_like_color.png";
+                            var temp = parseInt(likeCount.innerText);
+                            likeCount.innerText = temp + 1;
+
+                            let url = dislike.src.split('/');
+                            let tempStr = "/";
+
+                            for (let i = 3; i < url.length; i++) {
+                                tempStr += url[i] + "/";
+                            }
+                            tempStr = tempStr.slice(0, tempStr.length-1);
+                            if (tempStr == "/image/icon/cmt_dislike_color.png") {
+                                dislike.src = "/image/icon/cmt_dislike_bw.png";
+                                temp = dislikeCount.innerText;
+                               dislikeCount.innerText = Number(temp) - 1;
+                            }
+                        } else {
+                            dislike.src = "/image/icon/cmt_dislike_color.png";
+                            var temp = parseInt(dislikeCount.innerText);
+                            dislikeCount.innerText = temp + 1;
+
+                            let url = like.src.split('/');
+                            let tempStr = "/";
+
+                            for (let i = 3; i < url.length; i++) {
+                                tempStr += url[i] + "/";
+                            }
+                            tempStr = tempStr.slice(0, tempStr.length-1);
+                            if (tempStr == "/image/icon/cmt_like_color.png") {
+                                like.src = "/image/icon/cmt_like_bw.png";
+                                temp = likeCount.innerText;
+                                likeCount.innerText = Number(temp) - 1;
+                            }
+                        }
+                    }
+                } else {
+                    alert("이미 좋아요를 누른 댓글입니다.");
+                    console.log("Like Failed");
+                }
+            },
+            error: function (e) {
+                console.log("Like Error");
+            }
+        });
+    } else {
+        $.ajax({
+            type: "POST",
+            url: "/rest/onCmtBtnClickUndo",
+            data: JSON.stringify(jsonData),
+            dataType: 'json',
+            contentType: "application/json; charset=UTF-8",
+            beforeSend: function (xhr) {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                xhr.setRequestHeader(header, token);
+            },
+            success: function (response) {
+                // do something ...
+
+                if (response) {
+                    console.log("Undo Success")
+
+                    if (countChangeFlag) {
+                        if ("cmt_like" === type) {
+                            like.src = "/image/icon/cmt_like_bw.png";
+                            var temp = parseInt(likeCount.innerText);
+                            likeCount.innerText = temp - 1;
+                        } else {
+                            dislike.src = "/image/icon/cmt_dislike_bw.png";
+                            var temp = parseInt(dislikeCount.innerText);
+                            dislikeCount.innerText = temp - 1;
+                        }
+                    }
+
+                    // lastLikeLocId = loc_no;
+                } else {
+                    console.log("Undo Failed");
+                }
+
+            },
+            error: function (e) {
+                console.log("Undo Error");
+            }
+        });
+    }
 }
 
 function onClickLikeAction(map) {
@@ -200,7 +380,7 @@ function onClickLikeAction(map) {
                     }
                     // lastLikeLocId = loc_no;
                 } else {
-                    alert("이미 좋아요를 누른 장소입니다.");
+                    alert("이미 좋아요를 누른 댓글입니다.");
                     console.log("Like Failed");
                 }
             },

@@ -469,7 +469,7 @@
 											<c:forEach var="c" begin="0" end="${revDTO.size()-1}">
 												<div class="bg-white p-2">
 													<div class="d-flex flex-row align-items-center"><img
-															src="/image/icon/user/user.png"
+															src="${revUserPicList.get(c)}"
 															class="loc_comment-profile-image-wh">
 														<div class="flex-column">
 															<p class="visually-hidden" id="rev_id_${c}">${revDTO.get(c).revUuid}</p>

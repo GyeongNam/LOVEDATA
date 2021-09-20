@@ -216,6 +216,8 @@
         </table>
         <input type="hidden" name="social" value="<%= request.getAttribute("social")  == null ? false : request.getAttribute("social")%>">
         <input type="hidden" name="social_info" value="<%= request.getAttribute("social_info")  == null ? "" : request.getAttribute("social_info")%>">
+        <input type="hidden" name="social_id" value="<%= request.getAttribute("social_id")  == null ? "" : request.getAttribute("social_id")%>">
+        <input type="hidden" name="profile_pic" value="<%=request.getAttribute("profile_pic") == null ? "" : request.getAttribute("profile_pic")%>">
         <div class="sand_back">
             <c:choose>
                 <c:when test="${set_user eq false}">

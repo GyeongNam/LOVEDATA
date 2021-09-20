@@ -40,6 +40,10 @@ public class LocationController {
     UserLikeLocService userLikeLocService;
     @Autowired
     UserDetailsService userDetailsService;
+    @Autowired
+    UserLikeCmtService userLikeCmtService;
+    @Autowired
+    UserDislikeCmtService userDislikeCmtService;
     List<String> tagList = new ArrayList<>();
 
     @RequestMapping("/service/loc_registration")
@@ -145,6 +149,8 @@ public class LocationController {
             LocationDTO dto = locService.selectLocDTO(locNo);
             pageRequestDTO.setSize(MAX_COM_COUNT);
             PageResultDTO<CommentDTO, Comment> resultCommentDTO = null;
+            List<Boolean> cmtLikeList = new ArrayList<>();
+            List<Boolean> cmtDislikeList = new ArrayList<>();
 
             if (isAdmin) {
                 resultCommentDTO = comService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION,
@@ -169,6 +175,26 @@ public class LocationController {
                     } else {
                         model.addAttribute("isLiked", false);
                     }
+
+                    for (CommentDTO cmtDTO : resultCommentDTO.getDtoList()) {
+                        UserLikeCmt userLikeCmt = userLikeCmtService.selectBycmtNoAndUserNo(cmtDTO.getCmtNo(), authUserModel.getUser_no());
+                        UserDislikeCmt userDislikeCmt = userDislikeCmtService.selectBycmtNoAndUserNo(cmtDTO.getCmtNo(), authUserModel.getUser_no());
+
+                        if (userLikeCmt != null && userDislikeCmt == null) {
+                            cmtLikeList.add(true);
+                            cmtDislikeList.add(false);
+                            continue;
+                        }
+
+                        if (userLikeCmt == null && userDislikeCmt != null) {
+                            cmtLikeList.add(false);
+                            cmtDislikeList.add(true);
+                            continue;
+                        }
+
+                        cmtLikeList.add(null);
+                        cmtDislikeList.add(null);
+                    }
                 }
             } else {
                 model.addAttribute("isLiked", false);
@@ -176,6 +202,8 @@ public class LocationController {
 
             model.addAttribute("dto", dto);
             model.addAttribute("resComDTO", resultCommentDTO);
+            model.addAttribute("cmtLikeList", cmtLikeList);
+            model.addAttribute("cmtDislikeList", cmtDislikeList);
 
             return "/service/loc_detail";
         }
@@ -189,7 +217,7 @@ public class LocationController {
                                    Authentication authentication,
                                    Model model) {
         String pageNumber = request.getParameter("page");
-        if (pageNumber == null){
+        if (pageNumber == null) {
             pageNumber = "1";
         }
         int pageNum = Integer.parseInt(pageNumber);
@@ -201,7 +229,7 @@ public class LocationController {
                 .page(pageNum)
                 .build();
         PageResultDTO<LocationDTO, com.project.love_data.model.service.Location> resultDTO = locService.getList(pageRequestDTO);
-            List<Boolean> isLikedList = new ArrayList<>();
+        List<Boolean> isLikedList = new ArrayList<>();
 
         if (authentication == null) {
             for (int i = 0; i < resultDTO.getSize(); i++) {
@@ -213,7 +241,7 @@ public class LocationController {
             for (int i = 0; i < resultDTO.getDtoList().size(); i++) {
                 Long loc_no = resultDTO.getDtoList().get(i).getLoc_no();
                 UserLikeLoc item = userLikeLocService.selectByLocNoAndUserNo(loc_no, user_no);
-                if (item != null){
+                if (item != null) {
                     isLikedList.add(true);
                 } else {
                     isLikedList.add(false);
@@ -304,7 +332,7 @@ public class LocationController {
     }
 
     @GetMapping(value = "/service/loc_recommend/search")
-    public String getSearchValue(HttpServletRequest request, Model model){
+    public String getSearchValue(HttpServletRequest request, Model model) {
         String keyword = request.getParameter("keyword");
         String order = request.getParameter("sortOrder");
         String tagString = request.getParameter("tags");
@@ -329,7 +357,7 @@ public class LocationController {
         }
 
         // 일반 유저는 삭제된 장소 항목을 볼 수 없음
-        switch(searchType) {
+        switch (searchType) {
             case DISABLED:
                 searchType = SearchType.NONE;
                 break;
@@ -344,23 +372,23 @@ public class LocationController {
                 break;
         }
 
-        switch (order){
-            case "LIKE_DES" :
+        switch (order) {
+            case "LIKE_DES":
                 // 좋아요 순
                 sortCriterion = SortCriterion.LIKE;
                 sortingOrder = SortingOrder.DES;
                 break;
-            case "DATE_DES" :
+            case "DATE_DES":
                 // 최신 등록순
                 sortCriterion = SortCriterion.DATE;
                 sortingOrder = SortingOrder.DES;
                 break;
-            case "DATE_ASC" :
+            case "DATE_ASC":
                 // 오래된 등록순
                 sortCriterion = SortCriterion.DATE;
                 sortingOrder = SortingOrder.ASC;
                 break;
-            case "VIEW_DES" :
+            case "VIEW_DES":
                 // 조회순
             default:
                 sortCriterion = SortCriterion.VIEW;
@@ -436,8 +464,8 @@ public class LocationController {
 
     @PostMapping("/service/loc_rollback")
     public String locRollback(HttpServletRequest request,
-                            RedirectAttributes redirectAttributes,
-                            Authentication authentication, Long locNo) {
+                              RedirectAttributes redirectAttributes,
+                              Authentication authentication, Long locNo) {
         if (authentication == null) {
             return "redirect:/service/loc_recommend";
         }

@@ -44,6 +44,14 @@ public class Comment extends TimeEntity {
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private User user;
 
+    @Column(name = "likecount", nullable = false)
+    @Builder.Default
+    private int likeCount = 0;
+
+    @Column(name = "dislikecount", nullable = false)
+    @Builder.Default
+    private int dislikeCount = 0;
+
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
     @Column(length = 60, nullable = false)

@@ -7,6 +7,7 @@ import com.project.love_data.model.oauth.OAuthToken;
 import com.project.love_data.model.user.KakaoUserInfo;
 import com.project.love_data.model.user.NaverUserInfo;
 import com.project.love_data.security.model.AuthUserModel;
+import com.project.love_data.security.service.AlreadyRegisteredEmailException;
 import com.project.love_data.security.service.UserDetailsService;
 import com.project.love_data.businessLogic.oauth.login.*;
 import com.project.love_data.businessLogic.oauth.logout.LogoutProcess;
@@ -35,6 +36,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 @Log4j2
@@ -78,7 +80,7 @@ public class OAuthController {
             RedirectAttributes redirectAttributes,
             HttpSession session,
             Model model
-    ) {
+    ) throws IOException {
         token = new KakaoAuthToken();
         decodedURL = "/";
         tokenRequest = new TokenRequestKakao();
@@ -103,7 +105,7 @@ public class OAuthController {
             kakaoUserInfo = infoKakao.excute(request, token);
 
             if (kakaoUserInfo == null) {
-                scriptUtils.alertAndMovePage(response, "필수로 제공해야할 정보에 동의하지 않았습니다.", "/");
+                scriptUtils.alertAndMovePage(response, "필수로 제공해야할 정보에 동의하지 않았습니다.", "/guide/agreePersonal");
             }
             // https://cusonar.tistory.com/17
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
@@ -113,8 +115,14 @@ public class OAuthController {
             session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
                     SecurityContextHolder.getContext());
             AuthUserModel authUserModel = (AuthUserModel) userDetailsService.loadUserByUsername(kakaoUserInfo.getEmail());
-        } catch (AuthenticationException | IOException e) {
-            log.info(e.getMessage());
+        } catch (InternalAuthenticationServiceException e) {
+            String msg = e.getMessage();
+            log.info(msg);
+
+            // 이미 유저 이메일로 등록한 계정이 있는 경우 발생하는 오류
+            if ("Can't proceed signup with this email. Please try another email".equals(msg)) {
+                scriptUtils.alertAndMovePage(response, "삭제된 계정과 동일한 이메일을 사용할 수 없습니다.", "/");
+            }
 
             log.info("UserInfo Not in the DB");
             log.info("Redirect to signUp page");
@@ -135,10 +143,20 @@ public class OAuthController {
                 redirectAttributes.addFlashAttribute("nickname", kakaoUserInfo.getNickname());
             }
 
+            if (kakaoUserInfo.getProfile_image_url() != null) {
+                redirectAttributes.addFlashAttribute("profile_pic", kakaoUserInfo.getProfile_image_url());
+            }
+
             redirectAttributes.addFlashAttribute("social", true);
             redirectAttributes.addFlashAttribute("social_info", "kakao");
+            redirectAttributes.addFlashAttribute("social_id", kakaoUserInfo.getId());
 
             return "redirect:/signup";
+        } catch (IOException e) {
+            log.warn(e.getMessage());
+            log.warn(e.getStackTrace());
+
+            return "redirect:/";
         }
 
         log.info("Kakao Login Successful");
@@ -173,7 +191,7 @@ public class OAuthController {
             HttpServletResponse response,
             HttpSession session,
             RedirectAttributes redirectAttributes
-    ) {
+    ) throws IOException {
         token = new NaverAuthToken();
         TokenRequestNaver tokenRequest = new TokenRequestNaver();
         RequestUserInfoNaver infoNaver = new RequestUserInfoNaver();
@@ -197,7 +215,7 @@ public class OAuthController {
             naverUserInfo = infoNaver.excute(request, token);
 
             if (naverUserInfo == null) {
-                scriptUtils.alertAndMovePage(response, "필수로 제공해야할 정보에 동의하지 않았습니다.", "/");
+                scriptUtils.alertAndMovePage(response, "필수로 제공해야할 정보에 동의하지 않았습니다.", "/guide/agreePersonal");
             }
             // https://cusonar.tistory.com/17
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
@@ -212,7 +230,13 @@ public class OAuthController {
             log.warn("Please Check DB");
             log.warn(e.getStackTrace());
         } catch (InternalAuthenticationServiceException e) {
-            log.info(e.getMessage());
+            String msg = e.getMessage();
+//            log.info(msg);
+
+            // 이미 유저 이메일로 등록한 계정이 있는 경우 발생하는 오류
+            if ("Can't proceed signup with this email. Please try another email".equals(msg)) {
+                scriptUtils.alertAndMovePage(response, "삭제된 계정과 동일한 이메일을 사용할 수 없습니다.", "/");
+            }
 
             log.info("UserInfo Not in the DB");
             log.info("Redirect to signUp page");
@@ -232,8 +256,15 @@ public class OAuthController {
                 redirectAttributes.addFlashAttribute("nickname", naverUserInfo.getNickname());
             }
 
+            // Todo 프로필 이미지 다운받아서 저장해두기
+            // https://kudolove.tistory.com/1353
+            if (naverUserInfo.getProfile_image() != null) {
+                redirectAttributes.addFlashAttribute("profile_pic", naverUserInfo.getProfile_image());
+            }
+
             redirectAttributes.addFlashAttribute("social", true);
             redirectAttributes.addFlashAttribute("social_info", "naver");
+            redirectAttributes.addFlashAttribute("social_id", naverUserInfo.getId());
 
             return "redirect:/signup";
         } catch (AuthenticationException e) {
@@ -251,15 +282,18 @@ public class OAuthController {
     @RequestMapping(value = "/logout_kakao", method = {RequestMethod.GET, RequestMethod.POST})
     public String kakaoLogout(
             HttpServletRequest request,
-            HttpSessionCsrfTokenRepository csrfTokenRepository
+            HttpSessionCsrfTokenRepository csrfTokenRepository,
+            Authentication authentication
     ) {
         LogoutUser logoutUser = new LogoutUserKakao();
         LogoutProcess logoutProcess = new LogoutProcessKakao();
         decodedURL = null;
         String csrf = null;
 
-        decodedURL = logoutUser.execute(request, csrfTokenRepository);
-        logoutProcess.execute(decodedURL);
+        AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
+
+        decodedURL = logoutUser.execute(request, csrfTokenRepository, authUserModel.getSocial_id());
+//        logoutProcess.execute(decodedURL);
 
         return "redirect:/logout";
     }

@@ -508,7 +508,7 @@ public class LocationService {
         return true;
     }
 
-    public boolean onClickLikeUndo(Long loc_no) {
+    public boolean onClickLikeDec(Long loc_no) {
         Location entity = selectLoc(loc_no);
 
         if (entity == null) {

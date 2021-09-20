@@ -50,3 +50,10 @@
 
 17. Thinking gif
 <ol><a> https://cliply.co/clip/thinking-face/ </a></ol>
+
+18. Comment Like icon
+<ol><a> https://www.flaticon.com/free-icon/like_1182721?related_id=1182670&origin=search </a></ol>
+
+19. Comment Dislike icon
+<ol><a> https://www.flaticon.com/free-icon/dislike_1182773?related_id=1182773&origin=pack </a></ol>
+

@@ -42,6 +42,7 @@ public class UserService {
 //                .recentLoc(dto.getRecentLoc())
                 .user_no(dto.getUser_no())
                 .social_info(dto.getSocial_info())
+                .social_id(dto.getSocial_id())
                 .build();
 
         return entity;
@@ -65,6 +66,7 @@ public class UserService {
 //                .recentLoc(entity.getRecentLoc())
                 .user_no(entity.getUser_no())
                 .social_info(entity.getSocial_info())
+                .social_id(entity.getSocial_id())
                 .regDate(entity.getRegDate())
                 .modDate(entity.getModDate())
                 .build();

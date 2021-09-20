@@ -57,7 +57,7 @@
 	</div>
 	<div class="container-fluid" id="display_center" style="margin-right: 30px">
 		<div class="col" id="top_navbar">
-			<nav class="navbar navbar-expand-sm navbar-light static-top">
+			<nav class="navbar navbar-expand-sm static-top">
 				<button class="navbar-toggler" type="button" data-toggle="collapse"
 						data-target="#bs-example-navbar-collapse-1">
 				</button>
