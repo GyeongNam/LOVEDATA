@@ -181,10 +181,145 @@ function onClickDislikeComment(dislike, cmt_index, user_no, type, cmt_no) {
     onLoginCheck(map);
 }
 
+function onClickLikeBestComment(best_like, best_cmt_index, cmt_index, user_no, type, cmt_no) {
+    var countChangeFlag = true;
+    var bestLikeCount = document.getElementById("best_cmt_like_" + best_cmt_index);
+    var bestDislikeCount = document.getElementById("best_cmt_dislike_" + best_cmt_index);
+    var bestDislike = document.getElementById("best_cmt_btn_dislike_" + best_cmt_index);
+
+    var jsonData = {"cmt_no": cmt_no, "user_no" : user_no, "type" : type}
+    var isClicked = false;
+    var map = new Map();
+
+    if (best_like.getAttribute("src") === "/image/icon/cmt_like_color.png") {
+        isClicked = true;
+    } else {
+        isClicked = false;
+    }
+    console.log("isClicked : " + isClicked);
+
+    if (cmt_index == -1) {
+        var likeCount = null;
+        var dislikeCount = null;
+        var dislike = null;
+
+        map.set("likeCount", bestLikeCount);
+        map.set("dislikeCount", bestDislikeCount);
+        map.set("jsonData", jsonData);
+        map.set("isClicked", isClicked);
+        map.set("like", best_like);
+        map.set("dislike", bestDislike);
+        map.set("countChangeFlag", countChangeFlag);
+        map.set("type", type);
+
+        onLoginCheck(map);
+    } else {
+        var like = document.getElementById("cmt_btn_like_" + cmt_index);
+        var likeCount = document.getElementById("cmt_like_" + cmt_index);
+        var dislikeCount = document.getElementById("cmt_dislike_" + cmt_index);
+        var dislike = document.getElementById("cmt_btn_dislike_" + cmt_index);
+
+        map.set("likeCount", likeCount);
+        map.set("dislikeCount", dislikeCount);
+        map.set("jsonData", jsonData);
+        map.set("isClicked", isClicked);
+        map.set("like", like);
+        map.set("dislike", dislike);
+        map.set("countChangeFlag", countChangeFlag);
+        map.set("type", type);
+
+        let isSuccessful = onLoginCheck(map);
+
+        if (isSuccessful) {
+            if (isClicked) {
+                best_like.src = "/image/icon/cmt_like_bw.png";
+                bestLikeCount.innerText = Number(bestLikeCount.innerText) - 1;
+            } else {
+                best_like.src = "/image/icon/cmt_like_color.png";
+                bestLikeCount.innerText = Number(bestLikeCount.innerText) + 1;
+                let best_btn_dislike = document.getElementById("best_cmt_btn_dislike_" + best_cmt_index);
+                let tempStr = getURLPathname(best_btn_dislike.src);
+                if (tempStr == "/image/icon/cmt_dislike_color.png") {
+                    best_btn_dislike.src = "/image/icon/cmt_dislike_bw.png"
+                    bestDislikeCount.innerText = Number(bestDislikeCount.innerText) - 1;
+                }
+            }
+        }
+    }
+}
+
+function onClickDislikeBestComment(best_dislike, best_cmt_index, cmt_index, user_no, type, cmt_no) {
+    var countChangeFlag = true;
+    var bestLikeCount = document.getElementById("best_cmt_like_" + best_cmt_index);
+    var bestDislikeCount = document.getElementById("best_cmt_dislike_" + best_cmt_index);
+    var bestLike = document.getElementById("best_cmt_btn_like_" + best_cmt_index);
+
+    var jsonData = {"cmt_no": cmt_no, "user_no" : user_no, "type" : type}
+    var isClicked = false;
+    var map = new Map();
+
+    if (best_dislike.getAttribute("src") === "/image/icon/cmt_dislike_color.png") {
+        isClicked = true;
+    } else {
+        isClicked = false;
+    }
+
+    // console.log("isClicked : " + isClicked);
+
+    if (cmt_index == -1) {
+        var likeCount = null;
+        var dislikeCount = null;
+        var like = null;
+
+        map.set("dislikeCount", bestDislikeCount)
+        map.set("likeCount", bestLikeCount);
+        map.set("jsonData", jsonData);
+        map.set("isClicked", isClicked);
+        map.set("dislike", best_dislike);
+        map.set("like", bestLike);
+        map.set("countChangeFlag", countChangeFlag);
+        map.set("type", type);
+
+        onLoginCheck(map);
+    } else {
+        var likeCount = document.getElementById("cmt_like_" + cmt_index);
+        var dislikeCount = document.getElementById("cmt_dislike_" + cmt_index);
+        var like = document.getElementById("cmt_btn_like_" + cmt_index);
+        var dislike = document.getElementById("cmt_btn_dislike_" + cmt_index);
+
+        map.set("dislikeCount", dislikeCount)
+        map.set("likeCount", likeCount);
+        map.set("jsonData", jsonData);
+        map.set("isClicked", isClicked);
+        map.set("dislike", dislike);
+        map.set("like", like);
+        map.set("countChangeFlag", countChangeFlag);
+        map.set("type", type);
+
+        let isSuccessful = onLoginCheck(map);
+
+        if (isSuccessful) {
+            if (isClicked) {
+                best_dislike.src = "/image/icon/cmt_dislike_bw.png";
+                bestDislikeCount.innerText = Number(bestDislikeCount.innerText) - 1;
+            } else {
+                best_dislike.src = "/image/icon/cmt_dislike_color.png";
+                bestDislikeCount.innerText = Number(bestDislikeCount.innerText) + 1;
+                let best_btn_like = document.getElementById("best_cmt_btn_like_" + best_cmt_index);
+                let tempStr = getURLPathname(best_btn_like.src);
+                if (tempStr == "/image/icon/cmt_like_color.png") {
+                    best_btn_like.src = "/image/icon/cmt_like_bw.png"
+                    bestLikeCount.innerText = Number(bestLikeCount.innerText) - 1;
+                }
+            }
+        }
+    }
+}
+
 function onLoginCheck(map) {
     var debugCheck = {"debug": false}
 
-    $.ajax({
+    return $.ajax({
         type: "POST",
         url: "/rest/authenticationCheck",
         data: JSON.stringify(debugCheck),
@@ -252,13 +387,7 @@ function onClickCmtAction(map) {
                             var temp = parseInt(likeCount.innerText);
                             likeCount.innerText = temp + 1;
 
-                            let url = dislike.src.split('/');
-                            let tempStr = "/";
-
-                            for (let i = 3; i < url.length; i++) {
-                                tempStr += url[i] + "/";
-                            }
-                            tempStr = tempStr.slice(0, tempStr.length-1);
+                            let tempStr = getURLPathname(dislike.src);
                             if (tempStr == "/image/icon/cmt_dislike_color.png") {
                                 dislike.src = "/image/icon/cmt_dislike_bw.png";
                                 temp = dislikeCount.innerText;
@@ -269,13 +398,7 @@ function onClickCmtAction(map) {
                             var temp = parseInt(dislikeCount.innerText);
                             dislikeCount.innerText = temp + 1;
 
-                            let url = like.src.split('/');
-                            let tempStr = "/";
-
-                            for (let i = 3; i < url.length; i++) {
-                                tempStr += url[i] + "/";
-                            }
-                            tempStr = tempStr.slice(0, tempStr.length-1);
+                            let tempStr = getURLPathname(like.src);
                             if (tempStr == "/image/icon/cmt_like_color.png") {
                                 like.src = "/image/icon/cmt_like_bw.png";
                                 temp = likeCount.innerText;
@@ -533,4 +656,16 @@ function addURLParam(keyword, value) {
     /* https://stackoverflow.com/questions/22753052/remove-url-parameters-without-refreshing-page */
     window.history.pushState(null, null, url);
     // window.history.replaceState(null, null, url);
+}
+
+function getURLPathname(url) {
+    let urlAry = url.split('/');
+    let tempStr = "/";
+
+    for (let i = 3; i < urlAry.length; i++) {
+        tempStr += urlAry[i] + "/";
+    }
+    tempStr = tempStr.slice(0, tempStr.length-1);
+
+    return tempStr;
 }

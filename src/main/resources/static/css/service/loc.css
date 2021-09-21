@@ -52,3 +52,7 @@
 .loc_align-end{
    float: right;
 }
+
+.clickable-image {
+    cursor: pointer;
+}

@@ -20,6 +20,11 @@
 	<link rel="stylesheet" href="/css/service/loc.css">
 	<style>
         @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap');
+
+		.best {
+            font-family: 'Orbitron', sans-serif;
+		}
 
         body {
             font-family: 'Jua', sans-serif;
@@ -281,13 +286,90 @@
 								<div class="d-flex flex-column">
 									<c:set var="cmtDTO" value="${resComDTO.dtoList}"></c:set>
 									<c:choose>
-										<c:when test="${0 != cmtDTO.size()}">
+										<c:when test="${!empty bestCmtList and paramValues.page[0] eq 1}">
+											<c:forEach var="b" begin="0" end="${bestCmtList.size()-1}">
+												<div class="p-2" style="background: #FFC2D6">
+													<span class="best badge bg-primary fs-6 mb-2">BEST</span>
+													<div class="d-flex flex-row align-items-center">
+														<img src="${bestCmtList.get(b).user.profile_pic}"
+															 class="loc_comment-profile-image-wh">
+														<div class="flex-column">
+															<p class="visually-hidden" id="best_cmt_id_${b}">${bestCmtList.get(b).cmtUuid}</p>
+															<span class="d-block font-weight-bold name">
+																	${bestCmtList.get(b).user.user_nic}
+															</span>
+															<span class="date text-black-50 ml-5">${bestCmtList.get(b).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}</span>
+															<c:choose>
+																<c:when test="${bestCmtList.get(b).regDate ne bestCmtList.get(b).modDate}">
+																	<span class="date text-black-50 ml-5">(수정됨)</span>
+																</c:when>
+															</c:choose>
+														</div>
+													</div>
+													<div class="d-flex row justify-content-between" style="margin-left: 60px">
+														<sec:authorize access="isAuthenticated()">
+															<c:set var="user_no"><sec:authentication property="principal.user_no"/></c:set>
+															<div class="col align-content-center">
+																<c:choose>
+																	<c:when test="${!empty bestCmtLikeList and !empty bestCmtDislikeList}">
+																		<c:choose>
+																			<c:when test="${bestCmtLikeList.get(b) eq null or bestCmtDislikeList.get(b) eq null}">
+																				<div class="col align-content-center">
+																					<image class="loc_icon me-1 ms-0 clickable-image" src="/image/icon/cmt_like_bw.png" id="best_cmt_btn_like_${b+1}"
+																						   onclick="onClickLikeBestComment(this, ${b+1},  ${bestCmtIndexList.get(b) + 1}, ${user_no}, 'cmt_like', ${bestCmtList.get(b).cmtNo})"></image>
+																					<span class="text-center align-middle fs-6" id="best_cmt_like_${b+1}">${bestCmtList.get(b).likeCount}</span>
+																					<image class="loc_icon me-1 clickable-image" src="/image/icon/cmt_dislike_bw.png" id="best_cmt_btn_dislike_${b+1}"
+																						   onclick="onClickDislikeBestComment(this, ${b+1}, ${bestCmtIndexList.get(b) + 1}, ${user_no}, 'cmt_dislike', ${bestCmtList.get(b).cmtNo})"></image>
+																					<span class="text-center align-middle fs-6" id="best_cmt_dislike_${b+1}">${bestCmtList.get(b).dislikeCount}</span>
+																				</div>
+																			</c:when>
+																			<c:when test="${bestCmtLikeList.get(b) eq true or bestCmtDislikeList.get(b) eq false}">
+																				<image class="loc_icon me-1 ms-0 clickable-image" src="/image/icon/cmt_like_color.png" id="best_cmt_btn_like_${b+1}"
+																					   onclick="onClickLikeBestComment(this, ${b+1},  ${bestCmtIndexList.get(b) + 1}, ${user_no}, 'cmt_like', ${bestCmtList.get(b).cmtNo})"></image>
+																				<span class="text-center align-middle fs-6" id="best_cmt_like_${b+1}">${bestCmtList.get(b).likeCount}</span>
+																				<image class="loc_icon me-1 clickable-image" src="/image/icon/cmt_dislike_bw.png" id="best_cmt_btn_dislike_${b+1}"
+																					   onclick="onClickDislikeBestComment(this, ${b+1}, ${bestCmtIndexList.get(b) + 1}, ${user_no}, 'cmt_dislike', ${bestCmtList.get(b).cmtNo})"></image>
+																				<span class="text-center align-middle fs-6" id="best_cmt_dislike_${b+1}">${bestCmtList.get(b).dislikeCount}</span>
+																			</c:when>
+																			<c:when test="${bestCmtLikeList.get(b) eq false or bestCmtDislikeList.get(b) eq true}">
+																				<image class="loc_icon me-1 ms-0 clickable-image" src="/image/icon/cmt_like_bw.png" id ="best_cmt_btn_like_${b+1}"
+																					   onclick="onClickLikeBestComment(this, ${b+1},  ${bestCmtIndexList.get(b) + 1}, ${user_no}, 'cmt_like', ${bestCmtList.get(b).cmtNo})"></image>
+																				<span class="text-center align-middle fs-6" id="best_cmt_like_${b+1}">${bestCmtList.get(b).likeCount}</span>
+																				<image class="loc_icon me-1 clickable-image" src="/image/icon/cmt_dislike_color.png" id ="best_cmt_btn_dislike_${b+1}"
+																					   onclick="onClickDislikeBestComment(this, ${b+1}, ${bestCmtIndexList.get(b) + 1},${user_no}, 'cmt_dislike', ${bestCmtList.get(b).cmtNo})"></image>
+																				<span class="text-center align-middle fs-6" id="best_cmt_dislike_${b+1}">${bestCmtList.get(b).dislikeCount}</span>
+																			</c:when>
+																		</c:choose>
+																	</c:when>
+																</c:choose>
+															</div>
+														</sec:authorize>
+														<sec:authorize access="isAnonymous()">
+															<div class="col align-content-center">
+																<image class="loc_icon me-1 ms-0" src="/image/icon/cmt_like_bw.png"></image>
+																<span class="text-center align-middle fs-6">${bestCmtList.get(b).likeCount}</span>
+																<image class="loc_icon me-1" src="/image/icon/cmt_dislike_bw.png"></image>
+																<span class="text-center align-middle fs-6">${bestCmtList.get(b).dislikeCount}</span>
+															</div>
+														</sec:authorize>
+													</div>
+													<div class="mt-2">
+														<div id="best_cmt_content_${b}" class="visible">
+															<p class="m-0 comment-text fs-5">${bestCmtList.get(b).cmtContent}</p>
+														</div>
+													</div>
+												</div>
+											</c:forEach>
+										</c:when>
+									</c:choose>
+									<c:choose>
+										<c:when test="${!empty cmtDTO}">
 											<c:forEach var="c" begin="0" end="${cmtDTO.size()-1}">
 												<div class="bg-white p-2">
 													<div class="d-flex flex-row align-items-center">
 														<img
-															src="${cmtDTO.get(c).user.profile_pic}"
-															class="loc_comment-profile-image-wh">
+																src="${cmtDTO.get(c).user.profile_pic}"
+																class="loc_comment-profile-image-wh">
 														<div class="flex-column">
 															<p class="visually-hidden" id="cmt_id_${c}">${cmtDTO.get(c).cmtUuid}</p>
 															<span class="d-block font-weight-bold name">
@@ -307,64 +389,64 @@
 														</div>
 													</div>
 													<div class="d-flex row justify-content-between" style="margin-left: 60px">
-													<sec:authorize access="isAuthenticated()">
-														<c:set var="user_no"><sec:authentication property="principal.user_no"/></c:set>
-														<div class="col align-content-center">
-															<c:choose>
-																<c:when test="${!empty cmtLikeList and !empty cmtDislikeList}">
-																	<c:choose>
-																		<c:when test="${cmtLikeList.get(c) eq null or cmtDislikeList.get(c) eq null}">
-																			<div class="col align-content-center">
-																				<image class="loc_icon_big me-1 ms-0" src="/image/icon/cmt_like_bw.png" id="cmt_btn_like_${c+1}"
+														<sec:authorize access="isAuthenticated()">
+															<c:set var="user_no"><sec:authentication property="principal.user_no"/></c:set>
+															<div class="col align-content-center">
+																<c:choose>
+																	<c:when test="${!empty cmtLikeList and !empty cmtDislikeList}">
+																		<c:choose>
+																			<c:when test="${cmtLikeList.get(c) eq null or cmtDislikeList.get(c) eq null}">
+																				<div class="col align-content-center">
+																					<image class="loc_icon me-1 ms-0 clickable-image" src="/image/icon/cmt_like_bw.png" id="cmt_btn_like_${c+1}"
+																						   onclick="onClickLikeComment(this, ${c+1}, ${user_no}, 'cmt_like', ${cmtDTO.get(c).cmtNo})"></image>
+																					<span class="text-center align-middle fs-6" id="cmt_like_${c+1}">${cmtDTO.get(c).likeCount}</span>
+																					<image class="loc_icon me-1 clickable-image" src="/image/icon/cmt_dislike_bw.png" id="cmt_btn_dislike_${c+1}"
+																						   onclick="onClickDislikeComment(this, ${c+1}, ${user_no}, 'cmt_dislike', ${cmtDTO.get(c).cmtNo})"></image>
+																					<span class="text-center align-middle fs-6" id="cmt_dislike_${c+1}">${cmtDTO.get(c).dislikeCount}</span>
+																				</div>
+																			</c:when>
+																			<c:when test="${cmtLikeList.get(c) eq true or cmtDislikeList.get(c) eq false}">
+																				<image class="loc_icon me-1 ms-0 clickable-image" src="/image/icon/cmt_like_color.png" id="cmt_btn_like_${c+1}"
 																					   onclick="onClickLikeComment(this, ${c+1}, ${user_no}, 'cmt_like', ${cmtDTO.get(c).cmtNo})"></image>
-																				<span class="text-center align-middle fs-4" id="cmt_like_${c+1}">${cmtDTO.get(c).likeCount}</span>
-																				<image class="loc_icon_big me-1" src="/image/icon/cmt_dislike_bw.png" id="cmt_btn_dislike_${c+1}"
+																				<span class="text-center align-middle fs-6" id="cmt_like_${c+1}">${cmtDTO.get(c).likeCount}</span>
+																				<image class="loc_icon me-1 clickable-image" src="/image/icon/cmt_dislike_bw.png" id="cmt_btn_dislike_${c+1}"
 																					   onclick="onClickDislikeComment(this, ${c+1}, ${user_no}, 'cmt_dislike', ${cmtDTO.get(c).cmtNo})"></image>
-																				<span class="text-center align-middle fs-4" id="cmt_dislike_${c+1}">${cmtDTO.get(c).dislikeCount}</span>
-																			</div>
-																		</c:when>
-																		<c:when test="${cmtLikeList.get(c) eq true or cmtDislikeList.get(c) eq false}">
-																			<image class="loc_icon_big me-1 ms-0" src="/image/icon/cmt_like_color.png" id="cmt_btn_like_${c+1}"
-																				   onclick="onClickLikeComment(this, ${c+1}, ${user_no}, 'cmt_like', ${cmtDTO.get(c).cmtNo})"></image>
-																			<span class="text-center align-middle fs-4" id="cmt_like_${c+1}">${cmtDTO.get(c).likeCount}</span>
-																			<image class="loc_icon_big me-1" src="/image/icon/cmt_dislike_bw.png" id="cmt_btn_dislike_${c+1}"
-																				   onclick="onClickDislikeComment(this, ${c+1}, ${user_no}, 'cmt_dislike', ${cmtDTO.get(c).cmtNo})"></image>
-																			<span class="text-center align-middle fs-4" id="cmt_dislike_${c+1}">${cmtDTO.get(c).dislikeCount}</span>
-																		</c:when>
-																		<c:when test="${cmtLikeList.get(c) eq false or cmtDislikeList.get(c) eq true}">
-																			<image class="loc_icon_big me-1 ms-0" src="/image/icon/cmt_like_bw.png" id ="cmt_btn_like_${c+1}"
-																				   onclick="onClickLikeComment(this, ${c+1}, ${user_no}, 'cmt_like', ${cmtDTO.get(c).cmtNo})"></image>
-																			<span class="text-center align-middle fs-4" id="cmt_like_${c+1}">${cmtDTO.get(c).likeCount}</span>
-																			<image class="loc_icon_big me-1" src="/image/icon/cmt_dislike_color.png" id ="cmt_btn_dislike_${c+1}"
-																				   onclick="onClickDislikeComment(this, ${c+1}, ${user_no}, 'cmt_dislike', ${cmtDTO.get(c).cmtNo})"></image>
-																			<span class="text-center align-middle fs-4" id="cmt_dislike_${c+1}">${cmtDTO.get(c).dislikeCount}</span>
-																		</c:when>
-																	</c:choose>
-																</c:when>
-															</c:choose>
-														</div>
-														<c:choose>
-															<c:when test="${user_no eq cmtDTO.get(c).user.user_no}">
-																<span class="d-none visually-hidden" id="cmt_user_email_${c}">${cmtDTO.get(c).user.user_email}</span>
+																				<span class="text-center align-middle fs-6" id="cmt_dislike_${c+1}">${cmtDTO.get(c).dislikeCount}</span>
+																			</c:when>
+																			<c:when test="${cmtLikeList.get(c) eq false or cmtDislikeList.get(c) eq true}">
+																				<image class="loc_icon me-1 ms-0 clickable-image" src="/image/icon/cmt_like_bw.png" id ="cmt_btn_like_${c+1}"
+																					   onclick="onClickLikeComment(this, ${c+1}, ${user_no}, 'cmt_like', ${cmtDTO.get(c).cmtNo})"></image>
+																				<span class="text-center align-middle fs-6" id="cmt_like_${c+1}">${cmtDTO.get(c).likeCount}</span>
+																				<image class="loc_icon me-1 clickable-image" src="/image/icon/cmt_dislike_color.png" id ="cmt_btn_dislike_${c+1}"
+																					   onclick="onClickDislikeComment(this, ${c+1}, ${user_no}, 'cmt_dislike', ${cmtDTO.get(c).cmtNo})"></image>
+																				<span class="text-center align-middle fs-6" id="cmt_dislike_${c+1}">${cmtDTO.get(c).dislikeCount}</span>
+																			</c:when>
+																		</c:choose>
+																	</c:when>
+																</c:choose>
+															</div>
+															<c:choose>
+																<c:when test="${user_no eq cmtDTO.get(c).user.user_no}">
+																	<span class="d-none visually-hidden" id="cmt_user_email_${c}">${cmtDTO.get(c).user.user_email}</span>
 																	<div class="d-flex col justify-content-end">
 																		<button class="btn btn-primary" onclick="openCmtEditMenu(${c})">수정</button>
 																		<button class="btn btn-primary ms-2" onclick="onClickDeleteComment(${c})">삭제</button>
 																	</div>
-															</c:when>
-														</c:choose>
-													</sec:authorize>
-													<sec:authorize access="isAnonymous()">
-														<div class="col align-content-center">
-															<image class="loc_icon_big me-1 ms-0" src="/image/icon/cmt_like_bw.png"></image>
-															<span class="text-center align-middle fs-4">${cmtDTO.get(c).likeCount}</span>
-															<image class="loc_icon_big me-1" src="/image/icon/cmt_dislike_bw.png"></image>
-															<span class="text-center align-middle fs-4">${cmtDTO.get(c).dislikeCount}</span>
-														</div>
-													</sec:authorize>
+																</c:when>
+															</c:choose>
+														</sec:authorize>
+														<sec:authorize access="isAnonymous()">
+															<div class="col align-content-center">
+																<image class="loc_icon me-1 ms-0" src="/image/icon/cmt_like_bw.png"></image>
+																<span class="text-center align-middle fs-6">${cmtDTO.get(c).likeCount}</span>
+																<image class="loc_icon me-1" src="/image/icon/cmt_dislike_bw.png"></image>
+																<span class="text-center align-middle fs-6">${cmtDTO.get(c).dislikeCount}</span>
+															</div>
+														</sec:authorize>
 													</div>
 													<div class="mt-2">
 														<div id="cmt_content_${c}" class="visible">
-															<p class="comment-text fs-4">${cmtDTO.get(c).cmtContent}</p>
+															<p class="comment-text fs-5">${cmtDTO.get(c).cmtContent}</p>
 														</div>
 														<div id="cmt_edit_${c}" class="row visually-hidden">
 															<textarea id="cmt_edit_content_${c}" rows="6" maxlength="300" class="form-control ml-1 shadow-none textarea">${cmtDTO.get(c).cmtContent}</textarea>

@@ -102,8 +102,22 @@ public class CommentService {
                 pageable = requestDTO.getPageable(Sort.by("cmtIdx").descending());
                 break;
             case IDX_ASC:
-            default:
                 pageable = requestDTO.getPageable(Sort.by("cmtIdx").ascending());
+                break;
+            case LIKE_DES:
+                pageable = requestDTO.getPageable(Sort.by("likeCount").descending());
+                break;
+            case LIKE_ASC:
+                pageable = requestDTO.getPageable(Sort.by("likeCount").ascending());
+                break;
+            case DISLIKE_DES:
+                pageable = requestDTO.getPageable(Sort.by("dislikeCount").descending());
+                break;
+            case DISLIKE_ASC:
+                pageable = requestDTO.getPageable(Sort.by("dislikeCount").ascending());
+                break;
+            default:
+                pageable = requestDTO.getPageable(Sort.by("cmtIdx").descending());
                 break;
         }
 
@@ -432,5 +446,11 @@ public class CommentService {
         update(cmt);
 
         return true;
+    }
+
+    public List<Comment> getBestComment(Long locNo) {
+        Optional<List<Comment>> item = cmtRepository.getBestComment(locNo);
+
+        return item.orElse(null);
     }
 }

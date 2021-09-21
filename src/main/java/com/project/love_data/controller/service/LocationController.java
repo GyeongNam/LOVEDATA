@@ -149,14 +149,31 @@ public class LocationController {
             LocationDTO dto = locService.selectLocDTO(locNo);
             pageRequestDTO.setSize(MAX_COM_COUNT);
             PageResultDTO<CommentDTO, Comment> resultCommentDTO = null;
+//            PageResultDTO<CommentDTO, Comment> bestCommentDTO = null;
             List<Boolean> cmtLikeList = new ArrayList<>();
             List<Boolean> cmtDislikeList = new ArrayList<>();
+            List<CommentDTO> bestCmtList = new ArrayList<>();
+            List<Boolean> bestCmtLikeList = new ArrayList<>();
+            List<Boolean> bestCmtDislikeList = new ArrayList<>();
+            List<Integer> bestCmtIndexList = new ArrayList<>();
+            boolean bestCmtMatchFlag = false;
 
             if (isAdmin) {
                 resultCommentDTO = comService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION,
                         CommentSortType.IDX_DES, CommentSearchType.All);
             } else {
                 resultCommentDTO = comService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION);
+            }
+            pageRequestDTO.setSize(3);
+//            bestCommentDTO = comService.getCmtPage(pageRequestDTO,
+//                    CommentPageType.LOCATION, CommentSortType.LIKE_DES,CommentSearchType.Live);
+            List<Comment> bestCmtHolder = comService.getBestComment(locNo);
+            if (bestCmtHolder != null ) {
+                if (!bestCmtHolder.isEmpty()) {
+                    for (Comment cmt : bestCmtHolder) {
+                        bestCmtList.add(comService.entityToDto(cmt));
+                    }
+                }
             }
 
 //            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -195,6 +212,38 @@ public class LocationController {
                         cmtLikeList.add(null);
                         cmtDislikeList.add(null);
                     }
+
+                    for (CommentDTO best : bestCmtList) {
+                        UserLikeCmt userLikeBestCmt = userLikeCmtService.selectBycmtNoAndUserNo(best.getCmtNo(), authUserModel.getUser_no());
+                        UserDislikeCmt userDislikeBestCmt = userDislikeCmtService.selectBycmtNoAndUserNo(best.getCmtNo(), authUserModel.getUser_no());
+
+                        if (userLikeBestCmt != null && userDislikeBestCmt == null) {
+                            bestCmtLikeList.add(true);
+                            bestCmtDislikeList.add(false);
+                        } else if (userLikeBestCmt == null && userDislikeBestCmt != null) {
+                            bestCmtLikeList.add(false);
+                            bestCmtDislikeList.add(true);
+                        } else {
+                            bestCmtLikeList.add(null);
+                            bestCmtDislikeList.add(null);
+                        }
+
+                        bestCmtMatchFlag = false;
+                        Integer index = null;
+                        for (int i = 0; i < resultCommentDTO.getDtoList().size(); i++) {
+                            if (resultCommentDTO.getDtoList().get(i).equals(best)) {
+                                index = i;
+                                bestCmtMatchFlag = true;
+                                break;
+                            }
+                        }
+
+                        if (bestCmtMatchFlag) {
+                            bestCmtIndexList.add(index);
+                        } else {
+                            bestCmtIndexList.add(-1);
+                        }
+                    }
                 }
             } else {
                 model.addAttribute("isLiked", false);
@@ -204,6 +253,10 @@ public class LocationController {
             model.addAttribute("resComDTO", resultCommentDTO);
             model.addAttribute("cmtLikeList", cmtLikeList);
             model.addAttribute("cmtDislikeList", cmtDislikeList);
+            model.addAttribute("bestCmtList", bestCmtList);
+            model.addAttribute("bestCmtLikeList", bestCmtLikeList);
+            model.addAttribute("bestCmtDislikeList", bestCmtDislikeList);
+            model.addAttribute("bestCmtIndexList", bestCmtIndexList);
 
             return "/service/loc_detail";
         }
