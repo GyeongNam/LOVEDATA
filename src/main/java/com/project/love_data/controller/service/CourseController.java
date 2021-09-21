@@ -45,6 +45,10 @@ public class CourseController {
     CourseImageService courseImageService;
     @Autowired
     ReviewImageService revImgService;
+    @Autowired
+    UserLikeRevService userLikeRevService;
+    @Autowired
+    UserDislikeRevService userDislikeRevService;
     List<String> tagList = new ArrayList<>();
 
     @RequestMapping("/service/cor_registration")
@@ -173,7 +177,7 @@ public class CourseController {
             if (isAdmin) {
                 resultReviewDTO = reviewService.getRevPage(pageRequestDTO, SortingOrder.DES, ReviewSearchType.ALL);
             } else {
-                resultReviewDTO  = reviewService.getRevPage(pageRequestDTO, SortingOrder.DES, ReviewSearchType.Live);
+                resultReviewDTO = reviewService.getRevPage(pageRequestDTO, SortingOrder.DES, ReviewSearchType.Live);
             }
 
 //            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -236,7 +240,7 @@ public class CourseController {
                 if ("".equals(revImgURL)) {
                     revImgURLStringList.add(revImgURL);
                 } else {
-                    revImgURL = revImgURL.substring(0, revImgURL.length()-4);
+                    revImgURL = revImgURL.substring(0, revImgURL.length() - 4);
                     revImgURLStringList.add(revImgURL);
                 }
 
@@ -253,6 +257,35 @@ public class CourseController {
                 revImgURLStringList = null;
             }
 
+            List<Review> bestRev = reviewService.getBestReview(corNo);
+            List<Boolean> revLikeList = new ArrayList<>();
+            List<Boolean> revDislikeList = new ArrayList<>();
+
+            if (authentication != null) {
+                AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
+                if (authentication.isAuthenticated()) {
+                    for (ReviewDTO revDTO : resultReviewDTO.getDtoList()) {
+                        UserLikeRev userLikeCmt = userLikeRevService.selectByRevNoAndUserNo(revDTO.getRevNo(), authUserModel.getUser_no());
+                        UserDislikeRev userDislikeCmt = userDislikeRevService.selectByRevNoAndUserNo(revDTO.getRevNo(), authUserModel.getUser_no());
+
+                        if (userLikeCmt != null && userDislikeCmt == null) {
+                            revLikeList.add(true);
+                            revDislikeList.add(false);
+                            continue;
+                        }
+
+                        if (userLikeCmt == null && userDislikeCmt != null) {
+                            revLikeList.add(false);
+                            revDislikeList.add(true);
+                            continue;
+                        }
+
+                        revLikeList.add(null);
+                        revDislikeList.add(null);
+                    }
+                }
+            }
+
             model.addAttribute("dto", dto);
             model.addAttribute("resRevDTO", resultReviewDTO);
             model.addAttribute("ImageList", courseImageList);
@@ -260,6 +293,8 @@ public class CourseController {
             model.addAttribute("revImgList", revImgDTOList);
             model.addAttribute("revImgStringURLList", revImgURLStringList);
             model.addAttribute("revUserPicList", revUserPicList);
+            model.addAttribute("revLikeList", revLikeList);
+            model.addAttribute("revDislikeList", revDislikeList);
 
             return "/service/cor_detail";
         }
@@ -450,7 +485,7 @@ public class CourseController {
     }
 
     @GetMapping(value = "/service/cor_recommend/search")
-    public String getSearchValue(HttpServletRequest request, Model model){
+    public String getSearchValue(HttpServletRequest request, Model model) {
         String keyword = request.getParameter("keyword");
         String order = request.getParameter("sortOrder");
         String tagString = request.getParameter("tags");
@@ -475,7 +510,7 @@ public class CourseController {
         }
 
         // 일반 유저는 삭제된 코스 항목을 볼 수 없음
-        switch(searchType) {
+        switch (searchType) {
             case DISABLED:
                 searchType = SearchType.NONE;
                 break;
@@ -490,23 +525,23 @@ public class CourseController {
                 break;
         }
 
-        switch (order){
-            case "LIKE_DES" :
+        switch (order) {
+            case "LIKE_DES":
                 // 좋아요 순
                 sortCriterion = SortCriterion.LIKE;
                 sortingOrder = SortingOrder.DES;
                 break;
-            case "DATE_DES" :
+            case "DATE_DES":
                 // 최신 등록순
                 sortCriterion = SortCriterion.DATE;
                 sortingOrder = SortingOrder.DES;
                 break;
-            case "DATE_ASC" :
+            case "DATE_ASC":
                 // 오래된 등록순
                 sortCriterion = SortCriterion.DATE;
                 sortingOrder = SortingOrder.ASC;
                 break;
-            case "VIEW_DES" :
+            case "VIEW_DES":
                 // 조회순
             default:
                 sortCriterion = SortCriterion.VIEW;

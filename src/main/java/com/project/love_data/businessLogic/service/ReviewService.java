@@ -284,4 +284,66 @@ public class ReviewService {
         Optional<List<Review>> items = repository.findLiveByCor_no(corNo);
         return items.orElse(null);
     }
+
+    public Boolean incLikeCount (Long rev_no) {
+        Review rev = select(rev_no);
+
+        if (rev == null) {
+            return false;
+        }
+
+        rev.setRev_like(rev.getRev_like() + 1);
+
+        update(rev);
+
+        return true;
+    }
+
+    public boolean decLikeCount (Long rev_no) {
+        Review rev = select(rev_no);
+
+        if (rev == null) {
+            return false;
+        }
+
+        rev.setRev_like(rev.getRev_like() - 1);
+
+        update(rev);
+
+        return true;
+    }
+
+    public boolean incDislikeCount (Long rev_no) {
+        Review rev = select(rev_no);
+
+        if (rev == null) {
+            return false;
+        }
+
+        rev.setRev_dislike(rev.getRev_dislike() + 1);
+
+        update(rev);
+
+        return true;
+    }
+
+    public boolean decDislikeCount (Long rev_no) {
+        Review rev = select(rev_no);
+
+        if (rev == null) {
+            return false;
+        }
+
+        rev.setRev_dislike(rev.getRev_dislike() - 1);
+
+        update(rev);
+
+        return true;
+    }
+
+    public List<Review> getBestReview(Long corNo) {
+        Optional<List<Review>> items = repository.getBestReview(corNo);
+
+        return items.orElse(null);
+    }
 }

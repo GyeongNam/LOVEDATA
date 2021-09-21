@@ -316,6 +316,66 @@ function onClickDislikeBestComment(best_dislike, best_cmt_index, cmt_index, user
     }
 }
 
+function onClickLikeReview(like, cmt_index, user_no, type, rev_no) {
+    var countChangeFlag = true;
+    var likeCount = document.getElementById("rev_like_" + cmt_index);
+    var dislikeCount = document.getElementById("rev_dislike_" + cmt_index);
+    var path_noparm = location.pathname;
+    var dislike = document.getElementById("rev_btn_dislike_" + cmt_index);
+
+    countChangeFlag = true;
+
+    var jsonData = {"rev_no": rev_no, "user_no" : user_no, "type" : type}
+    var isClicked = false;
+    var map = new Map();
+
+    if (like.getAttribute("src") === "/image/icon/rev_like_color.png") {
+        isClicked = true;
+    } else {
+        isClicked = false;
+    }
+    console.log("isClicked : " + isClicked);
+
+    map.set("likeCount", likeCount);
+    map.set("dislikeCount", dislikeCount);
+    map.set("jsonData", jsonData);
+    map.set("isClicked", isClicked);
+    map.set("like", like);
+    map.set("dislike", dislike);
+    map.set("countChangeFlag", countChangeFlag);
+    map.set("type", type);
+
+    onLoginCheck(map);
+}
+
+function onClickDislikeReview(dislike, cmt_index, user_no, type, rev_no) {
+    var countChangeFlag = true;
+    var dislikeCount = document.getElementById("rev_dislike_" + cmt_index);
+    var likeCount = document.getElementById("rev_like_" + cmt_index);
+    var jsonData = {"rev_no": rev_no, "user_no" : user_no, "type" : type, "cmt_index" : cmt_index}
+    var isClicked = false;
+    var map = new Map();
+    var like = document.getElementById("rev_btn_like_" + cmt_index);
+
+    if (dislike.getAttribute("src") === "/image/icon/rev_dislike_color.png") {
+        isClicked = true;
+    } else {
+        isClicked = false;
+    }
+    console.log("isClicked : " + isClicked);
+
+    map.set("dislikeCount", dislikeCount)
+    map.set("likeCount", likeCount);
+    map.set("jsonData", jsonData);
+    map.set("isClicked", isClicked);
+    map.set("dislike", dislike);
+    map.set("like", like);
+    map.set("countChangeFlag", countChangeFlag);
+    map.set("type", type);
+
+    onLoginCheck(map);
+}
+
 function onLoginCheck(map) {
     var debugCheck = {"debug": false}
 
@@ -340,6 +400,8 @@ function onLoginCheck(map) {
 
             if (map.get('type') === 'cmt_like' || map.get('type') === 'cmt_dislike') {
                 onClickCmtAction(map);
+            } else if (map.get('type') === 'rev_like' || map.get('type') === 'rev_dislike') {
+                onClickRevAction(map);
             } else {
                 onClickLikeAction(map);
             }
@@ -352,6 +414,108 @@ function onLoginCheck(map) {
             return false;
         }
     });
+}
+
+function onClickRevAction(map) {
+    var user_no = map.get("user_no");
+    var jsonData = map.get("jsonData");
+    var isClicked = map.get("isClicked");
+    var type = map.get("type");
+    var like = map.get("like");
+    var dislike = map.get("dislike");
+    var countChangeFlag = map.get("countChangeFlag");
+    var likeCount = map.get("likeCount");
+    var dislikeCount = map.get("dislikeCount");
+
+    if (!isClicked) {
+        $.ajax({
+            type: "POST",
+            url: "/rest/onRevBtnClicked",
+            data: JSON.stringify(jsonData),
+            dataType: 'json',
+            contentType: "application/json; charset=UTF-8",
+            beforeSend: function (xhr) {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                xhr.setRequestHeader(header, token);
+            },
+            success: function (response) {
+                // do something ...
+
+                if (response) {
+                    console.log("Like Success")
+
+                    if (countChangeFlag) {
+                        if ("rev_like" === type) {
+                            like.src = "/image/icon/rev_like_color.png";
+                            var temp = parseInt(likeCount.innerText);
+                            likeCount.innerText = temp + 1;
+
+                            let tempStr = getURLPathname(dislike.src);
+                            if (tempStr == "/image/icon/rev_dislike_color.png") {
+                                dislike.src = "/image/icon/rev_dislike_bw.png";
+                                temp = dislikeCount.innerText;
+                                dislikeCount.innerText = Number(temp) - 1;
+                            }
+                        } else {
+                            dislike.src = "/image/icon/rev_dislike_color.png";
+                            var temp = parseInt(dislikeCount.innerText);
+                            dislikeCount.innerText = temp + 1;
+
+                            let tempStr = getURLPathname(like.src);
+                            if (tempStr == "/image/icon/rev_like_color.png") {
+                                like.src = "/image/icon/rev_like_bw.png";
+                                temp = likeCount.innerText;
+                                likeCount.innerText = Number(temp) - 1;
+                            }
+                        }
+                    }
+                } else {
+                    alert("이미 좋아요를 누른 리뷰입니다.");
+                    console.log("Review Like Failed");
+                }
+            },
+            error: function (e) {
+                console.log("Review Like Error");
+            }
+        });
+    } else {
+        $.ajax({
+            type: "POST",
+            url: "/rest/onRevBtnClickUndo",
+            data: JSON.stringify(jsonData),
+            dataType: 'json',
+            contentType: "application/json; charset=UTF-8",
+            beforeSend: function (xhr) {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                xhr.setRequestHeader(header, token);
+            },
+            success: function (response) {
+                // do something ...
+
+                if (response) {
+                    console.log("Undo Success")
+
+                    if (countChangeFlag) {
+                        if ("rev_like" === type) {
+                            like.src = "/image/icon/rev_like_bw.png";
+                            var temp = parseInt(likeCount.innerText);
+                            likeCount.innerText = temp - 1;
+                        } else {
+                            dislike.src = "/image/icon/rev_dislike_bw.png";
+                            var temp = parseInt(dislikeCount.innerText);
+                            dislikeCount.innerText = temp - 1;
+                        }
+                    }
+
+                    // lastLikeLocId = loc_no;
+                } else {
+                    console.log("Review Undo Failed");
+                }
+
+            },
+            error: function (e) {
+                console.log("Review Undo Error");
+            }
+        });
+    }
 }
 
 function onClickCmtAction(map) {

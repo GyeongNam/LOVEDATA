@@ -39,6 +39,10 @@ public class RestController {
     UserLikeCmtService userLikeCmtService;
     @Autowired
     UserDislikeCmtService userDislikeCmtService;
+    @Autowired
+    UserLikeRevService userLikeRevService;
+    @Autowired
+    UserDislikeRevService userDislikeRevService;
     DefaultLocalDateTimeFormatter defaultDateTimeFormatter = new DefaultLocalDateTimeFormatter();
 
     @PostMapping("/authenticationCheck")
@@ -161,7 +165,7 @@ public class RestController {
         if ("loc".equals(type)) {
             UserLikeLoc item = likeLocService.selectByLocNoAndUserNo(item_no, user_no);
 
-            if (item == null){
+            if (item == null) {
                 log.warn(item_no + " has not been like before!");
                 log.warn("Please Check");
                 return false;
@@ -184,7 +188,7 @@ public class RestController {
         if ("cor".equals(type)) {
             UserLikeCor item = likeCorService.selectByCorNoAndUserNo(item_no, user_no);
 
-            if (item == null){
+            if (item == null) {
                 log.warn(item_no + " has not been like before!");
                 log.warn("Please Check");
                 return false;
@@ -564,6 +568,175 @@ public class RestController {
                 return true;
             } else {
                 log.info("Comment Dislike Undo failed");
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    @PostMapping("/onRevBtnClicked")
+    public boolean onRevBtnClicked(@RequestBody HashMap<String, String> data) {
+//        log.info("data : " + data);
+
+        Long rev_no = Long.valueOf(data.get("rev_no"));
+        Long user_no = Long.valueOf(data.get("user_no"));
+        String type = data.get("type");
+
+        if (user_no == -1) {
+            log.info("Not Registered!");
+            return false;
+        }
+
+        if (rev_no == null) {
+            log.warn("rev_no null value");
+            return false;
+        }
+
+        if ("".equals(rev_no)) {
+            log.warn("item_no empty value");
+            return false;
+        }
+
+        User user = userService.select(user_no);
+
+        if (user == null) {
+            log.warn("Not Registerd User!");
+            log.warn("Please Check");
+            return false;
+        }
+
+        if (type.equals("rev_like")) {
+            Review rev = revService.select(rev_no);
+
+            if (rev == null) {
+                log.warn("No matching result of rev_no");
+                return false;
+            }
+
+            UserLikeRev likeRev = userLikeRevService.selectByRevNoAndUserNo(rev_no, user_no);
+            UserDislikeRev dislikeRev = userDislikeRevService.selectByRevNoAndUserNo(rev_no, user_no);
+
+            if (likeRev != null) {
+                log.warn("User already liked review.");
+                return false;
+            }
+
+            if (dislikeRev != null) {
+                log.info("User dislike this review before.");
+                log.info("Remove the dislike history");
+
+                userDislikeRevService.delete(dislikeRev.getRev_no(), dislikeRev.getUser_no());
+                revService.decDislikeCount(rev_no);
+            }
+
+            userLikeRevService.register(rev_no, user_no);
+
+            revService.incLikeCount(rev_no);
+
+            log.info("Review Like Successful");
+
+            return true;
+        }
+
+        if (type.equals("rev_dislike")) {
+            Review rev = revService.select(rev_no);
+
+            if (rev == null) {
+                log.warn("No matching result of rev_no");
+                return false;
+            }
+
+            UserLikeRev likeRev = userLikeRevService.selectByRevNoAndUserNo(rev_no, user_no);
+            UserDislikeRev dislikeRev = userDislikeRevService.selectByRevNoAndUserNo(rev_no, user_no);
+
+            if (dislikeRev != null) {
+                log.warn("User already disliked review.");
+                return false;
+            }
+
+            if (likeRev != null) {
+                log.info("User like this comment before.");
+                log.info("Remove the like history");
+
+                userLikeRevService.delete(likeRev.getRev_no(), likeRev.getUser_no());
+                revService.decLikeCount(rev_no);
+            }
+
+            userDislikeRevService.register(rev_no, user_no);
+
+            revService.incDislikeCount(rev_no);
+
+            log.info("Review Dislike Successful");
+
+            return true;
+        }
+
+        return false;
+    }
+
+    @PostMapping("/onRevBtnClickUndo")
+    public boolean onRevBtnClickUndo(@RequestBody HashMap<String, String> data) {
+        log.info("data : " + data);
+
+        Long rev_no = Long.valueOf(data.get("rev_no"));
+        Long user_no = Long.valueOf(data.get("user_no"));
+        String type = data.get("type");
+
+        if (rev_no == null) {
+            log.warn("item_no null value");
+            return false;
+        }
+
+        if ("".equals(rev_no)) {
+            log.warn("item_no empty value");
+            return false;
+        }
+
+        if ("rev_like".equals(type)) {
+            UserLikeRev item = userLikeRevService.selectByRevNoAndUserNo(rev_no, user_no);
+
+            if (item == null) {
+                log.warn(rev_no + " has not been like before!");
+                log.warn("Delete Comment Dislike History");
+
+                userDislikeRevService.delete(rev_no, user_no);
+            }
+
+            if (revService.decLikeCount(rev_no)) {
+                if (!userLikeRevService.delete(rev_no, user_no)) {
+                    revService.incLikeCount(rev_no);
+                    log.warn("UserLikeRev {0} delete not Completed", rev_no);
+                    return false;
+                }
+                log.info("Review Like Undo Successful");
+                return true;
+            } else {
+                log.info("Review Like Undo failed");
+                return false;
+            }
+        }
+
+        if ("rev_dislike".equals(type)) {
+            UserLikeRev item = userLikeRevService.selectByRevNoAndUserNo(rev_no, user_no);
+
+            if (item == null) {
+                log.info(rev_no + " has not been like before!");
+                log.info("Delete Comment Like history");
+
+                userLikeRevService.delete(rev_no, user_no);
+            }
+
+            if (revService.decDislikeCount(rev_no)) {
+                if (!userDislikeRevService.delete(rev_no, user_no)) {
+                    revService.incDislikeCount(rev_no);
+                    log.warn("UserDislikeRev delete not Completed");
+                    return false;
+                }
+                log.info("Review Dislike Undo Successful");
+                return true;
+            } else {
+                log.info("Review Dislike Undo failed");
                 return false;
             }
         }
