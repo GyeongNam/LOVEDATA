@@ -73,8 +73,14 @@ public class UserController {
 			@RequestParam(value = "social") boolean social,
 			@RequestParam(value = "social_info") String social_info,
 			@RequestParam(value = "profile_pic") String profile_pic,
-			@RequestParam(value = "social_id") int social_id
+			HttpServletRequest request
 	) {
+
+		String tempStr = request.getParameter("social_id");
+		int social_id = 0;
+		if (tempStr == null || !tempStr.equals("")) {
+			Integer.parseInt(tempStr);
+		}
 
 		User user = User.builder()
 				.user_email(email1 + "@" + email2)
