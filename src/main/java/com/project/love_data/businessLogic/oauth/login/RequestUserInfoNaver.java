@@ -42,55 +42,55 @@ public class RequestUserInfoNaver {
 
             userInfo.setId(element.getAsJsonObject().get("id").getAsString());
             userInfo.setEmail(element.getAsJsonObject().get("email").getAsString());
-            if (element.getAsJsonObject().get("nickname") == null) {
+            if (element.getAsJsonObject().get("nickname") == null | element.getAsJsonObject().get("nickname").getAsString().equals("")) {
                 userInfo.setNickname("");
             } else {
                 userInfo.setNickname(element.getAsJsonObject().get("nickname").getAsString());
             }
 
-            if (element.getAsJsonObject().get("profile_image") == null) {
+            if (element.getAsJsonObject().get("profile_image") == null | element.getAsJsonObject().get("profile_image").getAsString().equals("")) {
                 userInfo.setProfile_image("");
             } else {
                 userInfo.setProfile_image(element.getAsJsonObject().get("profile_image").getAsString());
             }
 
-            if (element.getAsJsonObject().get("age") == null) {
+            if (element.getAsJsonObject().get("age") == null | element.getAsJsonObject().get("age").getAsString().equals("")) {
                 userInfo.setAge("");
             } else {
                 userInfo.setAge(element.getAsJsonObject().get("age").getAsString());
             }
 
-            if (element.getAsJsonObject().get("gender") == null) {
+            if (element.getAsJsonObject().get("gender") == null | element.getAsJsonObject().get("gender").getAsString().equals("")) {
                 userInfo.setSex("");
             } else {
                 userInfo.setSex(element.getAsJsonObject().get("gender").getAsString());
             }
 
-            if (element.getAsJsonObject().get("mobile") == null) {
+            if (element.getAsJsonObject().get("mobile") == null | element.getAsJsonObject().get("mobile").getAsString().equals("")) {
                 userInfo.setPhone("");
             } else {
                 userInfo.setPhone(element.getAsJsonObject().get("mobile").getAsString());
             }
 
-            if (element.getAsJsonObject().get("mobile_e164") == null) {
+            if (element.getAsJsonObject().get("mobile_e164") == null | element.getAsJsonObject().get("mobile_e164").getAsString().equals("")) {
                 userInfo.setMobile_e164("");
             } else {
                 userInfo.setMobile_e164(element.getAsJsonObject().get("mobile_e164").getAsString());
             }
 
-            if (element.getAsJsonObject().get("name") == null) {
+            if (element.getAsJsonObject().get("name") == null | element.getAsJsonObject().get("name").getAsString().equals("")) {
                 userInfo.setName("");
             } else {
                 userInfo.setName(element.getAsJsonObject().get("name").getAsString());
             }
 
-            if (element.getAsJsonObject().get("birthday") == null) {
+            if (element.getAsJsonObject().get("birthday") == null | element.getAsJsonObject().get("birthday").getAsString().equals("")) {
                 userInfo.setBirthday("");
             } else {
                 userInfo.setBirthday(element.getAsJsonObject().get("birthday").getAsString());
             }
 
-            if (element.getAsJsonObject().get("birthyear") == null) {
+            if (element.getAsJsonObject().get("birthyear") == null | element.getAsJsonObject().get("birthyear").getAsString().equals("")) {
                 userInfo.setBirthyear("");
             } else {
                 userInfo.setBirthyear(element.getAsJsonObject().get("birthyear").getAsString());
