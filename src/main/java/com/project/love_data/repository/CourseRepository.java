@@ -37,7 +37,7 @@ public interface CourseRepository extends JpaRepository<Course, Long>
     @Query(value = "SELECT * from course c WHERE  c.cor_name LIKE :cor_name", nativeQuery = true)
     Optional<List<Course>> findByCor_nameContaining(@Param("cor_name") String cor_name);
 
-    @Query(value = "SELECT * FROM course c WHERE c.user_no IN :user_no", nativeQuery = true)
+    @Query(value = "SELECT * FROM course c WHERE c.user_no = :user_no", nativeQuery = true)
     Optional<List<Course>> findByAllUser_no(@Param("user_no")Long userNo);
 
 //    @Query(value = "SELECT DISTINCT ls.course_cor_no from course_tag_set ls WHERE ls.tag_set LIKE :tag")

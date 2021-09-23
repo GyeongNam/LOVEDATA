@@ -80,7 +80,11 @@
 					<c:when test="${pla._deleted eq false}">
 				<tr>
 					<td><span>${pla.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</span></td>
-					<td>${pla.loc_name}</td>
+					<td>
+						<a href="/service/loc_detail?locNo=${pla.loc_no}">${pla.loc_name}</a>
+						<button onclick="location.href='/service/loc_edit?locNo=${pla.loc_no}'">수정</button>
+						<button onclick="onClickRemoveLocation()">삭제</button>
+					</td>
 					<td>${pla.viewCount}</td>
 				</tr>
 					</c:when>

@@ -75,21 +75,18 @@
 				</tr>
 				</thead>
 				<tbody>
+				<c:forEach var="mlike" items="${my_like}" >
+				<c:choose>
+				<c:when test="${mlike._deleted eq false}">
+				<tbody>
 				<tr>
-					<td><span>2022-01-01</span></td>
-					<td>인생 맛집 투어</td>
-					<td>247</td>
+					<td><span>${mlike.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</span></td>
+					<td>${mlike.loc_name}</td>
+					<td>${mlike.viewCount}</td>
 				</tr>
-				<tr>
-					<td><span>2021-12-01</span></td>
-					<td>서울근교 카페 데이트</td>
-					<td>365</td>
-				</tr>
-				<tr>
-					<td>2020-10-11</td>
-					<td>서울역 서울로 걷기데이트</td>
-					<td>117</td>
-				</tr>
+				</c:when>
+				</c:choose>
+				</c:forEach>
 				</tbody>
 			</table>
 			<div class="pagination">

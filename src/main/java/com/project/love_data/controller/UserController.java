@@ -1,12 +1,12 @@
 package com.project.love_data.controller;
 
-import com.project.love_data.businessLogic.service.CalenderService;
-import com.project.love_data.businessLogic.service.LocationService;
-import com.project.love_data.businessLogic.service.UserService;
+import com.project.love_data.businessLogic.service.*;
 import com.project.love_data.dto.CalenderDTO;
 import com.project.love_data.dto.UserDTO;
 import com.project.love_data.model.service.Calender;
+import com.project.love_data.model.service.Course;
 import com.project.love_data.model.service.Location;
+import com.project.love_data.model.service.Review;
 import com.project.love_data.model.user.User;
 import com.project.love_data.repository.CalenderRepository;
 import com.project.love_data.repository.UserRepository;
@@ -52,6 +52,10 @@ public class UserController {
 	CalenderService calenderService;
 	@Autowired
 	LocationService locService;
+	@Autowired
+	CourseService corService;
+	@Autowired
+	ReviewService reviewService;
 
 	@RequestMapping(value = "/signup_add", method = RequestMethod.POST)
 	public String signup(
@@ -170,26 +174,27 @@ public class UserController {
 	}
 
 	//CHOI
-	@GetMapping(value = "/mypage_myreview")
-	public String myreview(Principal principal, Model model) {
-		if (principal == null) {
-			return "redirect:/login";
-		} else {
-			UserDTO userDTO = userService.DTOselect(principal.getName());
-			model.addAttribute("UserDTO", userDTO);
-
-			return "user/mypage_myreview";
-		}
-	}
+//	@GetMapping(value = "/mypage_myreview")
+//	public String myreview(Authentication authentication, Model model) {
+//		if (authentication == null) {
+//			return "redirect:/login";
+//		} else {
+//			AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
+//			List<review> myRevList = reviewService.
+//			model.addAttribute("my_rev", myRevList);
+//			return "user/mypage_myreview";
+//		}
+//	}
 
 	//CHOI
 	@GetMapping(value = "/mypage_mycorse")
-	public String mycorse(Principal principal, Model model) {
-		if (principal == null) {
+	public String mycorse(Authentication authentication, Model model) {
+		if (authentication == null) {
 			return "redirect:/login";
 		} else {
-			UserDTO userDTO = userService.DTOselect(principal.getName());
-			model.addAttribute("UserDTO", userDTO);
+			AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
+			List<Course> myCorList = corService.findCorByUserNo(authUserModel.getUser_no());
+			model.addAttribute("my_cor", myCorList);
 
 			return "user/mypage_mycorse";
 		}
@@ -225,17 +230,18 @@ public class UserController {
 	}
 
 	//CHOI
-	@GetMapping(value = "/mypage_mylike")
-	public String mylike(Principal principal, Model model) {
-		if (principal == null) {
-			return "redirect:/login";
-		} else {
-			UserDTO userDTO = userService.DTOselect(principal.getName());
-			model.addAttribute("UserDTO", userDTO);
-
-			return "user/mypage_mylike";
-		}
-	}
+//	@GetMapping(value = "/mypage_mylike")
+//	public String mylike(Authentication authentication, Model model) {
+//		if (authentication == null) {
+//			return "redirect:/login";
+//		} else {
+//			AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
+//			List<Location> myLocList = locService.findLocByUserNo(authUserModel.getUser_no());
+//			model.addAttribute("my_place", myLocList);
+//
+//			return "user/mypage_mylike";
+//		}
+//	}
 
 	//CHOI
 	@GetMapping(value = "/mypage_recent_view_corse")

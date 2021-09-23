@@ -24,6 +24,9 @@ public interface ReviewRepository extends JpaRepository<Review, Long>,
     @Query(value = "SELECT * FROM review r WHERE r.rev_no = :rev_no", nativeQuery = true)
     Optional<Review> findByRev_no(@Param("rev_no") Long revNo);
 
+//    @Query(value = "SELECT * FROM review r WHERE r.rev_no = :rev_no", nativeQuery = true)
+//    Optional<List<Review>> findBymRev_no(@Param("rev_no") Long revNo);
+
     @Query(value = "SELECT * FROM review r WHERE r.cor_no = :cor_no AND r.is_deleted = false", nativeQuery = true)
     Optional<List<Review>> findLiveByCor_no(@Param("cor_no") Long corNo);
 

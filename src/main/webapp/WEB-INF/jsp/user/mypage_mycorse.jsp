@@ -7,6 +7,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.Date" %>
 <%@ page session="false" %>
+<jsp:useBean id="defaultDateTimeFormatter" class="com.project.love_data.util.DefaultLocalDateTimeFormatter"></jsp:useBean>
+<jsp:useBean id="simpleDateTimeFormatter" class="com.project.love_data.util.SimpleLocalDateTimeFormatter"></jsp:useBean>
 
 <html>
 <head>
@@ -74,27 +76,24 @@
 					<th>조회수</th>
 				</tr>
 				</thead>
+				<c:forEach var="cor" items="${my_cor}" >
+				<c:choose>
+				<c:when test="${cor._deleted eq false}">
 				<tbody>
 				<tr>
-					<td><span>2020-10-05</span></td>
-					<td>서울 삼청동 산책로</td>
-					<td>192</td>
+					<td>
+						<span>${cor.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</span>
+					</td>
+					<td>
+						<a href="/service/cor_detail?corNo=${cor.cor_no}">${cor.cor_name}</a>
+						<button>삭제</button>
+						<button onclick="location.href='/service/cor_edit?corNo=${cor.cor_no}'">수정</button>
+					</td>
+					<td>${cor.viewCount}</td>
 				</tr>
-				<tr>
-					<td><span>2021-02-01</span></td>
-					<td>제주 반시계방향 3박4일</td>
-					<td>365</td>
-				</tr>
-				<tr>
-					<td>2021-03-15</td>
-					<td>일산 밤리단길 카페투어</td>
-					<td>247</td>
-				</tr>
-				<tr>
-					<td>2020-05-07</td>
-					<td>운정호수공원 야당역 맛집</td>
-					<td>830</td>
-				</tr>
+				</c:when>
+				</c:choose>
+				</c:forEach>
 				</tbody>
 			</table>
 			<div class="pagination">
