@@ -3,6 +3,7 @@ package com.project.love_data.controller.service;
 import com.project.love_data.businessLogic.service.*;
 import com.project.love_data.model.resource.QuestionsImage;
 import com.project.love_data.model.user.User;
+import com.project.love_data.repository.NoticeRepository;
 import com.project.love_data.repository.QuestionsImageRepository;
 import com.project.love_data.businessLogic.service.ControllerScriptUtils;
 import lombok.extern.log4j.Log4j2;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URL;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -34,6 +36,8 @@ public class ServiceCenterController {
     FileUploadService fileUploadService;
     @Autowired
     QuestionsImageRepository questionsImageRepository;
+    @Autowired
+    NoticeRepository noticeRepository;
     @Autowired
     ControllerScriptUtils scriptUtils;
 
@@ -463,6 +467,28 @@ public class ServiceCenterController {
         return "/service/noti_Post_add";
     }
 
+    @PreAuthorize("hasRole('ROLE_MANAGER')")
+    @PostMapping(value = "/ServiceCenter/Notice_Post_add/add")
+    public String Post_add_noti_add(HttpServletRequest request, Principal principal, HttpServletResponse response) throws IOException {
+        if(principal == null){
+            scriptUtils.alertAndMovePage(response, "로그인 해주세요.", "/login");
+        }else {
+            User user = userService.select(principal.getName());
+            Date today = new Date();
+            SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Notice notices = Notice.builder()
+                    .noti_activation(true)
+                    .noti_manager(user.getUser_nic())
+                    .noti_title(request.getParameter("title"))
+                    .noti_text(request.getParameter("form_name"))
+                    .noti_date(format1.format(today))
+                    .noti_viewCount(0)
+                    .build();
+            noticeRepository.save(notices);
+        }
+        return "redirect:/ServiceCenter/Notice/1";
+    }
+
     @GetMapping(value = "/ServiceCenter/Questions_Post_add")
     public String Post_add(Principal principal, HttpServletResponse response) throws IOException {
         if(principal == null){
@@ -521,7 +547,10 @@ public class ServiceCenterController {
         try{
             if(imgVO.getFiledata() != null && imgVO.getFiledata().getOriginalFilename() != null){
 
-                String path = req.getSession().getServletContext().getRealPath("/") + "resources\\img\\";
+                String r = req.getSession().getServletContext().getRealPath("/");
+                int idx =  r.indexOf("main");
+                String imgpath =r.substring(0, idx)+"main\\resources\\static\\img\\";
+                String path = imgpath;
                 File file = new File(path);
                 System.out.print(path);
                 if(!file.exists()){
@@ -542,12 +571,16 @@ public class ServiceCenterController {
     @PostMapping(value = "/multiImgUpload")
     public void multiImgUpload(HttpServletRequest req, HttpServletResponse res){
         try{
-            log.info("여기 오긴오니?");
             String sFileInfo = "";
+            String r = req.getSession().getServletContext().getRealPath("/");
+            int idx =  r.indexOf("main");
+            String imgpath =r.substring(0, idx)+"main\\resources\\static\\img\\";
             String fileName = req.getHeader("file-name");
+            log.info("여기 오긴오니?" + imgpath);
             String prifix = fileName.substring(fileName.lastIndexOf(".")+1);
             prifix = prifix.toLowerCase();
-            String path = req.getSession().getServletContext().getRealPath("/") + "\\img\\";
+            String path = imgpath;
+
             File file = new File(path);
             System.out.print(path);
             if(!file.exists()){
@@ -574,7 +607,7 @@ public class ServiceCenterController {
             sFileInfo += "&sFileName="+fileName;
             sFileInfo += "&sFileURL="+"/img/"+realName;
             PrintWriter print = res.getWriter();
-            print.print(sFileInfo);
+            print.print("파일 인포"+sFileInfo);
             print.flush();
             print.close();
         }catch(Exception e){

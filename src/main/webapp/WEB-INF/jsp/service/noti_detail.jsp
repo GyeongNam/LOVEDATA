@@ -54,13 +54,15 @@
         </ul>
     </div>
     <div class="container col-lg-6 ">
-       <span> ${noti.noti_no}</span>
-       <span> ${noti.noti_title}</span>
-       <span> ${noti.noti_manager}</span>
-       <span> ${noti.noti_text}</span>
-       <span> ${noti.noti_date}</span>
-       <span> ${noti.noti_viewCount}</span>
-       <span> ${noti.noti_activation}</span>
+<%--        <input type="hidden" id="text" value="${noti.noti_text}">--%>
+<%--       <span> ${noti.noti_no}</span>--%>
+       <span>제목 : ${noti.noti_title}</span>
+<%--       <span> ${noti.noti_manager}</span>--%>
+
+       <span>${noti.noti_text}</span>
+<%--       <span> ${noti.noti_date}</span>--%>
+<%--       <span> ${noti.noti_viewCount}</span>--%>
+<%--       <span> ${noti.noti_activation}</span>--%>
     </div>
 </div>
 </body>

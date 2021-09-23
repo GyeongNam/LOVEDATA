@@ -28,7 +28,7 @@ public class Notice {
     @Column(name = "noti_manager", nullable = false)
     private String noti_manager;
 
-    @Column(name = "noti_text", nullable = false)
+    @Column(name = "noti_text", length =10000000, nullable = false)
     private String noti_text;
 
     @Column(name = "noti_date", nullable = false)

@@ -59,14 +59,23 @@
     </div>
     <div class="container-fluid" id="display_center" style="margin-right: 30px">
         <div class="col" id="top_navbar">
+
+            <form name="Form" action="/ServiceCenter/Notice_Post_add/add"  method="post">
+                <input  name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
+                <div class=" container d-flex justify-content-center">
+                    <span class=" d-flex">제목</span>
+                    <input class="container d-flex justify-content-center"  type="text" name="title" id="title">
+                </div>
             <div class="d-flex container" >
                 <textarea name="notice_content" id="smartEditor" style="width: auto; height: auto;"></textarea>
             </div>
              <div class="col" id="pu_navbar">
                 <div class="container d-flex justify-content-center" id="">
-                    <input type="button"  onclick="save();" value="본문 내용 가져오기">
+                    <input type="button"  onclick="save();" value="글쓰기">
                 </div>
             </div>
+                <input type="hidden" name="form_name" id="form_name" value="">
+            </form>
         </div>
     </div>
 </div>

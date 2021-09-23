@@ -21,7 +21,9 @@ function save(){
     oEditors.getById["smartEditor"].exec("UPDATE_CONTENTS_FIELD", []);
     //스마트 에디터 값을 텍스트컨텐츠로 전달
     var content = document.getElementById("smartEditor").value;
-    alert(document.getElementById("smartEditor").value);
+    $("#form_name").val(content);
+    $("Form").submit();
+    // alert(document.getElementById("smartEditor").value);
     // 값을 불러올 땐 document.get으로 받아오기
     return;
 }
