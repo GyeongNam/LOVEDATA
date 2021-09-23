@@ -74,11 +74,11 @@ public class Review extends TimeEntity {
 
     @Column(name = "rev_like", nullable = false)
     @Builder.Default
-    private Long rev_like = 0L;
+    private int rev_like = 0;
 
     @Column(name = "rev_dislike", nullable = false)
     @Builder.Default
-    private Long rev_dislike = 0L;
+    private int rev_dislike = 0;
 
     @Column(name = "view_count", nullable = false)
     @Builder.Default

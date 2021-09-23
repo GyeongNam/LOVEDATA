@@ -440,7 +440,7 @@ public class CourseService {
         return true;
     }
 
-    public boolean onClickLikeUndo(Long corNo) {
+    public boolean onClickLikeDec(Long corNo) {
         Course entity = selectCor(corNo);
 
         if (entity == null) {

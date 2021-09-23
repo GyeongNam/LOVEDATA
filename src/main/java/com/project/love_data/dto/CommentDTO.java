@@ -33,4 +33,8 @@ public class CommentDTO {
     private Long cmtIdx = 0L;
     @Builder.Default
     private String cmtUuid = UUID.randomUUID().toString();
+    @Builder.Default
+    private int likeCount = 0;
+    @Builder.Default
+    private int dislikeCount = 0;
 }

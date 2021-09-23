@@ -71,7 +71,9 @@ public class UserController {
 			@RequestParam(value = "gender") boolean gender,
 			@RequestParam(value = "recv_email") boolean recv_email,
 			@RequestParam(value = "social") boolean social,
-			@RequestParam(value = "social_info") String social_info
+			@RequestParam(value = "social_info") String social_info,
+			@RequestParam(value = "profile_pic") String profile_pic,
+			@RequestParam(value = "social_id") int social_id
 	) {
 
 		User user = User.builder()
@@ -85,8 +87,13 @@ public class UserController {
 				.user_email_re(recv_email)
 				.user_social(social)
 				.social_info(social_info)
+				.social_id(social_id)
 				.build();
 		user.addUserRole(UserRole.USER);
+
+		if (profile_pic != null) {
+			user.setProfile_pic(profile_pic);
+		}
 
 		userRepository.save(user);
 

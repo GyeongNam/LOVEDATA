@@ -33,6 +33,7 @@ public class UserDTO {
     private boolean user_social;
     private boolean user_email_re;
     private String social_info;
+    private int social_id;
     @Builder.Default
     private boolean is_deleted = false;
 
