@@ -121,7 +121,7 @@ function onClickLike(Like, user_no, type) {
     onLoginCheck(map);
 }
 
-function onClickLikeComment(like, cmt_index, user_no, type, cmt_no) {
+function onClickLikeComment(like, cmt_index, user_no, type, cmt_no, best_cmt_index) {
     var countChangeFlag = true;
     var likeCount = document.getElementById("cmt_like_" + cmt_index);
     var dislikeCount = document.getElementById("cmt_dislike_" + cmt_index);
@@ -151,9 +151,34 @@ function onClickLikeComment(like, cmt_index, user_no, type, cmt_no) {
     map.set("type", type);
 
     onLoginCheck(map);
+
+    if (best_cmt_index != -1) {
+        let best_cmt_btn_like = document.getElementById("best_cmt_btn_like_" + best_cmt_index);
+        let best_cmt_btn_dislike = document.getElementById("best_cmt_btn_dislike_" + best_cmt_index);
+        let best_cmt_like_count = document.getElementById("best_cmt_like_" + best_cmt_index);
+        let best_cmt_dislike_count = document.getElementById("best_cmt_dislike_" + best_cmt_index);
+
+        // undo
+        if (isClicked) {
+            let tempStr = getURLPathname(best_cmt_btn_like.src);
+            if (tempStr == "/image/icon/cmt_like_color.png"){
+                best_cmt_btn_like.src = "/image/icon/cmt_like_bw.png";
+                best_cmt_like_count.innerText = Number(best_cmt_like_count.innerText) - 1;
+            }
+        } else {
+            let tempStr = getURLPathname(best_cmt_btn_dislike.src);
+            if (tempStr == "/image/icon/cmt_dislike_color.png"){
+                best_cmt_btn_dislike.src = "/image/icon/cmt_dislike_bw.png";
+                best_cmt_dislike_count.innerText = Number(best_cmt_dislike_count.innerText) - 1;
+            }
+
+            best_cmt_btn_like.src = "/image/icon/cmt_like_color.png";
+            best_cmt_like_count.innerText = Number(best_cmt_like_count.innerText) + 1;
+        }
+    }
 }
 
-function onClickDislikeComment(dislike, cmt_index, user_no, type, cmt_no) {
+function onClickDislikeComment(dislike, cmt_index, user_no, type, cmt_no, best_cmt_index) {
     var countChangeFlag = true;
     var dislikeCount = document.getElementById("cmt_dislike_" + cmt_index);
     var likeCount = document.getElementById("cmt_like_" + cmt_index);
@@ -179,6 +204,31 @@ function onClickDislikeComment(dislike, cmt_index, user_no, type, cmt_no) {
     map.set("type", type);
 
     onLoginCheck(map);
+
+    if (best_cmt_index != -1) {
+        let best_cmt_btn_like = document.getElementById("best_cmt_btn_like_" + best_cmt_index);
+        let best_cmt_btn_dislike = document.getElementById("best_cmt_btn_dislike_" + best_cmt_index);
+        let best_cmt_like_count = document.getElementById("best_cmt_like_" + best_cmt_index);
+        let best_cmt_dislike_count = document.getElementById("best_cmt_dislike_" + best_cmt_index);
+
+        // undo
+        if (isClicked) {
+            let tempStr = getURLPathname(best_cmt_btn_dislike.src);
+            if (tempStr == "/image/icon/cmt_dislike_color.png"){
+                best_cmt_btn_dislike.src = "/image/icon/cmt_dislike_bw.png";
+                best_cmt_dislike_count.innerText = Number(best_cmt_dislike_count.innerText) - 1;
+            }
+        } else {
+            let tempStr = getURLPathname(best_cmt_btn_like.src);
+            if (tempStr == "/image/icon/cmt_like_color.png"){
+                best_cmt_btn_like.src = "/image/icon/cmt_like_bw.png";
+                best_cmt_like_count.innerText = Number(best_cmt_like_count.innerText) - 1;
+            }
+
+            best_cmt_btn_dislike.src = "/image/icon/cmt_dislike_color.png";
+            best_cmt_dislike_count.innerText = Number(best_cmt_dislike_count.innerText) + 1;
+        }
+    }
 }
 
 function onClickLikeBestComment(best_like, best_cmt_index, cmt_index, user_no, type, cmt_no) {
@@ -316,12 +366,12 @@ function onClickDislikeBestComment(best_dislike, best_cmt_index, cmt_index, user
     }
 }
 
-function onClickLikeReview(like, cmt_index, user_no, type, rev_no) {
+function onClickLikeReview(like, rev_index, user_no, type, rev_no, best_rev_index) {
     var countChangeFlag = true;
-    var likeCount = document.getElementById("rev_like_" + cmt_index);
-    var dislikeCount = document.getElementById("rev_dislike_" + cmt_index);
+    var likeCount = document.getElementById("rev_like_" + rev_index);
+    var dislikeCount = document.getElementById("rev_dislike_" + rev_index);
     var path_noparm = location.pathname;
-    var dislike = document.getElementById("rev_btn_dislike_" + cmt_index);
+    var dislike = document.getElementById("rev_btn_dislike_" + rev_index);
 
     countChangeFlag = true;
 
@@ -346,16 +396,41 @@ function onClickLikeReview(like, cmt_index, user_no, type, rev_no) {
     map.set("type", type);
 
     onLoginCheck(map);
+
+    if (best_rev_index != -1) {
+        let best_rev_btn_like = document.getElementById("best_rev_btn_like_" + best_rev_index);
+        let best_rev_btn_dislike = document.getElementById("best_rev_btn_dislike_" + best_rev_index);
+        let best_rev_like_count = document.getElementById("best_rev_like_" + best_rev_index);
+        let best_rev_dislike_count = document.getElementById("best_rev_dislike_" + best_rev_index);
+
+        // undo
+        if (isClicked) {
+            let tempStr = getURLPathname(best_rev_btn_like.src);
+            if (tempStr == "/image/icon/rev_like_color.png"){
+                best_rev_btn_like.src = "/image/icon/rev_like_bw.png";
+                best_rev_like_count.innerText = Number(best_rev_like_count.innerText) - 1;
+            }
+        } else {
+            let tempStr = getURLPathname(best_rev_btn_dislike.src);
+            if (tempStr == "/image/icon/rev_dislike_color.png"){
+                best_rev_btn_dislike.src = "/image/icon/rev_dislike_bw.png";
+                best_rev_dislike_count.innerText = Number(best_rev_dislike_count.innerText) - 1;
+            }
+
+            best_rev_btn_like.src = "/image/icon/rev_like_color.png";
+            best_rev_like_count.innerText = Number(best_rev_like_count.innerText) + 1;
+        }
+    }
 }
 
-function onClickDislikeReview(dislike, cmt_index, user_no, type, rev_no) {
+function onClickDislikeReview(dislike, rev_index, user_no, type, rev_no, best_rev_index) {
     var countChangeFlag = true;
-    var dislikeCount = document.getElementById("rev_dislike_" + cmt_index);
-    var likeCount = document.getElementById("rev_like_" + cmt_index);
-    var jsonData = {"rev_no": rev_no, "user_no" : user_no, "type" : type, "cmt_index" : cmt_index}
+    var dislikeCount = document.getElementById("rev_dislike_" + rev_index);
+    var likeCount = document.getElementById("rev_like_" + rev_index);
+    var jsonData = {"rev_no": rev_no, "user_no" : user_no, "type" : type, "rev_index" : rev_index}
     var isClicked = false;
     var map = new Map();
-    var like = document.getElementById("rev_btn_like_" + cmt_index);
+    var like = document.getElementById("rev_btn_like_" + rev_index);
 
     if (dislike.getAttribute("src") === "/image/icon/rev_dislike_color.png") {
         isClicked = true;
@@ -374,6 +449,166 @@ function onClickDislikeReview(dislike, cmt_index, user_no, type, rev_no) {
     map.set("type", type);
 
     onLoginCheck(map);
+
+    if (best_rev_index != -1) {
+        let best_rev_btn_like = document.getElementById("best_rev_btn_like_" + best_rev_index);
+        let best_rev_btn_dislike = document.getElementById("best_rev_btn_dislike_" + best_rev_index);
+        let best_rev_like_count = document.getElementById("best_rev_like_" + best_rev_index);
+        let best_rev_dislike_count = document.getElementById("best_rev_dislike_" + best_rev_index);
+
+        // undo
+        if (isClicked) {
+            let tempStr = getURLPathname(best_rev_btn_dislike.src);
+            if (tempStr == "/image/icon/rev_dislike_color.png"){
+                best_rev_btn_dislike.src = "/image/icon/rev_dislike_bw.png";
+                best_rev_dislike_count.innerText = Number(best_rev_dislike_count.innerText) - 1;
+            }
+        } else {
+            let tempStr = getURLPathname(best_rev_btn_like.src);
+            if (tempStr == "/image/icon/rev_like_color.png"){
+                best_rev_btn_like.src = "/image/icon/rev_like_bw.png";
+                best_rev_like_count.innerText = Number(best_rev_like_count.innerText) - 1;
+            }
+
+            best_rev_btn_dislike.src = "/image/icon/rev_dislike_color.png";
+            best_rev_dislike_count.innerText = Number(best_rev_dislike_count.innerText) + 1;
+        }
+    }
+}
+
+function onClickLikeBestReview(best_like, best_rev_index, rev_index, user_no, type, rev_no) {
+    var countChangeFlag = true;
+    var bestLikeCount = document.getElementById("best_rev_like_" + best_rev_index);
+    var bestDislikeCount = document.getElementById("best_rev_dislike_" + best_rev_index);
+    var bestDislike = document.getElementById("best_rev_btn_dislike_" + best_rev_index);
+
+    var jsonData = {"rev_no": rev_no, "user_no" : user_no, "type" : type}
+    var isClicked = false;
+    var map = new Map();
+
+    if (best_like.getAttribute("src") === "/image/icon/rev_like_color.png") {
+        isClicked = true;
+    } else {
+        isClicked = false;
+    }
+    console.log("isClicked : " + isClicked);
+
+    if (rev_index == -1) {
+        var likeCount = null;
+        var dislikeCount = null;
+        var dislike = null;
+
+        map.set("likeCount", bestLikeCount);
+        map.set("dislikeCount", bestDislikeCount);
+        map.set("jsonData", jsonData);
+        map.set("isClicked", isClicked);
+        map.set("like", best_like);
+        map.set("dislike", bestDislike);
+        map.set("countChangeFlag", countChangeFlag);
+        map.set("type", type);
+
+        onLoginCheck(map);
+    } else {
+        var like = document.getElementById("rev_btn_like_" + rev_index);
+        var likeCount = document.getElementById("rev_like_" + rev_index);
+        var dislikeCount = document.getElementById("rev_dislike_" + rev_index);
+        var dislike = document.getElementById("rev_btn_dislike_" + rev_index);
+
+        map.set("likeCount", likeCount);
+        map.set("dislikeCount", dislikeCount);
+        map.set("jsonData", jsonData);
+        map.set("isClicked", isClicked);
+        map.set("like", like);
+        map.set("dislike", dislike);
+        map.set("countChangeFlag", countChangeFlag);
+        map.set("type", type);
+
+        let isSuccessful = onLoginCheck(map);
+
+        if (isSuccessful) {
+            if (isClicked) {
+                best_like.src = "/image/icon/rev_like_bw.png";
+                bestLikeCount.innerText = Number(bestLikeCount.innerText) - 1;
+            } else {
+                best_like.src = "/image/icon/rev_like_color.png";
+                bestLikeCount.innerText = Number(bestLikeCount.innerText) + 1;
+                let best_btn_dislike = document.getElementById("best_rev_btn_dislike_" + best_rev_index);
+                let tempStr = getURLPathname(best_btn_dislike.src);
+                if (tempStr == "/image/icon/rev_dislike_color.png") {
+                    best_btn_dislike.src = "/image/icon/rev_dislike_bw.png"
+                    bestDislikeCount.innerText = Number(bestDislikeCount.innerText) - 1;
+                }
+            }
+        }
+    }
+}
+
+function onClickDislikeBestReview(best_dislike, best_rev_index, rev_index, user_no, type, rev_no) {
+    var countChangeFlag = true;
+    var bestLikeCount = document.getElementById("best_rev_like_" + best_rev_index);
+    var bestDislikeCount = document.getElementById("best_rev_dislike_" + best_rev_index);
+    var bestLike = document.getElementById("best_rev_btn_like_" + best_rev_index);
+
+    var jsonData = {"rev_no": rev_no, "user_no" : user_no, "type" : type}
+    var isClicked = false;
+    var map = new Map();
+
+    if (best_dislike.getAttribute("src") === "/image/icon/rev_dislike_color.png") {
+        isClicked = true;
+    } else {
+        isClicked = false;
+    }
+
+    // console.log("isClicked : " + isClicked);
+
+    if (rev_index == -1) {
+        var likeCount = null;
+        var dislikeCount = null;
+        var like = null;
+
+        map.set("dislikeCount", bestDislikeCount)
+        map.set("likeCount", bestLikeCount);
+        map.set("jsonData", jsonData);
+        map.set("isClicked", isClicked);
+        map.set("dislike", best_dislike);
+        map.set("like", bestLike);
+        map.set("countChangeFlag", countChangeFlag);
+        map.set("type", type);
+
+        onLoginCheck(map);
+    } else {
+        var likeCount = document.getElementById("rev_like_" + rev_index);
+        var dislikeCount = document.getElementById("rev_dislike_" + rev_index);
+        var like = document.getElementById("rev_btn_like_" + rev_index);
+        var dislike = document.getElementById("rev_btn_dislike_" + rev_index);
+
+        map.set("dislikeCount", dislikeCount)
+        map.set("likeCount", likeCount);
+        map.set("jsonData", jsonData);
+        map.set("isClicked", isClicked);
+        map.set("dislike", dislike);
+        map.set("like", like);
+        map.set("countChangeFlag", countChangeFlag);
+        map.set("type", type);
+
+        let isSuccessful = onLoginCheck(map);
+
+        if (isSuccessful) {
+            if (isClicked) {
+                best_dislike.src = "/image/icon/rev_dislike_bw.png";
+                bestDislikeCount.innerText = Number(bestDislikeCount.innerText) - 1;
+            } else {
+                best_dislike.src = "/image/icon/rev_dislike_color.png";
+                bestDislikeCount.innerText = Number(bestDislikeCount.innerText) + 1;
+                let best_btn_like = document.getElementById("best_rev_btn_like_" + best_rev_index);
+                let tempStr = getURLPathname(best_btn_like.src);
+                if (tempStr == "/image/icon/rev_like_color.png") {
+                    best_btn_like.src = "/image/icon/rev_like_bw.png"
+                    bestLikeCount.innerText = Number(bestLikeCount.innerText) - 1;
+                }
+            }
+        }
+    }
 }
 
 function onLoginCheck(map) {

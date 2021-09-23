@@ -392,9 +392,8 @@ com/project/love_data/controller/AdminController.java
  com.project.love_data.controller.AdminController
 com/project/love_data/controller/PopupController.java
  com.project.love_data.controller.PopupController
-com/project/love_data/controller/service/CourseController.java
- com.project.love_data.controller.service.CourseController
- com.project.love_data.controller.service.CourseController$1
+com/project/love_data/controller/service/EmbededController.java
+ com.project.love_data.controller.service.EmbededController
 com/project/love_data/controller/service/ReviewController.java
  com.project.love_data.controller.service.ReviewController
 com/project/love_data/businessLogic/service/ReviewService.java
@@ -405,5 +404,6 @@ com/project/love_data/businessLogic/service/CourseService.java
  com.project.love_data.businessLogic.service.CourseService$1
 com/project/love_data/controller/RestController.java
  com.project.love_data.controller.RestController
-com/project/love_data/controller/service/EmbededController.java
- com.project.love_data.controller.service.EmbededController
+com/project/love_data/controller/service/CourseController.java
+ com.project.love_data.controller.service.CourseController
+ com.project.love_data.controller.service.CourseController$1

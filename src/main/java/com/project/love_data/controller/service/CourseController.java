@@ -5,6 +5,7 @@ import com.project.love_data.dto.*;
 import com.project.love_data.model.resource.CourseImage;
 import com.project.love_data.model.resource.ReviewImage;
 import com.project.love_data.model.service.*;
+import com.project.love_data.model.user.User;
 import com.project.love_data.security.model.AuthUserModel;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -257,31 +258,97 @@ public class CourseController {
                 revImgURLStringList = null;
             }
 
-            List<Review> bestRev = reviewService.getBestReview(corNo);
+            List<ReviewDTO> bestRevList = new ArrayList<>();
             List<Boolean> revLikeList = new ArrayList<>();
             List<Boolean> revDislikeList = new ArrayList<>();
+            List<Boolean> bestRevLikeList = new ArrayList<>();
+            List<Boolean> bestRevDislikeList = new ArrayList<>();
+            List<Integer> bestRevIndexList = new ArrayList<>();
+            List<String> bestRevUserPicList = new ArrayList<>();
+            List<Integer> revIndexList = new ArrayList<>();
+
+            for (Review review : reviewService.getBestReview(corNo)) {
+                bestRevList.add(reviewService.entityToDto(review));
+            }
+
+            Boolean bestRevMatchFlag = null;
+
+            for (ReviewDTO reviewDTO : bestRevList) {
+                User user = userService.select(reviewDTO.getUserNo());
+
+                if (user == null) {
+                    bestRevUserPicList.add("/image/icon/user/user.png");
+                } else {
+                    if (user.getProfile_pic().equals("") || user.getProfile_pic() == null) {
+                        bestRevUserPicList.add("/image/icon/user/user.png");
+                    } else {
+                        bestRevUserPicList.add(user.getProfile_pic());
+                    }
+                }
+
+                bestRevMatchFlag = false;
+                Integer index = null;
+                for (int i = 0; i < resultReviewDTO.getDtoList().size(); i++) {
+                    if (resultReviewDTO.getDtoList().get(i).equals(reviewDTO)) {
+                        index = i;
+                        bestRevMatchFlag = true;
+                        break;
+                    }
+                }
+
+                if (bestRevMatchFlag) {
+                    bestRevIndexList.add(index);
+                } else {
+                    bestRevIndexList.add(-1);
+                }
+            }
 
             if (authentication != null) {
                 AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
                 if (authentication.isAuthenticated()) {
                     for (ReviewDTO revDTO : resultReviewDTO.getDtoList()) {
-                        UserLikeRev userLikeCmt = userLikeRevService.selectByRevNoAndUserNo(revDTO.getRevNo(), authUserModel.getUser_no());
-                        UserDislikeRev userDislikeCmt = userDislikeRevService.selectByRevNoAndUserNo(revDTO.getRevNo(), authUserModel.getUser_no());
+                        UserLikeRev userLikeRev = userLikeRevService.selectByRevNoAndUserNo(revDTO.getRevNo(), authUserModel.getUser_no());
+                        UserDislikeRev userDislikeRev = userDislikeRevService.selectByRevNoAndUserNo(revDTO.getRevNo(), authUserModel.getUser_no());
 
-                        if (userLikeCmt != null && userDislikeCmt == null) {
+                        if (userLikeRev != null && userDislikeRev == null) {
                             revLikeList.add(true);
                             revDislikeList.add(false);
-                            continue;
-                        }
-
-                        if (userLikeCmt == null && userDislikeCmt != null) {
+                        } else if (userLikeRev == null && userDislikeRev != null) {
                             revLikeList.add(false);
                             revDislikeList.add(true);
-                            continue;
+                        } else {
+                            revLikeList.add(null);
+                            revDislikeList.add(null);
                         }
 
-                        revLikeList.add(null);
-                        revDislikeList.add(null);
+                        boolean revIndexMatchFlag = false;
+                        for (int i = 0; i < bestRevList.size(); i++) {
+                            if (revDTO.equals(bestRevList.get(i))) {
+                                revIndexList.add(i);
+                                revIndexMatchFlag = true;
+                                break;
+                            }
+                        }
+
+                        if (!revIndexMatchFlag) {
+                            revIndexList.add(-1);
+                        }
+                    }
+
+                    for (ReviewDTO review : bestRevList) {
+                        UserLikeRev userLikeRev = userLikeRevService.selectByRevNoAndUserNo(review.getRevNo(), authUserModel.getUser_no());
+                        UserDislikeRev userDislikeRev = userDislikeRevService.selectByRevNoAndUserNo(review.getRevNo(), authUserModel.getUser_no());
+
+                        if (userLikeRev != null && userDislikeRev == null) {
+                            bestRevLikeList.add(true);
+                            bestRevDislikeList.add(false);
+                        } else if (userLikeRev == null && userDislikeRev != null) {
+                            bestRevLikeList.add(false);
+                            bestRevDislikeList.add(true);
+                        } else {
+                            bestRevLikeList.add(null);
+                            bestRevDislikeList.add(null);
+                        }
                     }
                 }
             }
@@ -295,6 +362,12 @@ public class CourseController {
             model.addAttribute("revUserPicList", revUserPicList);
             model.addAttribute("revLikeList", revLikeList);
             model.addAttribute("revDislikeList", revDislikeList);
+            model.addAttribute("bestRevList", bestRevList);
+            model.addAttribute("bestRevLikeList", bestRevLikeList);
+            model.addAttribute("bestRevDislikeList", bestRevDislikeList);
+            model.addAttribute("bestRevIndexList", bestRevIndexList);
+            model.addAttribute("bestRevUserPicList", bestRevUserPicList);
+            model.addAttribute("revIndexList", revIndexList);
 
             return "/service/cor_detail";
         }

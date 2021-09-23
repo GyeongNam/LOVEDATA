@@ -402,26 +402,26 @@
 																		<c:choose>
 																			<c:when test="${cmtLikeList.get(c) eq null or cmtDislikeList.get(c) eq null}">
 																				<image class="loc_icon_medium me-1 ms-0 clickable-image" src="/image/icon/cmt_like_bw.png" id="cmt_btn_like_${c+1}"
-																					   onclick="onClickLikeComment(this, ${c+1}, ${user_no}, 'cmt_like', ${cmtDTO.get(c).cmtNo})"></image>
+																					   onclick="onClickLikeComment(this, ${c+1}, ${user_no}, 'cmt_like', ${cmtDTO.get(c).cmtNo}), ${cmtIndexList.get(c) + 1}"></image>
 																				<span class="text-center align-middle fs-6" id="cmt_like_${c+1}">${cmtDTO.get(c).likeCount}</span>
 																				<image class="loc_icon_medium me-1 clickable-image" src="/image/icon/cmt_dislike_bw.png" id="cmt_btn_dislike_${c+1}"
-																					   onclick="onClickDislikeComment(this, ${c+1}, ${user_no}, 'cmt_dislike', ${cmtDTO.get(c).cmtNo})"></image>
+																					   onclick="onClickDislikeComment(this, ${c+1}, ${user_no}, 'cmt_dislike', ${cmtDTO.get(c).cmtNo}), ${cmtIndexList.get(c) + 1}"></image>
 																				<span class="text-center align-middle fs-6" id="cmt_dislike_${c+1}">${cmtDTO.get(c).dislikeCount}</span>
 																			</c:when>
 																			<c:when test="${cmtLikeList.get(c) eq true or cmtDislikeList.get(c) eq false}">
 																				<image class="loc_icon_medium me-1 ms-0 clickable-image" src="/image/icon/cmt_like_color.png" id="cmt_btn_like_${c+1}"
-																					   onclick="onClickLikeComment(this, ${c+1}, ${user_no}, 'cmt_like', ${cmtDTO.get(c).cmtNo})"></image>
+																					   onclick="onClickLikeComment(this, ${c+1}, ${user_no}, 'cmt_like', ${cmtDTO.get(c).cmtNo}, ${cmtIndexList.get(c) + 1})"></image>
 																				<span class="text-center align-middle fs-6" id="cmt_like_${c+1}">${cmtDTO.get(c).likeCount}</span>
 																				<image class="loc_icon_medium me-1 clickable-image" src="/image/icon/cmt_dislike_bw.png" id="cmt_btn_dislike_${c+1}"
-																					   onclick="onClickDislikeComment(this, ${c+1}, ${user_no}, 'cmt_dislike', ${cmtDTO.get(c).cmtNo})"></image>
+																					   onclick="onClickDislikeComment(this, ${c+1}, ${user_no}, 'cmt_dislike', ${cmtDTO.get(c).cmtNo}, ${cmtIndexList.get(c) + 1})"></image>
 																				<span class="text-center align-middle fs-6" id="cmt_dislike_${c+1}">${cmtDTO.get(c).dislikeCount}</span>
 																			</c:when>
 																			<c:when test="${cmtLikeList.get(c) eq false or cmtDislikeList.get(c) eq true}">
 																				<image class="loc_icon_medium me-1 ms-0 clickable-image" src="/image/icon/cmt_like_bw.png" id ="cmt_btn_like_${c+1}"
-																					   onclick="onClickLikeComment(this, ${c+1}, ${user_no}, 'cmt_like', ${cmtDTO.get(c).cmtNo})"></image>
+																					   onclick="onClickLikeComment(this, ${c+1}, ${user_no}, 'cmt_like', ${cmtDTO.get(c).cmtNo}, ${cmtIndexList.get(c) + 1})"></image>
 																				<span class="text-center align-middle fs-6" id="cmt_like_${c+1}">${cmtDTO.get(c).likeCount}</span>
 																				<image class="loc_icon_medium me-1 clickable-image" src="/image/icon/cmt_dislike_color.png" id ="cmt_btn_dislike_${c+1}"
-																					   onclick="onClickDislikeComment(this, ${c+1}, ${user_no}, 'cmt_dislike', ${cmtDTO.get(c).cmtNo})"></image>
+																					   onclick="onClickDislikeComment(this, ${c+1}, ${user_no}, 'cmt_dislike', ${cmtDTO.get(c).cmtNo}, ${cmtIndexList.get(c) + 1})"></image>
 																				<span class="text-center align-middle fs-6" id="cmt_dislike_${c+1}">${cmtDTO.get(c).dislikeCount}</span>
 																			</c:when>
 																		</c:choose>

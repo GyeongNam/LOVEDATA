@@ -156,6 +156,7 @@ public class LocationController {
             List<Boolean> bestCmtLikeList = new ArrayList<>();
             List<Boolean> bestCmtDislikeList = new ArrayList<>();
             List<Integer> bestCmtIndexList = new ArrayList<>();
+            List<Integer> cmtIndexList = new ArrayList<>();
             boolean bestCmtMatchFlag = false;
 
             if (isAdmin) {
@@ -200,17 +201,26 @@ public class LocationController {
                         if (userLikeCmt != null && userDislikeCmt == null) {
                             cmtLikeList.add(true);
                             cmtDislikeList.add(false);
-                            continue;
-                        }
-
-                        if (userLikeCmt == null && userDislikeCmt != null) {
+                        } else if (userLikeCmt == null && userDislikeCmt != null) {
                             cmtLikeList.add(false);
                             cmtDislikeList.add(true);
-                            continue;
+                        } else {
+                            cmtLikeList.add(null);
+                            cmtDislikeList.add(null);
                         }
 
-                        cmtLikeList.add(null);
-                        cmtDislikeList.add(null);
+                        boolean cmtIndexMatchFlag = false;
+                        for (int i = 0; i < bestCmtList.size(); i++) {
+                            if (cmtDTO.equals(bestCmtList.get(i))) {
+                                cmtIndexList.add(i);
+                                cmtIndexMatchFlag = true;
+                                break;
+                            }
+                        }
+
+                        if (!cmtIndexMatchFlag) {
+                            cmtIndexList.add(-1);
+                        }
                     }
 
                     for (CommentDTO best : bestCmtList) {
@@ -257,6 +267,7 @@ public class LocationController {
             model.addAttribute("bestCmtLikeList", bestCmtLikeList);
             model.addAttribute("bestCmtDislikeList", bestCmtDislikeList);
             model.addAttribute("bestCmtIndexList", bestCmtIndexList);
+            model.addAttribute("cmtIndexList", cmtIndexList);
 
             return "/service/loc_detail";
         }
