@@ -57,6 +57,10 @@ public class RequestUserInfoKakao{
             log.info(e.getStackTrace());
         } catch (IOException e) {
             log.info(e.getStackTrace());
+        } catch (NullPointerException e) {
+            log.info(e.getStackTrace());
+
+            return null;
         }
 
         return userInfo;

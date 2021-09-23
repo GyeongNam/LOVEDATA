@@ -41,9 +41,9 @@ public class ReviewDTO {
     @Builder.Default
     private String revUuid = UUID.randomUUID().toString();
     @Builder.Default
-    private Long rev_like = 0L;
+    private int rev_like = 0;
     @Builder.Default
-    private Long rev_dislike = 0L;
+    private int rev_dislike = 0;
     @Builder.Default
     private Long view_count = 0L;
     @Builder.Default

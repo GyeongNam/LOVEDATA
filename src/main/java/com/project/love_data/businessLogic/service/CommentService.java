@@ -43,6 +43,8 @@ public class CommentService {
                 .cmtContent(dto.getCmtContent())
                 .user(userRepository.findById(dto.getUser().getUser_no()).get())
                 .is_deleted(dto.is_deleted())
+                .dislikeCount(dto.getDislikeCount())
+                .likeCount(dto.getLikeCount())
                 .build();
 
         return entity;
@@ -59,6 +61,8 @@ public class CommentService {
                 .regDate(cmt.getRegDate())
                 .modDate(cmt.getModDate())
                 .is_deleted(cmt.is_deleted())
+                .dislikeCount(cmt.getDislikeCount())
+                .likeCount(cmt.getLikeCount())
                 .build();
 
         return dto;
@@ -98,8 +102,22 @@ public class CommentService {
                 pageable = requestDTO.getPageable(Sort.by("cmtIdx").descending());
                 break;
             case IDX_ASC:
-            default:
                 pageable = requestDTO.getPageable(Sort.by("cmtIdx").ascending());
+                break;
+            case LIKE_DES:
+                pageable = requestDTO.getPageable(Sort.by("likeCount").descending());
+                break;
+            case LIKE_ASC:
+                pageable = requestDTO.getPageable(Sort.by("likeCount").ascending());
+                break;
+            case DISLIKE_DES:
+                pageable = requestDTO.getPageable(Sort.by("dislikeCount").descending());
+                break;
+            case DISLIKE_ASC:
+                pageable = requestDTO.getPageable(Sort.by("dislikeCount").ascending());
+                break;
+            default:
+                pageable = requestDTO.getPageable(Sort.by("cmtIdx").descending());
                 break;
         }
 
@@ -372,5 +390,67 @@ public class CommentService {
         dto.setCmtList(cmtList);
 
         return dto;
+    }
+
+    public Boolean incLikeCount (Long cmt_no) {
+        Comment cmt = select(cmt_no);
+
+        if (cmt == null) {
+            return false;
+        }
+
+        cmt.setLikeCount(cmt.getLikeCount() + 1);
+
+        update(cmt);
+
+        return true;
+    }
+
+    public boolean decLikeCount (Long cmt_no) {
+        Comment cmt = select(cmt_no);
+
+        if (cmt == null) {
+            return false;
+        }
+
+        cmt.setLikeCount(cmt.getLikeCount() - 1);
+
+        update(cmt);
+
+        return true;
+    }
+
+    public boolean incDislikeCount (Long cmt_no) {
+        Comment cmt = select(cmt_no);
+
+        if (cmt == null) {
+            return false;
+        }
+
+        cmt.setDislikeCount(cmt.getDislikeCount() + 1);
+
+        update(cmt);
+
+        return true;
+    }
+
+    public boolean decDislikeCount (Long cmt_no) {
+        Comment cmt = select(cmt_no);
+
+        if (cmt == null) {
+            return false;
+        }
+
+        cmt.setDislikeCount(cmt.getDislikeCount() - 1);
+
+        update(cmt);
+
+        return true;
+    }
+
+    public List<Comment> getBestComment(Long locNo) {
+        Optional<List<Comment>> item = cmtRepository.getBestComment(locNo);
+
+        return item.orElse(null);
     }
 }

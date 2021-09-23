@@ -4,8 +4,10 @@ import com.project.love_data.repository.UserRepository;
 import com.project.love_data.model.user.User;
 import com.project.love_data.security.model.AuthUserModel;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.BadCredentialsException;
+import com.project.love_data.security.service.AlreadyRegisteredEmailException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -20,11 +22,18 @@ public class UserDetailsService implements org.springframework.security.core.use
     private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws BadCredentialsException {
+    public UserDetails loadUserByUsername(String username) throws BadCredentialsException, AlreadyRegisteredEmailException {
         log.info("UserDetailsService loadUserByUsername " + username);
 
-        // non uniqe 리턴 예외 가능
-        Optional<User> result = userRepository.findUserByEmail_Privilege(username);
+        // non uniqe 리턴 예외 가능 AND 삭제되지 않은 계정 정보만 찾아오기
+        Optional<User> result = userRepository.findLiveUserByEmail_Privilege(username);
+        // 모든 계정 정보 찾아오기
+        Optional<User> delResult = userRepository.findUserByEmail_Privilege(username);
+
+        if (!result.isPresent() && delResult.isPresent()) {
+            log.warn("This user accounts already deleted. Can't signup with this email");
+            throw new AlreadyRegisteredEmailException("Can't proceed signup with this email. Please try another email");
+        }
 
         // DB에 저장된 유저 정보가 없을 때
         if (!result.isPresent()) {
@@ -44,6 +53,8 @@ public class UserDetailsService implements org.springframework.security.core.use
                 user.getUser_pw(),
                 user.getProfile_pic(),
                 user.isUser_social(),
+                user.getSocial_info(),
+                user.getSocial_id(),
                 user.getRoleSet().stream().map(role -> new SimpleGrantedAuthority("ROLE_"+role)).collect(Collectors.toSet())
         );
 

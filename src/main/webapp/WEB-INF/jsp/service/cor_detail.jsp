@@ -374,21 +374,7 @@
 										<div class="d-flex justify-content-start row">
 											<div class="col-md-10">
 												<div class="d-flex my-lg-4 flex-column">
-<%--													<button class="btn-lg btn-primary" onclick="location.href='/service/loc_detail?locNo=${locList.get(i).loc_no}'">장소 바로 가기</button>--%>
 													<div class="row my-lg-4">
-<%--														<div class="col-md-7">--%>
-<%--															<div class="card shadow-sm">--%>
-<%--																<div class="d-flex justify-content-center">--%>
-<%--																	<img class="bd-placeholder-img card-img" width="70%"--%>
-<%--																		 height="300"--%>
-<%--																		 alt="${locList.get(i).loc_name}"--%>
-<%--																		 src="${locList.get(i).thumbnail}"--%>
-<%--																		 id="loc_img_${i}"--%>
-<%--																		 name="loc_img_${i}"--%>
-<%--																		 preserveAspectRatio="xMidYMid slice" focusable="false">--%>
-<%--																</div>--%>
-<%--															</div>--%>
-<%--														</div>--%>
 														<div class="col d-flex">
 															<div class="row mt-3 d-flex justify-content-center">
 																<span>삭제된 장소입니다.</span>
@@ -465,39 +451,130 @@
 								<div class="d-flex flex-column">
 									<c:set var="revDTO" value="${resRevDTO.dtoList}"></c:set>
 									<c:choose>
+										<c:when test="${!empty bestRevList and paramValues.page[0] eq 1}">
+											<c:forEach var="b" begin="0" end="${bestRevList.size()-1}">
+												<div class="p-2" style="background: #FFC2D6">
+													<span class="best badge bg-primary fs-6 mb-2">BEST</span>
+													<div class="d-flex flex-row align-items-center">
+														<img src="${bestRevUserPicList.get(b)}"
+															 class="loc_comment-profile-image-wh">
+														<div class="flex-column">
+															<p class="visually-hidden" id="best_rev_id_${b}">${bestRevList.get(b).revUuid}</p>
+															<span class="d-block font-weight-bold name">
+																	${bestRevList.get(b).userName}
+															</span>
+															<span class="date text-black-50 ml-5">${bestRevList.get(b).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}</span>
+															<c:choose>
+																<c:when test="${bestRevList.get(b).regDate ne bestRevList.get(b).modDate}">
+																	<span class="date text-black-50 ml-5">(수정됨)</span>
+																</c:when>
+															</c:choose>
+															<div class="row">
+																<div class="d-flex align-items-md-baseline">
+																	<span class="date text-black-50 me-1">총점</span>
+																	<c:forEach var="i" begin="1" end="5">
+																		<c:choose>
+																			<c:when test="${bestRevList.get(b).sc_total >= i}">
+																				<img class="sc_icon_small ms-1" src="/image/icon/star_color.png" alt="star_color">
+																			</c:when>
+																			<c:otherwise>
+																				<img class="sc_icon_small ms-1" src="/image/icon/star_black.png" alt="star_black">
+																			</c:otherwise>
+																		</c:choose>
+																	</c:forEach>
+																	<span class="date text-black-50 ms-4 me-1">장소추천도</span>
+																	<img class="sc_icon_small ms-1" src="/image/icon/star_color.png" alt="star_color">
+																	<span class="ms-1">${bestRevList.get(b).sc_loc}</span>
+																	<span class="date text-black-50 ms-4 me-1">이동편리성</span>
+																	<img class="sc_icon_small ms-1" src="/image/icon/star_color.png" alt="star_color">
+																	<span class="ms-1">${bestRevList.get(b).sc_move}</span>
+																	<span class="date text-black-50 ms-4 me-1">시간소요도</span>
+																	<img class="sc_icon_small ms-1" src="/image/icon/star_color.png" alt="star_color">
+																	<span class="ms-1">${bestRevList.get(b).sc_time}</span>
+																	<span class="date text-black-50 ms-4 me-1">재방문의사</span>
+																	<img class="sc_icon_small ms-1" src="/image/icon/star_color.png" alt="star_color">
+																	<span class="ms-1">${bestRevList.get(b).sc_revisit}</span>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="d-flex row justify-content-between" style="margin-left: 60px">
+														<sec:authorize access="isAnonymous()">
+															<div class="col d-flex align-items-center">
+																<image class="loc_icon_medium me-1 ms-0" src="/image/icon/rev_like_bw.png"></image>
+																<span class="ms-1 text-center align-middle fs-6">${bestRevList.get(b).rev_like}</span>
+																<image class="loc_icon_medium me-1" src="/image/icon/rev_dislike_bw.png"></image>
+																<span class="ms-1 text-center align-middle fs-6">${bestRevList.get(b).rev_dislike}</span>
+															</div>
+														</sec:authorize>
+														<sec:authorize access="isAuthenticated()">
+															<c:set var="user_no"><sec:authentication property="principal.user_no"/></c:set>
+															<div class="col d-flex align-items-center">
+																<c:choose>
+																	<c:when test="${!empty bestRevLikeList and !empty bestRevDislikeList}">
+																		<c:choose>
+																			<c:when test="${bestRevLikeList.get(b) eq null or bestRevDislikeList.get(b) eq null}">
+																				<image class="loc_icon_medium me-1 ms-0 clickable-image" src="/image/icon/rev_like_bw.png" id="best_rev_btn_like_${b+1}"
+																					   onclick="onClickLikeBestReview(this, ${b+1},  ${bestRevIndexList.get(b) + 1}, ${user_no}, 'rev_like', ${bestRevList.get(b).revNo})"></image>
+																				<span class="ms-1 text-center align-middle fs-6" id="best_rev_like_${b+1}">${bestRevList.get(b).rev_like}</span>
+																				<image class="loc_icon_medium me-1 clickable-image" src="/image/icon/rev_dislike_bw.png" id="best_rev_btn_dislike_${b+1}"
+																					   onclick="onClickDislikeBestReview(this, ${b+1}, ${bestRevIndexList.get(b) + 1}, ${user_no}, 'rev_dislike', ${bestRevList.get(b).revNo})"></image>
+																				<span class="ms-1 text-center align-middle fs-6" id="best_rev_dislike_${b+1}">${bestRevList.get(b).rev_dislike}</span>
+																			</c:when>
+																			<c:when test="${bestRevLikeList.get(b) eq true or bestRevDislikeList.get(b) eq false}">
+																				<image class="loc_icon_medium me-1 ms-0 clickable-image" src="/image/icon/rev_like_color.png" id="best_rev_btn_like_${b+1}"
+																					   onclick="onClickLikeBestReview(this, ${b+1},  ${bestRevIndexList.get(b) + 1}, ${user_no}, 'rev_like', ${bestRevList.get(b).revNo})"></image>
+																				<span class="ms-1 text-center align-middle fs-6" id="best_rev_like_${b+1}">${bestRevList.get(b).rev_like}</span>
+																				<image class="loc_icon_medium me-1 clickable-image" src="/image/icon/rev_dislike_bw.png" id="best_rev_btn_dislike_${b+1}"
+																					   onclick="onClickDislikeBestReview(this, ${b+1}, ${bestRevIndexList.get(b) + 1}, ${user_no}, 'rev_dislike', ${bestRevList.get(b).revNo})"></image>
+																				<span class="ms-1 text-center align-middle fs-6" id="best_rev_dislike_${b+1}">${bestRevList.get(b).rev_dislike}</span>
+																			</c:when>
+																			<c:when test="${bestRevLikeList.get(b) eq false or bestRevDislikeList.get(b) eq true}">
+																				<image class="loc_icon_medium me-1 ms-0 clickable-image" src="/image/icon/rev_like_bw.png" id ="best_rev_btn_like_${b+1}"
+																					   onclick="onClickLikeBestReview(this, ${b+1},  ${bestRevIndexList.get(b) + 1}, ${user_no}, 'rev_like', ${bestRevList.get(b).revNo})"></image>
+																				<span class="ms-1 text-center align-middle fs-6" id="best_rev_like_${b+1}">${bestRevList.get(b).rev_like}</span>
+																				<image class="loc_icon_medium me-1 clickable-image" src="/image/icon/rev_dislike_color.png" id ="best_rev_btn_dislike_${b+1}"
+																					   onclick="onClickDislikeBestReview(this, ${b+1}, ${bestRevIndexList.get(b) + 1},${user_no}, 'rev_dislike', ${bestRevList.get(b).revNo})"></image>
+																				<span class="ms-1 text-center align-middle fs-6" id="best_rev_dislike_${b+1}">${bestRevList.get(b).rev_dislike}</span>
+																			</c:when>
+																		</c:choose>
+																	</c:when>
+																</c:choose>
+															</div>
+														</sec:authorize>
+													</div>
+													<div class="mt-2">
+														<div id="best_rev_content_${b}" class="visible">
+															<p class="m-0 comment-text fs-5">${bestRevList.get(b).revContent}</p>
+														</div>
+													</div>
+												</div>
+											</c:forEach>
+										</c:when>
+									</c:choose>
+									<c:choose>
 										<c:when test="${0 != revDTO.size()}">
 											<c:forEach var="c" begin="0" end="${revDTO.size()-1}">
 												<div class="bg-white p-2">
 													<div class="d-flex flex-row align-items-center"><img
-															src="/image/icon/user/user.png"
+															src="${revUserPicList.get(c)}"
 															class="loc_comment-profile-image-wh">
 														<div class="flex-column">
 															<p class="visually-hidden" id="rev_id_${c}">${revDTO.get(c).revUuid}</p>
-															<span class="d-block font-weight-bold name">
-																	${revDTO.get(c).userName}
-																		<sec:authorize access="isAuthenticated()">
-																			<c:set var="user_no"><sec:authentication property="principal.user_no"/></c:set>
-																			<c:choose>
-																				<c:when test="${user_no eq revDTO.get(c).userNo}">
-																					<div>
-																						<button class="btn btn-primary" onclick="openReviewEditPopup(${revDTO.get(c).revNo})">수정</button>
-																						<button class="btn btn-primary" onclick="deleteReview('${revDTO.get(c).revNo}', '${revDTO.get(c).revUuid}')">삭제</button>
-																					</div>
-																				</c:when>
-																			</c:choose>
-																		</sec:authorize>
-															</span>
-															<span class="date text-black-50 ml-5">${revDTO.get(c).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}</span>
-															<c:choose>
-																<c:when test="${revDTO.get(c)._modified eq true}">
-																	<span class="date text-black-50 ml-5">(수정됨)</span>
-																</c:when>
-															</c:choose>
-															<c:choose>
-																<c:when test="${revDTO.get(c)._deleted eq true}">
-																	<span class="date text-black-50 ml-5">(삭제됨)</span>
-																</c:when>
-															</c:choose>
+															<span class="d-block font-weight-bold name">${revDTO.get(c).userName}</span>
+															<div>
+																<span class="date text-black-50 ml-5">${revDTO.get(c).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}</span>
+																<c:choose>
+																	<c:when test="${revDTO.get(c)._modified eq true}">
+																		<span class="date text-black-50 ml-5">(수정됨)</span>
+																	</c:when>
+																</c:choose>
+																<c:choose>
+																	<c:when test="${revDTO.get(c)._deleted eq true}">
+																		<span class="date text-black-50 ml-5">(삭제됨)</span>
+																	</c:when>
+																</c:choose>
+															</div>
 															<div class="row">
 																<div class="d-flex align-items-md-baseline">
 																	<span class="date text-black-50 me-1">총점</span>
@@ -524,6 +601,59 @@
 																	<img class="sc_icon_small ms-1" src="/image/icon/star_color.png" alt="star_color">
 																	<span class="ms-1">${revDTO.get(c).sc_revisit}</span>
 																</div>
+															</div>
+															<div class="d-flex row justify-content-between">
+																<sec:authorize access="isAnonymous()">
+																	<div class="col d-flex align-items-center">
+																		<image class="loc_icon_medium me-1 ms-0 clickable-image" src="/image/icon/rev_like_bw.png"></image>
+																		<span class="ms-1 text-center align-middle fs-6">${revDTO.get(c).rev_like}</span>
+																		<image class="loc_icon_medium me-1 clickable-image" src="/image/icon/rev_dislike_bw.png"></image>
+																		<span class="ms-1 text-center align-middle fs-6">${revDTO.get(c).rev_dislike}</span>
+																	</div>
+																</sec:authorize>
+																<sec:authorize access="isAuthenticated()">
+																	<c:set var="user_no"><sec:authentication property="principal.user_no"/></c:set>
+																	<div class="col d-flex align-items-center">
+																	<c:choose>
+																		<c:when test="${!empty revLikeList and !empty revDislikeList}">
+																			<c:choose>
+																				<c:when test="${revLikeList.get(c) eq null or revDislikeList.get(c) eq null}">
+																					<image class="loc_icon_medium me-1 ms-0 clickable-image" src="/image/icon/rev_like_bw.png" id="rev_btn_like_${c+1}"
+																						   onclick="onClickLikeReview(this, ${c+1}, ${user_no}, 'rev_like', ${revDTO.get(c).revNo}, ${revIndexList.get(c) + 1})"></image>
+																					<span class="ms-1 text-center align-middle fs-6" id="rev_like_${c+1}">${revDTO.get(c).rev_like}</span>
+																					<image class="loc_icon_medium me-1 clickable-image" src="/image/icon/rev_dislike_bw.png" id="rev_btn_dislike_${c+1}"
+																						   onclick="onClickDislikeReview(this, ${c+1}, ${user_no}, 'rev_dislike', ${revDTO.get(c).revNo}, ${revIndexList.get(c) + 1})"></image>
+																					<span class="ms-1 text-center align-middle fs-6" id="rev_dislike_${c+1}">${revDTO.get(c).rev_dislike}</span>
+																				</c:when>
+																				<c:when test="${revLikeList.get(c) eq true or revDislike.get(c) eq false}">
+																					<image class="loc_icon_medium me-1 ms-0 clickable-image" src="/image/icon/rev_like_color.png" id="rev_btn_like_${c+1}"
+																						   onclick="onClickLikeReview(this, ${c+1}, ${user_no}, 'rev_like', ${revDTO.get(c).revNo}, ${revIndexList.get(c) + 1})"></image>
+																					<span class="ms-1 text-center align-middle fs-6" id="rev_like_${c+1}">${revDTO.get(c).rev_like}</span>
+																					<image class="loc_icon_medium me-1 clickable-image" src="/image/icon/rev_dislike_bw.png" id="rev_btn_dislike_${c+1}"
+																						   onclick="onClickDislikeReview(this, ${c+1}, ${user_no}, 'rev_dislike', ${revDTO.get(c).revNo}, ${revIndexList.get(c) + 1})"></image>
+																					<span class="ms-1 text-center align-middle fs-6" id="rev_dislike_${c+1}">${revDTO.get(c).rev_dislike}</span>
+																				</c:when>
+																				<c:when test="${revLikeList.get(c) eq false or revDislike.get(c) eq true}">
+																					<image class="loc_icon_medium me-1 ms-0 clickable-image" src="/image/icon/rev_like_bw.png" id="rev_btn_like_${c+1}"
+																						   onclick="onClickLikeReview(this, ${c+1}, ${user_no}, 'rev_like', ${revDTO.get(c).revNo}, ${revIndexList.get(c) + 1})"></image>
+																					<span class="ms-1 text-center align-middle fs-6" id="rev_like_${c+1}">${revDTO.get(c).rev_like}</span>
+																					<image class="loc_icon_medium me-1 clickable-image" src="/image/icon/rev_dislike_color.png" id="rev_btn_dislike_${c+1}"
+																						   onclick="onClickDislikeReview(this, ${c+1}, ${user_no}, 'rev_dislike', ${revDTO.get(c).revNo}, ${revIndexList.get(c) + 1})"></image>
+																					<span class="ms-1 text-center align-middle fs-6" id="rev_dislike_${c+1}">${revDTO.get(c).rev_dislike}</span>
+																				</c:when>
+																			</c:choose>
+																		</c:when>
+																	</c:choose>
+																	</div>
+																	<c:choose>
+																		<c:when test="${user_no eq revDTO.get(c).userNo}">
+																			<div class="col d-flex justify-content-end align-content-center">
+																				<button class="btn btn-primary" onclick="openReviewEditPopup(${revDTO.get(c).revNo})">수정</button>
+																				<button class="btn btn-primary ms-2" onclick="deleteReview('${revDTO.get(c).revNo}', '${revDTO.get(c).revUuid}')">삭제</button>
+																			</div>
+																		</c:when>
+																	</c:choose>
+																</sec:authorize>
 															</div>
 														</div>
 													</div>

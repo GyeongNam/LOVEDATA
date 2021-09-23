@@ -98,6 +98,9 @@ public class User extends TimeEntity {
     @Column(length = 20, nullable = true)
     private String social_info;
 
+    @Column(length = 20, nullable = true)
+    private int social_id;
+
     @Column(name = "profile_pic", nullable = false, length = 100)
     @Builder.Default
     private String profile_pic = "/image/icon/user/user.png";

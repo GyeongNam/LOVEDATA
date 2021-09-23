@@ -22,7 +22,7 @@ import java.nio.charset.StandardCharsets;
 
 @Log4j2
 @Service
-public class RequestUserInfoNaver{
+public class RequestUserInfoNaver {
 
     public NaverUserInfo excute(HttpServletRequest request, OAuthToken token) {
         URI uri = URISetter.getNaver_UserInfo();
@@ -34,27 +34,75 @@ public class RequestUserInfoNaver{
         log.info(httpPost.getFirstHeader("Authorization"));
         httpPost.setHeader("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
-        try(CloseableHttpResponse response = httpClient.execute(httpPost)) {
+        try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
             log.info("response code : " + response.getStatusLine());
             HttpEntity entity = response.getEntity();
             String text = IOUtils.toString(entity.getContent(), StandardCharsets.UTF_8.name());
             JsonElement element = JsonParser.parseString(text).getAsJsonObject().get("response");
 
             userInfo.setId(element.getAsJsonObject().get("id").getAsString());
-            userInfo.setNickname(element.getAsJsonObject().get("nickname").getAsString());
-            userInfo.setProfile_image(element.getAsJsonObject().get("profile_image").getAsString());
-            userInfo.setAge(element.getAsJsonObject().get("age").getAsString());
-            userInfo.setSex(element.getAsJsonObject().get("gender").getAsString());
             userInfo.setEmail(element.getAsJsonObject().get("email").getAsString());
-            userInfo.setPhone(element.getAsJsonObject().get("mobile").getAsString());
-            userInfo.setMobile_e164(element.getAsJsonObject().get("mobile_e164").getAsString());
-            userInfo.setName(element.getAsJsonObject().get("name").getAsString());
-            userInfo.setBirthday(element.getAsJsonObject().get("birthday").getAsString());
-            userInfo.setBirthyear(element.getAsJsonObject().get("birthyear").getAsString());
+            if (element.getAsJsonObject().get("nickname") == null) {
+                userInfo.setNickname("");
+            } else {
+                userInfo.setNickname(element.getAsJsonObject().get("nickname").getAsString());
+            }
+
+            if (element.getAsJsonObject().get("profile_image") == null) {
+                userInfo.setProfile_image("");
+            } else {
+                userInfo.setProfile_image(element.getAsJsonObject().get("profile_image").getAsString());
+            }
+
+            if (element.getAsJsonObject().get("age") == null) {
+                userInfo.setAge("");
+            } else {
+                userInfo.setAge(element.getAsJsonObject().get("age").getAsString());
+            }
+
+            if (element.getAsJsonObject().get("gender") == null) {
+                userInfo.setSex("");
+            } else {
+                userInfo.setSex(element.getAsJsonObject().get("gender").getAsString());
+            }
+
+            if (element.getAsJsonObject().get("mobile") == null) {
+                userInfo.setPhone("");
+            } else {
+                userInfo.setPhone(element.getAsJsonObject().get("mobile").getAsString());
+            }
+
+            if (element.getAsJsonObject().get("mobile_e164") == null) {
+                userInfo.setMobile_e164("");
+            } else {
+                userInfo.setMobile_e164(element.getAsJsonObject().get("mobile_e164").getAsString());
+            }
+
+            if (element.getAsJsonObject().get("name") == null) {
+                userInfo.setName("");
+            } else {
+                userInfo.setName(element.getAsJsonObject().get("name").getAsString());
+            }
+
+            if (element.getAsJsonObject().get("birthday") == null) {
+                userInfo.setBirthday("");
+            } else {
+                userInfo.setBirthday(element.getAsJsonObject().get("birthday").getAsString());
+            }
+
+            if (element.getAsJsonObject().get("birthyear") == null) {
+                userInfo.setBirthyear("");
+            } else {
+                userInfo.setBirthyear(element.getAsJsonObject().get("birthyear").getAsString());
+            }
         } catch (ClientProtocolException e) {
             log.info(e.getStackTrace());
         } catch (IOException e) {
             log.info(e.getStackTrace());
+        } catch (NullPointerException e) {
+            log.info(e.getStackTrace());
+
+            return null;
         }
 
         log.info(userInfo);

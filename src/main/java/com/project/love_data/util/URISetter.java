@@ -11,7 +11,7 @@ import java.net.URLEncoder;
 public class URISetter {
     private static final String kakao_REST = "0b7965078037392ee3569b5979ad1d16";
     private static final String kakao_Redirect = "/login_kakao/process";
-    private static final  String kakao_LogoutRedirect = "/login_kakao/process";
+    private static final  String kakao_LogoutRedirect = "/logout_kakao/process";
     private static final String local_host = "http://localhost:8080";
     private static final String mon0mon_iptime = "http://mon0mon.iptime.org:18080";
     private static final String mon0mon_iptime_2 = "http://mon0mon.iptime.org:28080";
@@ -126,7 +126,7 @@ public class URISetter {
         }
     }
 
-    public static URI getKakao_Logout(String csrf, ServerDomain domain) {
+    public static URI getKakao_Logout(String csrf, ServerDomain domain, int social_id) {
         String URL = setURL(domain);
 
         if (URL == null) {
@@ -138,11 +138,10 @@ public class URISetter {
             URL += kakao_LogoutRedirect;
             URI uri = new URIBuilder()
                     .setScheme("https")
-                    .setHost("kauth.kakao.com")
-                    .setPath("oauth/logout")
-                    .setParameter("client_id", kakao_REST)
-                    .setParameter("logout_redirect_uri", URL)
-                    .setParameter("state", csrf)
+                    .setHost("kapi.kakao.com")
+                    .setPath("v1/user/logout")
+                    .setParameter("target_id_type", "user_id")
+                    .setParameter("target_id", String.valueOf(social_id))
                     .build();
             return uri;
         } catch (Exception e) {

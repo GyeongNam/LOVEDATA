@@ -2,6 +2,7 @@ package com.project.love_data.config;
 
 import com.project.love_data.security.service.AuthenticationFailure;
 import com.project.love_data.security.service.AuthenticationSuccess;
+import com.project.love_data.security.service.CustomLogoutHandler;
 import com.project.love_data.security.service.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -31,9 +32,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     private AuthenticationFailure authenticationFailure;
     @Autowired
     private AuthenticationSuccess authenticationSuccess;
+    @Autowired
+    private CustomLogoutHandler customLogoutHandler;
 
     @Override
-  protected void configure(HttpSecurity http) throws Exception {
+    protected void configure(HttpSecurity http) throws Exception {
       http.authorizeRequests()
               .antMatchers("/member").hasRole("USER")
               .antMatchers("/admin").hasRole("ADMIN")

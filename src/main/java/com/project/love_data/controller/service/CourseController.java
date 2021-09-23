@@ -5,6 +5,7 @@ import com.project.love_data.dto.*;
 import com.project.love_data.model.resource.CourseImage;
 import com.project.love_data.model.resource.ReviewImage;
 import com.project.love_data.model.service.*;
+import com.project.love_data.model.user.User;
 import com.project.love_data.security.model.AuthUserModel;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,10 @@ public class CourseController {
     CourseImageService courseImageService;
     @Autowired
     ReviewImageService revImgService;
+    @Autowired
+    UserLikeRevService userLikeRevService;
+    @Autowired
+    UserDislikeRevService userDislikeRevService;
     List<String> tagList = new ArrayList<>();
 
     @RequestMapping("/service/cor_registration")
@@ -173,7 +178,7 @@ public class CourseController {
             if (isAdmin) {
                 resultReviewDTO = reviewService.getRevPage(pageRequestDTO, SortingOrder.DES, ReviewSearchType.ALL);
             } else {
-                resultReviewDTO  = reviewService.getRevPage(pageRequestDTO, SortingOrder.DES, ReviewSearchType.Live);
+                resultReviewDTO = reviewService.getRevPage(pageRequestDTO, SortingOrder.DES, ReviewSearchType.Live);
             }
 
 //            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -215,6 +220,7 @@ public class CourseController {
             List<List<ReviewImageDTO>> revImgDTOList = new ArrayList<>();
             List<String> revImgURLStringList = new ArrayList<>();
             String revImgURL = "";
+            List<String> revUserPicList = new ArrayList<>();
 
             for (int i = 0; i < resultReviewDTO.getDtoList().size(); i++) {
                 List<ReviewImage> revImgList = revImgService.getAllLiveImageByCorNoAndRevNo(corNo, resultReviewDTO.getDtoList().get(i).getRevNo());
@@ -235,11 +241,13 @@ public class CourseController {
                 if ("".equals(revImgURL)) {
                     revImgURLStringList.add(revImgURL);
                 } else {
-                    revImgURL = revImgURL.substring(0, revImgURL.length()-4);
+                    revImgURL = revImgURL.substring(0, revImgURL.length() - 4);
                     revImgURLStringList.add(revImgURL);
                 }
 
                 revImgDTOList.add(reviewImageDTOS);
+
+                revUserPicList.add(userService.select(resultReviewDTO.getDtoList().get(i).getUserNo()).getProfile_pic());
             }
 
             for (String s : revImgURLStringList) {
@@ -250,12 +258,116 @@ public class CourseController {
                 revImgURLStringList = null;
             }
 
+            List<ReviewDTO> bestRevList = new ArrayList<>();
+            List<Boolean> revLikeList = new ArrayList<>();
+            List<Boolean> revDislikeList = new ArrayList<>();
+            List<Boolean> bestRevLikeList = new ArrayList<>();
+            List<Boolean> bestRevDislikeList = new ArrayList<>();
+            List<Integer> bestRevIndexList = new ArrayList<>();
+            List<String> bestRevUserPicList = new ArrayList<>();
+            List<Integer> revIndexList = new ArrayList<>();
+
+            for (Review review : reviewService.getBestReview(corNo)) {
+                bestRevList.add(reviewService.entityToDto(review));
+            }
+
+            Boolean bestRevMatchFlag = null;
+
+            for (ReviewDTO reviewDTO : bestRevList) {
+                User user = userService.select(reviewDTO.getUserNo());
+
+                if (user == null) {
+                    bestRevUserPicList.add("/image/icon/user/user.png");
+                } else {
+                    if (user.getProfile_pic().equals("") || user.getProfile_pic() == null) {
+                        bestRevUserPicList.add("/image/icon/user/user.png");
+                    } else {
+                        bestRevUserPicList.add(user.getProfile_pic());
+                    }
+                }
+
+                bestRevMatchFlag = false;
+                Integer index = null;
+                for (int i = 0; i < resultReviewDTO.getDtoList().size(); i++) {
+                    if (resultReviewDTO.getDtoList().get(i).equals(reviewDTO)) {
+                        index = i;
+                        bestRevMatchFlag = true;
+                        break;
+                    }
+                }
+
+                if (bestRevMatchFlag) {
+                    bestRevIndexList.add(index);
+                } else {
+                    bestRevIndexList.add(-1);
+                }
+            }
+
+            if (authentication != null) {
+                AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
+                if (authentication.isAuthenticated()) {
+                    for (ReviewDTO revDTO : resultReviewDTO.getDtoList()) {
+                        UserLikeRev userLikeRev = userLikeRevService.selectByRevNoAndUserNo(revDTO.getRevNo(), authUserModel.getUser_no());
+                        UserDislikeRev userDislikeRev = userDislikeRevService.selectByRevNoAndUserNo(revDTO.getRevNo(), authUserModel.getUser_no());
+
+                        if (userLikeRev != null && userDislikeRev == null) {
+                            revLikeList.add(true);
+                            revDislikeList.add(false);
+                        } else if (userLikeRev == null && userDislikeRev != null) {
+                            revLikeList.add(false);
+                            revDislikeList.add(true);
+                        } else {
+                            revLikeList.add(null);
+                            revDislikeList.add(null);
+                        }
+
+                        boolean revIndexMatchFlag = false;
+                        for (int i = 0; i < bestRevList.size(); i++) {
+                            if (revDTO.equals(bestRevList.get(i))) {
+                                revIndexList.add(i);
+                                revIndexMatchFlag = true;
+                                break;
+                            }
+                        }
+
+                        if (!revIndexMatchFlag) {
+                            revIndexList.add(-1);
+                        }
+                    }
+
+                    for (ReviewDTO review : bestRevList) {
+                        UserLikeRev userLikeRev = userLikeRevService.selectByRevNoAndUserNo(review.getRevNo(), authUserModel.getUser_no());
+                        UserDislikeRev userDislikeRev = userDislikeRevService.selectByRevNoAndUserNo(review.getRevNo(), authUserModel.getUser_no());
+
+                        if (userLikeRev != null && userDislikeRev == null) {
+                            bestRevLikeList.add(true);
+                            bestRevDislikeList.add(false);
+                        } else if (userLikeRev == null && userDislikeRev != null) {
+                            bestRevLikeList.add(false);
+                            bestRevDislikeList.add(true);
+                        } else {
+                            bestRevLikeList.add(null);
+                            bestRevDislikeList.add(null);
+                        }
+                    }
+                }
+            }
+
             model.addAttribute("dto", dto);
             model.addAttribute("resRevDTO", resultReviewDTO);
             model.addAttribute("ImageList", courseImageList);
             model.addAttribute("revCount", revCounter);
             model.addAttribute("revImgList", revImgDTOList);
             model.addAttribute("revImgStringURLList", revImgURLStringList);
+            model.addAttribute("revUserPicList", revUserPicList);
+            model.addAttribute("revLikeList", revLikeList);
+            model.addAttribute("revDislikeList", revDislikeList);
+            model.addAttribute("bestRevList", bestRevList);
+            model.addAttribute("bestRevLikeList", bestRevLikeList);
+            model.addAttribute("bestRevDislikeList", bestRevDislikeList);
+            model.addAttribute("bestRevIndexList", bestRevIndexList);
+            model.addAttribute("bestRevUserPicList", bestRevUserPicList);
+            model.addAttribute("revIndexList", revIndexList);
 
             return "/service/cor_detail";
         }
@@ -446,7 +558,7 @@ public class CourseController {
     }
 
     @GetMapping(value = "/service/cor_recommend/search")
-    public String getSearchValue(HttpServletRequest request, Model model){
+    public String getSearchValue(HttpServletRequest request, Model model) {
         String keyword = request.getParameter("keyword");
         String order = request.getParameter("sortOrder");
         String tagString = request.getParameter("tags");
@@ -471,7 +583,7 @@ public class CourseController {
         }
 
         // 일반 유저는 삭제된 코스 항목을 볼 수 없음
-        switch(searchType) {
+        switch (searchType) {
             case DISABLED:
                 searchType = SearchType.NONE;
                 break;
@@ -486,23 +598,23 @@ public class CourseController {
                 break;
         }
 
-        switch (order){
-            case "LIKE_DES" :
+        switch (order) {
+            case "LIKE_DES":
                 // 좋아요 순
                 sortCriterion = SortCriterion.LIKE;
                 sortingOrder = SortingOrder.DES;
                 break;
-            case "DATE_DES" :
+            case "DATE_DES":
                 // 최신 등록순
                 sortCriterion = SortCriterion.DATE;
                 sortingOrder = SortingOrder.DES;
                 break;
-            case "DATE_ASC" :
+            case "DATE_ASC":
                 // 오래된 등록순
                 sortCriterion = SortCriterion.DATE;
                 sortingOrder = SortingOrder.ASC;
                 break;
-            case "VIEW_DES" :
+            case "VIEW_DES":
                 // 조회순
             default:
                 sortCriterion = SortCriterion.VIEW;
