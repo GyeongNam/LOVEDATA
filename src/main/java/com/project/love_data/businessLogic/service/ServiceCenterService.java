@@ -1,6 +1,7 @@
 package com.project.love_data.businessLogic.service;
 
 import com.project.love_data.model.service.*;
+import com.project.love_data.repository.NoticeIMGRepository;
 import com.project.love_data.repository.NoticeRepository;
 import com.project.love_data.repository.QuestionsRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,8 @@ public class ServiceCenterService {
     QuestionsRepository questionsRepository;
     @Autowired
     NoticeRepository noticeRepository;
+    @Autowired
+    NoticeIMGRepository noticeIMGRepository;
 
     public void not_update(Notice notice){
         noticeRepository.save(notice);
@@ -33,8 +36,14 @@ public class ServiceCenterService {
         questionsRepository.save(questions);
     }
 
-    public void qu_delete(Questions questions) {
-        questionsRepository.delete(questions);
+    public void qu_delete(Questions questions) { questionsRepository.delete(questions); }
+
+    public void notimg_delete(NoticeIMG noticeIMG) {
+        noticeIMGRepository.delete(noticeIMG);
+    }
+
+    public void notiimg_update(NoticeIMG noticeIMG){
+        noticeIMGRepository.save(noticeIMG);
     }
 
     public List<Notice> not_select_all(){
@@ -92,5 +101,10 @@ public class ServiceCenterService {
             notices = noticeRepository.no_search_text("%"+text+"%");
             return notices.orElse(new ArrayList<>());
         }
+    }
+
+    public List<NoticeIMG> select_notiimg(String nic){
+        Optional<List<NoticeIMG>> imglist = noticeIMGRepository.select_notiimg(nic);
+        return imglist.orElse(new ArrayList<>());
     }
 }

@@ -3,10 +3,12 @@ package com.project.love_data.controller.service;
 import com.project.love_data.businessLogic.service.*;
 import com.project.love_data.model.resource.QuestionsImage;
 import com.project.love_data.model.user.User;
+import com.project.love_data.repository.NoticeIMGRepository;
 import com.project.love_data.repository.NoticeRepository;
 import com.project.love_data.repository.QuestionsImageRepository;
 import com.project.love_data.businessLogic.service.ControllerScriptUtils;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -36,6 +39,8 @@ public class ServiceCenterController {
     FileUploadService fileUploadService;
     @Autowired
     QuestionsImageRepository questionsImageRepository;
+    @Autowired
+    NoticeIMGRepository noticeIMGRepository;
     @Autowired
     NoticeRepository noticeRepository;
     @Autowired
@@ -476,16 +481,55 @@ public class ServiceCenterController {
             User user = userService.select(principal.getName());
             Date today = new Date();
             SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            String body = request.getParameter("form_name");
+            List<String> imgfile = new ArrayList<>();
+            List<NoticeIMG> noticeIMG = serviceCenterService.select_notiimg(user.getUser_nic());
+            log.info("사진 갯수"+noticeIMG.size());
+            for( int i = 0; i < noticeIMG.size() ; i++ )
+            {
+                log.info("폴문안에 body는 : "+body);
+                log.info("사진명은 : "+noticeIMG.get(i).getNotiimg_name());
+                if(body.contains(noticeIMG.get(i).getNotiimg_name())){
+                    
+                    // 포함
+                    body = body.replace("/image/upload/"+noticeIMG.get(i).getNotiimg_name(),"/image/notice/"+noticeIMG.get(i).getNotiimg_name());
+
+                    try {
+
+                        String r = request.getSession().getServletContext().getRealPath("/");
+                        int idx =  r.indexOf("main");
+                        String imgpath =r.substring(0, idx)+"main/resources/static/image/upload/"+noticeIMG.get(i).getNotiimg_name();
+
+                        File file = FileUtils.getFile(imgpath);
+                        File fileToMove = FileUtils.getFile(r.substring(0, idx)+"main/resources/static/image/notice/"+noticeIMG.get(i).getNotiimg_name());
+                        FileUtils.moveFile(file, fileToMove);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    // 미포함
+                    noticeIMG.get(i).setNoti_activation(false);
+                }
+            }
+
             Notice notices = Notice.builder()
                     .noti_activation(true)
                     .noti_manager(user.getUser_nic())
                     .noti_title(request.getParameter("title"))
-                    .noti_text(request.getParameter("form_name"))
+                    .noti_text(body)
                     .noti_date(format1.format(today))
                     .noti_viewCount(0)
                     .build();
             noticeRepository.save(notices);
+            for( int i = 0; i < noticeIMG.size() ; i++ )
+            {
+                noticeIMG.get(i).setNotiimg_postno(notices.getNoti_no().toString());
+                serviceCenterService.notiimg_update(noticeIMG.get(i));
+            }
         }
+
         return "redirect:/ServiceCenter/Notice/1";
     }
 
@@ -549,7 +593,7 @@ public class ServiceCenterController {
 
                 String r = req.getSession().getServletContext().getRealPath("/");
                 int idx =  r.indexOf("main");
-                String imgpath =r.substring(0, idx)+"main\\resources\\static\\img\\";
+                String imgpath =r.substring(0, idx)+"main\\resources\\static\\image\\upload\\";
                 String path = imgpath;
                 File file = new File(path);
                 System.out.print(path);
@@ -569,12 +613,12 @@ public class ServiceCenterController {
     }
 
     @PostMapping(value = "/multiImgUpload")
-    public void multiImgUpload(HttpServletRequest req, HttpServletResponse res){
+    public void multiImgUpload(HttpServletRequest req, HttpServletResponse res, Principal principal){
         try{
             String sFileInfo = "";
             String r = req.getSession().getServletContext().getRealPath("/");
             int idx =  r.indexOf("main");
-            String imgpath =r.substring(0, idx)+"main\\resources\\static\\img\\";
+            String imgpath =r.substring(0, idx)+"main\\resources\\static\\image\\upload\\";
             String fileName = req.getHeader("file-name");
             log.info("여기 오긴오니?" + imgpath);
             String prifix = fileName.substring(fileName.lastIndexOf(".")+1);
@@ -603,9 +647,18 @@ public class ServiceCenterController {
             os.flush();
             os.close();
 
+            User user = userService.select(principal.getName());
+            NoticeIMG noticeIMG = NoticeIMG.builder()
+                    .notiimg_user(user.getUser_nic())
+                    .notiimg_name(realName)
+                    .noti_activation(true)
+                    .notiimg_postno("0")
+                    .build();
+            noticeIMGRepository.save(noticeIMG);
+
             sFileInfo += "&bNewLine=true";
             sFileInfo += "&sFileName="+fileName;
-            sFileInfo += "&sFileURL="+"/img/"+realName;
+            sFileInfo += "&sFileURL="+"/image/upload/"+realName;
             PrintWriter print = res.getWriter();
             print.print("파일 인포"+sFileInfo);
             print.flush();
