@@ -43,14 +43,58 @@ public class RequestUserInfoKakao{
 //            JsonElement profile = kakao_account.getAsJsonObject().get("profile");
 
             userInfo.setId(JsonParser.parseString(text).getAsJsonObject().get("id").getAsString());
-            userInfo.setConnected_at(JsonParser.parseString(text).getAsJsonObject().get("connected_at").getAsString());
-            userInfo.setNickname(properties.getAsJsonObject().get("nickname").getAsString());
-            userInfo.setProfile_image_url(properties.getAsJsonObject().get("profile_image").getAsString());
-            userInfo.setThumbnail_image_url(properties.getAsJsonObject().get("thumbnail_image").getAsString());
-            userInfo.setHas_email(kakao_account.getAsJsonObject().get("has_email").getAsBoolean());
-            userInfo.setIs_email_valid(kakao_account.getAsJsonObject().get("is_email_valid").getAsBoolean());
-            userInfo.setIs_email_verified(kakao_account.getAsJsonObject().get("is_email_verified").getAsBoolean());
-            userInfo.setEmail(kakao_account.getAsJsonObject().get("email").getAsString());
+
+            if (JsonParser.parseString(text).getAsJsonObject().get("connected_at").getAsString() != null &&
+                    !(JsonParser.parseString(text).getAsJsonObject().get("connected_at").getAsString().equals(""))){
+                userInfo.setConnected_at(JsonParser.parseString(text).getAsJsonObject().get("connected_at").getAsString());
+            } else {
+                userInfo.setConnected_at("");
+            }
+
+            if (properties.getAsJsonObject().get("nickname").getAsString() != null &&
+                    !properties.getAsJsonObject().get("nickname").getAsString().equals("")){
+                userInfo.setNickname(properties.getAsJsonObject().get("nickname").getAsString());
+            } else {
+                userInfo.setNickname("");
+            }
+
+            if (properties.getAsJsonObject().get("profile_image").getAsString() != null &&
+                    !properties.getAsJsonObject().get("nickname").getAsString().equals("")){
+                userInfo.setProfile_image_url(properties.getAsJsonObject().get("profile_image").getAsString());
+            } else {
+                userInfo.setProfile_image_url("");
+            }
+
+            if (properties.getAsJsonObject().get("thumbnail_image").getAsString() != null &&
+                    !properties.getAsJsonObject().get("thumbnail_image").getAsString().equals("")){
+                userInfo.setThumbnail_image_url(properties.getAsJsonObject().get("thumbnail_image").getAsString());
+            } else {
+                userInfo.setThumbnail_image_url("");
+            }
+
+            if (kakao_account.getAsJsonObject().get("has_email") != null && !kakao_account.getAsJsonObject().get("has_email").getAsBoolean()){
+                userInfo.setHas_email(kakao_account.getAsJsonObject().get("has_email").getAsBoolean());
+            } else {
+                userInfo.setHas_email(false);
+            }
+
+            if (kakao_account.getAsJsonObject().get("is_email_valid") != null && !kakao_account.getAsJsonObject().get("is_email_valid").getAsBoolean()){
+                userInfo.setIs_email_valid(kakao_account.getAsJsonObject().get("is_email_valid").getAsBoolean());
+            } else {
+                userInfo.setHas_email(false);
+            }
+
+            if (kakao_account.getAsJsonObject().get("is_email_verified") != null && !kakao_account.getAsJsonObject().get("is_email_verified").getAsBoolean()){
+                userInfo.setIs_email_verified(kakao_account.getAsJsonObject().get("is_email_verified").getAsBoolean());
+            } else {
+                userInfo.setIs_email_verified(false);
+            }
+
+            if (kakao_account.getAsJsonObject().get("email").getAsString() != null && !kakao_account.getAsJsonObject().get("email").getAsString().equals("")){
+                userInfo.setEmail(kakao_account.getAsJsonObject().get("email").getAsString());
+            } else {
+                userInfo.setEmail("");
+            }
 
             log.info(userInfo);
         } catch (ClientProtocolException e) {

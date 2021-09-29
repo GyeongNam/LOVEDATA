@@ -346,8 +346,10 @@
 											</div>
 											<div class="col">
 												<div class="row d-flex my-2">
-													<div class="col-6 d-flex justify-content-between align-items-md-center">
+													<div class="col-3 d-flex align-items-md-center">
 														<span class="details mx-2">이름</span>
+													</div>
+													<div class="col">
 														<input type="text" name="loc_name_${i}" id="loc_name_${i}"
 															   value=""
 															   readonly>
@@ -357,21 +359,25 @@
 													<div class="col-3">
 														<span class="details mx-2 align-middle">해시태그</span>
 													</div>
-													<div class="col d-flex justify-content-start ms-3 ps-2 pe-5"
+													<div class="col d-flex justify-content-start pe-5"
 														 id="hashtag_${i}">
 													</div>
 												</div>
 												<div class="row d-flex my-2">
-													<div class="col-6 d-flex justify-content-between align-items-md-center">
+													<div class="col-3 d-flex justify-content-between align-items-md-center">
 														<span class="details mx-2">주소</span>
+													</div>
+													<div class="col">
 														<input type="text" name="loc_addr_${i}" id="loc_addr_${i}"
 															   value=""
 															   readonly>
 													</div>
 												</div>
 												<div class="row d-flex my-2">
-													<div class="col-6 d-flex justify-content-between align-items-md-center">
+													<div class="col-3 d-flex justify-content-between align-items-md-center">
 														<span class="details mx-2">전화번호</span>
+													</div>
+													<div class="col">
 														<input type="text" name="loc_tel_${i}" id="loc_tel_${i}"
 															   value=""
 															   readonly>
@@ -381,8 +387,8 @@
 													<div class="col-3">
 														<span class="details mx-2">상세설명</span>
 													</div>
-													<div class="col d-flex justify-content-start ms-1 ps-0">
-													<textarea class="col ms-4 me-lg-5" name="loc_info_${i}"
+													<div class="col d-flex">
+													<textarea class="col ms-0 me-lg-5" name="loc_info_${i}"
 															  id="loc_info_${i}"
 															  rows="4" maxlength="150" readonly>
 													</textarea>
@@ -444,8 +450,10 @@
 											</div>
 											<div class="col">
 												<div class="row d-flex my-2">
-													<div class="col-6 d-flex justify-content-between align-items-md-center">
+													<div class="col-3 d-flex align-items-md-center">
 														<span class="details mx-2">이름</span>
+													</div>
+													<div class="col">
 														<input type="text" name="loc_name_${i}" id="loc_name_${i}"
 															   value=""
 															   readonly>
@@ -455,22 +463,25 @@
 													<div class="col-3">
 														<span class="details mx-2 align-middle">해시태그</span>
 													</div>
-													<div class="col d-flex justify-content-start ms-3 ps-2 pe-5"
-														 name="hashtag_${i}" id="hashtag_${i}">
-															<%--														<button type="button" class="btn btn-primary mx-1" value="놀이동산공원">놀이동산공원</button>--%>
+													<div class="col d-flex justify-content-start pe-5"
+														 id="hashtag_${i}">
 													</div>
 												</div>
 												<div class="row d-flex my-2">
-													<div class="col-6 d-flex justify-content-between align-items-md-center">
+													<div class="col-3 d-flex justify-content-between align-items-md-center">
 														<span class="details mx-2">주소</span>
+													</div>
+													<div class="col">
 														<input type="text" name="loc_addr_${i}" id="loc_addr_${i}"
 															   value=""
 															   readonly>
 													</div>
 												</div>
 												<div class="row d-flex my-2">
-													<div class="col-6 d-flex justify-content-between align-items-md-center">
+													<div class="col-3 d-flex justify-content-between align-items-md-center">
 														<span class="details mx-2">전화번호</span>
+													</div>
+													<div class="col">
 														<input type="text" name="loc_tel_${i}" id="loc_tel_${i}"
 															   value=""
 															   readonly>
@@ -480,10 +491,11 @@
 													<div class="col-3">
 														<span class="details mx-2">상세설명</span>
 													</div>
-													<div class="col d-flex justify-content-start ms-1 ps-0">
-													<textarea class="col ms-4 me-lg-5" name="loc_info_${i}"
-															  id="loc_info_${i}" rows="4" maxlength="150"
-															  readonly></textarea>
+													<div class="col d-flex">
+													<textarea class="col ms-0 me-lg-5" name="loc_info_${i}"
+															  id="loc_info_${i}"
+															  rows="4" maxlength="150" readonly>
+													</textarea>
 													</div>
 												</div>
 												<div class="visually-hidden">

@@ -30,7 +30,7 @@ lovedata|schema||lovedatauser|localhost|UPDATE|G</Grants>
     </schema>
     <schema id="3" parent="1" name="lovedata">
       <Current>1</Current>
-      <Collation>utf8_general_ci</Collation>
+      <Collation>utf8mb4_unicode_ci</Collation>
     </schema>
     <schema id="4" parent="1" name="test">
       <Collation>latin1_swedish_ci</Collation>
@@ -1616,7 +1616,7 @@ lovedata|schema||lovedatauser|localhost|UPDATE|G</Grants>
     </column>
     <column id="464" parent="337" name="noti_text">
       <Position>5</Position>
-      <DataType>varchar(255)|0s</DataType>
+      <DataType>longtext|0s</DataType>
       <NotNull>1</NotNull>
     </column>
     <column id="465" parent="337" name="noti_title">

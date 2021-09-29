@@ -42,7 +42,7 @@ public class AdminController {
 
     @GetMapping(value = "/index")
     public String adminIndex() {
-        return "user/admin_index";
+        return "admin/admin_index";
     }
 
     @GetMapping(value = "/loc_recommend")
@@ -340,5 +340,10 @@ public class AdminController {
 //        log.info("active tags : " + activeTags);
 
         return "/admin/cor_recommend_search";
+    }
+
+    @GetMapping("/dash")
+    public String adminDashboadr() {
+        return "/admin/admin_dash";
     }
 }
