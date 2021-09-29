@@ -483,7 +483,6 @@ public class ServiceCenterController {
             SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
             String body = request.getParameter("form_name");
-            List<String> imgfile = new ArrayList<>();
             List<NoticeIMG> noticeIMG = serviceCenterService.select_notiimg(user.getUser_nic());
             log.info("사진 갯수"+noticeIMG.size());
             for( int i = 0; i < noticeIMG.size() ; i++ )
@@ -532,6 +531,82 @@ public class ServiceCenterController {
 
         return "redirect:/ServiceCenter/Notice/1";
     }
+    @PreAuthorize("hasRole('ROLE_MANAGER')")
+    @PostMapping(value = "/ServiceCenter/Notice_Post_Update/update")
+    public String Post_update_noti_update(HttpServletRequest request, Principal principal, HttpServletResponse response) throws IOException {
+        if(principal == null){
+            scriptUtils.alertAndMovePage(response, "로그인 해주세요.", "/login");
+        }else {
+            User user = userService.select(principal.getName());
+            Date today = new Date();
+            SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            String body = request.getParameter("form_name");
+            List<NoticeIMG> noticeIMG_ol = serviceCenterService.select_notiimg_num(request.getParameter("num"));
+            for( int i = 0; i < noticeIMG_ol.size() ; i++ )
+            {
+                if(body.contains(noticeIMG_ol.get(i).getNotiimg_name())){}
+                else {
+                    // 없다면
+                    try {
+                        noticeIMG_ol.get(i).setNoti_activation(false);
+                        serviceCenterService.notiimg_update(noticeIMG_ol.get(i));
+
+                        String r = request.getSession().getServletContext().getRealPath("/");
+                        int idx =  r.indexOf("main");
+                        String imgpath =r.substring(0, idx)+"main/resources/static/image/notice/"+noticeIMG_ol.get(i).getNotiimg_name();
+
+                        File file = FileUtils.getFile(imgpath);
+                        File fileToMove = FileUtils.getFile(r.substring(0, idx)+"main/resources/static/image/upload/"+noticeIMG_ol.get(i).getNotiimg_name());
+                        FileUtils.moveFile(file, fileToMove);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            List<NoticeIMG> noticeIMG = serviceCenterService.select_notiimg(user.getUser_nic());
+            log.info("사진 갯수"+noticeIMG.size());
+            for( int i = 0; i < noticeIMG.size() ; i++ )
+            {
+                log.info("폴문안에 body는 : "+body);
+                log.info("사진명은 : "+noticeIMG.get(i).getNotiimg_name());
+                if(body.contains(noticeIMG.get(i).getNotiimg_name())){
+
+                    // 포함
+                    body = body.replace("/image/upload/"+noticeIMG.get(i).getNotiimg_name(),"/image/notice/"+noticeIMG.get(i).getNotiimg_name());
+
+                    try {
+
+                        String r = request.getSession().getServletContext().getRealPath("/");
+                        int idx =  r.indexOf("main");
+                        String imgpath =r.substring(0, idx)+"main/resources/static/image/upload/"+noticeIMG.get(i).getNotiimg_name();
+
+                        File file = FileUtils.getFile(imgpath);
+                        File fileToMove = FileUtils.getFile(r.substring(0, idx)+"main/resources/static/image/notice/"+noticeIMG.get(i).getNotiimg_name());
+                        FileUtils.moveFile(file, fileToMove);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    // 미포함
+                    noticeIMG.get(i).setNoti_activation(false);
+                }
+            }
+
+            Notice notices = serviceCenterService.noti_select_no(request.getParameter("num"));
+            notices.setNoti_title(request.getParameter("title"));
+            notices.setNoti_text(body);
+            noticeRepository.save(notices);
+            for( int i = 0; i < noticeIMG.size() ; i++ )
+            {
+                noticeIMG.get(i).setNotiimg_postno(notices.getNoti_no().toString());
+                serviceCenterService.notiimg_update(noticeIMG.get(i));
+            }
+        }
+
+        return "redirect:/ServiceCenter/Notice/1";
+    }
 
     @GetMapping(value = "/ServiceCenter/Questions_Post_add")
     public String Post_add(Principal principal, HttpServletResponse response) throws IOException {
@@ -561,6 +636,17 @@ public class ServiceCenterController {
         return "redirect:/ServiceCenter/Questions/1";
     }
 
+    @GetMapping(value = "/ServiceCenter/Notice_Update/{num}")
+    public String Notice_Update(@PathVariable("num") String num, Model model, Principal principal, HttpServletResponse response) throws IOException {
+        if(principal == null){
+            scriptUtils.alertAndMovePage(response, "로그인 해주세요.", "/login");
+        }else {
+            Notice notice = serviceCenterService.noti_select_no(num);
+            model.addAttribute("noti",notice);
+            return "/service/noti_Post_update";
+        }
+        return "redirect:/ServiceCenter/Notice_Post/"+num;
+    }
 
 
     @GetMapping(value = "/ServiceCenter/Questions_Update/{num}")

@@ -12,4 +12,7 @@ public interface NoticeIMGRepository extends JpaRepository<NoticeIMG, Long> {
 
     @Query(value = "select * from noticeimg where notiimg_activation=true and notiimg_user = :usernic and notiimg_postno = '0' ", nativeQuery = true)
     Optional<List<NoticeIMG>> select_notiimg(String usernic);
+
+    @Query(value = "select * from noticeimg where notiimg_activation=true and notiimg_postno = :num ", nativeQuery = true)
+    Optional<List<NoticeIMG>> select_notiimg_num(String num);
 }
