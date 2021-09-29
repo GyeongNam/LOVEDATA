@@ -373,8 +373,8 @@ public class ServiceCenterController {
 
         User user = userService.select(principal.getName());
 
-        filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE,
-                UploadFileCount.MULTIPLE, 0, 3, request);
+        filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE, UploadFileCount.MULTIPLE,
+                0, 3, UploadPathType.QNA, request);
 
         Boolean secret = false;
         if(request.getParameter("secret").equals("1")){
@@ -441,8 +441,8 @@ public class ServiceCenterController {
             else {
                 log.info(i+" :존재하지 않음");
                 List<MultipartFile> fileList2 = fileList.subList(i,i+1);
-                filePath = fileUploadService.execute(fileList2, UploadFileType.IMAGE,
-                        UploadFileCount.MULTIPLE, 0, 3, request);
+                filePath = fileUploadService.execute(fileList2, UploadFileType.IMAGE, UploadFileCount.MULTIPLE,
+                        0, 3, UploadPathType.QNA, request);
 
                 questions.setQu_secret(secret);
                 questions.setQu_text(request.getParameter("info"));

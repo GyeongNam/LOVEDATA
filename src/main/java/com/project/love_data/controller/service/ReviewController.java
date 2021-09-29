@@ -72,9 +72,8 @@ public class ReviewController {
         entity = revService.update(entity);
 
         if (!fileList.isEmpty()) {
-            filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE,
-                    UploadFileCount.MULTIPLE, REV_MIN_UPLOAD_COUNT,
-                    REV_MAX_UPLOAD_COUNT, request);
+            filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE, UploadFileCount.MULTIPLE,
+                    REV_MIN_UPLOAD_COUNT, REV_MAX_UPLOAD_COUNT, UploadPathType.REV, request);
 
             if (filePath == null) {
                 log.warn("파일이 제대로 저장되지 않았습니다.");
@@ -147,7 +146,7 @@ public class ReviewController {
             rev_temp.set_modified(true);
             entity = revService.update(rev_temp);
             filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE, UploadFileCount.MULTIPLE,
-                    REV_MIN_UPLOAD_COUNT, REV_MAX_UPLOAD_COUNT, request);
+                    REV_MIN_UPLOAD_COUNT, REV_MAX_UPLOAD_COUNT, UploadPathType.REV, request);
             revImgService.updateOldImage(revNo, filePath);
         }
 

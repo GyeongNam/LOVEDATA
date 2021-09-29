@@ -28,8 +28,10 @@ public class FileUploadService {
 
     public void execute(List<MultipartFile> fileList,
                         UploadFileType fileType,
+                        UploadPathType pathType,
                         HttpServletRequest request) {
-        execute(fileList, fileType, UploadFileCount.SINGLE, 1, 1, request);
+        execute(fileList, fileType, UploadFileCount.SINGLE, 1,
+                1, pathType, request);
     }
 
     public List<String> execute(List<MultipartFile> fileList,
@@ -37,6 +39,7 @@ public class FileUploadService {
                                 UploadFileCount fileCount,
                                 int minFileUploadCount,
                                 int maxFileUploadCount,
+                                UploadPathType pathType,
                                 HttpServletRequest request) {
         // 업로드하는 파일이 실제로 저장되는 위치
         String pathStr;
@@ -51,10 +54,11 @@ public class FileUploadService {
 
         switch (fileCount) {
             case SINGLE:
-                result = singleFileUpload(fileList.get(0), pathStr, fileType, request);
+                result = singleFileUpload(fileList.get(0), pathStr, fileType, pathType, request);
                 break;
             case MULTIPLE:
-                result = multiFileUpload(fileList, pathStr, fileType, minFileUploadCount, maxFileUploadCount, request);
+                result = multiFileUpload(fileList, pathStr, fileType,
+                        minFileUploadCount, maxFileUploadCount, pathType, request);
                 break;
             default:
                 log.warn("Not Defined UploadFileType Enum");
@@ -71,17 +75,17 @@ public class FileUploadService {
     private List<String> singleFileUpload(MultipartFile file,
                                           String pathStr,
                                           UploadFileType fileType,
+                                          UploadPathType pathType,
                                           HttpServletRequest request) {
-        String filePath = getUploadPath(pathStr);
-
-        String URIPath;
+        String filePath = getUploadPath(pathStr, pathType);
+        String URIPath = getURIPath(pathType);
         // 리눅스 서버에서 돌아갈 경우
-        log.info("Current OS : " + System.getenv().get("OS"));
-        if ("Windows_NT".equals(System.getenv().get("OS"))) {
-            URIPath = "/image/upload";
-        } else {
-            URIPath = "/img";
-        }
+//        log.info("Current OS : " + System.getenv().get("OS"));
+//        if ("Windows_NT".equals(System.getenv().get("OS"))) {
+//            URIPath = "/image/upload";
+//        } else {
+//            URIPath = "/img";
+//        }
         String fileName = null;
         List<String> result = new ArrayList<>();
         if (filePath == null) {
@@ -129,16 +133,17 @@ public class FileUploadService {
                                          UploadFileType fileType,
                                          int minFileUploadCount,
                                          int maxFileUploadCount,
+                                         UploadPathType pathType,
                                          HttpServletRequest request) {
-        String filePath = getUploadPath(pathStr);
-        String URIPath;
+        String filePath = getUploadPath(pathStr, pathType);
+        String URIPath = getURIPath(pathType);
         // 리눅스 서버에서 돌아갈 경우
-        log.info("Current OS : " + System.getenv().get("OS"));
-        if ("Windows_NT".equals(System.getenv().get("OS"))) {
-            URIPath = "/image/upload";
-        } else {
-            URIPath = "/img";
-        }
+//        log.info("Current OS : " + System.getenv().get("OS"));
+//        if ("Windows_NT".equals(System.getenv().get("OS"))) {
+//            URIPath = "/image/upload";
+//        } else {
+//            URIPath = "/img";
+//        }
         String fileName = null;
         List<String> result = new ArrayList<>();
         int maxFileCount = fileList.size();
@@ -218,20 +223,88 @@ public class FileUploadService {
     }
 
     // 업로드된 파일의 저장 위치 설정
-    private String getUploadPath(String pathStr) {
+    private String getUploadPath(String pathStr, UploadPathType pathType) {
         // 현재 프로젝트 폴더 하위 폴더인 images 폴더를 업로드 폴더로 지정
         Path path;
 
         if ("Windows_NT".equals(System.getenv().get("OS"))) {
-            path = Paths.get(pathStr + File.separator +
-                    "src" + File.separator +
-                    "main" + File.separator +
-                    "resources" + File.separator +
-                    "static" + File.separator +
-                    "image" + File.separator +
-                    "upload");
+            switch (pathType) {
+                case LOC:
+                    path = Paths.get(pathStr + File.separator +
+                            "src" + File.separator +
+                            "main" + File.separator +
+                            "resources" + File.separator +
+                            "static" + File.separator +
+                            "image" + File.separator +
+                            "location");
+                    break;
+                case COR:
+                    path = Paths.get(pathStr + File.separator +
+                            "src" + File.separator +
+                            "main" + File.separator +
+                            "resources" + File.separator +
+                            "static" + File.separator +
+                            "image" + File.separator +
+                            "course");
+                    break;
+                case REV:
+                    path = Paths.get(pathStr + File.separator +
+                            "src" + File.separator +
+                            "main" + File.separator +
+                            "resources" + File.separator +
+                            "static" + File.separator +
+                            "image" + File.separator +
+                            "review");
+                    break;
+                case QNA:
+                    path = Paths.get(pathStr + File.separator +
+                            "src" + File.separator +
+                            "main" + File.separator +
+                            "resources" + File.separator +
+                            "static" + File.separator +
+                            "image" + File.separator +
+                            "qna");
+                    break;
+                case USER_PIC:
+                    path = Paths.get(pathStr + File.separator +
+                            "src" + File.separator +
+                            "main" + File.separator +
+                            "resources" + File.separator +
+                            "static" + File.separator +
+                            "image" + File.separator +
+                            "user_pic");
+                    break;
+                default :
+                        path = Paths.get(pathStr + File.separator +
+                                "src" + File.separator +
+                                "main" + File.separator +
+                                "resources" + File.separator +
+                                "static" + File.separator +
+                                "image" + File.separator +
+                                "upload");
+                        break;
+            }
         } else {
-            path = Paths.get(pathStr + File.separator);
+            switch (pathType) {
+                case LOC:
+                    path = Paths.get(pathStr + File.separator + "location");
+                    break;
+                case COR:
+                    path = Paths.get(pathStr + File.separator + "course");
+                    break;
+                case REV:
+                    path = Paths.get(pathStr + File.separator + "review");
+                    break;
+                case QNA:
+                    path = Paths.get(pathStr + File.separator + "qna");
+                    break;
+                case USER_PIC:
+                    path = Paths.get(pathStr + File.separator + "user_pic");
+                    break;
+                default:
+                    path = Paths.get(pathStr + File.separator + "upload");
+                    break;
+            }
         }
 
         if (!Files.exists(path)) {
@@ -247,6 +320,23 @@ public class FileUploadService {
             }
         }
         return path.toString();
+    }
+
+    private String getURIPath(UploadPathType pathType) {
+        switch (pathType) {
+            case LOC:
+                return "/image/location";
+            case COR:
+                return "/image/course";
+            case REV:
+                return "/image/review";
+            case QNA:
+                return "/image/qna";
+            case USER_PIC:
+                return "/image/user_pic";
+            default:
+                return "/image/upload";
+        }
     }
 
     private String getFileName(MultipartFile file, FileNamingType fileNamingType) {
