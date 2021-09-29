@@ -149,6 +149,16 @@ fabric.properties
 *.war
 build/resources/main/static/image/upload/
 src/main/resources/static/image/upload/
+build/resources/main/static/image/location/
+src/main/resources/static/image/location/
+build/resources/main/static/image/course/
+src/main/resources/static/image/course/
+build/resources/main/static/image/review/
+src/main/resources/static/image/review/
+build/resources/main/static/image/qna/
+src/main/resources/static/image/qna/
+build/resources/main/static/image/user_pic/
+src/main/resources/static/image/user_pic/
 build/*
 contribution.sh
 logs.txt

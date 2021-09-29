@@ -126,8 +126,8 @@ public class CourseController {
             log.info(s + "\t:\t" + reqParam.get(s));
         }
 
-        filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE,
-                UploadFileCount.MULTIPLE, MIN_UPLOAD_COUNT, MAX_UPLOAD_COUNT, request);
+        filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE, UploadFileCount.MULTIPLE,
+                MIN_UPLOAD_COUNT, MAX_UPLOAD_COUNT, UploadPathType.COR, request);
 
         if (filePath == null) {
             log.warn("파일이 제대로 저장되지 않았습니다.");
@@ -539,8 +539,8 @@ public class CourseController {
             log.info(s + "\t:\t" + reqParam.get(s));
         }
 
-        filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE,
-                UploadFileCount.MULTIPLE, MIN_UPLOAD_COUNT, MAX_UPLOAD_COUNT, request);
+        filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE, UploadFileCount.MULTIPLE,
+                MIN_UPLOAD_COUNT, MAX_UPLOAD_COUNT, UploadPathType.COR, request);
 
         if (filePath == null) {
             log.warn("파일이 제대로 저장되지 않았습니다.");

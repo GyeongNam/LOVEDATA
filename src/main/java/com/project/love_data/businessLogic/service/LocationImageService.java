@@ -15,6 +15,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class LocationImageService {
     private final LocationImageRepository repository;
+    private final FilePathChangeService pathChangeService;
 
     public LocationImage getImage(Long imgId) {
         Optional<LocationImage> item = repository.findById(imgId);
@@ -95,6 +96,11 @@ public class LocationImageService {
         }
 
         img.set_deleted(true);
+        img.setImg_url("/image/upload" + img.getImg_uuid());
+        String extension = pathChangeService.getFileExtension(img.getImg_url());
+        if (pathChangeService.execute(img.getImg_uuid(), UploadPathType.LOC, FileExtension.valueOf(extension))) {
+
+        }
 
         update(img);
 
