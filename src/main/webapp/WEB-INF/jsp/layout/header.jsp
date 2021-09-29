@@ -52,7 +52,7 @@
 				</c:when>
 			</c:choose>
 			<sec:authorize access="hasRole('ROLE_ADMIN')">
-				<button id="hd-btn" class="dropbtn" onclick="location.href='/admin/index'">어드민</button>
+				<button id="hd-btn" class="dropbtn" onclick="location.href='/admin/dash'">어드민</button>
 			</sec:authorize>
 			<button id="hd-btn" class="dropbtn" onclick="location.href='/mypage'">마이 페이지</button>
 			<button id="hd-btn" onclick="location.href='/service/calender'">캘린더</button>

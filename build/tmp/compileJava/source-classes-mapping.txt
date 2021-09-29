@@ -37,8 +37,8 @@ com/project/love_data/model/service/UserDislikeRev.java
  com.project.love_data.model.service.UserDislikeRev$UserDislikeRevBuilder
 com/project/love_data/businessLogic/service/ReviewImageService.java
  com.project.love_data.businessLogic.service.ReviewImageService
-com/project/love_data/controller/AdminController.java
- com.project.love_data.controller.AdminController
+com/project/love_data/businessLogic/oauth/login/RequestUserInfoNaver.java
+ com.project.love_data.businessLogic.oauth.login.RequestUserInfoNaver
 com/project/love_data/model/service/QUserRecentCor.java
  com.project.love_data.model.service.QUserRecentCor
 com/project/love_data/security/model/UserRole.java
@@ -405,5 +405,5 @@ com/project/love_data/businessLogic/oauth/login/RequestUserInfoKakao.java
  com.project.love_data.businessLogic.oauth.login.RequestUserInfoKakao
 com/project/love_data/controller/OAuthController.java
  com.project.love_data.controller.OAuthController
-com/project/love_data/businessLogic/oauth/login/RequestUserInfoNaver.java
- com.project.love_data.businessLogic.oauth.login.RequestUserInfoNaver
+com/project/love_data/controller/AdminController.java
+ com.project.love_data.controller.AdminController
