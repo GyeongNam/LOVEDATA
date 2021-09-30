@@ -41,7 +41,7 @@ public interface UserRepository extends JpaRepository<User, Long>{
 
 	@EntityGraph(attributePaths = {"roleSet"}, type = EntityGraph.EntityGraphType.LOAD)
 	@Query(value = "SELECT u FROM User u where u.user_email = :email AND u.is_deleted = false")
-	Optional<User> findLiveUserByEmail_Privilege(@Param("email") String email);
+	Optional<User> findLiveUserByEmail_Privilege( String email);
 
 	//CHOI
 	@Query(value = "select user_email from user where user_phone = :phonenumber", nativeQuery = true)

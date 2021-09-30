@@ -19,7 +19,7 @@ function MenuTab(evt, cityName) {
 }
 
 // Get the element with id="defaultOpen" and click on it
-document.getElementById("defaultOpen").click();
+// document.getElementById("defaultOpen").click();
 
 
 //프로필 이미지 등록
@@ -71,15 +71,29 @@ $(document).ready(function () {
     $("#day").val(myday);
 });
 
-//생년월일 나누기
+//성별 나누기
 $(document).ready(function () {
     var jd = $("#jender").val();
+    var us = $("#user_social").val();
     console.log(jd);
-    if(jd == "true"){
-        $("#mann").prop("checked", true);
-    }
-    else{
-        $("#womann").prop("checked", true);
+    if(us =="true"){
+        if(jd == "true"){
+            $("#mann").prop("checked", true).attr('disabled',true);
+            $("#womann").attr('disabled',true);
+        }
+        else{
+            $("#womann").prop("checked", true).attr('disabled',true);
+            $("#mann").attr('disabled',true);
+        }
+    }else{
+
+
+        if(jd == "true"){
+            $("#mann").prop("checked", true);
+        }
+        else{
+            $("#womann").prop("checked", true);
+        }
     }
 });
 
@@ -147,34 +161,52 @@ function repasswordcheck(){
     }
 }
 
-//수정된 항목 저장
+// ajax token
+var token = $("meta[name='_csrf']").attr("content");
+var header = $("meta[name='_csrf_header']").attr("content");
+$(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
 
+// 닉네임 중복확인
+function nick_check(){
+    var nickname = $('#newnic');
+    var s_relult = $('#newnic_check');
+    var postdata = {"nickname" : nickname.val() }
 
-// select box 연도 , 월 표시
-// function setDateBox() {
-//     var dt = new Date();
-//     var year = "";
-//     var com_year = dt.getFullYear();
-//
-//     // 발행 뿌려주기
-//     $("#year").append("<option value=''>년도</option>");
-//
-//     // 올해 기준으로 -50년부터 +1년을 보여준다.
-//     for (var y = (com_year - 50); y <= (com_year + 1); y++) {
-//         $("#year").append("<option value='" + y + "'>" + y + " 년" + "</option>");
-//     }
-//
-//     // 월 뿌려주기(1월부터 12월)
-//     var month;
-//     $("#month").append("<option value=''>월</option>");
-//     for (var i = 1; i <= 12; i++) {
-//         $("#month").append("<option value='" + i + "'>" + i + "월" + "</option>");
-//     }
-//
-//     // 일 뿌려주기(1일부터 31일)
-//     var day;
-//     $("#day").append("<option value=''>일</option>");
-//     for (var i = 1; i <= 31; i++) {
-//         $("#day").append("<option value='" + i + "'>" + i + " 일" + "</option>");
-//     }
-// }
+    $.ajax({
+        url: " /nick_check",
+        dataType: 'json',
+        contentType: "application/json; charset=UTF-8",
+        data: JSON.stringify(postdata),
+        type: "POST",
+        success:function(data){
+            var datas = data.msg;
+            console.log(datas);
+            if(datas=="0"){
+                s_relult.css("color", "red");
+                s_relult.text("사용 중인 닉네임 입니다!");
+                mainnick = false;
+            }
+            else {
+                if(nickname.val().search(/\s/) != -1 || nickname.val().length == 0){
+                    s_relult.css("color", "red");
+                    s_relult.text("닉네임을 입력해주세요");
+                    mainnick = false;
+                }
+                else {
+                    s_relult.css("color", "green");
+                    s_relult.text("사용 가능한 닉네임입니다.");
+                    mainnick = true;
+                }
+            }
+        },
+        error : function(){
+            console.log(datas);
+        }
+    });
+}
+
+//프로필 사진 삭제
+function picdel(){
+    console.log("요기와요js");
+
+}

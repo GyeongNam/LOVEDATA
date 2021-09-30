@@ -10,6 +10,8 @@
 
 <html>
 <head>
+	<meta name="_csrf" content="${_csrf.token}">
+	<meta name="_csrf_header" content="${_csrf.headerName}">
     <link href="/css/mypage.css" rel="stylesheet">
     <title>Home</title>
 </head>
@@ -25,7 +27,6 @@
 	<div id="jb-header">
 		<h1>마이페이지</h1>
 	</div>
-
 	<div id="jb-sidebar">
 		<div class="tab">
 			<div>
@@ -64,7 +65,10 @@
 		</div>
 	</div>
 	<div id="jb-content">
+		<c:choose>
+		<c:when test="${UserDTO.user_social eq false}">
 		<form action="/mypage_update" method="post" enctype="multipart/form-data">
+			<input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
 		<div id="Myinfo" class="tabcontent">
 			<h3>내 정보</h3>
 			<table>
@@ -82,13 +86,14 @@
 					<td id="sec_line">
 						<div class="file-wrapper flie-wrapper-area">
 							<div class="float-left">
-								<span class="label-plus"><i class="fas fa-plus"></i></span>
-								<div id="preview"></div>
+								<span class="label-plus"><i class="fas fa-plus"></i>
+								</span>
+								<div id="preview">
+									<img id="propic" src="${UserDTO.profile_pic}">
+								</div>
 								<div class="file-edit-icon">
-									<input type="file" name="file" id="file" class="upload-box upload-plus"
-										   accept="image/*" onchange="setmyimg(event);">
-									<button id="img-edit" class="preview-edit">수정</button>
-									<button id="img-del" class="preview-de">삭제</button>
+									<input type="file" name="file" id="file" class="upload-box upload-plus" accept="image/*" onchange="setmyimg(event);"/>
+									<button id="img-del" class="preview-de" onclick="location.href='/mypropicdel';">삭제</button>
 								</div>
 							</div>
 						</div>
@@ -96,9 +101,9 @@
 				</tr>
 				<tr>
 					<td>닉네임</td>
-					<td id="sec_line"><input type="text" value="${UserDTO.user_nic}">
-
-						<button type="button" onclick="double_check()" id="NickName" name="nic_check">중복 확인</button>
+					<td id="sec_line"><input type="text" id="newnic" value="${UserDTO.user_nic}">
+						<span id="newnic_check"></span>
+						<button type="button" onclick="nick_check()" id="NickName" name="nic_check">중복 확인</button>
 					</td>
 				</tr>
 				<tr>
@@ -142,40 +147,101 @@
 					</td>
 				</tr>
 			</table>
-			<button type="button">저장</button>
+			<button type="submit">저장</button>
 		</div>
+		</form>
 	</div>
-<%--	<div id="nic_modal" class="nic_modal">--%>
-<%--		<div class="nic_modal_content">--%>
-<%--			<div>사용하고자 하는 닉네임을 입력하세요!</div>--%>
-<%--			<input type="text" name="new_nic_check" id="nic_chk"--%>
-<%--				   placeholder="">--%>
-<%--			<button type="button" id="re_check" onclick="">중복확인</button>--%>
-<%--			<div id="nic_new_check">닉네임을 입력하세요!</div>--%>
-<%--			<button type="button" id="nic_modal_close_btn">닫기</button>--%>
-<%--		</div>--%>
-<%--	</div>--%>
-</div>
-</sec:authorize>
-</form>
-	<script>
-		function setmyimg(event) {
-			for (var image of event.target.files) {
-				var reader = new FileReader();
-				reader.onload = function(event) {
-					var img = document.createElement("img");
-					img.setAttribute("src", event.target.result);
-					document.querySelector("div#preview").appendChild(img);
-				};
-				console.log(image);
-				reader.readAsDataURL(image);
-			}
-		}
-	</script>
-
+	</c:when>
+	<c:when test="${UserDTO.user_social eq true}">  <%--소셜 로그인--%>
+	<div id="Myinfo" class="tabcontent">
+		<h3>내 정보</h3>
+		<table>
+			<tr>
+				<th>회원정보 수정</th>
+			</tr>
+			<tr>
+				<td>이름</td>
+				<td id="sec_line">
+					<span>${UserDTO.user_name}</span>
+				</td>
+			</tr>
+			<tr>
+				<td>프로필 사진</td>
+				<td id="sec_line">
+					<div class="file-wrapper flie-wrapper-area">
+						<div class="float-left">
+							<span class="label-plus"><i class="fas fa-plus"></i></span>
+							<div id="preview"><img src="${UserDTO.profile_pic}"></div>
+						</div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>닉네임</td>
+				<td id="sec_line"><input type="text" value="${UserDTO.user_nic}" readonly></td>
+			</tr>
+			<tr>
+				<td>이메일</td>
+				<td id="sec_line"><span>${UserDTO.user_email}</span></td>
+			</tr>
+			<tr>
+				<td>휴대폰 번호 *</td>
+				<td id="sec_line">
+					<input type="hidden" id="numnum" value="${UserDTO.user_phone}" readonly>
+					<select name="first-phone-number" id="firnum" disabled>
+						<option value="010">010</option>
+						<option value="011">011</option>
+						<option value="017">017</option>
+						<option value="018">018</option>
+					</select>
+					-
+					<input type="text" id="twonum"
+						   oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+						   maxlength="4" readonly/>
+					-
+					<input type="text" id="lastnum"
+						   oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+						   maxlength="4" readonly/>
+				</td>
+			</tr>
+			<tr>
+				<td>생년월일 *</td>
+				<td id="sec_line">
+					<input type="hidden" id="mybir" value="${UserDTO.user_birth}" >
+					<input type="date" id="birthday" name="birthday"
+						   value="<sec:authentication property="principal.user_birth"/>" min="1930-01-01" max="2050-12-31" required readonly>
+				</td>
+			</tr>
+			<tr>
+				<td>성별</td>
+				<td id="sec_line">
+					<input type="hidden" id="jender" value="${UserDTO.user_sex}" >
+					<input type="hidden" id="user_social" name="" value="${UserDTO.user_social}">
+					<input type="radio" id="mann" name="chk_gender" value="" >남자</input>
+					<input type="radio" id="womann" name="chk_gender" value="" >여자</input>
+				</td>
+			</tr>
+		</table>
+	</div>
+	</c:when>
+	</c:choose>
+	</sec:authorize>
+	</div>
 </body>
 <!--   부트스트랩 js 사용  -->
 <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script defer type="text/javascript" src="/resource/js/bootstrap.js"></script>
 <script defer src="/js/mypage.js"></script>
+<script>
+	function setmyimg(event) {
+		for (var image of event.target.files) {
+			var reader = new FileReader();
+			reader.onload = function(event) {
+				var img = $("#propic");
+				img.setAttribute("src", event.target.result);
+			};
+			reader.readAsDataURL(image);
+		}
+	}
+</script>
 </html>

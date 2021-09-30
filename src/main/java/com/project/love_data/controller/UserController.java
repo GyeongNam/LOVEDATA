@@ -16,7 +16,9 @@ import com.project.love_data.businessLogic.SmsService;
 import com.project.love_data.businessLogic.account.UserAccountDelete;
 import lombok.extern.log4j.Log4j2;
 import org.apache.catalina.filters.ExpiresFilter;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.servlet.HttpEncodingAutoConfiguration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -28,6 +30,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.*;
 import java.io.PrintWriter;
 import java.security.Principal;
 import java.time.LocalDateTime;
@@ -61,6 +64,8 @@ public class UserController {
 	CourseService corService;
 	@Autowired
 	ReviewService reviewService;
+	@Autowired
+	FileUploadService fileUploadService;
 
 	@RequestMapping(value = "/signup_add", method = RequestMethod.POST)
 	public String signup(
@@ -101,9 +106,12 @@ public class UserController {
 				.social_id(social_id)
 				.build();
 		user.addUserRole(UserRole.USER);
-
+		log.info("profile_pic : " + profile_pic.length());
 		if (profile_pic != null) {
 			user.setProfile_pic(profile_pic);
+		}
+		if(profile_pic.length()==0){
+			user.setProfile_pic("/image/icon/user/user.png");
 		}
 
 		userRepository.save(user);
@@ -180,21 +188,60 @@ public class UserController {
 
 //mypage updata page
 	@RequestMapping("/mypage_update")
-	public String mypagedatachange(@RequestParam("files")List<MultipartFile> fileList, HttpServletRequest request,
+	public String mypagedatachange(@RequestParam("file")List<MultipartFile> fileList, HttpServletRequest request,
 								   RedirectAttributes redirectAttributes, Model model, Principal principal) {
 		if (principal == null) {
 			return "redirect:/login";
 		} else {
-			UserDTO userDTO = userService.DTOselect(principal.getName());
-			model.addAttribute("UserDTO", userDTO);
+
+			User user = userService.select(principal.getName());
 
 			List<String> filePath = null;
 			Map<String, String> mypgup = new HashMap<>();
 
-//			filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE,
-//					UploadFileCount.MULTIPLE, MIN_UPLOAD_COUNT, MAX_UPLOAD_COUNT, request);
+			filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE, UploadFileCount.MULTIPLE,
+					1, MAX_UPLOAD_COUNT, UploadPathType.USER_PIC, request);
 
-			return "user/mypage";
+			if(filePath != null){
+				user.setProfile_pic(filePath.get(0) + "/" + filePath.get(1));
+			}
+
+			userService.update(user);
+			UserDTO userDTO = userService.DTOselect(principal.getName());
+			model.addAttribute("UserDTO", userDTO);
+
+
+			return "redirect:/mypage";
+		}
+	}
+
+	@GetMapping(value = "/mypropicdel")
+	public String  mypropicdele(Principal principal, Model model, HttpServletRequest request) {
+		if (principal == null) {
+			return "redirect:/login";
+		} else {
+			User user = userService.select(principal.getName());
+			user.setProfile_pic("/image/icon/user/user.png");
+			userService.update(user);
+			model.addAttribute("UserDTO", user);
+			log.info("여기와요프로필삭제");
+			try{
+				String imageFile = user.getProfile_pic();
+				if(!imageFile.equals("/image/icon/user/user.png")){
+					String r = request.getSession().getServletContext().getRealPath("/");
+					int idx =  r.indexOf("main");
+					String imgpath =r.substring(0, idx)+"main/resources/static"+ imageFile;
+					log.info("imgpath 확인 :" + imgpath);
+					File file = FileUtils.getFile(imgpath);
+					imageFile = imageFile.replace("/image/user_pic/","/image/upload/");
+					File fileToMove = FileUtils.getFile(r.substring(0, idx)+"main/resources/static"+ imageFile);
+					FileUtils.moveFile(file, fileToMove);
+				}
+			}
+			catch (IOException e){
+				e.printStackTrace();
+			}
+			return "redirect:/mypage";
 		}
 	}
 
