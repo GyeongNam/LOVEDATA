@@ -6,6 +6,7 @@ import com.project.love_data.businessLogic.service.SearchType;
 import com.project.love_data.dto.LocationDTO;
 import com.project.love_data.dto.PageRequestDTO;
 import com.project.love_data.dto.PageResultDTO;
+import com.project.love_data.model.*;
 import com.project.love_data.model.resource.LocationImage;
 import com.project.love_data.model.service.Location;
 import com.project.love_data.model.service.LocationTag;
@@ -32,7 +33,7 @@ public class LocationTest {
     @Test
     public void InsertInitLocation() {
 //        Long user_no = (long) new Random().nextInt(4) + 1L;
-        Long user_no = 0L;
+        Long user_no = 3L;
 
         Location loc = Location.builder()
                 .loc_name("중부대학교 충청캠퍼스")
@@ -385,327 +386,327 @@ public class LocationTest {
         System.out.println("Location 저장 완료");
     }
 
-    @Test
-    public void InsertLocation() {
-        List<LocationTag> tagSet = new ArrayList<>();
-        tagSet.add(LocationTag.공원);
-        tagSet.add(LocationTag.학교);
-        tagSet.add(LocationTag.한옥);
-        tagSet.add(LocationTag.겨울);
-
-        for (int i = 0; i < 10; i++) {
-            String pad = StringUtils.leftPad(Integer.toString(i), 4, '0');
-            Location loc = Location.builder()
-                    .loc_name("Location_" + pad)
-                    .user_no((long) new Random().nextInt(4))
-                    .roadAddr("Addr_" + pad)
-                    .addrDetail("AddrDetail_" + pad)
-                    .siDo("siDo_" + pad)
-                    .siGunGu(pad)
-                    .info("This locaiton is Generated randomly " + pad)
-                    .loc_uuid("UUID_" + i)
-                    .tel("010-0000-00" + StringUtils.leftPad(Integer.toString(i), 2, '0'))
-                    .zipNo(String.valueOf(i))
-                    .build();
-
-            if (i % 2 == 0) {
-                loc.addLocTag(tagSet.get(0).toString());
-                loc.addLocTag(tagSet.get(2).toString());
-            } else {
-                loc.addLocTag(tagSet.get(1).toString());
-                loc.addLocTag(tagSet.get(3).toString());
-            }
-
-            locationRepository.save(loc);
-
-            LocationImage img = LocationImage.builder()
-                    .location(loc)
-                    .img_uuid("UUID_"+i)
-                    .user_no((long) i)
-                    .img_url("path/" + i)
-                    .build();
-
-            locationImageRepository.save(img);
-
-            loc.addImg(img);
-
-            if ("".equals(loc.getThumbnail())){
-                loc.setThumbnail(img.getImg_url());
-            }
-
-            locationRepository.save(loc);
-        }
-
-        Location loc = Location.builder()
-                .loc_name("Location_0001")
-                .user_no((long) new Random().nextInt(4))
-                .roadAddr("Addr_0001")
-                .addrDetail("AddrDetail_0001")
-                .siDo("siDo_0001")
-                .siGunGu("0001")
-                .info("This locaiton is Generated randomly duplicated")
-                .loc_uuid("UUID_0010")
-                .tel("010-0000-0001")
-                .zipNo("00000")
-                .build();
-
-        loc.addLocTag(String.valueOf(tagSet.get(0)));
-        loc.addLocTag(String.valueOf(tagSet.get(2)));
-
-        locationRepository.save(loc);
-
-        System.out.println("Location 저장 완료");
-    }
-
-    @Test
-    public void testLocTag_Read() {
-        Optional<Location> loc = locationRepository.findLocByLoc_no(1L);
-
-        Location temp = loc.get();
-
-        System.out.println(temp);
-        System.out.println(temp.getImgSet());
-    }
-
-    @Test
-    public void testLocName_Read() {
-        List<Location> list = locationRepository.findAllByName("중부대학교");
-
-        for (Location location : list) {
-            System.out.println("location = " + location);
-            System.out.println(location.getImgSet());
-        }
-    }
-
-    @Test
-    public void testLoc_Update() {
-        Optional<Location> loc = locationRepository.findLocByUUID("UUID_0");
-
-        Location temp = loc.get();
-
-        System.out.println("temp = " + temp);
-        System.out.println(temp.getImgSet());
-
-        temp.setLoc_name("Updated Loc_0");
-        temp.setInfo("Updated Location Info");
-        LocationImage img = LocationImage.builder()
-                .img_url("Path/10")
-                .img_uuid("UUID_0010.png")
-                .user_no(0L)
-                .location(temp)
-                .build();
-
-        locationImageRepository.save(img);
-
-        temp.addImg(img);
-
-        locationRepository.save(temp);
-
-        Optional<Location> box = locationRepository.findLocByUUID(temp.getLoc_uuid());
-        System.out.println(box.get());
-        System.out.println(box.get().getImgSet());
-    }
-
-    @Test
-    public void testLocUUID_Read() {
-        Optional<Location> item = locationRepository.findLocByUUID("095f0735-3290-4b91-8f4b-d191ef40d8ca");
-
-        System.out.println("item = " + item.get());
-        System.out.println(item.get().getImgSet());
-    }
-
-    @Test
-    public void testLocAddr_Read() {
-        List<com.project.love_data.model.service.Location> list = locationRepository.findByRoadAddrContaining("Addr");
-
-        for (com.project.love_data.model.service.Location location : list) {
-            System.out.println("location = " + location);
-        }
-
-        System.out.println("\n\n-------------------------\n\n");
-
-        list = locationRepository.findAllByRoadAddrAndAddrDetail("Addr_000", "AddrDetail_0000");
-
-        for (com.project.love_data.model.service.Location location : list) {
-            System.out.println("location = " + location);
-        }
-    }
-
-    @Test
-    public void testLocContaining() {
-        List<com.project.love_data.model.service.Location> list = locService.locationNameSearch("Loc", MatchOption.CONTAIN);
-        int i = 0;
-
-        for (com.project.love_data.model.service.Location location : list) {
-            System.out.println("location " + (++i) + " = " + location);
-        }
-    }
-
-    @Test
-    public void testList() {
-        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
-                .page(1)
-                .size(4)
-                .build();
-
-        PageResultDTO<LocationDTO, com.project.love_data.model.service.Location> resultDTO = locService.getList(pageRequestDTO);
-
-        System.out.println("PREV = " + resultDTO.isPrev());
-        System.out.println("NEXT = " + resultDTO.isNext());
-        System.out.println("TOTAL : " + resultDTO.getTotalPage());
-
-        System.out.println("-------------------------------------------------");
-        for (LocationDTO locationDTO : resultDTO.getDtoList()) {
-            System.out.println(locationDTO.getLoc_no() + "\tlocationDTO = " + locationDTO);
-        }
-
-        System.out.println("=================================================");
-        List<Integer> temp = resultDTO.getPageList();
-        resultDTO.getPageList().forEach(i -> System.out.println(i));
-    }
-
-    @Test
-    public void undeleteByID() {
-        long id = 1L;
-
-        Location loc = locService.selectLoc(id);
-
-        if (loc == null ) {
-            System.out.println("선택한 ID를 가진 장소가 없습니다.");
-            return;
-        }
-
-        locService.rollback(loc.getLoc_no());
-
-        loc = locService.selectLoc(loc.getLoc_no());
-
-        if (loc.is_deleted()) {
-            System.out.println("롤백 실패");
-        } else {
-            System.out.println("롤백 성공");
-        }
-    }
-
-    @Test
-    public void deleteByID() {
-        long id = 2L;
-
-        Optional<Location> box = locationRepository.findById(id);
-
-        if (!box.isPresent()){
-            System.out.println("데이터가 없습니다.");
-            return;
-        }
-
-        Location loc = box.get();
-
-        System.out.println("삭제 전 데이터");
-        System.out.println(loc);
-
-        locService.delete(loc.getLoc_no());
-
-        box = locationRepository.findById(id);
-
-        if (box.get().is_deleted()) {
-            System.out.println("삭제 성공");
-        } else {
-            System.out.println("삭제 실패");
-        }
-
-        List<Location> list = locationRepository.findAll();
-
-        for (Location location : list) {
-            System.out.println("location = " + location);
-            System.out.println(location.getImgSet());
-        }
-    }
-
-    @Test
-    public void deleteByUUID() {
-//        locationRepository.deleteByLoc_uuid("UUID_0");
-        String uuid = "UUID_0";
-
-        Optional<Location> box = locationRepository.findLocByUUID(uuid);
-
-        if (!box.isPresent()){
-            System.out.println("데이터가 없습니다.");
-           return;
-        }
-
-        Location loc = box.get();
-
-        System.out.println("삭제 전 데이터");
-        System.out.println(loc);
-
-        locService.delete(loc.getLoc_uuid());
-
-        box = locationRepository.findLocByUUID(uuid);
-
-        if (box.get().is_deleted()) {
-            System.out.println("삭제 성공");
-        } else {
-            System.out.println("삭제 실패");
-        }
-
-        List<Location> list = locationRepository.findAll();
-
-        for (Location location : list) {
-            System.out.println("location = " + location);
-            System.out.println(location.getImgSet());
-        }
-    }
-
-    @Test
-    public void nameSearchTest() {
-        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
-                .page(1)
-                .size(4)
-                .searchType(SearchType.TITLE)
-                .keyword("중부대")
-                .build();
-
-        PageResultDTO<LocationDTO, com.project.love_data.model.service.Location> resultDTO = locService.getList(pageRequestDTO);
-
-        System.out.println("PREV = " + resultDTO.isPrev());
-        System.out.println("NEXT = " + resultDTO.isNext());
-        System.out.println("TOTAL : " + resultDTO.getTotalPage());
-
-        System.out.println("-------------------------------------------------");
-        for (LocationDTO locationDTO : resultDTO.getDtoList()) {
-            System.out.println(locationDTO.getLoc_no() + "\tlocationDTO = " + locationDTO);
-        }
-
-        System.out.println("=================================================");
-        List<Integer> temp = resultDTO.getPageList();
-        resultDTO.getPageList().forEach(i -> System.out.println(i));
-    }
-
-    @Test
-    public void tagSearchTest() {
-        List<String> tagList = new ArrayList<>();
-        tagList.add(LocationTag.야외.name());
-        tagList.add(LocationTag.숲.name());
-
-        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
-                .page(1)
-                .size(4)
-                .searchType(SearchType.TAG)
-                .tagList(tagList)
-                .build();
-
-        PageResultDTO<LocationDTO, com.project.love_data.model.service.Location> resultDTO = locService.getList(pageRequestDTO);
-
-        System.out.println("PREV = " + resultDTO.isPrev());
-        System.out.println("NEXT = " + resultDTO.isNext());
-        System.out.println("TOTAL : " + resultDTO.getTotalPage());
-
-        System.out.println("-------------------------------------------------");
-        for (LocationDTO locationDTO : resultDTO.getDtoList()) {
-            System.out.println(locationDTO.getLoc_no() + "\tlocationDTO = " + locationDTO);
-        }
-
-        System.out.println("=================================================");
-        List<Integer> temp = resultDTO.getPageList();
-        resultDTO.getPageList().forEach(i -> System.out.println(i));
-    }
+//    @Test
+//    public void InsertLocation() {
+//        List<LocationTag> tagSet = new ArrayList<>();
+//        tagSet.add(LocationTag.공원);
+//        tagSet.add(LocationTag.학교);
+//        tagSet.add(LocationTag.한옥);
+//        tagSet.add(LocationTag.겨울);
+//
+//        for (int i = 0; i < 10; i++) {
+//            String pad = StringUtils.leftPad(Integer.toString(i), 4, '0');
+//            Location loc = Location.builder()
+//                    .loc_name("Location_" + pad)
+//                    .user_no((long) new Random().nextInt(4))
+//                    .roadAddr("Addr_" + pad)
+//                    .addrDetail("AddrDetail_" + pad)
+//                    .siDo("siDo_" + pad)
+//                    .siGunGu(pad)
+//                    .info("This locaiton is Generated randomly " + pad)
+//                    .loc_uuid("UUID_" + i)
+//                    .tel("010-0000-00" + StringUtils.leftPad(Integer.toString(i), 2, '0'))
+//                    .zipNo(String.valueOf(i))
+//                    .build();
+//
+//            if (i % 2 == 0) {
+//                loc.addLocTag(tagSet.get(0).toString());
+//                loc.addLocTag(tagSet.get(2).toString());
+//            } else {
+//                loc.addLocTag(tagSet.get(1).toString());
+//                loc.addLocTag(tagSet.get(3).toString());
+//            }
+//
+//            locationRepository.save(loc);
+//
+//            LocationImage img = LocationImage.builder()
+//                    .location(loc)
+//                    .img_uuid("UUID_"+i)
+//                    .user_no((long) i)
+//                    .img_url("path/" + i)
+//                    .build();
+//
+//            locationImageRepository.save(img);
+//
+//            loc.addImg(img);
+//
+//            if ("".equals(loc.getThumbnail())){
+//                loc.setThumbnail(img.getImg_url());
+//            }
+//
+//            locationRepository.save(loc);
+//        }
+//
+//        Location loc = Location.builder()
+//                .loc_name("Location_0001")
+//                .user_no((long) new Random().nextInt(4))
+//                .roadAddr("Addr_0001")
+//                .addrDetail("AddrDetail_0001")
+//                .siDo("siDo_0001")
+//                .siGunGu("0001")
+//                .info("This locaiton is Generated randomly duplicated")
+//                .loc_uuid("UUID_0010")
+//                .tel("010-0000-0001")
+//                .zipNo("00000")
+//                .build();
+//
+//        loc.addLocTag(String.valueOf(tagSet.get(0)));
+//        loc.addLocTag(String.valueOf(tagSet.get(2)));
+//
+//        locationRepository.save(loc);
+//
+//        System.out.println("Location 저장 완료");
+//    }
+//
+//    @Test
+//    public void testLocTag_Read() {
+//        Optional<Location> loc = locationRepository.findLocByLoc_no(1L);
+//
+//        Location temp = loc.get();
+//
+//        System.out.println(temp);
+//        System.out.println(temp.getImgSet());
+//    }
+//
+//    @Test
+//    public void testLocName_Read() {
+//        List<Location> list = locationRepository.findAllByName("중부대학교");
+//
+//        for (Location location : list) {
+//            System.out.println("location = " + location);
+//            System.out.println(location.getImgSet());
+//        }
+//    }
+//
+//    @Test
+//    public void testLoc_Update() {
+//        Optional<Location> loc = locationRepository.findLocByUUID("UUID_0");
+//
+//        Location temp = loc.get();
+//
+//        System.out.println("temp = " + temp);
+//        System.out.println(temp.getImgSet());
+//
+//        temp.setLoc_name("Updated Loc_0");
+//        temp.setInfo("Updated Location Info");
+//        LocationImage img = LocationImage.builder()
+//                .img_url("Path/10")
+//                .img_uuid("UUID_0010.png")
+//                .user_no(0L)
+//                .location(temp)
+//                .build();
+//
+//        locationImageRepository.save(img);
+//
+//        temp.addImg(img);
+//
+//        locationRepository.save(temp);
+//
+//        Optional<Location> box = locationRepository.findLocByUUID(temp.getLoc_uuid());
+//        System.out.println(box.get());
+//        System.out.println(box.get().getImgSet());
+//    }
+//
+//    @Test
+//    public void testLocUUID_Read() {
+//        Optional<Location> item = locationRepository.findLocByUUID("095f0735-3290-4b91-8f4b-d191ef40d8ca");
+//
+//        System.out.println("item = " + item.get());
+//        System.out.println(item.get().getImgSet());
+//    }
+//
+//    @Test
+//    public void testLocAddr_Read() {
+//        List<com.project.love_data.model.service.Location> list = locationRepository.findByRoadAddrContaining("Addr");
+//
+//        for (com.project.love_data.model.service.Location location : list) {
+//            System.out.println("location = " + location);
+//        }
+//
+//        System.out.println("\n\n-------------------------\n\n");
+//
+//        list = locationRepository.findAllByRoadAddrAndAddrDetail("Addr_000", "AddrDetail_0000");
+//
+//        for (com.project.love_data.model.service.Location location : list) {
+//            System.out.println("location = " + location);
+//        }
+//    }
+//
+//    @Test
+//    public void testLocContaining() {
+//        List<com.project.love_data.model.service.Location> list = locService.locationNameSearch("Loc", MatchOption.CONTAIN);
+//        int i = 0;
+//
+//        for (com.project.love_data.model.service.Location location : list) {
+//            System.out.println("location " + (++i) + " = " + location);
+//        }
+//    }
+//
+//    @Test
+//    public void testList() {
+//        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+//                .page(1)
+//                .size(4)
+//                .build();
+//
+//        PageResultDTO<LocationDTO, com.project.love_data.model.service.Location> resultDTO = locService.getList(pageRequestDTO);
+//
+//        System.out.println("PREV = " + resultDTO.isPrev());
+//        System.out.println("NEXT = " + resultDTO.isNext());
+//        System.out.println("TOTAL : " + resultDTO.getTotalPage());
+//
+//        System.out.println("-------------------------------------------------");
+//        for (LocationDTO locationDTO : resultDTO.getDtoList()) {
+//            System.out.println(locationDTO.getLoc_no() + "\tlocationDTO = " + locationDTO);
+//        }
+//
+//        System.out.println("=================================================");
+//        List<Integer> temp = resultDTO.getPageList();
+//        resultDTO.getPageList().forEach(i -> System.out.println(i));
+//    }
+//
+//    @Test
+//    public void undeleteByID() {
+//        long id = 1L;
+//
+//        Location loc = locService.selectLoc(id);
+//
+//        if (loc == null ) {
+//            System.out.println("선택한 ID를 가진 장소가 없습니다.");
+//            return;
+//        }
+//
+//        locService.rollback(loc.getLoc_no());
+//
+//        loc = locService.selectLoc(loc.getLoc_no());
+//
+//        if (loc.is_deleted()) {
+//            System.out.println("롤백 실패");
+//        } else {
+//            System.out.println("롤백 성공");
+//        }
+//    }
+//
+//    @Test
+//    public void deleteByID() {
+//        long id = 2L;
+//
+//        Optional<Location> box = locationRepository.findById(id);
+//
+//        if (!box.isPresent()){
+//            System.out.println("데이터가 없습니다.");
+//            return;
+//        }
+//
+//        Location loc = box.get();
+//
+//        System.out.println("삭제 전 데이터");
+//        System.out.println(loc);
+//
+//        locService.delete(loc.getLoc_no());
+//
+//        box = locationRepository.findById(id);
+//
+//        if (box.get().is_deleted()) {
+//            System.out.println("삭제 성공");
+//        } else {
+//            System.out.println("삭제 실패");
+//        }
+//
+//        List<Location> list = locationRepository.findAll();
+//
+//        for (Location location : list) {
+//            System.out.println("location = " + location);
+//            System.out.println(location.getImgSet());
+//        }
+//    }
+//
+//    @Test
+//    public void deleteByUUID() {
+////        locationRepository.deleteByLoc_uuid("UUID_0");
+//        String uuid = "UUID_0";
+//
+//        Optional<Location> box = locationRepository.findLocByUUID(uuid);
+//
+//        if (!box.isPresent()){
+//            System.out.println("데이터가 없습니다.");
+//           return;
+//        }
+//
+//        Location loc = box.get();
+//
+//        System.out.println("삭제 전 데이터");
+//        System.out.println(loc);
+//
+//        locService.delete(loc.getLoc_uuid());
+//
+//        box = locationRepository.findLocByUUID(uuid);
+//
+//        if (box.get().is_deleted()) {
+//            System.out.println("삭제 성공");
+//        } else {
+//            System.out.println("삭제 실패");
+//        }
+//
+//        List<Location> list = locationRepository.findAll();
+//
+//        for (Location location : list) {
+//            System.out.println("location = " + location);
+//            System.out.println(location.getImgSet());
+//        }
+//    }
+//
+//    @Test
+//    public void nameSearchTest() {
+//        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+//                .page(1)
+//                .size(4)
+//                .searchType(SearchType.TITLE)
+//                .keyword("중부대")
+//                .build();
+//
+//        PageResultDTO<LocationDTO, com.project.love_data.model.service.Location> resultDTO = locService.getList(pageRequestDTO);
+//
+//        System.out.println("PREV = " + resultDTO.isPrev());
+//        System.out.println("NEXT = " + resultDTO.isNext());
+//        System.out.println("TOTAL : " + resultDTO.getTotalPage());
+//
+//        System.out.println("-------------------------------------------------");
+//        for (LocationDTO locationDTO : resultDTO.getDtoList()) {
+//            System.out.println(locationDTO.getLoc_no() + "\tlocationDTO = " + locationDTO);
+//        }
+//
+//        System.out.println("=================================================");
+//        List<Integer> temp = resultDTO.getPageList();
+//        resultDTO.getPageList().forEach(i -> System.out.println(i));
+//    }
+//
+//    @Test
+//    public void tagSearchTest() {
+//        List<String> tagList = new ArrayList<>();
+//        tagList.add(LocationTag.야외.name());
+//        tagList.add(LocationTag.숲.name());
+//
+//        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+//                .page(1)
+//                .size(4)
+//                .searchType(SearchType.TAG)
+//                .tagList(tagList)
+//                .build();
+//
+//        PageResultDTO<LocationDTO, com.project.love_data.model.service.Location> resultDTO = locService.getList(pageRequestDTO);
+//
+//        System.out.println("PREV = " + resultDTO.isPrev());
+//        System.out.println("NEXT = " + resultDTO.isNext());
+//        System.out.println("TOTAL : " + resultDTO.getTotalPage());
+//
+//        System.out.println("-------------------------------------------------");
+//        for (LocationDTO locationDTO : resultDTO.getDtoList()) {
+//            System.out.println(locationDTO.getLoc_no() + "\tlocationDTO = " + locationDTO);
+//        }
+//
+//        System.out.println("=================================================");
+//        List<Integer> temp = resultDTO.getPageList();
+//        resultDTO.getPageList().forEach(i -> System.out.println(i));
+//    }
 }

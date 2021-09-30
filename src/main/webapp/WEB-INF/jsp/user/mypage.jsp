@@ -21,11 +21,11 @@
 		<button id="hd-btn" class="dropbtn" onclick="gohome()">홈으로 돌아가기</button>
 	</sec:authorize>
 	<sec:authorize access="isAuthenticated()">
-<%--<form class="mypageform" action="/user/mypage" method="post">--%>
 <div id="jb-container">
 	<div id="jb-header">
 		<h1>마이페이지</h1>
 	</div>
+
 	<div id="jb-sidebar">
 		<div class="tab">
 			<div>
@@ -64,6 +64,7 @@
 		</div>
 	</div>
 	<div id="jb-content">
+		<form action="/mypage_update" method="post" enctype="multipart/form-data">
 		<div id="Myinfo" class="tabcontent">
 			<h3>내 정보</h3>
 			<table>
@@ -85,7 +86,7 @@
 								<div id="preview"></div>
 								<div class="file-edit-icon">
 									<input type="file" name="file" id="file" class="upload-box upload-plus"
-										   accept="image/*">
+										   accept="image/*" onchange="setmyimg(event);">
 									<button id="img-edit" class="preview-edit">수정</button>
 									<button id="img-del" class="preview-de">삭제</button>
 								</div>
@@ -103,23 +104,6 @@
 				<tr>
 					<td>이메일</td>
 					<td id="sec_line"><span>${UserDTO.user_email}</span></td>
-				</tr>
-				<tr>
-					<td>기존 비밀번호 *</td>
-					<td id="sec_line"><input type="password"  value=""></td>
-				</tr>
-				<tr>
-					<td>새 비밀번호 *</td>
-					<td id="sec_line"><input type="password" name="newPwd" id="pwd1" onKeyup="chkpw()" value="<%= request.getAttribute("pwd")  == null ? "" :  request.getAttribute("pwd")%>" class="form-control"  required>
-						<spen class="spen" id=pwd_rule>영문 대소문자/숫자/특수문자 중 2가지 이상 조합, 10자~16자.</spen>
-						<a href="/NewPassword/${UserDTO.user_pw}">비밀번호변경</a>
-					</td>
-				</tr>
-				<tr>
-					<td>새 비밀번호 확인 *</td>
-					<td id="sec_line"><input name="npk" type="password" id="NewPasswordre"  onKeyup="repasswordcheck()">
-						<spen class="spen" id="password_check"></spen>
-					</td>
 				</tr>
 				<tr>
 					<td>휴대폰 번호 *</td>
@@ -173,7 +157,22 @@
 <%--	</div>--%>
 </div>
 </sec:authorize>
-<%--</form>--%>
+</form>
+	<script>
+		function setmyimg(event) {
+			for (var image of event.target.files) {
+				var reader = new FileReader();
+				reader.onload = function(event) {
+					var img = document.createElement("img");
+					img.setAttribute("src", event.target.result);
+					document.querySelector("div#preview").appendChild(img);
+				};
+				console.log(image);
+				reader.readAsDataURL(image);
+			}
+		}
+	</script>
+
 </body>
 <!--   부트스트랩 js 사용  -->
 <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

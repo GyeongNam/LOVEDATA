@@ -22,6 +22,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,6 +34,9 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.project.love_data.util.ConstantValues.MAX_UPLOAD_COUNT;
+import static com.project.love_data.util.ConstantValues.MIN_UPLOAD_COUNT;
 
 @Log4j2
 @Controller
@@ -171,6 +176,26 @@ public class UserController {
 
 		redirectURL = accountDelete.execute(request, principal, userRepository);
 		return redirectURL;
+	}
+
+//mypage updata page
+	@RequestMapping("/mypage_update")
+	public String mypagedatachange(@RequestParam("files")List<MultipartFile> fileList, HttpServletRequest request,
+								   RedirectAttributes redirectAttributes, Model model, Principal principal) {
+		if (principal == null) {
+			return "redirect:/login";
+		} else {
+			UserDTO userDTO = userService.DTOselect(principal.getName());
+			model.addAttribute("UserDTO", userDTO);
+
+			List<String> filePath = null;
+			Map<String, String> mypgup = new HashMap<>();
+
+//			filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE,
+//					UploadFileCount.MULTIPLE, MIN_UPLOAD_COUNT, MAX_UPLOAD_COUNT, request);
+
+			return "user/mypage";
+		}
 	}
 
 	//CHOI
