@@ -95,7 +95,7 @@
                     <c:forEach var="img" items="${qu_img}">
                         <img class="bd-placeholder-img card-img" width="100%"
                              height="400"
-                             src="/image/upload/${img.qu_img_url}"
+                             src="/image/qna/${img.qu_img_url}"
                              id="imgDisplay"
                              name="imgDisplay"
                              preserveAspectRatio="xMidYMid slice" focusable="false">

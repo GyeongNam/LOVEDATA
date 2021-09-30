@@ -93,7 +93,7 @@
 								</div>
 								<div class="file-edit-icon">
 									<input type="file" name="file" id="file" class="upload-box upload-plus" accept="image/*" onchange="setmyimg(event);"/>
-									<button id="img-del" class="preview-de" onclick="location.href='/mypropicdel';">삭제</button>
+									<button id="img-del" type="button" class="preview-de" onclick="picdel()">삭제</button>
 								</div>
 							</div>
 						</div>

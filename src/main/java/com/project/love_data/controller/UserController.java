@@ -207,26 +207,25 @@ public class UserController {
 			}
 
 			userService.update(user);
-			UserDTO userDTO = userService.DTOselect(principal.getName());
-			model.addAttribute("UserDTO", userDTO);
+//			UserDTO userDTO = userService.DTOselect(principal.getName());
+//			model.addAttribute("UserDTO", userDTO);
 
 
 			return "redirect:/mypage";
 		}
 	}
-
-	@GetMapping(value = "/mypropicdel")
-	public String  mypropicdele(Principal principal, Model model, HttpServletRequest request) {
+	@ResponseBody
+	@PostMapping(value = "/mypropicdel")
+	public Map<String, String>  mypropicdele(Principal principal, Model model, HttpServletRequest request) {
+		Map<String, String> map = new HashMap<String, String>();
 		if (principal == null) {
-			return "redirect:/login";
+			map.put("msg","1");
 		} else {
 			User user = userService.select(principal.getName());
-			user.setProfile_pic("/image/icon/user/user.png");
-			userService.update(user);
-			model.addAttribute("UserDTO", user);
 			log.info("여기와요프로필삭제");
 			try{
 				String imageFile = user.getProfile_pic();
+				log.info("여기와요 :"+ imageFile);
 				if(!imageFile.equals("/image/icon/user/user.png")){
 					String r = request.getSession().getServletContext().getRealPath("/");
 					int idx =  r.indexOf("main");
@@ -241,8 +240,12 @@ public class UserController {
 			catch (IOException e){
 				e.printStackTrace();
 			}
-			return "redirect:/mypage";
+			user.setProfile_pic("/image/icon/user/user.png");
+			userService.update(user);
+
+			map.put("msg","0");
 		}
+		return map;
 	}
 
 	//CHOI
