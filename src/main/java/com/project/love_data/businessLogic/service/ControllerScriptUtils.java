@@ -44,6 +44,7 @@ public class ControllerScriptUtils {
         out.println("<script>alert('" + alertText + "'); window.close();</script>");
         out.flush();
     }
+
     public void Nextpage(HttpServletResponse response, String Nextpage) throws IOException {
         init(response);
         PrintWriter out = response.getWriter();

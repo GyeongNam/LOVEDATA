@@ -148,7 +148,7 @@
 					if( true ) return;
 				%>
 			</sec:authorize>
-			<sec:authorize access="hasRole('USER')">
+			<sec:authorize access="hasRole('USER') and !hasRole('ADMIN')">
 				<span>현재 페이지는 삭제되었습니다.</span>
 				<%
 					if( true ) return;
@@ -278,6 +278,32 @@
 					<button class="btn btn-outline-danger col-3" style="max-height: 56px" data-bs-toggle="modal" data-bs-target="#exampleModal">모달창 열기</button>
 					<button class="btn btn-outline-danger col-3" style="max-height: 56px" onclick="openReviewRegisterPopup()">리뷰 팝업 열기</button>
 				</div>
+				<sec:authorize access="isAuthenticated()">
+					<%--						<span><sec:authentication property="principal.user_no"></sec:authentication></span>--%>
+					<c:set var="currUserNo"><sec:authentication property="principal.user_no"></sec:authentication></c:set>
+					<c:choose>
+						<c:when test="${dto.user_no ne currUserNo}">
+							<sec:authorize access="hasRole('ADMIN')">
+								<img src="/image/icon/trash.png" class="loc_icon_big me-2" alt="장소 삭제"
+									 onclick="onClickRemoveCourse()">
+								<img src="/image/icon/rollback.png" class="loc_icon_big me-2" alt="장소 복원"
+									 onclick="onClickRollbackCourse()">
+							</sec:authorize>
+							<sec:authorize access="hasRole('USER')">
+								<img src="/image/icon/trash.png" class="loc_icon_big me-2" alt="장소 삭제"
+									 onclick="onClickRemoveCourse()">
+							</sec:authorize>
+						</c:when>
+						<c:otherwise>
+							<sec:authorize access="hasRole('ADMIN')">
+								<img src="/image/icon/trash.png" class="loc_icon_big me-2" alt="장소 삭제"
+									 onclick="onClickRemoveCourse()">
+								<img src="/image/icon/rollback.png" class="loc_icon_big me-2" alt="장소 복원"
+									 onclick="onClickRollbackCourse()">
+							</sec:authorize>
+						</c:otherwise>
+					</c:choose>
+				</sec:authorize>
 				<span class="d-none" id="cor_no">${dto.cor_no}</span>
 			</div>
 		</div>
@@ -1262,6 +1288,43 @@
         document.body.appendChild(form);
         form.submit();
 	}
+</script>
+<script>
+    function onClickRemoveCourse() {
+        if (!window.confirm("코스를 삭제하시겠습니까?")) {
+            return;
+        }
+
+        let param = location.search;
+
+        console.log(param);
+        console.log('/service/cor_delete' + param);
+
+        let form;
+        form = document.createElement("form");
+        form.method = "post";
+        form.action= "/service/cor_delete" + param;
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    function onClickRollbackCourse() {
+        alert('코스를 복원하시겠습니까?');
+
+        let param = location.search;
+
+        console.log(param);
+        console.log('/service/cor_rollback' + param);
+
+        let form;
+        form = document.createElement("form");
+        form.method = "post";
+        form.action= "/service/cor_rollback" + param;
+
+        document.body.appendChild(form);
+        form.submit();
+    }
 </script>
 </body>
 <%--<%@ include file="../layout/footer.jsp" %>--%>

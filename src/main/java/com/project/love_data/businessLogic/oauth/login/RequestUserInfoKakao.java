@@ -44,54 +44,62 @@ public class RequestUserInfoKakao{
 
             userInfo.setId(JsonParser.parseString(text).getAsJsonObject().get("id").getAsString());
 
-            if (JsonParser.parseString(text).getAsJsonObject().get("connected_at").getAsString() != null &&
+//            if (!properties.getAsJsonObject().has("connected_at") | properties..getAsString().equals("")){
+//
+//            }
+
+            if (JsonParser.parseString(text).getAsJsonObject().has("connected_at") &&
                     !(JsonParser.parseString(text).getAsJsonObject().get("connected_at").getAsString().equals(""))){
                 userInfo.setConnected_at(JsonParser.parseString(text).getAsJsonObject().get("connected_at").getAsString());
             } else {
                 userInfo.setConnected_at("");
             }
 
-            if (properties.getAsJsonObject().get("nickname").getAsString() != null &&
+            if (properties.getAsJsonObject().has("nickname") &&
                     !properties.getAsJsonObject().get("nickname").getAsString().equals("")){
                 userInfo.setNickname(properties.getAsJsonObject().get("nickname").getAsString());
             } else {
                 userInfo.setNickname("");
             }
 
-            if (properties.getAsJsonObject().get("profile_image").getAsString() != null &&
+            if (properties.getAsJsonObject().has("profile_image") &&
                     !properties.getAsJsonObject().get("nickname").getAsString().equals("")){
                 userInfo.setProfile_image_url(properties.getAsJsonObject().get("profile_image").getAsString());
             } else {
                 userInfo.setProfile_image_url("");
             }
 
-            if (properties.getAsJsonObject().get("thumbnail_image").getAsString() != null &&
+            if (properties.getAsJsonObject().has("thumbnail_image") &&
                     !properties.getAsJsonObject().get("thumbnail_image").getAsString().equals("")){
                 userInfo.setThumbnail_image_url(properties.getAsJsonObject().get("thumbnail_image").getAsString());
             } else {
                 userInfo.setThumbnail_image_url("");
             }
 
-            if (kakao_account.getAsJsonObject().get("has_email") != null && !kakao_account.getAsJsonObject().get("has_email").getAsBoolean()){
+            if (kakao_account.getAsJsonObject().has("has_email") &&
+                    !kakao_account.getAsJsonObject().get("has_email").getAsBoolean()){
                 userInfo.setHas_email(kakao_account.getAsJsonObject().get("has_email").getAsBoolean());
             } else {
                 userInfo.setHas_email(false);
             }
 
-            if (kakao_account.getAsJsonObject().get("is_email_valid") != null && !kakao_account.getAsJsonObject().get("is_email_valid").getAsBoolean()){
+            if (kakao_account.getAsJsonObject().has("is_email_valid") &&
+                    !kakao_account.getAsJsonObject().get("is_email_valid").getAsBoolean()){
                 userInfo.setIs_email_valid(kakao_account.getAsJsonObject().get("is_email_valid").getAsBoolean());
             } else {
                 userInfo.setHas_email(false);
             }
 
-            if (kakao_account.getAsJsonObject().get("is_email_verified") != null && !kakao_account.getAsJsonObject().get("is_email_verified").getAsBoolean()){
+            if (kakao_account.getAsJsonObject().has("is_email_verified") &&
+                    !kakao_account.getAsJsonObject().get("is_email_verified").getAsBoolean()){
                 userInfo.setIs_email_verified(kakao_account.getAsJsonObject().get("is_email_verified").getAsBoolean());
             } else {
                 userInfo.setIs_email_verified(false);
             }
 
-            if (kakao_account.getAsJsonObject().get("email").getAsString() != null && !kakao_account.getAsJsonObject().get("email").getAsString().equals("")){
-                userInfo.setEmail(kakao_account.getAsJsonObject().get("email").getAsString());
+            if (kakao_account.getAsJsonObject().has("email") &&
+                    !kakao_account.getAsJsonObject().get("email").getAsString().equals("")){
+                userInfo.setEmail(kakao_account.getAsJsonObject().get("email").getAsString().trim());
             } else {
                 userInfo.setEmail("");
             }
@@ -103,8 +111,6 @@ public class RequestUserInfoKakao{
             log.info(e.getStackTrace());
         } catch (NullPointerException e) {
             log.info(e.getStackTrace());
-
-            return null;
         }
 
         return userInfo;
