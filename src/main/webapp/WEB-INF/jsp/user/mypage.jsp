@@ -101,7 +101,7 @@
 				</tr>
 				<tr>
 					<td>닉네임</td>
-					<td id="sec_line"><input type="text" id="newnic" value="${UserDTO.user_nic}">
+					<td id="sec_line"><input type="text" id="newnic" name="nic" value="${UserDTO.user_nic}">
 						<span id="newnic_check"></span>
 						<button type="button" onclick="nick_check()" id="NickName" name="nic_check">중복 확인</button>
 					</td>
@@ -121,11 +121,11 @@
 						<option value="018">018</option>
 					</select>
 						-
-						<input type="text" id="twonum"
+						<input type="text" id="twonum" name="second_num"
 							   oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
 							   maxlength="4"/>
 						-
-						<input type="text" id="lastnum"
+						<input type="text" id="lastnum" name="third_num"
 							   oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
 							   maxlength="4"/>
 					</td>
@@ -135,19 +135,19 @@
 					<td id="sec_line">
 						<input type="hidden" id="mybir" value="${UserDTO.user_birth}">
 						<input type="date" id="birthday" name="birthday"
-							   value="<sec:authentication property="principal.user_birth"/>" min="1930-01-01" max="2050-12-31" required>
+							   value="${UserDTO.user_birth}" min="1930-01-01" max="2050-12-31" required>
 					</td>
 				</tr>
 				<tr>
 					<td>성별</td>
 					<td id="sec_line">
-						<input type="hidden" id="jender" value="${UserDTO.user_sex}">
-						<input type="radio" id="mann" name="chk_gender" value="" >남자</input>
-						<input type="radio" id="womann" name="chk_gender" value="" >여자</input>
+						<input type="hidden" id="jender" name="gender" value="${UserDTO.user_sex}">
+						<input type="radio" id="mann" name="chk_gender" value="true" >남자</input>
+						<input type="radio" id="womann" name="chk_gender" value="false" >여자</input>
 					</td>
 				</tr>
 			</table>
-			<button type="submit">저장</button>
+			<button type="submit" onclick="submypage()">저장</button>
 		</div>
 		</form>
 	</div>
@@ -209,7 +209,7 @@
 				<td id="sec_line">
 					<input type="hidden" id="mybir" value="${UserDTO.user_birth}" >
 					<input type="date" id="birthday" name="birthday"
-						   value="<sec:authentication property="principal.user_birth"/>" min="1930-01-01" max="2050-12-31" required readonly>
+						   value="${UserDTO.user_birth}" min="1930-01-01" max="2050-12-31" required readonly>
 				</td>
 			</tr>
 			<tr>

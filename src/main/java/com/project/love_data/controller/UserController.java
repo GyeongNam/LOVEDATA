@@ -206,9 +206,25 @@ public class UserController {
 				user.setProfile_pic(filePath.get(0) + "/" + filePath.get(1));
 			}
 
+			request.getParameter("nic");
+			request.getParameter("first-phone-number");
+			request.getParameter("second_num");
+			request.getParameter("third_num");
+			request.getParameter("birthday");
+			request.getParameter("gender");
+
+			boolean gender;
+			if(request.getParameter("gender").equals("true")){
+				gender = true;
+			}else{
+				gender = false;
+			}
+
+			user.setUser_nic(request.getParameter("nic"));
+			user.setUser_phone(request.getParameter("first-phone-number") + request.getParameter("second_num") + request.getParameter("third_num"));
+			user.setUser_birth(request.getParameter("birthday"));
+			user.setUser_sex(gender);
 			userService.update(user);
-//			UserDTO userDTO = userService.DTOselect(principal.getName());
-//			model.addAttribute("UserDTO", userDTO);
 
 
 			return "redirect:/mypage";

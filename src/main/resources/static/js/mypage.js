@@ -1,3 +1,5 @@
+var mynick = false;
+
 //home로 돌아가기
 function gohome(){
     alert("홈 화면으로 돌아갑니다!");
@@ -178,18 +180,18 @@ function nick_check(){
             if(datas=="0"){
                 s_relult.css("color", "red");
                 s_relult.text("사용 중인 닉네임 입니다!");
-                mainnick = false;
+                mynick = false;
             }
             else {
                 if(nickname.val().search(/\s/) != -1 || nickname.val().length == 0){
                     s_relult.css("color", "red");
                     s_relult.text("닉네임을 입력해주세요");
-                    mainnick = false;
+                    mynick = false;
                 }
                 else {
                     s_relult.css("color", "green");
                     s_relult.text("사용 가능한 닉네임입니다.");
-                    mainnick = true;
+                    mynick = true;
                 }
             }
         },
@@ -222,4 +224,11 @@ function picdel(){
             console.log(datas);
         }
     });
+}
+
+function submypage(){
+    if(mynick == false){
+        alert("닉네임을 확인하세요");
+        return false;
+    }
 }
