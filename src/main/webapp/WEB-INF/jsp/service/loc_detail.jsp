@@ -77,7 +77,7 @@
 					if( true ) return;
 				%>
 			</sec:authorize>
-			<sec:authorize access="hasRole('USER')">
+			<sec:authorize access="hasRole('USER') and !hasRole('ADMIN')">
 				<span>현재 페이지는 삭제되었습니다.</span>
 				<%
 					if( true ) return;
@@ -196,9 +196,17 @@
 <%--						<span><sec:authentication property="principal.user_no"></sec:authentication></span>--%>
 					<c:set var="currUserNo"><sec:authentication property="principal.user_no"></sec:authentication></c:set>
 					<c:choose>
-						<c:when test="${dto.user_no eq currUserNo}">
-							<img src="/image/icon/trash.png" class="loc_icon_big me-2" alt="장소 삭제"
-							 onclick="onClickRemoveLocation()">
+						<c:when test="${dto.user_no ne currUserNo}">
+							<sec:authorize access="hasRole('ADMIN')">
+								<img src="/image/icon/trash.png" class="loc_icon_big me-2" alt="장소 삭제"
+									 onclick="onClickRemoveLocation()">
+								<img src="/image/icon/rollback.png" class="loc_icon_big me-2" alt="장소 복원"
+									 onclick="onClickRollbackLocation()">
+							</sec:authorize>
+							<sec:authorize access="hasRole('USER')">
+								<img src="/image/icon/trash.png" class="loc_icon_big me-2" alt="장소 삭제"
+									 onclick="onClickRemoveLocation()">
+							</sec:authorize>
 						</c:when>
 						<c:otherwise>
 							<sec:authorize access="hasRole('ADMIN')">

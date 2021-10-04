@@ -40,6 +40,16 @@ public interface CourseImageRepository extends JpaRepository<CourseImage, Long> 
     @Query(value = "SELECT * from cor_image i WHERE  i.img_uuid = :img_uuid", nativeQuery = true)
     Optional<CourseImage> findImageByImg_uuid(@Param("img_uuid") String img_uuid);
 
+    @Query(value = "SELECT * from cor_image i WHERE  i.img_no = (SELECT MAX(img_no) FROM cor_image WHERE cor_no = :cor_no AND img_idx = 0)", nativeQuery = true)
+    Optional<CourseImage> findThumbnailOnAllByCor_no(@Param("cor_no") Long cor_no);
+
+    @Query(value = "SELECT * from cor_image i WHERE  i.img_no " +
+            "= (SELECT MAX(img_no) FROM cor_image WHERE cor_no = :cor_no AND is_deleted = false AND img_idx = 0)", nativeQuery = true)
+    Optional<CourseImage> findThumbnailOnLiveByCor_no(@Param("cor_no") Long cor_no);
+
+    @Query(value = "SELECT * FROM cor_image WHERE cor_no = :cor_no AND img_no >= (SELECT max(img_no) from cor_image WHERE  cor_no = :cor_no AND img_idx = 0 AND is_deleted = true)", nativeQuery = true)
+    Optional<List<CourseImage>> findLastDeletedCourseImagesByCorNo(@Param("cor_no") Long cor_no);
+
     @Modifying
     @Query(value = "DELETE FROM cor_image  WHERE img_uuid = :img_uuid", nativeQuery = true)
     @Transactional

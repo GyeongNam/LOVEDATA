@@ -16,10 +16,10 @@ import java.nio.file.StandardCopyOption;
 @RequiredArgsConstructor
 @Log4j2
 public class FilePathChangeService {
-    public boolean execute(String uuid, UploadPathType pathType, FileExtension fileExtension) {
+    public boolean execute(String uuid, FileAction fileAction, UploadPathType pathType, FileExtension fileExtension) {
         String pathStr;
-        Path srcPath;
-        Path destPath;
+        Path resPath;
+        Path dumpPath;
         File srcFile;
         File destFile;
         String extension;
@@ -50,101 +50,114 @@ public class FilePathChangeService {
             pathStr = System.getProperty("user.dir");
             switch (pathType) {
                 case LOC:
-                    srcPath = Paths.get(pathStr + File.separator +
+                    resPath = Paths.get(pathStr + File.separator +
                             "src" + File.separator +
                             "main" + File.separator +
                             "resources" + File.separator +
                             "static" + File.separator +
                             "image" + File.separator +
-                            "location" + File.separator + uuid + extension);
+                            "location" + File.separator + uuid);
                     break;
                 case COR:
-                    srcPath = Paths.get(pathStr + File.separator +
+                    resPath = Paths.get(pathStr + File.separator +
                             "src" + File.separator +
                             "main" + File.separator +
                             "resources" + File.separator +
                             "static" + File.separator +
                             "image" + File.separator +
-                            "course" + File.separator + uuid + extension);
+                            "course" + File.separator + uuid);
                     break;
                 case REV:
-                    srcPath = Paths.get(pathStr + File.separator +
+                    resPath = Paths.get(pathStr + File.separator +
                             "src" + File.separator +
                             "main" + File.separator +
                             "resources" + File.separator +
                             "static" + File.separator +
                             "image" + File.separator +
-                            "review" + File.separator + uuid + extension);
+                            "review" + File.separator + uuid);
                     break;
                 case QNA:
-                    srcPath = Paths.get(pathStr + File.separator +
+                    resPath = Paths.get(pathStr + File.separator +
                             "src" + File.separator +
                             "main" + File.separator +
                             "resources" + File.separator +
                             "static" + File.separator +
                             "image" + File.separator +
-                            "qna" + File.separator + uuid + extension);
+                            "qna" + File.separator + uuid);
                     break;
                 case USER_PIC:
-                    srcPath = Paths.get(pathStr + File.separator +
+                    resPath = Paths.get(pathStr + File.separator +
                             "src" + File.separator +
                             "main" + File.separator +
                             "resources" + File.separator +
                             "static" + File.separator +
                             "image" + File.separator +
-                            "user_pic" + File.separator + uuid + extension);
+                            "user_pic" + File.separator + uuid);
                     break;
                 default:
                     return false;
             }
 
-            destPath = Paths.get(pathStr + File.separator +
+            dumpPath = Paths.get(pathStr + File.separator +
                     "src" + File.separator +
                     "main" + File.separator +
                     "resources" + File.separator +
                     "static" + File.separator +
                     "image" + File.separator +
-                    "upload" + File.separator + uuid + extension);
+                    "upload" + File.separator + uuid);
         } else {
             // 윈도우 이외의 OS에서 돌아갈 경우 /home/tomcat/LoveData-Storage에 위치로 지정
             pathStr = "/home/tomcat/LoveData-Storage";
             switch (pathType) {
                 case LOC:
-                    srcPath = Paths.get(pathStr + File.separator + "location" + File.separator + uuid + extension);
+                    resPath = Paths.get(pathStr + File.separator + "location" + File.separator + uuid);
                     break;
                 case COR:
-                    srcPath = Paths.get(pathStr + File.separator + "course" + File.separator + uuid + extension);
+                    resPath = Paths.get(pathStr + File.separator + "course" + File.separator + uuid);
                     break;
                 case REV:
-                    srcPath = Paths.get(pathStr + File.separator + "review" + File.separator + uuid + extension);
+                    resPath = Paths.get(pathStr + File.separator + "review" + File.separator + uuid);
                     break;
                 case QNA:
-                    srcPath = Paths.get(pathStr + File.separator + "qna" + File.separator + uuid + extension);
+                    resPath = Paths.get(pathStr + File.separator + "qna" + File.separator + uuid);
                     break;
                 case USER_PIC:
-                    srcPath = Paths.get(pathStr + File.separator + "user_pic" + File.separator + uuid + extension);
+                    resPath = Paths.get(pathStr + File.separator + "user_pic" + File.separator + uuid);
                     break;
                 default:
                     return false;
             }
 
-            destPath = Paths.get(pathStr + File.separator + "user_pic" + File.separator + uuid + extension);
+            dumpPath = Paths.get(pathStr + File.separator + "user_pic" + File.separator + uuid);
         }
 
-        if (!Files.exists(srcPath)) {
-            log.warn("There is no File");
-            return false;
-        } else {
-            try {
-//                Files.move(srcPath, destPath, StandardCopyOption.REPLACE_EXISTING);
-                srcFile = new File(srcPath.toString());
-                destFile = new File(destPath.toString());
-                FileUtils.moveFile(srcFile, destFile);
-                return true;
-            } catch (IOException e) {
-                log.warn(e.getStackTrace());
-                return false;
+//        if (!Files.exists(srcPath)) {
+//            log.warn("There is no File");
+//            return false;
+//        } else {
+//
+//        }
+
+        try {
+            switch (fileAction) {
+                case DELETE:
+                    //                Files.move(srcPath, destPath, StandardCopyOption.REPLACE_EXISTING);
+                    srcFile = new File(resPath.toString());
+                    destFile = new File(dumpPath.toString());
+                    FileUtils.moveFile(srcFile, destFile);
+                    return true;
+                case ROLLBACK:
+                default:
+                    //                Files.move(srcPath, destPath, StandardCopyOption.REPLACE_EXISTING);
+                    srcFile = new File(dumpPath.toString());
+                    destFile = new File(resPath.toString());
+                    FileUtils.moveFile(srcFile, destFile);
+                    return true;
             }
+        } catch (IOException e) {
+            log.warn(e.getCause());
+            log.warn(e.getMessage());
+            return false;
         }
     }
 
@@ -153,7 +166,7 @@ public class FilePathChangeService {
             return null;
         }
 
-        String[] ary = path.split(".");
+        String[] ary = path.split("\\.");
 
         return ary[ary.length-1];
     }

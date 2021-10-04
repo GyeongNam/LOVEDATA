@@ -1,13 +1,12 @@
 package com.project.love_data.businessLogic.service;
 
 import com.project.love_data.dto.CourseDTO;
+import com.project.love_data.dto.CourseImageDTO;
 import com.project.love_data.dto.PageRequestDTO;
 import com.project.love_data.dto.PageResultDTO;
 import com.project.love_data.model.resource.CourseImage;
-import com.project.love_data.model.resource.LocationImage;
 import com.project.love_data.model.service.CorLocMapper;
 import com.project.love_data.model.service.Course;
-import com.project.love_data.model.service.Location;
 import com.project.love_data.model.service.QCourse;
 import com.project.love_data.repository.CourseImageRepository;
 import com.project.love_data.repository.CourseRepository;
@@ -407,6 +406,13 @@ public class CourseService {
 
         if (!cor.is_deleted()) {
             disableCourse(cor);
+
+            List<CourseImage> list = new ArrayList<CourseImage>();
+            list = imgService.getLiveImagesByCorNo(cor.getCor_no());
+
+            for (CourseImage CourseImage : list) {
+                imgService.delete(CourseImage.getImg_no());
+            }
         }
     }
 
@@ -415,6 +421,17 @@ public class CourseService {
 
         if (cor.is_deleted()){
             enableCourse(cor);
+
+            List<CourseImage> list = new ArrayList<CourseImage>();
+            list = imgService.getLastDeletedCourseImageList(corNo);
+
+            if (list == null) {
+                return;
+            }
+
+            for (CourseImage CourseImage : list) {
+                imgService.rollback(CourseImage.getImg_no());
+            }
         }
     }
 
@@ -423,6 +440,13 @@ public class CourseService {
 
         if (cor.is_deleted()){
             enableCourse(cor);
+
+            List<CourseImage> list = new ArrayList<CourseImage>();
+            list = imgService.getLiveImagesByCorNo(cor.getCor_no());
+
+            for (CourseImage CourseImage : list) {
+                imgService.rollback(CourseImage.getImg_no());
+            }
         }
     }
 
@@ -516,5 +540,14 @@ public class CourseService {
         Optional<List<Course>> lists = repository.findByCor_nameContaining(sb.toString());
 
         return lists.orElse(null);
+    }
+
+    public void updateThumbnail(Long corNo) {
+        Course course = selectCor(corNo);
+        CourseImageDTO corImgDTO = imgService.entityToDTO(imgService.getCourseAllThumbnail(corNo));
+
+        course.setThumbnail(corImgDTO.getImg_url());
+
+        update(course);
     }
 }

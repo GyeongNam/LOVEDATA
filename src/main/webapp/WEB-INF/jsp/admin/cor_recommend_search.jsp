@@ -44,8 +44,8 @@
 					</div>
 					<div id="loc_collapse" class="collapse show" aria-labelledby="headingLoc" data-parent="#loc">
 						<div class="card-body center-pill">
-							<p><a href="/service/cor_recommend" class="highlight-selected-text-menu">- 추천 코스</a></p>
-							<p><a href="/service/cor_registration" class="highlight-not-selected-text-menu">- 코스 등록</a></p>
+							<p><a href="/admin/cor_recommend" class="highlight-selected-text-menu">- 추천 코스</a></p>
+							<p><a href="/admin/cor_registration" class="highlight-not-selected-text-menu">- 코스 등록</a></p>
 							<p><a href="" class="highlight-not-selected-text-menu">- 코스 편집</a></p>
 						</div>
 					</div>
@@ -105,7 +105,7 @@
 						</li>
 					</ul>
 					<%--					@Todo 인풋 값이 ""일 경우 버튼 활성화 x--%>
-					<%--					<form action="/service/loc_recommend/search" method="get">--%>
+					<%--					<form action="/admin/loc_recommend/search" method="get">--%>
 					<input type="text" placeholder="코스 검색" id="keyword" name="keyword"/>
 					<button class="btn btn-primary mx-2" type="button" id="searchBtn" onclick="onClickSearch_Course()">Search</button>
 					<%--					</form>--%>
@@ -272,7 +272,7 @@
 						<c:if test="${result.next eq true}">
 							<li class="page-item">
 								<a class="page-link"
-									<%--								   href="/service/cor_recommend/list?page=${result.start - 1}"--%>
+									<%--								   href="/admin/cor_recommend/list?page=${result.start - 1}"--%>
 								   href="/admin/cor_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&page=${result.start - 1}"
 								   aria-label="Previous">
 									<span aria-hidden="true">&laquo;</span>
@@ -284,13 +284,13 @@
 						<c:when test="${result.page eq j}">
 						<li class="page-item active">
 							<a class="page-link"
-								<%--							   href="/service/cor_recommend/list?page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>--%>
+								<%--							   href="/admin/cor_recommend/list?page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>--%>
 							   href="/admin/cor_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>
 							</c:when>
 							<c:otherwise>
 						<li class="page-item">
 							<a class="page-link"
-								<%--							   href="/service/cor_recommend/list?page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>--%>
+								<%--							   href="/admin/cor_recommend/list?page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>--%>
 							   href="/admin/cor_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&page=${result.pageList.get(j-1)}">
 									${result.pageList.get(j-1)}</a>
 							</c:otherwise>
@@ -300,7 +300,7 @@
 						<c:if test="${result.next eq true}">
 							<li class="page-item">
 								<a class="page-link"
-									<%--								   href="/service/cor_recommend/list?page=${result.end + 1}"--%>
+									<%--								   href="/admin/cor_recommend/list?page=${result.end + 1}"--%>
 								   href="/admin/cor_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&page=${result.end + 1}">
 									aria-label="Previous">
 									<span aria-hidden="true">&raquo;</span>

@@ -95,11 +95,11 @@ public class LocationImageService {
             return null;
         }
 
-        img.set_deleted(true);
-        img.setImg_url("/image/upload" + img.getImg_uuid());
         String extension = pathChangeService.getFileExtension(img.getImg_url());
-        if (pathChangeService.execute(img.getImg_uuid(), UploadPathType.LOC, FileExtension.valueOf(extension))) {
-
+        if (pathChangeService.execute(img.getImg_uuid(), FileAction.DELETE, UploadPathType.LOC,
+                FileExtension.valueOf(extension.toUpperCase(Locale.ROOT)))) {
+            img.set_deleted(true);
+            img.setImg_url("/image/upload/" + img.getImg_uuid());
         }
 
         update(img);
@@ -112,7 +112,12 @@ public class LocationImageService {
             return null;
         }
 
-        img.set_deleted(false);
+        String extension = pathChangeService.getFileExtension(img.getImg_url());
+        if (pathChangeService.execute(img.getImg_uuid(), FileAction.ROLLBACK, UploadPathType.LOC,
+                FileExtension.valueOf(extension.toUpperCase(Locale.ROOT)))) {
+            img.set_deleted(false);
+            img.setImg_url("/image/location/" + img.getImg_uuid());
+        }
 
         update(img);
 
