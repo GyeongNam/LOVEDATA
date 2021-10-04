@@ -41,7 +41,13 @@ public class RequestUserInfoNaver {
             JsonElement element = JsonParser.parseString(text).getAsJsonObject().get("response");
 
             userInfo.setId(element.getAsJsonObject().get("id").getAsString());
-            userInfo.setEmail(element.getAsJsonObject().get("email").getAsString().trim());
+
+            if (!element.getAsJsonObject().has("email")) {
+                userInfo.setEmail("");
+            } else {
+                userInfo.setEmail(element.getAsJsonObject().get("email").getAsString().replaceAll("@\"\\s+\"", ""));
+            }
+
             if (!element.getAsJsonObject().has("nickname")) {
                 userInfo.setNickname("");
             } else {

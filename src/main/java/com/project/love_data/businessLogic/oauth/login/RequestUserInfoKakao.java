@@ -99,7 +99,8 @@ public class RequestUserInfoKakao{
 
             if (kakao_account.getAsJsonObject().has("email") &&
                     !kakao_account.getAsJsonObject().get("email").getAsString().equals("")){
-                userInfo.setEmail(kakao_account.getAsJsonObject().get("email").getAsString().trim());
+                // 공백제거
+                userInfo.setEmail(kakao_account.getAsJsonObject().get("email").getAsString().replaceAll("@\"\\s+\"", ""));
             } else {
                 userInfo.setEmail("");
             }
