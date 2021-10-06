@@ -6,15 +6,6 @@ var mainname = false;
 var mainphone = false;
 var nums = 0;
 
-// 모달 열기
-$("#modal_opne_btn").click(function(){
-  var phone_f = $("#selectphone").val();
-  var phone_s = $("#str_phone02").val();
-  var phone_l = $("#str_phone03").val();
-  $("#phone_num").text(phone_f + "-" + phone_s + "-" + phone_l);
-  $("#modal").fadeIn();
-  $(".modal_content").fadeIn();
-});
 
 // 모달 닫기
 $("#modal_close_btn").click(function(){
@@ -213,25 +204,39 @@ function nick_check(){
 }
 // 인증번호 보내기
 function SMSsned(){
+
   var phone1 = $('#selectphone').val();
   var phone2 = $('#str_phone02').val();
   var phone3 = $('#str_phone03').val();
+  var regPhone = /(01[0|1|6|9|7])[-](\d{3}|\d{4})[-](\d{4}$)/g;
+
   var postdata = { "phones" : phone1 + "-" + phone2 + "-" + phone3 };
 
-  $.ajax({
-    url: "/sendsms",
-    dataType: 'json',
-    contentType: "application/json; charset=UTF-8",
-    data: JSON.stringify(postdata),
-    type: "POST",
-    success:function(data){
-      console.log(data);
-      nums = data.num;
-    },
-    error : function(){
-      console.log(data);
-    }
-  });
+  if(!regPhone.test(phone1 + "-" + phone2 + "-" + phone3)){
+    alert("휴대폰 번호를 확인하세요");
+  }else {
+    $.ajax({
+      url: "/sendsms",
+      dataType: 'json',
+      contentType: "application/json; charset=UTF-8",
+      data: JSON.stringify(postdata),
+      type: "POST",
+      success:function(data){
+        console.log(data);
+        nums = data.num;
+
+        var phone_f = $("#selectphone").val();
+        var phone_s = $("#str_phone02").val();
+        var phone_l = $("#str_phone03").val();
+        $("#phone_num").text(phone_f + "-" + phone_s + "-" + phone_l);
+        $("#modal").fadeIn();
+        $(".modal_content").fadeIn();
+      },
+      error : function(){
+        console.log(data);
+      }
+    });
+  }
 }
 // 인증번호 확인하기
 function rnum_check(){
