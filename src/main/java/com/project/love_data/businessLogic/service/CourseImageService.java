@@ -13,6 +13,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class CourseImageService {
     private final CourseImageRepository repository;
+    private final FilePathChangeService pathChangeService;
 
     public CourseImage getImage(Long imgId) {
         Optional<CourseImage> item = repository.findById(imgId);
@@ -100,17 +101,25 @@ public class CourseImageService {
     }
 
     private CourseImage disable(CourseImage img) {
-        img.set_deleted(true);
-
-        update(img);
+        String extension = pathChangeService.getFileExtension(img.getImg_url());
+        if (pathChangeService.execute(img.getImg_uuid(), FileAction.DELETE,
+                UploadPathType.COR, FileExtension.valueOf(extension.toUpperCase(Locale.ROOT)))){
+            img.set_deleted(true);
+            img.setImg_url("/image/upload/" + img.getImg_uuid());
+            update(img);
+        }
 
         return getImage(img.getImg_no());
     }
 
     private CourseImage enable(CourseImage img) {
-        img.set_deleted(false);
-
-        update(img);
+        String extension = pathChangeService.getFileExtension(img.getImg_url());
+        if (pathChangeService.execute(img.getImg_uuid(), FileAction.ROLLBACK,
+                UploadPathType.COR, FileExtension.valueOf(extension.toUpperCase(Locale.ROOT)))){
+            img.set_deleted(false);
+            img.setImg_url("/image/course/" + img.getImg_uuid());
+            update(img);
+        }
 
         return getImage(img.getImg_no());
     }
@@ -131,6 +140,14 @@ public class CourseImageService {
         }
     }
 
+    public void rollback(Long imgNo) {
+        CourseImage img = getImage(imgNo);
+
+        if (img.is_deleted()) {
+            enable(img);
+        }
+    }
+
     public void permaDelete(String img_uuid) {
         repository.deleteByImg_uuid(img_uuid);
     }
@@ -141,5 +158,23 @@ public class CourseImageService {
         img.setIdx(img_Index);
 
         return img;
+    }
+
+    public CourseImage getCourseLiveThumbnail(Long corNo) {
+        Optional<CourseImage> item = repository.findThumbnailOnLiveByCor_no(corNo);
+
+        return item.orElse(null);
+    }
+
+    public CourseImage getCourseAllThumbnail(Long corNo) {
+        Optional<CourseImage> item = repository.findThumbnailOnAllByCor_no(corNo);
+
+        return item.orElse(null);
+    }
+
+    public List<CourseImage> getLastDeletedCourseImageList(Long corNo) {
+        Optional<List<CourseImage>> items = repository.findLastDeletedCourseImagesByCorNo(corNo);
+
+        return items.orElse(null);
     }
 }

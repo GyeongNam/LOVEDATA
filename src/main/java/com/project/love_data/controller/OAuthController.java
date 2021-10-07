@@ -36,6 +36,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
@@ -101,12 +102,28 @@ public class OAuthController {
         log.info("token : " + token);
         session.setAttribute("token", token);
 
-        try {
-            kakaoUserInfo = infoKakao.excute(request, token);
+        kakaoUserInfo = infoKakao.excute(request, token);
 
-            if (kakaoUserInfo == null) {
-                scriptUtils.alertAndMovePage(response, "필수로 제공해야할 정보에 동의하지 않았습니다.", "/guide/agreePersonal");
+        if (kakaoUserInfo == null || kakaoUserInfo.getEmail().equals("") || kakaoUserInfo.getId().equals("")) {
+            String alertMessage = "필수로 제공해야할 정보에 동의하지 않았습니다.";
+
+            if (kakaoUserInfo.getEmail().equals("")) {
+                alertMessage += "\\n(이메일)";
             }
+
+            if (kakaoUserInfo.getId().equals("")) {
+                alertMessage += "\\n(프로필)";
+            }
+
+//                PrintWriter out = response.getWriter();
+//                out.println("<script>alert('" + alertMessage + "');</script>");
+//                out.flush();
+            scriptUtils.alert(response, alertMessage);
+
+            return "/guide/agreePersonal";
+        }
+
+        try {
             // https://cusonar.tistory.com/17
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                     kakaoUserInfo.getEmail(), kakaoUserInfo.getId() + "!@#$");
@@ -121,7 +138,8 @@ public class OAuthController {
 
             // 이미 유저 이메일로 등록한 계정이 있는 경우 발생하는 오류
             if ("Can't proceed signup with this email. Please try another email".equals(msg)) {
-                scriptUtils.alertAndMovePage(response, "삭제된 계정과 동일한 이메일을 사용할 수 없습니다.", "/");
+                scriptUtils.alert(response, "삭제된 계정과 동일한 이메일을 사용할 수 없습니다.");
+                return "/";
             }
 
             log.info("UserInfo Not in the DB");
@@ -152,11 +170,6 @@ public class OAuthController {
             redirectAttributes.addFlashAttribute("social_id", kakaoUserInfo.getId());
 
             return "redirect:/signup";
-        } catch (IOException e) {
-            log.warn(e.getMessage());
-            log.warn(e.getStackTrace());
-
-            return "redirect:/";
         }
 
         log.info("Kakao Login Successful");
@@ -211,12 +224,25 @@ public class OAuthController {
 
         log.info("token : " + token);
 
-        try {
-            naverUserInfo = infoNaver.excute(request, token);
+        naverUserInfo = infoNaver.excute(request, token);
 
-            if (naverUserInfo == null) {
-                scriptUtils.alertAndMovePage(response, "필수로 제공해야할 정보에 동의하지 않았습니다.", "/guide/agreePersonal");
+        if (naverUserInfo == null || naverUserInfo.getEmail().equals("") || naverUserInfo.getId().equals("")) {
+            String alertMessage = "필수로 제공해야할 정보에 동의하지 않았습니다.";
+
+            if (naverUserInfo.getEmail().equals("")) {
+                alertMessage += "\\n(이메일)";
             }
+
+            if (naverUserInfo.getId().equals("")) {
+                alertMessage += "\\n(프로필)";
+            }
+
+            scriptUtils.alert(response, alertMessage);
+
+            return  "/guide/agreePersonal";
+        }
+
+        try {
             // https://cusonar.tistory.com/17
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                     naverUserInfo.getEmail(), naverUserInfo.getId());
@@ -235,7 +261,9 @@ public class OAuthController {
 
             // 이미 유저 이메일로 등록한 계정이 있는 경우 발생하는 오류
             if ("Can't proceed signup with this email. Please try another email".equals(msg)) {
-                scriptUtils.alertAndMovePage(response, "삭제된 계정과 동일한 이메일을 사용할 수 없습니다.", "/");
+                scriptUtils.alert(response, "삭제된 계정과 동일한 이메일을 사용할 수 없습니다.");
+
+                return "/";
             }
 
             log.info("UserInfo Not in the DB");
@@ -272,8 +300,6 @@ public class OAuthController {
             log.warn(e.getStackTrace());
 
             return "redirect:/";
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
         return "redirect:/";
@@ -302,4 +328,8 @@ public class OAuthController {
     // @Todo 카카오, 네이버 연결끊기 생각해보기
     // 현재는 도메인이 https가 아니라서 안됨
     // https://developers.kakao.com/console/app/565410/product/login/unlink
+
+    @ExceptionHandler(IllegalStateException.class)
+    public void illegalStateException(Exception e) {
+    }
 }

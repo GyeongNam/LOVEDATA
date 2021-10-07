@@ -43,9 +43,11 @@
             <label for="password" class="sr-only">Password</label>
             <input type="password" id="password" name="password" class="form-control" placeholder="비밀번호" required>
         </p>
-        <div class="d-flex justify-content-between">
-            <div class="align-middle"><input type='checkbox' name='remember-me' onclick="alert('개인 PC에서만 사용해주세요')"/>자동 로그인</div>
-            <p><button type="btn" class="btn btn-sm btn-link btn-block" onclick="location.href='/find_id'">회원 정보 찾기</button></p>
+        <div class="d-flex justify-content-between align-items-start">
+            <div class="align-middle">
+                <input type='checkbox' name='remember-me' onclick="alert('개인 PC에서만 사용해주세요')"/><span class="mx-2">자동 로그인</span>
+            </div>
+            <p><button type="btn" class="btn fs-6 btn-link btn-block p-0" onclick="location.href='/find_id'">회원 정보 찾기</button></p>
         </div>
         <sec:csrfInput />
         <div class="d-flex justify-content-between">

@@ -202,7 +202,7 @@ public class CourseController {
                 model.addAttribute("isLiked", false);
             }
 
-            ArrayList<CourseImage> courseImageList = (ArrayList<CourseImage>) courseImageService.getLiveImagesByCorNo(dto.getCor_no());
+            ArrayList<CourseImage> courseImageList = new ArrayList<>();
             List<LocationDTO> locList = new ArrayList<>();
             List<CorLocMapper> corLocMappers = corLocMapperService.getLocationsByCorNo(dto.getCor_no());
 
@@ -351,6 +351,12 @@ public class CourseController {
                         }
                     }
                 }
+            }
+
+            if (dto.is_deleted()) {
+                courseImageList = (ArrayList<CourseImage>) courseImageService.getLastDeletedCourseImageList(dto.getCor_no());
+            } else {
+                courseImageList = (ArrayList<CourseImage>) courseImageService.getLiveImagesByCorNo(dto.getCor_no());
             }
 
             model.addAttribute("dto", dto);
@@ -673,5 +679,70 @@ public class CourseController {
 //        log.info("active tags : " + activeTags);
 
         return "/service/cor_recommend_search";
+    }
+
+    @PostMapping("/service/cor_delete")
+    public String corDelete(HttpServletRequest request,
+                            RedirectAttributes redirectAttributes,
+                            Authentication authentication, Long corNo) {
+        if (authentication == null) {
+            return "redirect:/service/cor_recommend";
+        }
+
+        Course entity = corService.selectCor(corNo);
+
+        if (entity == null) {
+            return "redirect:/service/cor_recommend";
+        }
+
+        AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
+        Long user_no = authUserModel.getUser_no();
+        Set<GrantedAuthority> authorities = (Set<GrantedAuthority>) authUserModel.getAuthorities();
+
+        log.info(request.isUserInRole("ROLE_ADMIN"));
+
+        if (!entity.getUser_no().equals(user_no) && !request.isUserInRole("ROLE_ADMIN")) {
+            log.warn("장소 삭제를 요청한 유저가 장소를 등록한 유저와 같지 않습니다.");
+            return "redirect:/service/cor_recommend";
+        }
+
+        corService.delete(entity.getCor_no());
+        corService.updateThumbnail(entity.getCor_no());
+
+        log.info(request.getRequestURL());
+        log.info(request.getRequestURI());
+
+        return "redirect:/service/cor_recommend";
+    }
+
+    @PostMapping("/service/cor_rollback")
+    public String corRollback(HttpServletRequest request,
+                              RedirectAttributes redirectAttributes,
+                              Authentication authentication, Long corNo) {
+        if (authentication == null) {
+            return "redirect:/service/cor_recommend";
+        }
+
+        Course entity = corService.selectCor(corNo);
+
+        if (entity == null) {
+            return "redirect:/service/cor_recommend";
+        }
+
+        AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
+        Long user_no = authUserModel.getUser_no();
+        Set<GrantedAuthority> authorities = (Set<GrantedAuthority>) authUserModel.getAuthorities();
+
+        log.info(request.isUserInRole("ROLE_ADMIN"));
+
+        if (!request.isUserInRole("ROLE_ADMIN")) {
+            log.warn("장소 복원을 요청한 유저가 어드민 권한을 가지고 있지 않습니다.");
+            return "redirect:/service/cor_recommend";
+        }
+
+        corService.rollback(entity.getCor_no());
+        corService.updateThumbnail(entity.getCor_no());
+
+        return "redirect:/service/cor_recommend";
     }
 }

@@ -44,8 +44,8 @@
 					</div>
 					<div id="loc_collapse" class="collapse show" aria-labelledby="headingLoc" data-parent="#loc">
 						<div class="card-body center-pill">
-							<p><a href="/service/loc_recommend" class="highlight-selected-text-menu">- 추천 장소</a></p>
-							<p><a href="/service/loc_registration" class="highlight-not-selected-text-menu">- 장소
+							<p><a href="/admin/loc_recommend" class="highlight-selected-text-menu">- 추천 장소</a></p>
+							<p><a href="/admin/loc_registration" class="highlight-not-selected-text-menu">- 장소
 								등록</a></p>
 							<p><a href="" class="highlight-not-selected-text-menu">- 장소
 								편집</a></p>
@@ -81,7 +81,7 @@
 						</li>
 					</ul>
 					<%--					@Todo 인풋 값이 ""일 경우 버튼 활성화 x--%>
-<%--					<form action="/service/loc_recommend/search" method="get">--%>
+<%--					<form action="/admin/loc_recommend/search" method="get">--%>
 						<input type="text" placeholder="장소 검색" id="keyword" name="keyword"/>
 						<button class="btn btn-primary mx-2" type="button" id="searchBtn" onclick="onClickSearch()">Search</button>
 <%--					</form>--%>
