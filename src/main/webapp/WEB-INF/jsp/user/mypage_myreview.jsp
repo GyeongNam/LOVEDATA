@@ -7,7 +7,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.Date" %>
 <%@ page session="false" %>
-
+<jsp:useBean id="defaultDateTimeFormatter" class="com.project.love_data.util.DefaultLocalDateTimeFormatter"></jsp:useBean>
+<jsp:useBean id="simpleDateTimeFormatter" class="com.project.love_data.util.SimpleLocalDateTimeFormatter"></jsp:useBean>
 <html>
 <head>
     <link href="/css/mypage.css" rel="stylesheet">
@@ -75,16 +76,17 @@
 				</tr>
 				</thead>
 				<tbody>
-				<tr>
-					<td><span>2022-01-01</span></td>
-					<td><a href=""></a></td>
-					<td>247</td>
-				</tr>
-				<tr>
-					<td><span>2021-12-01</span></td>
-					<td>인생 쌀국수 부산 분짜라붐</td>
-					<td>365</td>
-				</tr>
+				<c:forEach var="rev" items="${my_rev}">
+					<c:choose>
+						<c:when test="${rev._deleted eq false}">
+							<tr>
+								<td><span>${rev.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</span></td>
+								<td><a href="">${rev.cor_name}</a></td>
+								<td>${rev.view_count}</td>
+							</tr>
+						</c:when>
+					</c:choose>
+				</c:forEach>
 				</tbody>
 			</table>
 			<div class="pagination">

@@ -285,6 +285,17 @@ public class ReviewService {
         return items.orElse(null);
     }
 
+//    public List<Review> findAllByUser_no(Long userNo) {
+//        Optional<List<Review>>  reviewList = repository.findAllByUser_no(userNo);
+//
+//        return reviewList.orElse(null);
+//    }
+    public List<Review> findAllByCor_no(Long corNo) {
+        Optional<List<Review>> reviewList = repository.findAllByCor_no(corNo);
+
+        return reviewList.orElse(null);
+    }
+
     public Boolean incLikeCount (Long rev_no) {
         Review rev = select(rev_no);
 

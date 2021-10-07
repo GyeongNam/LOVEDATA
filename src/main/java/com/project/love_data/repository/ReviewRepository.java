@@ -17,7 +17,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long>,
     Optional<List<Review>> findAllByCor_no(@Param("cor_no") Long corNo);
 
     @Query(value = "SELECT * FROM review r WHERE r.user_no = :user_no", nativeQuery = true)
-    List<Review> findAllByUser_no(@Param("user_no") Long userNo);
+    Optional<List<Review>> findAllByUser_no(@Param("user_no") Long userNo);
 
     @Query(value = "SELECT * FROM review r WHERE r.rev_uuid = :rev_uuid", nativeQuery = true)
     Optional<Review> findByRev_uuid(@Param("rev_uuid") String revUuid);

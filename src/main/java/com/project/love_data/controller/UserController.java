@@ -9,6 +9,7 @@ import com.project.love_data.model.service.Location;
 import com.project.love_data.model.service.Review;
 import com.project.love_data.model.user.User;
 import com.project.love_data.repository.CalenderRepository;
+import com.project.love_data.repository.ReviewRepository;
 import com.project.love_data.repository.UserRepository;
 import com.project.love_data.security.model.AuthUserModel;
 import com.project.love_data.security.model.UserRole;
@@ -37,6 +38,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.project.love_data.util.ConstantValues.MAX_UPLOAD_COUNT;
 import static com.project.love_data.util.ConstantValues.MIN_UPLOAD_COUNT;
@@ -54,6 +56,8 @@ public class UserController {
 	private SmsService smsService;
 	@Autowired
 	private UserAccountDelete accountDelete;
+	@Autowired
+	private ReviewRepository reviewRepository;
 	@Autowired
 	UserService userService;
 	@Autowired
@@ -278,17 +282,19 @@ public class UserController {
 	}
 
 	//CHOI
-//	@GetMapping(value = "/mypage_myreview")
-//	public String myreview(Authentication authentication, Model model) {
-//		if (authentication == null) {
-//			return "redirect:/login";
-//		} else {
-//			AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
-//			List<review> myRevList = reviewService.
-//			model.addAttribute("my_rev", myRevList);
-//			return "user/mypage_myreview";
-//		}
-//	}
+	@GetMapping(value = "/mypage_myreview")
+	public String myreview(Authentication authentication, Model model) {
+		if (authentication == null) {
+			return "redirect:/login";
+		} else {
+			AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
+			List<Review> myRevList = reviewService.findAllByCor_no(authUserModel.getUser_no());
+			model.addAttribute("my_rev", myRevList);
+
+			log.info("my RevList확인 :" , myRevList);
+			return "user/mypage_myreview";
+		}
+	}
 
 	//CHOI
 	@GetMapping(value = "/mypage_mycorse")
@@ -303,21 +309,6 @@ public class UserController {
 			return "user/mypage_mycorse";
 		}
 	}
-
-//	//CHOI
-//	@GetMapping(value = "/mypage_myplace")
-//	public String myplace(Principal principal, Model model) {
-//		if (principal == null) {
-//			return "redirect:/login";
-//		} else {
-////			String user_no = userService.finduserNo(principal.getName())
-////			principal.
-//			List<Location> location = locService.findLocByUserNo();
-//			model.addAttribute("my_place", location);
-//
-//			return "user/mypage_myplace";
-//		}
-//	}
 
 	//CHOI
 	@GetMapping(value = "/mypage_myplace")
@@ -334,18 +325,18 @@ public class UserController {
 	}
 
 	//CHOI
-//	@GetMapping(value = "/mypage_mylike")
-//	public String mylike(Authentication authentication, Model model) {
-//		if (authentication == null) {
-//			return "redirect:/login";
-//		} else {
-//			AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
-//			List<Location> myLocList = locService.findLocByUserNo(authUserModel.getUser_no());
-//			model.addAttribute("my_place", myLocList);
-//
-//			return "user/mypage_mylike";
-//		}
-//	}
+	@GetMapping(value = "/mypage_mylike")
+	public String mylike(Authentication authentication, Model model) {
+		if (authentication == null) {
+			return "redirect:/login";
+		} else {
+			AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
+			List<Location> myLocList = locService.findLocByUserNo(authUserModel.getUser_no());
+			model.addAttribute("my_like", myLocList);
+
+			return "user/mypage_mylike";
+		}
+	}
 
 	//CHOI
 	@GetMapping(value = "/mypage_recent_view_corse")
