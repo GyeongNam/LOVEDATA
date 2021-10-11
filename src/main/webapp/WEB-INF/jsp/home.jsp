@@ -26,18 +26,18 @@
 							<div class="Slides-content">
 								<div id="img-content">
 									<img class="banner-img" src="/image/icon/home/datapg1.png">
-									<div class="banner-content">
-										<div>
-											<p>LOVEDAT를 <br> 만나보세요!</p>
-										</div>
-										<hr class="hr-line">
-										<div>
-											<ul class="ul-style">
-												<li>데이트코스를 직접 설정하고 공유해보세요!</li>
-												<li>다른 사람이 설정한 데이트 코스를 체험하고 리뷰를 남겨주세요!</li>
-											</ul>
-										</div>
-									</div>
+<%--									<div class="banner-content">--%>
+<%--										<div>--%>
+<%--											<p>LOVEDAT를 <br> 만나보세요!</p>--%>
+<%--										</div>--%>
+<%--										<hr class="hr-line">--%>
+<%--										<div>--%>
+<%--											<ul class="ul-style">--%>
+<%--												<li>데이트코스를 직접 설정하고 공유해보세요!</li>--%>
+<%--												<li>다른 사람이 설정한 데이트 코스를 체험하고 리뷰를 남겨주세요!</li>--%>
+<%--											</ul>--%>
+<%--										</div>--%>
+<%--									</div>--%>
 								</div>
 							</div>
 						</div>
@@ -46,7 +46,7 @@
 							<div class="Slides-content">
 								<div id="img-content">
 									<img class="banner-img" src="/image/icon/home/datapg2.png">
-									<div class="banner-content">
+									<%--<div class="banner-content">
 										<div>
 											<p>LOVEDAT를 <br> 만나보세요!</p>
 										</div>
@@ -57,7 +57,7 @@
 												<li>다른 사람이 설정한 데이트 코스를 체험하고 리뷰를 남겨주세요!</li>
 											</ul>
 										</div>
-									</div>
+									</div>--%>
 								</div>
 							</div>
 						</div>
@@ -66,18 +66,6 @@
 							<div class="Slides-content">
 								<div id="img-content">
 									<img class="banner-img" src="/image/icon/home/datepg3.jpg">
-									<div class="banner-content">
-										<div>
-											<p>LOVEDAT를 <br> 만나보세요!</p>
-										</div>
-										<hr class="hr-line">
-										<div>
-											<ul class="ul-style">
-												<li>데이트코스를 직접 설정하고 공유해보세요!</li>
-												<li>다른 사람이 설정한 데이트 코스를 체험하고 리뷰를 남겨주세요!</li>
-											</ul>
-										</div>
-									</div>
 								</div>
 							</div>
 						</div>
@@ -87,7 +75,7 @@
 						</div>
 
 
-						<div class="slider-dot">
+						<div class="slider-dot" style="list-style: none">
 							<span class="dot" onclick="currentSlide(1)"></span>
 							<span class="dot" onclick="currentSlide(2)"></span>
 							<span class="dot" onclick="currentSlide(3)"></span>

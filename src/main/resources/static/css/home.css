@@ -20,7 +20,7 @@ html{
 	margin: 0px;
 }
 .container{
-	padding: 110px 100px 130px 100px;
+	/*padding: 110px 100px 130px 100px;*/
 }
 .container2{
 	padding: 70px 100px 130px 100px;
@@ -42,10 +42,9 @@ html{
 /*메인 배너*/
 /* Slideshow container */
 .slideshow-container {
-	padding-top: 100px;
-	max-width: 1200px;
+	/*max-width: 1200px;*/
 	position: relative;
-	margin: auto;
+	/* margin: auto;*/
 }
 
 /* Next & previous buttons */
@@ -114,10 +113,8 @@ html{
 }
 
 .banner-img{
-	width: 30rem;
-	height: 22rem;
-	padding: 0 0 0 35px;
-	margin: 21px;
+	width: 100%;
+	height: 30rem;
 }
 
 /* Fading animation */
@@ -144,16 +141,17 @@ html{
 }
 
 .slider-dot{
-	position: absolute;
+/*	position: absolute;
 	top: 0;
-	right: 3%;
+	right: 3%;*/
+	visibility: hidden;
 }
 .Slides-content{
 	/* height: 32rem; */
 }
 #img-content{
 	/* height:510px; */
-	display: flex;
+	/*display: flex;*/
 }
 .banner-content{
 	margin: 21px;
@@ -163,7 +161,7 @@ html{
 
 }
 .ul-style{
-	list-style: initial;
+	list-style: none;
 }
 
 /* page 2 */
