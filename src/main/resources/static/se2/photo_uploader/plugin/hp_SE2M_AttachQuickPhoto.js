@@ -32,8 +32,9 @@ nhn.husky.SE2M_AttachQuickPhoto = jindo.$Class({
 	 */
 	$ON_ATTACHPHOTO_OPEN_WINDOW : function(){			
 		this.htPopupOption.sUrl = this.makePopupURL();
-		this.htPopupOption.sProperties = "left=0,top=0,width=403,height=359,scrollbars=yes,location=no,status=0,resizable=no";
-
+		this.htPopupOption.sProperties = "left=0, top=0, width=300, height=300, scrollbars=yes, location=no, status=0, resizable=no";
+//510
+		//318
 		this.oPopupWindow = this.oPopupMgr.openWindow(this.htPopupOption);
 		
 		// 처음 로딩하고 IE에서 커서가 전혀 없는 경우

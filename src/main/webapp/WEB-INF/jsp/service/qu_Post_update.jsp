@@ -44,10 +44,10 @@
                     </div>
                     <div id="loc_collapse" class="collapse show" aria-labelledby="headingLoc" data-parent="#loc">
                         <div class="card-body center-pill">
-                            <p><a href="/ServiceCenter/Notice/1" class="loc_highlight-not-selected-text-menu ">- 공지 사항</a></p>
-                            <p><a href="/ServiceCenter/Questions/1" class="loc_highlight-selected-text-menu">- 문의 사항</a></p>
-                            <p><a href="/ServiceCenter/Policy" class="loc_highlight-not-selected-text-menu">- LOVEDATA 정책</a></p>
-                            <p><a href="#" class="loc_highlight-not-selected-text-menu">- 회원 탈퇴</a></p>
+                            <p><a href="/ServiceCenter/Notice/1" class="highlight-not-selected-text-menu ">- 공지 사항</a></p>
+                            <p><a href="/ServiceCenter/Questions/1" class="highlight-selected-text-menu">- 문의 사항</a></p>
+                            <p><a href="/ServiceCenter/Policy" class="highlight-not-selected-text-menu">- LOVEDATA 정책</a></p>
+                            <p><a href="/ServiceCenter/Withdrawal" class="highlight-not-selected-text-menu">- 회원 탈퇴</a></p>
                         </div>
                     </div>
                 </div>
