@@ -57,7 +57,6 @@
                 <label>제목</label>
                 <sec:authorize access="isAuthenticated()">
                     <c:set var="name"><sec:authentication property="principal.user_no"/></c:set>
-                    ${qu.qu_user_no}   // ${name}
                     <c:if test="${qu.qu_user_no eq name}">
                         <c:if test="${qu.qu_answer eq false}">
                             <button onclick="onclick=location.href='/ServiceCenter/Questions_Update/'+${qu.qu_no}">수정하기</button>

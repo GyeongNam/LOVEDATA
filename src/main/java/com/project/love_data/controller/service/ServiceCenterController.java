@@ -617,7 +617,7 @@ public class ServiceCenterController {
     }
 
     @GetMapping(value = "/ServiceCenter/Questions_Delete/{num}")
-    public String Questions_Delete(@PathVariable("num") String num, Model model, Principal principal, HttpServletResponse response) throws IOException {
+    public String Questions_Delete(@PathVariable("num") String num, Model model, Principal principal, HttpServletResponse response, HttpServletRequest request) throws IOException {
         if(principal == null){
             scriptUtils.alertAndMovePage(response, "로그인 해주세요.", "/login");
         }else {
@@ -625,6 +625,25 @@ public class ServiceCenterController {
             User user = userService.select(principal.getName());
             if(user.getUser_nic().equals(questions.getQu_user()) ){
                 log.info("동일 인물");
+                List<QuestionsImage> questionsImage = questionsImageService.qu_no_imgselect(num);
+                for( int i = 0; i < questionsImage.size() ; i++ )
+                {
+                    try {
+                        questionsImage.get(i).setQu_img_Activation(false);
+                        questionsImageService.update(questionsImage.get(i));
+
+                        String r = request.getSession().getServletContext().getRealPath("/");
+                        int idx =  r.indexOf("main");
+                        String imgpath =r.substring(0, idx)+"main/resources/static/image/qna/"+questionsImage.get(i).getQu_img_url();
+
+                        File file = FileUtils.getFile(imgpath);
+                        File fileToMove = FileUtils.getFile(r.substring(0, idx)+"main/resources/static/image/upload/"+questionsImage.get(i).getQu_img_url());
+                        FileUtils.moveFile(file, fileToMove);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
                 questions.setQu_activation(false);
                 serviceCenterService.qu_update(questions);
             }else {
