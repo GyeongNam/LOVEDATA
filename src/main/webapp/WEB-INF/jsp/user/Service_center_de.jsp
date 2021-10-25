@@ -50,14 +50,107 @@
     <div class="container-fluid" id="display_center" style="margin-right: 30px">
         <div id="Withdrawal" class="tabcontent">
             <h3>회원 탈퇴</h3>
-            <a href="/user/deleteAccount">(임시)회원탈퇴</a>
+            <div class="card" style="padding:20px; border-radius: 15px; margin: 20px auto;">
+            <span><p><span style="color: rgb(148, 72, 195); font-family: &quot;맑은 고딕&quot;; font-size: 11pt; font-weight: bold; text-indent: 0in;">탈퇴
+            안내</span>​</p><p><span style="font-size: 8pt; font-family: &quot;맑은 고딕&quot;; color: rgb(119, 119, 119);">회원탈퇴를 신청하기 전에 안내 사항을 꼭 확인해주세요</span><span style="font-size: 8pt; font-family: the; color: rgb(119, 119, 119);">.</span><span style="font-size: 8pt; font-family: the; color: rgb(241, 231, 247);">.</span>​</p><p><span style="font-size: 10pt; font-family: &quot;맑은 고딕&quot;; color: rgb(148, 72, 195); font-weight: bold;">사용하고 계신 아이디</span><span style="font-size: 10pt; font-family: the; color: rgb(148, 72, 195); font-weight: bold;"> (<sec:authentication property="principal.user_email"/>)</span><span style="font-size: 10pt; font-family: &quot;맑은 고딕&quot;; color: rgb(148, 72, 195); font-weight: bold;">는
+            탈퇴할 경우 재사용 및 복구가 불가능합니다</span><span style="font-size: 10pt; font-family: the; color: rgb(148, 72, 195); font-weight: bold;">.</span></p>
+
+            <p style="margin-top: 0pt; margin-bottom: 0pt; margin-left: 0in; direction: ltr; unicode-bidi: embed;"><span style="font-size:8.0pt;
+            font-family:&quot;맑은 고딕&quot;;mso-ascii-font-family:the;mso-fareast-font-family:&quot;맑은 고딕&quot;;
+            mso-bidi-font-family:+mn-cs;mso-ascii-theme-font:minor-latin;mso-fareast-theme-font:
+            minor-fareast;mso-bidi-theme-font:minor-bidi;color:red;mso-font-kerning:12.0pt;
+            language:ko;mso-style-textfill-type:solid;mso-style-textfill-fill-color:red;
+            mso-style-textfill-fill-alpha:100.0%">탈퇴한 아이디는 본인과 타인 모두 재사용 및 복구가 </span><span style="font-size:8.0pt;font-family:&quot;맑은 고딕&quot;;mso-ascii-font-family:the;
+            mso-fareast-font-family:&quot;맑은 고딕&quot;;mso-bidi-font-family:+mn-cs;mso-ascii-theme-font:
+            minor-latin;mso-fareast-theme-font:minor-fareast;mso-bidi-theme-font:minor-bidi;
+            color:red;mso-font-kerning:12.0pt;language:ko;mso-style-textfill-type:solid;
+            mso-style-textfill-fill-color:red;mso-style-textfill-fill-alpha:100.0%">불가</span><span style="font-size:8.0pt;font-family:&quot;맑은 고딕&quot;;mso-ascii-font-family:the;
+            mso-fareast-font-family:&quot;맑은 고딕&quot;;mso-bidi-font-family:+mn-cs;mso-ascii-theme-font:
+            minor-latin;mso-fareast-theme-font:minor-fareast;mso-bidi-theme-font:minor-bidi;
+            color:#777777;mso-font-kerning:12.0pt;language:ko;mso-style-textfill-type:solid;
+            mso-style-textfill-fill-color:#777777;mso-style-textfill-fill-alpha:100.0%">하오니</span><span style="font-size:8.0pt;font-family:the;mso-ascii-font-family:the;mso-fareast-font-family:
+            &quot;맑은 고딕&quot;;mso-bidi-font-family:+mn-cs;mso-ascii-theme-font:minor-latin;
+            mso-fareast-theme-font:minor-fareast;mso-bidi-theme-font:minor-bidi;color:#777777;
+            mso-font-kerning:12.0pt;language:ko;mso-style-textfill-type:solid;mso-style-textfill-fill-color:
+            #777777;mso-style-textfill-fill-alpha:100.0%"> 신중하게 </span><span style="font-size:8.0pt;font-family:&quot;맑은 고딕&quot;;mso-ascii-font-family:the;
+            mso-fareast-font-family:&quot;맑은 고딕&quot;;mso-bidi-font-family:+mn-cs;mso-ascii-theme-font:
+            minor-latin;mso-fareast-theme-font:minor-fareast;mso-bidi-theme-font:minor-bidi;
+            color:#777777;mso-font-kerning:12.0pt;language:ko;mso-style-textfill-type:solid;
+            mso-style-textfill-fill-color:#777777;mso-style-textfill-fill-alpha:100.0%">선텍하시기</span><span style="font-size:8.0pt;font-family:the;mso-ascii-font-family:the;mso-fareast-font-family:
+            &quot;맑은 고딕&quot;;mso-bidi-font-family:+mn-cs;mso-ascii-theme-font:minor-latin;
+            mso-fareast-theme-font:minor-fareast;mso-bidi-theme-font:minor-bidi;color:#777777;
+            mso-font-kerning:12.0pt;language:ko;mso-style-textfill-type:solid;mso-style-textfill-fill-color:
+            #777777;mso-style-textfill-fill-alpha:100.0%"> 바랍니다</span><span style="font-size:8.0pt;font-family:the;mso-ascii-font-family:the;mso-fareast-font-family:
+            &quot;맑은 고딕&quot;;mso-bidi-font-family:+mn-cs;mso-ascii-theme-font:minor-latin;
+            mso-fareast-theme-font:minor-fareast;mso-bidi-theme-font:minor-bidi;color:#777777;
+            mso-font-kerning:12.0pt;language:en-US;mso-style-textfill-type:solid;
+            mso-style-textfill-fill-color:#777777;mso-style-textfill-fill-alpha:100.0%">.</span></p>
+
+            <p style="margin-top: 0pt; margin-bottom: 0pt; margin-left: 0in; direction: ltr; unicode-bidi: embed;">&nbsp;</p>
+
+            <p style="margin-top: 0pt; margin-bottom: 0pt; margin-left: 0in; direction: ltr; unicode-bidi: embed;"><span style="font-size:10.0pt;
+            font-family:&quot;맑은 고딕&quot;;mso-ascii-font-family:the;mso-fareast-font-family:&quot;맑은 고딕&quot;;
+            mso-bidi-font-family:+mn-cs;mso-ascii-theme-font:minor-latin;mso-fareast-theme-font:
+            minor-fareast;mso-bidi-theme-font:minor-bidi;color:#9448C3;mso-font-kerning:
+            12.0pt;language:ko;font-weight:bold;mso-style-textfill-type:solid;mso-style-textfill-fill-color:
+            #9448C3;mso-style-textfill-fill-alpha:100.0%">탈퇴 후 회원정보 및 개인형 서비스 이용기록은 모두
+            삭제됩니다</span><span style="font-size:10.0pt;font-family:the;mso-ascii-font-family:
+            the;mso-fareast-font-family:&quot;맑은 고딕&quot;;mso-bidi-font-family:+mn-cs;mso-ascii-theme-font:
+            minor-latin;mso-fareast-theme-font:minor-fareast;mso-bidi-theme-font:minor-bidi;
+            color:#9448C3;mso-font-kerning:12.0pt;language:en-US;font-weight:bold;
+            mso-style-textfill-type:solid;mso-style-textfill-fill-color:#9448C3;mso-style-textfill-fill-alpha:
+            100.0%">.</span></p>
+
+            <p style="margin-top: 0pt; margin-bottom: 0pt; margin-left: 0in; direction: ltr; unicode-bidi: embed;"><span style="font-size:8.0pt;
+            font-family:&quot;맑은 고딕&quot;;mso-ascii-font-family:the;mso-fareast-font-family:&quot;맑은 고딕&quot;;
+            mso-bidi-font-family:+mn-cs;mso-ascii-theme-font:minor-latin;mso-fareast-theme-font:
+            minor-fareast;mso-bidi-theme-font:minor-bidi;color:red;mso-font-kerning:12.0pt;
+            language:ko;font-weight:bold;mso-style-textfill-type:solid;mso-style-textfill-fill-color:
+            red;mso-style-textfill-fill-alpha:100.0%">틸퇴</span><span style="font-size:8.0pt;
+            font-family:the;mso-ascii-font-family:the;mso-fareast-font-family:&quot;맑은 고딕&quot;;
+            mso-bidi-font-family:+mn-cs;mso-ascii-theme-font:minor-latin;mso-fareast-theme-font:
+            minor-fareast;mso-bidi-theme-font:minor-bidi;color:red;mso-font-kerning:12.0pt;
+            language:ko;font-weight:bold;mso-style-textfill-type:solid;mso-style-textfill-fill-color:
+            red;mso-style-textfill-fill-alpha:100.0%"> 후에는&nbsp;
+            아이디 </span><span style="font-size: 8pt; font-family: the; font-weight: bold;"><sec:authentication property="principal.user_email"/></span><span style="font-size:8.0pt;font-family:&quot;맑은 고딕&quot;;mso-ascii-font-family:the;
+            mso-fareast-font-family:&quot;맑은 고딕&quot;;mso-bidi-font-family:+mn-cs;mso-ascii-theme-font:
+            minor-latin;mso-fareast-theme-font:minor-fareast;mso-bidi-theme-font:minor-bidi;
+            color:red;mso-font-kerning:12.0pt;language:ko;font-weight:bold;mso-style-textfill-type:
+            solid;mso-style-textfill-fill-color:red;mso-style-textfill-fill-alpha:100.0%">로
+            다시 가입할 수 없으며 아이디와 데이터는 복구할 수 없습니다</span><span style="font-size:8.0pt;
+            font-family:the;mso-ascii-font-family:the;mso-fareast-font-family:&quot;맑은 고딕&quot;;
+            mso-bidi-font-family:+mn-cs;mso-ascii-theme-font:minor-latin;mso-fareast-theme-font:
+            minor-fareast;mso-bidi-theme-font:minor-bidi;color:red;mso-font-kerning:12.0pt;
+            language:en-US;font-weight:bold;mso-style-textfill-type:solid;mso-style-textfill-fill-color:
+            red;mso-style-textfill-fill-alpha:100.0%">.</span></p>
+
+            <p style="margin-top: 0pt; margin-bottom: 0pt; margin-left: 0in; direction: ltr; unicode-bidi: embed;"><span style="font-size:8.0pt;
+            font-family:&quot;맑은 고딕&quot;;mso-ascii-font-family:the;mso-fareast-font-family:&quot;맑은 고딕&quot;;
+            mso-bidi-font-family:+mn-cs;mso-ascii-theme-font:minor-latin;mso-fareast-theme-font:
+            minor-fareast;mso-bidi-theme-font:minor-bidi;color:red;mso-font-kerning:12.0pt;
+            language:ko;font-weight:bold;mso-style-textfill-type:solid;mso-style-textfill-fill-color:
+            red;mso-style-textfill-fill-alpha:100.0%">게시판형 서비스에 남아 있는 게시글은 탈퇴 후 삭제할 수 없습니다</span><span style="font-size:8.0pt;font-family:the;mso-ascii-font-family:the;mso-fareast-font-family:
+            &quot;맑은 고딕&quot;;mso-bidi-font-family:+mn-cs;mso-ascii-theme-font:minor-latin;
+            mso-fareast-theme-font:minor-fareast;mso-bidi-theme-font:minor-bidi;color:red;
+            mso-font-kerning:12.0pt;language:en-US;font-weight:bold;mso-style-textfill-type:
+            solid;mso-style-textfill-fill-color:red;mso-style-textfill-fill-alpha:100.0%">.</span></p>
+
+            <p style="margin-top: 0pt; margin-bottom: 0pt; margin-left: 0in; direction: ltr; unicode-bidi: embed;">&nbsp;</p></span>
+            </div>
+                <div class="card" style="padding:20px; border-radius: 15px; margin: 20px auto;">
+                    <spen id="s_relult">비밀번호 확인</spen>
+                    <input id="password_ck"/>
+                    <button id="password_ck_b" onclick="password_ck()">확인</button>
+                </div>
         </div>
+        <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
+        <button id="userOut" onclick="location.href='/user/deleteAccount'" >(임시)회원탈퇴</button>
     </div>
 </div>
 </body>
 <!--   부트스트랩 js 사용  -->
 <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script defer type="text/javascript" src="/resource/js/bootstrap.js"></script>
+<%--<script defer type="text/javascript" src="/resource/js/bootstrap.js"></script>--%>
 <script defer src="/js/ServiceCenter.js"></script>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');

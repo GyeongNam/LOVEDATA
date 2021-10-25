@@ -248,8 +248,70 @@
                 <button type="button" id="modal_close_btn">닫기</button>
             </div>
         </div>
+
+
     </div>
 </form>
+
+<div id="modal2" class="modal-overlay">
+    <div class="modal-window">
+        <div class="title">
+            <h2>약관 동의</h2>
+        </div>
+        <div class="content">
+
+            <label >
+                <input type="checkbox" class="abc" name="agree" value="1">
+                <span>개인정보 이용 약관<strong>(필수)</strong></span>
+                <textarea class="noresize">${Article8}</textarea>
+            </label>
+            <label>
+                <input type="checkbox" class="abc" name="agree" value="2">
+                <span>LOVEDATA 사용 약관 1<strong>(필수)</strong></span>
+                <textarea class="noresize">
+                        ${Article9}
+                    ${Article10}
+                        </textarea>
+            </label>
+            <label>
+                <input type="checkbox" class="abc" name="agree" value="3">
+                <span>LOVEDATA 사용 약관 2<strong>(필수)</strong></span>
+                <textarea class="noresize">
+                        ${Article11}
+
+                    ${Article12}
+
+                    ${Article13}
+
+                    ${Article14}
+
+                    ${Article15}
+
+                    ${Article16}
+
+                    ${Article17}
+
+                    ${Article18}
+
+                    ${Article19}
+
+                    ${Article20}
+                    </textarea>
+            </label>
+            <div>
+                <label>
+                    <input type="checkbox" name="agree_all" id="agree_all">
+                    <span>모두 동의합니다</span>
+                </label>
+
+            </div>
+            <div style="text-align: center">
+                <button onclick="modal2()">확인</button>
+                <button onclick="location.href='/login'">취소</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <%--<%@ include file="../layout/footer.jsp" %>--%>
 </body>

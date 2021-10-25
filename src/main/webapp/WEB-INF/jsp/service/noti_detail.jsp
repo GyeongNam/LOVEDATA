@@ -58,7 +58,7 @@
 <%--       <span> ${noti.noti_no}</span>--%>
        <span>제목 : ${noti.noti_title}</span>
     <sec:authorize access="isAuthenticated()">
-    <sec:authorize access="hasAnyRole('MANAGER')">
+    <sec:authorize access="hasAnyRole('ADMIN')">
     <div>
         <button onclick="onclick=location.href='/ServiceCenter/Notice_Update/'+${noti.noti_no}">수정하기</button>
     </div>

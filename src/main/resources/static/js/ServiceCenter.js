@@ -139,6 +139,7 @@ function plupage(){
         alert("최대페이지 입니다.")
     }
 }
+
 function subpage(){
     var qu_pages = $("#qu_pages").val();
     pages = pages-1;
@@ -153,7 +154,47 @@ function subpage(){
         alert("최소페이지 입니다.")
     }
 }
+
+function password_ck(){
+    // ajax token
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    $(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
+
+    var password = $('#password_ck').val();
+    var s_relult = $('#s_relult');
+    var postdata = {"password" : password }
+
+    $.ajax({
+        url: "/password_ckd",
+        dataType: 'json',
+        contentType: "application/json; charset=UTF-8",
+        data: JSON.stringify(postdata),
+        type: "POST",
+        success:function(data){
+            var datas = data;
+            console.log(datas.msg);
+            if(datas.msg =="0"){
+                s_relult.css("color", "red");
+                s_relult.text("비밀번호 확인: 비밀번호가 다릅니다.");
+                $("#userOut").prop('disabled', true);
+            }
+            if(datas.msg =="1"){
+                s_relult.css("color", "green");
+                s_relult.text("비밀번호 확인: 비밀번호가 일치합니다.");
+                alert("회원탈퇴를 원하시면 아래 '회원탈퇴' 버튼을 눌러주세요.");
+                $("#userOut").prop('disabled', false);
+            }
+        },
+        error : function(){
+        }
+    });
+}
+
 $(document).ready(function() {
+    //회원탈퇴 비활성화
+    $("#userOut").prop('disabled', true);
+
     var is_page = getCookie("sc_page");
     console.log("맨처음 쿠키"+is_page);
     var target_imgs = $("#imgDisplay");
@@ -170,7 +211,6 @@ $(document).ready(function() {
     }else {
         pages_open(is_page);
     }
-
 
     target_imgs.load(function(){
         var width = $(this).outerWidth();

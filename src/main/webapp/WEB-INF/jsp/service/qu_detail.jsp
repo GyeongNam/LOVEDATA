@@ -128,7 +128,7 @@
             </c:when>
         </c:choose>
         <sec:authorize access="isAuthenticated()">
-            <sec:authorize access="hasAnyRole('MANAGER')">
+            <sec:authorize access="hasAnyRole('ADMIN')">
                 <c:choose>
                 <c:when test="${qu.qu_answer eq false}">
                     <form action="/ServiceCenter/Questions_answer/${qu.qu_no}" method="post">

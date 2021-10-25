@@ -255,8 +255,10 @@ public class ServiceCenterController {
     }
 
     @GetMapping(value = "/ServiceCenter/Withdrawal")
-    public String Withdrawal(Model model, HttpServletResponse response)  {
-
+    public String Withdrawal(Model model, HttpServletResponse response, Principal principal) throws IOException {
+        if (principal == null) {
+            scriptUtils.alertAndMovePage(response, "로그인 해주세요.", "/login");
+        }
         return "/user/Service_center_de";
     }
 
@@ -318,7 +320,7 @@ public class ServiceCenterController {
         return "user/Service_center_qu";
     }
 
-    @PreAuthorize("hasRole('ROLE_MANAGER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(value = "/ServiceCenter/Questions_answer/{num}")
     public String Questions_answer(@PathVariable("num") String num,Principal principal,HttpServletRequest request){
         User user = userService.select(principal.getName());
@@ -330,7 +332,7 @@ public class ServiceCenterController {
         return "redirect:/ServiceCenter/Questions_Post_mana/"+num;
     }
 
-    @PreAuthorize("hasRole('ROLE_MANAGER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping(value = "/ServiceCenter/Questions_Post_mana/{num}")
     public String Questions_no_mana(@PathVariable("num") String num, Model model, HttpServletResponse response , Principal principal) throws IOException {
         Questions questions = serviceCenterService.qu_select_no(num);
@@ -463,7 +465,7 @@ public class ServiceCenterController {
         return "redirect:/ServiceCenter/Questions_Post/"+request.getParameter("qu_no");
     }
 
-    @PreAuthorize("hasRole('ROLE_MANAGER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping(value = "/ServiceCenter/Notice_Post_add")
     public String Post_add_noti(Principal principal, HttpServletResponse response) throws IOException {
         if(principal == null){
@@ -472,7 +474,7 @@ public class ServiceCenterController {
         return "/service/noti_Post_add";
     }
 
-    @PreAuthorize("hasRole('ROLE_MANAGER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(value = "/ServiceCenter/Notice_Post_add/add")
     public String Post_add_noti_add(HttpServletRequest request, Principal principal, HttpServletResponse response) throws IOException {
         if(principal == null){
@@ -531,7 +533,7 @@ public class ServiceCenterController {
 
         return "redirect:/ServiceCenter/Notice/1";
     }
-    @PreAuthorize("hasRole('ROLE_MANAGER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(value = "/ServiceCenter/Notice_Post_Update/update")
     public String Post_update_noti_update(HttpServletRequest request, Principal principal, HttpServletResponse response) throws IOException {
         if(principal == null){

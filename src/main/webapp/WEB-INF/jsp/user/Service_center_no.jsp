@@ -94,12 +94,16 @@
             </c:forEach>
             </tbody>
         </table>
+        <c:choose>
+            <c:when test="${no_page>0}">
+
         <div class="col" id="pu_navbar">
             <div class="container d-flex" id="">
                 <div class="col" id="page_number">
                     <nav aria-label="Page navigation example">
                         <input id="qu_pages" value="${no_page_size}" type="hidden">
                         <input id="qu_pagess" value="${no_page}" type="hidden">
+
                         <div class="pagination justify-content-center" , id="pagination justify-content-center">
                             <p onclick="subpage()"> < </p>
                             <c:choose>
@@ -124,16 +128,19 @@
                             </c:choose>
                             <p onclick="plupage()"> > </p>
                         </div>
-<%--                        <div class="pagination justify-content-center">--%>
-<%--                            <li class="page-item">--%>
-<%--                                <a href="#">1</a>--%>
-<%--                            </li>--%>
-<%--                        </div>--%>
                     </nav>
                 </div>
             </div>
+            </c:when>
+            <c:when test="${no_page==0}">
+
+                글이 존재하지 않습니다.
+
+            </c:when>
+            </c:choose>
+
             <sec:authorize access="isAuthenticated()">
-            <sec:authorize access="hasAnyRole('MANAGER')">
+            <sec:authorize access="hasAnyRole('ADMIN')">
             <div class="d-flex justify-content-end">
                 <button class="btn btn-primary m-2" onclick="location.href='/ServiceCenter/Notice_Post_add'">글쓰기</button>
             </div>

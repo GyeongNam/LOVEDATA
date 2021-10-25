@@ -83,10 +83,10 @@
                         <c:choose>
                             <c:when test="${qu.qu_secret eq true}">
                                 <sec:authorize access="isAuthenticated()">
-                                    <sec:authorize access="hasAnyRole('MANAGER')">
+                                    <sec:authorize access="hasAnyRole('ADMIN')">
                                         <td onclick=location.href='/ServiceCenter/Questions_Post_mana/${qu.qu_no}';>${qu.qu_title} <img src="/image/icon/user/secret.png" class="img_s" id="imgDisplay" name="imgDisplay" ></td>
                                     </sec:authorize>
-                                    <sec:authorize access="!hasRole('MANAGER')">
+                                    <sec:authorize access="!hasRole('ADMIN')">
                                         <td onclick=location.href='/ServiceCenter/Questions_Post/${qu.qu_no}';>${qu.qu_title} <img src="/image/icon/user/secret.png" class="img_s"  id="imgDisplay" name="imgDisplay" ></td>
                                     </sec:authorize>
                                 </sec:authorize>
@@ -120,6 +120,39 @@
                 </c:forEach>
             </tbody>
         </table>
+        <div class="col" id="pu_navbar">
+                <div class="container d-flex" id="">
+                    <div class="col" id="page_number">
+                        <nav aria-label="Page navigation example">
+                            <input id="qu_pages" value="${qu_page_size}" type="hidden">
+                            <input id="qu_pagess" value="${qu_page}" type="hidden">
+                            <div class="pagination justify-content-center" , id="pagination justify-content-center">
+                                <p onclick="subpage()"> < </p>
+                                <c:choose>
+                                    <c:when test="${search eq false}">
+                                        <c:forEach var="qu_pages" begin="1" end="${qu_page}" step="1">
+                                            <div class="page-item" id="${qu_pages}">
+                                                <li class="page-item ${qu_pages}">
+                                                    <a href="/ServiceCenter/Questions/${qu_pages}">${qu_pages}</a>
+                                                </li>
+                                            </div>
+                                        </c:forEach>
+                                    </c:when>
+                                    <c:when test="${search eq true}">
+                                        <c:forEach var="qu_pages" begin="1" end="${qu_page}" step="1">
+                                            <div class="page-item" id="${qu_pages}">
+                                                <li class="page-item ${qu_pages}">
+                                                    <a href="/ServiceCenter/Questions/search/${menu}/${text}/${qu_pages}">${qu_pages}</a>
+                                                </li>
+                                            </div>
+                                        </c:forEach>
+                                    </c:when>
+                                </c:choose>
+                                <p onclick="plupage()"> > </p>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
             </c:when>
         <c:when test="${qu_size==0}">
 
@@ -127,39 +160,8 @@
 
         </c:when>
         </c:choose>
-        <div class="col" id="pu_navbar">
-            <div class="container d-flex" id="">
-                <div class="col" id="page_number">
-                    <nav aria-label="Page navigation example">
-                        <input id="qu_pages" value="${qu_page_size}" type="hidden">
-                        <input id="qu_pagess" value="${qu_page}" type="hidden">
-                        <div class="pagination justify-content-center" , id="pagination justify-content-center">
-                            <p onclick="subpage()"> < </p>
-                            <c:choose>
-                                <c:when test="${search eq false}">
-                                    <c:forEach var="qu_pages" begin="1" end="${qu_page}" step="1">
-                                        <div class="page-item" id="${qu_pages}">
-                                        <li class="page-item ${qu_pages}">
-                                            <a href="/ServiceCenter/Questions/${qu_pages}">${qu_pages}</a>
-                                        </li>
-                                        </div>
-                                    </c:forEach>
-                                </c:when>
-                                <c:when test="${search eq true}">
-                                    <c:forEach var="qu_pages" begin="1" end="${qu_page}" step="1">
-                                    <div class="page-item" id="${qu_pages}">
-                                        <li class="page-item ${qu_pages}">
-                                            <a href="/ServiceCenter/Questions/search/${menu}/${text}/${qu_pages}">${qu_pages}</a>
-                                        </li>
-                                    </div>
-                                    </c:forEach>
-                                </c:when>
-                            </c:choose>
-                            <p onclick="plupage()"> > </p>
-                        </div>
-                    </nav>
-                </div>
-            </div>
+
+
             <div class="d-flex justify-content-end">
             <button onclick="location.href='/ServiceCenter/Questions_Post_add'" class="btn btn-primary m-2 float-right">글쓰기</button>
             </div>

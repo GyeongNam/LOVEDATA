@@ -299,3 +299,23 @@ function Ssignup_check(){
     return false;
   }
 }
+
+// 동의 모두선택 / 해제
+const agreeChkAll = document.querySelector('input[name=agree_all]');
+agreeChkAll.addEventListener('change', (e) => {
+  let agreeChk = document.querySelectorAll('input[name=agree]');
+  for(let i = 0; i < agreeChk.length; i++){
+    agreeChk[i].checked = e.target.checked;
+  }
+});
+const modal = document.getElementById("modal2");
+function modal2(){
+  $('.abc:checked').length == $('.abc').length
+    var a = $("input[type='checkbox'].abc");
+    if(a.length == a.filter(":checked").length){
+      modal.style.display = "none"
+    }
+    else {
+      alert('약관을 모두 체크해주세요.');
+    }
+}

@@ -3,10 +3,7 @@ package com.project.love_data.controller;
 import com.project.love_data.businessLogic.service.*;
 import com.project.love_data.dto.CalenderDTO;
 import com.project.love_data.dto.UserDTO;
-import com.project.love_data.model.service.Calender;
-import com.project.love_data.model.service.Course;
-import com.project.love_data.model.service.Location;
-import com.project.love_data.model.service.Review;
+import com.project.love_data.model.service.*;
 import com.project.love_data.model.user.User;
 import com.project.love_data.repository.CalenderRepository;
 import com.project.love_data.repository.ReviewRepository;
@@ -170,14 +167,9 @@ public class UserController {
 	//	@RequestMapping(value="/signup",method = RequestMethod.GET)
 	@GetMapping("/signup")
 	@PostMapping("/signup")
-	public String signup(
-			String str_email01,
-			String str_email02,
-			String pwd1,
-			String pwd2,
-			String nickname,
-			HttpServletRequest request
-	) {
+	public String signup( Model model) {
+		Policy policy = new Policy();
+		policy.model_add(model, policy);
 		return "user/signup";
 	}
 
@@ -477,6 +469,18 @@ public class UserController {
 		return "/user/loginPage";
 	}
 
+	@ResponseBody
+	@PostMapping(value = "/password_ckd")
+	public Map<String, String> password_ck(@RequestBody HashMap<String, String> data, Principal principal) {
+		Map<String, String> map = new HashMap<String, String>();
+		User user = userService.select(principal.getName());
+		if(passwordEncoder.matches(data.get("password"), user.getUser_pw())){
+			map.put("msg","1");
+		}else {
+			map.put("msg","0");
+		}
+		return map;
+	}
 
 	//alert 창 설정 class
 	public class ScriptUtils {
