@@ -166,12 +166,27 @@ public class LocationController {
                 resultCommentDTO = comService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION);
             }
             pageRequestDTO.setSize(3);
-//            bestCommentDTO = comService.getCmtPage(pageRequestDTO,
-//                    CommentPageType.LOCATION, CommentSortType.LIKE_DES,CommentSearchType.Live);
+
+            for (int i = 0; i < resultCommentDTO.getDtoList().size(); i++) {
+                User user = userService.selectLive(resultCommentDTO.getDtoList().get(i).getUser().getUser_no());
+
+                if (user == null) {
+                    resultCommentDTO.getDtoList().get(i).getUser().setUser_nic("삭제된 유저");
+                    resultCommentDTO.getDtoList().get(i).getUser().setProfile_pic("/image/icon/user/user.png");
+                }
+            }
+
             List<Comment> bestCmtHolder = comService.getBestComment(locNo);
             if (bestCmtHolder != null ) {
                 if (!bestCmtHolder.isEmpty()) {
                     for (Comment cmt : bestCmtHolder) {
+                        CommentDTO cmtDTO = comService.entityToDto(cmt);
+                        User user = userService.selectLive(cmt.getUser().getUser_no());
+                        if (user == null) {
+                            // 삭제된 유저의 경우
+                            cmtDTO.getUser().setUser_nic("삭제된 유저");
+                            cmtDTO.getUser().setProfile_pic("/image/icon/user/user.png");
+                        }
                         bestCmtList.add(comService.entityToDto(cmt));
                     }
                 }
@@ -194,9 +209,9 @@ public class LocationController {
                         model.addAttribute("isLiked", false);
                     }
 
-                    for (CommentDTO cmtDTO : resultCommentDTO.getDtoList()) {
-                        UserLikeCmt userLikeCmt = userLikeCmtService.selectBycmtNoAndUserNo(cmtDTO.getCmtNo(), authUserModel.getUser_no());
-                        UserDislikeCmt userDislikeCmt = userDislikeCmtService.selectBycmtNoAndUserNo(cmtDTO.getCmtNo(), authUserModel.getUser_no());
+                    for (int i = 0; i < resultCommentDTO.getDtoList().size(); i++) {
+                        UserLikeCmt userLikeCmt = userLikeCmtService.selectBycmtNoAndUserNo(resultCommentDTO.getDtoList().get(i).getCmtNo(), authUserModel.getUser_no());
+                        UserDislikeCmt userDislikeCmt = userDislikeCmtService.selectBycmtNoAndUserNo(resultCommentDTO.getDtoList().get(i).getCmtNo(), authUserModel.getUser_no());
 
                         if (userLikeCmt != null && userDislikeCmt == null) {
                             cmtLikeList.add(true);
@@ -210,9 +225,9 @@ public class LocationController {
                         }
 
                         boolean cmtIndexMatchFlag = false;
-                        for (int i = 0; i < bestCmtList.size(); i++) {
-                            if (cmtDTO.equals(bestCmtList.get(i))) {
-                                cmtIndexList.add(i);
+                        for (int j = 0; j < bestCmtList.size(); j++) {
+                            if (resultCommentDTO.getDtoList().get(i).equals(bestCmtList.get(j))) {
+                                cmtIndexList.add(j);
                                 cmtIndexMatchFlag = true;
                                 break;
                             }
@@ -223,9 +238,9 @@ public class LocationController {
                         }
                     }
 
-                    for (CommentDTO best : bestCmtList) {
-                        UserLikeCmt userLikeBestCmt = userLikeCmtService.selectBycmtNoAndUserNo(best.getCmtNo(), authUserModel.getUser_no());
-                        UserDislikeCmt userDislikeBestCmt = userDislikeCmtService.selectBycmtNoAndUserNo(best.getCmtNo(), authUserModel.getUser_no());
+                    for (int i = 0; i < bestCmtList.size(); i++) {
+                        UserLikeCmt userLikeBestCmt = userLikeCmtService.selectBycmtNoAndUserNo(bestCmtList.get(i).getCmtNo(), authUserModel.getUser_no());
+                        UserDislikeCmt userDislikeBestCmt = userDislikeCmtService.selectBycmtNoAndUserNo(bestCmtList.get(i).getCmtNo(), authUserModel.getUser_no());
 
                         if (userLikeBestCmt != null && userDislikeBestCmt == null) {
                             bestCmtLikeList.add(true);
@@ -240,9 +255,9 @@ public class LocationController {
 
                         bestCmtMatchFlag = false;
                         Integer index = null;
-                        for (int i = 0; i < resultCommentDTO.getDtoList().size(); i++) {
-                            if (resultCommentDTO.getDtoList().get(i).equals(best)) {
-                                index = i;
+                        for (int j = 0; j < resultCommentDTO.getDtoList().size(); j++) {
+                            if (resultCommentDTO.getDtoList().get(j).equals(bestCmtList.get(i))) {
+                                index = j;
                                 bestCmtMatchFlag = true;
                                 break;
                             }

@@ -18,7 +18,7 @@ public class ReviewDTO {
     private String revContent;
     private Long userNo;
     private Long corNo;
-    private String userName;
+    private String userNickname;
 
     @Builder.Default
     private Long revIdx = 0L;

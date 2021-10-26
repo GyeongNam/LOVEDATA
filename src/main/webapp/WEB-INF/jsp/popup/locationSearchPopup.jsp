@@ -55,34 +55,6 @@
 <%--					</tr>--%>
 					</tbody>
 				</table>
-				<%--			해당 장소의 검색결과 출력		--%>
-				<%--				<div class="card p-0 m-2">--%>
-				<%--					<div class="row">--%>
-				<%--						<span class="details fs-3">&lt;장소 1&gt;</span>--%>
-				<%--						<div class="col">--%>
-				<%--							<div class="row d-flex my-2">--%>
-				<%--								<div class="col-6 d-flex justify-content-between align-items-md-center">--%>
-				<%--									<span class="details mx-2">이름</span>--%>
-				<%--									<input type="text" name="temp_loc_name" id="temp_loc_name" value="광화문" readonly>--%>
-				<%--								</div>--%>
-				<%--							</div>--%>
-				<%--							<div class="row d-flex my-2">--%>
-				<%--								<div class="col-6 d-flex justify-content-between align-items-md-center">--%>
-				<%--									<span class="details mx-2">주소</span>--%>
-				<%--									<input type="text" name="temp_loc_addr" id="temp_loc_addr"--%>
-				<%--										   value="서울 종로구 효자로 12 국립고궁박물관" readonly>--%>
-				<%--								</div>--%>
-				<%--							</div>--%>
-				<%--							<div class="row d-flex my-2">--%>
-				<%--								<div class="col-6 d-flex justify-content-between align-items-md-center">--%>
-				<%--									<span class="details mx-2">전화번호</span>--%>
-				<%--									<input type="text" name="temp_loc_tel" id="temp_loc_tel" value="02-3700-3901"--%>
-				<%--										   readonly>--%>
-				<%--								</div>--%>
-				<%--							</div>--%>
-				<%--						</div>--%>
-				<%--					</div>--%>
-				<%--				</div>--%>
 			</div>
 		</div>
 	</div>
