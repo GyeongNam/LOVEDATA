@@ -20,6 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface UserRepository extends JpaRepository<User, Long>{
 
+	@Query(value = "select * from user where user_no = :user_no AND is_deleted = false", nativeQuery = true)
+	Optional<User> selectLiveUser (@Param("user_no")long userNo);
+
 	@Query(value = "select * from user where user_email = :email", nativeQuery = true)
 	String email_check(@Param("email")String email);
 
@@ -67,6 +70,4 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	@Query(value = "DELETE  FROM user  WHERE user_email = :email", nativeQuery = true)
 	@Transactional
 	void deleteUserByEmail(@Param("email") String email);
-
-
 }

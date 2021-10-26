@@ -247,7 +247,15 @@ public class CourseController {
 
                 revImgDTOList.add(reviewImageDTOS);
 
-                revUserPicList.add(userService.select(resultReviewDTO.getDtoList().get(i).getUserNo()).getProfile_pic());
+                User user = userService.selectLive(resultReviewDTO.getDtoList().get(i).getUserNo());
+                if (user == null) {
+                    // default user profile pic
+                    revUserPicList.add("/image/icon/user/user.png");
+                    // 삭제된 유저의 경우 닉네임을 아래와 같이 표시
+                    resultReviewDTO.getDtoList().get(i).setUserNickname("삭제된 유저");
+                } else {
+                    revUserPicList.add(userService.select(resultReviewDTO.getDtoList().get(i).getUserNo()).getProfile_pic());
+                }
             }
 
             for (String s : revImgURLStringList) {
@@ -273,11 +281,13 @@ public class CourseController {
 
             Boolean bestRevMatchFlag = null;
 
-            for (ReviewDTO reviewDTO : bestRevList) {
-                User user = userService.select(reviewDTO.getUserNo());
+            for (int i = 0; i < bestRevList.size(); i++) {
+                User user = userService.select(bestRevList.get(i).getUserNo());
 
                 if (user == null) {
                     bestRevUserPicList.add("/image/icon/user/user.png");
+                    // 삭제된 유저의 경우 닉네임을 아래와 같이 표시
+                    bestRevList.get(i).setUserNickname("삭제된 유저");
                 } else {
                     if (user.getProfile_pic().equals("") || user.getProfile_pic() == null) {
                         bestRevUserPicList.add("/image/icon/user/user.png");
@@ -288,9 +298,9 @@ public class CourseController {
 
                 bestRevMatchFlag = false;
                 Integer index = null;
-                for (int i = 0; i < resultReviewDTO.getDtoList().size(); i++) {
-                    if (resultReviewDTO.getDtoList().get(i).equals(reviewDTO)) {
-                        index = i;
+                for (int j = 0; j < resultReviewDTO.getDtoList().size(); j++) {
+                    if (resultReviewDTO.getDtoList().get(i).equals(bestRevList.get(i))) {
+                        index = j;
                         bestRevMatchFlag = true;
                         break;
                     }

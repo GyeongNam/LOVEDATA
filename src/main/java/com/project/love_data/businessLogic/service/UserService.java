@@ -86,6 +86,12 @@ public class UserService {
         return dto;
     }
 
+    public User selectLive(long id) {
+        Optional<User> item = userRepository.selectLiveUser(id);
+
+        return item.orElse(null);
+    }
+
     public User select(long id) {
         Optional<User> item = userRepository.findById(id);
 

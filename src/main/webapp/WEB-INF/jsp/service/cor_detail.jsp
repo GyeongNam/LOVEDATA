@@ -487,7 +487,7 @@
 														<div class="flex-column">
 															<p class="visually-hidden" id="best_rev_id_${b}">${bestRevList.get(b).revUuid}</p>
 															<span class="d-block font-weight-bold name">
-																	${bestRevList.get(b).userName}
+																	${bestRevList.get(b).userNickname}
 															</span>
 															<span class="date text-black-50 ml-5">${bestRevList.get(b).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}</span>
 															<c:choose>
@@ -587,7 +587,7 @@
 															class="loc_comment-profile-image-wh">
 														<div class="flex-column">
 															<p class="visually-hidden" id="rev_id_${c}">${revDTO.get(c).revUuid}</p>
-															<span class="d-block font-weight-bold name">${revDTO.get(c).userName}</span>
+															<span class="d-block font-weight-bold name">${revDTO.get(c).userNickname}</span>
 															<div>
 																<span class="date text-black-50 ml-5">${revDTO.get(c).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}</span>
 																<c:choose>
