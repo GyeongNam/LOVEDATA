@@ -49,6 +49,15 @@ public class FileUploadService {
         } else {
             // 윈도우 이외의 OS에서 돌아갈 경우 /home/tomcat/LoveData-Storage에 위치로 지정
             pathStr = "/home/tomcat/LoveData-Storage";
+//            Path path = Paths.get(pathStr);
+//            if (Files.exists(path)) {
+//                try {
+//                    log.info("Linux Image Storage Path is not found (/home/tomcat/LoveData-Storage)");
+//                    Files.createDirectory(path);
+//                } catch (IOException e) {
+//                    log.warn("Creating Linux Image Storage Path is Failed (/home/tomcat/LoveData-Storage)");
+//                }
+//            }
         }
         List<String> result = null;
 
@@ -323,19 +332,36 @@ public class FileUploadService {
     }
 
     private String getURIPath(UploadPathType pathType) {
-        switch (pathType) {
-            case LOC:
-                return "/image/location";
-            case COR:
-                return "/image/course";
-            case REV:
-                return "/image/review";
-            case QNA:
-                return "/image/qna";
-            case USER_PIC:
-                return "/image/user_pic";
-            default:
-                return "/image/upload";
+        if ("Windows_NT".equals(System.getenv().get("OS"))) {
+            switch (pathType) {
+                case LOC:
+                    return "/image/location";
+                case COR:
+                    return "/image/course";
+                case REV:
+                    return "/image/review";
+                case QNA:
+                    return "/image/qna";
+                case USER_PIC:
+                    return "/image/user_pic";
+                default:
+                    return "/image/upload";
+            }
+        } else {
+            switch (pathType) {
+                case LOC:
+                    return "/img/location";
+                case COR:
+                    return "/img/course";
+                case REV:
+                    return "/img/review";
+                case QNA:
+                    return "/img/qna";
+                case USER_PIC:
+                    return "/img/user_pic";
+                default:
+                    return "/img/upload";
+            }
         }
     }
 

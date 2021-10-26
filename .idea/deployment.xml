@@ -12,10 +12,8 @@
       <paths name="PI_Tomcat">
         <serverdata>
           <mappings>
-            <mapping local="$PROJECT_DIR$/build/generated/querydsl" web="/" />
-            <mapping local="$PROJECT_DIR$/build/generated/sources/annotationProcessor/java/main" web="/" />
-            <mapping local="$PROJECT_DIR$/src/main" web="/" />
-            <mapping local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/opt/apache-tomcat-9.0.46/webapps" local="$PROJECT_DIR$/build/libs" web="mon0mon.iptime.org" />
+            <mapping local="" />
           </mappings>
         </serverdata>
       </paths>
