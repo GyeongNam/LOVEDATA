@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -47,8 +48,10 @@ public class FileUploadService {
             // 윈도우 OS에서 돌아갈 경우(디버깅 및 테스트) 현재 프로젝트설치 위치로 지정
             pathStr = System.getProperty("user.dir");
         } else {
+            // pathStr은 아래와 같이 설정
+            pathStr = "/opt/apache-tomcat-9.0.46/webapps/love_data/WEB-INF/classes/static/image";
             // 윈도우 이외의 OS에서 돌아갈 경우 /home/tomcat/LoveData-Storage에 위치로 지정
-            pathStr = "/home/tomcat/LoveData-Storage";
+//            pathStr = "/home/tomcat/LoveData-Storage";
 //            Path path = Paths.get(pathStr);
 //            if (Files.exists(path)) {
 //                try {
@@ -88,6 +91,7 @@ public class FileUploadService {
                                           HttpServletRequest request) {
         String filePath = getUploadPath(pathStr, pathType);
         String URIPath = getURIPath(pathType);
+//        URIPath = "/image/upload";
         // 리눅스 서버에서 돌아갈 경우
 //        log.info("Current OS : " + System.getenv().get("OS"));
 //        if ("Windows_NT".equals(System.getenv().get("OS"))) {
@@ -146,6 +150,7 @@ public class FileUploadService {
                                          HttpServletRequest request) {
         String filePath = getUploadPath(pathStr, pathType);
         String URIPath = getURIPath(pathType);
+//        URIPath = "/image/upload";
         // 리눅스 서버에서 돌아갈 경우
 //        log.info("Current OS : " + System.getenv().get("OS"));
 //        if ("Windows_NT".equals(System.getenv().get("OS"))) {
@@ -294,24 +299,50 @@ public class FileUploadService {
                         break;
             }
         } else {
+//            switch (pathType) {
+//                case LOC:
+//                    path = Paths.get(pathStr + File.separator + "location");
+//                    break;
+//                case COR:
+//                    path = Paths.get(pathStr + File.separator + "course");
+//                    break;
+//                case REV:
+//                    path = Paths.get(pathStr + File.separator + "review");
+//                    break;
+//                case QNA:
+//                    path = Paths.get(pathStr + File.separator + "qna");
+//                    break;
+//                case USER_PIC:
+//                    path = Paths.get(pathStr + File.separator + "user_pic");
+//                    break;
+//                default:
+//                    path = Paths.get(pathStr + File.separator + "upload");
+//                    break;
+//            }
             switch (pathType) {
                 case LOC:
-                    path = Paths.get(pathStr + File.separator + "location");
+                    path = Paths.get(pathStr + File.separator +
+                            "location");
                     break;
                 case COR:
-                    path = Paths.get(pathStr + File.separator + "course");
+                    path = Paths.get(pathStr + File.separator +
+                            "course");
                     break;
                 case REV:
-                    path = Paths.get(pathStr + File.separator + "review");
+                    path = Paths.get(pathStr + File.separator +
+                            "review");
                     break;
                 case QNA:
-                    path = Paths.get(pathStr + File.separator + "qna");
+                    path = Paths.get(pathStr + File.separator +
+                            "qna");
                     break;
                 case USER_PIC:
-                    path = Paths.get(pathStr + File.separator + "user_pic");
+                    path = Paths.get(pathStr + File.separator +
+                            "user_pic");
                     break;
-                default:
-                    path = Paths.get(pathStr + File.separator + "upload");
+                default :
+                    path = Paths.get(pathStr + File.separator +
+                            "upload");
                     break;
             }
         }
@@ -319,6 +350,7 @@ public class FileUploadService {
         if (!Files.exists(path)) {
             try {
                 log.info("Creating File path");
+                log.info("pathstr : " + pathStr);
                 log.info("-\t" + path.toAbsolutePath());
                 Files.createDirectory(path);
             } catch (IOException e) {
@@ -332,36 +364,51 @@ public class FileUploadService {
     }
 
     private String getURIPath(UploadPathType pathType) {
-        if ("Windows_NT".equals(System.getenv().get("OS"))) {
-            switch (pathType) {
-                case LOC:
-                    return "/image/location";
-                case COR:
-                    return "/image/course";
-                case REV:
-                    return "/image/review";
-                case QNA:
-                    return "/image/qna";
-                case USER_PIC:
-                    return "/image/user_pic";
-                default:
-                    return "/image/upload";
-            }
-        } else {
-            switch (pathType) {
-                case LOC:
-                    return "/img/location";
-                case COR:
-                    return "/img/course";
-                case REV:
-                    return "/img/review";
-                case QNA:
-                    return "/img/qna";
-                case USER_PIC:
-                    return "/img/user_pic";
-                default:
-                    return "/img/upload";
-            }
+//        if ("Windows_NT".equals(System.getenv().get("OS"))) {
+//            switch (pathType) {
+//                case LOC:
+//                    return "/image/location";
+//                case COR:
+//                    return "/image/course";
+//                case REV:
+//                    return "/image/review";
+//                case QNA:
+//                    return "/image/qna";
+//                case USER_PIC:
+//                    return "/image/user_pic";
+//                default:
+//                    return "/image/upload";
+//            }
+//        } else {
+//            switch (pathType) {
+//                case LOC:
+//                    return "/img/location";
+//                case COR:
+//                    return "/img/course";
+//                case REV:
+//                    return "/img/review";
+//                case QNA:
+//                    return "/img/qna";
+//                case USER_PIC:
+//                    return "/img/user_pic";
+//                default:
+//                    return "/img/upload";
+//            }
+//        }
+
+        switch (pathType) {
+            case LOC:
+                return "/image/location";
+            case COR:
+                return "/image/course";
+            case REV:
+                return "/image/review";
+            case QNA:
+                return "/image/qna";
+            case USER_PIC:
+                return "/image/user_pic";
+            default:
+                return "/image/upload";
         }
     }
 
