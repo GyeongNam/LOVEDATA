@@ -41,14 +41,14 @@
 						</div>
 						<div id="loc_collapse" class="collapse show" aria-labelledby="headingLoc" data-parent="#loc">
 							<div class="card-body center-pill">
-								<p><a href="/admin/dash" class="highlight-selected-text-menu">- 대시보드</a></p>
-								<p><a href="/admin/dash" class="highlight-not-selected-text-menu">유저 관리</a></p>
+								<p><a href="/admin/dash" class="highlight-selected-text-menu">대시보드</a></p>
+								<p><a href="/admin/user" class="highlight-not-selected-text-menu">유저 관리</a></p>
 								<p><a href="/admin/dash" class="highlight-not-selected-text-menu">메시지 발송</a></p>
 								<p><a href="/admin/dash" class="highlight-not-selected-text-menu">공지사항과 문의사항</a></p>
 								<p><a href="/admin/dash" class="highlight-not-selected-text-menu">upload 파일 캐시 삭제</a></p>
 <%--								<p><a href="/admin/loc_recommend" class="highlight-not-selected-text-menu">- 추천 장소(어드민)</a></p>--%>
 <%--								<p><a href="/admin/cor_recommend" class="highlight-not-selected-text-menu">- 추천 코스(어드민)</a></p>--%>
-								<p class="mb-0"><a href="" class="highlight-not-selected-text-menu">- 신고 센터</a></p>
+								<p class="mb-0"><a href="" class="highlight-not-selected-text-menu">신고 센터</a></p>
 							</div>
 						</div>
 					</div>

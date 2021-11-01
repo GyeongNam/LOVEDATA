@@ -27,6 +27,9 @@ public class Questions {
     @Column(name = "qu_user", nullable = false)
     private String qu_user;
 
+    @Column(name = "qu_type", nullable = false)
+    private String qu_type;
+
     @Column(name = "qu_text", nullable = false)
     private String qu_text;
 

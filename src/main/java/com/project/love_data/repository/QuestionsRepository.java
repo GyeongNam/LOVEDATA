@@ -12,6 +12,9 @@ public interface QuestionsRepository extends JpaRepository<Questions, Long> , Qu
     @Query(value = "select * from questions where qu_activation=true order by qu_no desc ", nativeQuery = true)
     Optional<List<Questions>> qu_find_All();
 
+    @Query(value = "select * from questions where qu_activation=true and qu_answer = false ", nativeQuery = true)
+    Optional<List<Questions>> qua_All();
+
     @Query(value = "select * from questions where qu_no = :no ", nativeQuery = true)
     Questions qu_find_no(String no);
 

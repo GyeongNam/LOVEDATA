@@ -138,6 +138,12 @@ public class UserService {
         return no;
     }
 
+    public List<User> finduserAll(){
+        List<User> item = userRepository.findAll();
+
+        return item;
+    }
+
 //    public LocationDTO LocDTO(Long loc_no) {
 //        Optional<Location> item = LocationRepository.findByAllUser_no(loc_no);
 //
