@@ -2,6 +2,9 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page session="false" %>
+<jsp:useBean id="defaultDateTimeFormatter" class="com.project.love_data.util.DefaultLocalDateTimeFormatter"></jsp:useBean>
+<jsp:useBean id="simpleDateTimeFormatter" class="com.project.love_data.util.SimpleLocalDateTimeFormatter"></jsp:useBean>
+
 <html>
 <head>
 	<meta charset="utf-8">
@@ -175,12 +178,22 @@
 				<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
 					<li class="nav-item" role="presentation">
 						<a class="nav-link active" id="recent-post-tab" data-toggle="pill" href="#recent-post" role="tab" aria-controls="recent-post" aria-selected="true">
-							최근 게시글
+							최근 장소, 코스
 						</a>
 					</li>
 					<li class="nav-item" role="presentation">
 						<a class="nav-link" id="hot-post-tab" data-toggle="pill" href="#hot-post" role="tab" aria-controls="hot-post" aria-selected="false">
-							핫한 게시글
+							인기 장소, 코스
+						</a>
+					</li>
+					<li class="nav-item" role="presentation">
+						<a class="nav-link" id="recent-comrev-tab" data-toggle="pill" href="#recent-comrev" role="tab" aria-controls="recent-comrev" aria-selected="true">
+							최근 댓글, 리뷰
+						</a>
+					</li>
+					<li class="nav-item" role="presentation">
+						<a class="nav-link" id="hot-comrev-tab" data-toggle="pill" href="#hot-comrev" role="tab" aria-controls="hot-comrev" aria-selected="false">
+							인기 댓글, 리뷰
 						</a>
 					</li>
 				</ul>
@@ -188,23 +201,22 @@
 					<div class="tab-pane fade show active" id="recent-post" role="tabpanel" aria-labelledby="recent-post-tab">
 						<span>test recent-post-tab</span>
 						<div class="row my-3">
-							<div class="col-10 d-flex justify-content-center align-items-md-center" id="searchResultArea">
-								<table class="table text-center" id="searchResultTable">
+							<div class="col-12 d-flex justify-content-center align-items-md-center">
+								<table class="table text-center" id="recentLocCorTable">
 									<thead>
 									<th scope="col">#</th>
+									<th scope="col">장소 번호</th>
 									<th scope="col">작성자</th>
 									<th scope="col">제목</th>
 									<th scope="col">
 										<div class="dropdown">
-											<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<button class="btn btn-secondary dropdown-toggle" type="button" id="recentLocCorDrop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 												구분
 											</button>
-											<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+											<div class="dropdown-menu" aria-labelledby="recentLocCorDrop">
 												<a class="dropdown-item">전체</a>
 												<a class="dropdown-item">장소</a>
 												<a class="dropdown-item">코스</a>
-												<a class="dropdown-item">댓글</a>
-												<a class="dropdown-item">리뷰</a>
 											</div>
 										</div>
 									</th>
@@ -212,16 +224,44 @@
 									<th scope="col">신고수</th>
 									<th scope="col">등록일</th>
 									</thead>
-									<tbody id="tableBody">
-									<tr onclick="location.href='/'" style="cursor:hand">
-										<td>1</td>
-										<td>닉네임</td>
-										<td>광화문</td>
-										<td>장소</td>
-										<td>0</td>
-										<td>0</td>
-										<td>2021-10-21 19:12:00</td>
-									</tr>
+									<tbody id="recentLocCorTableBody">
+									<c:choose>
+										<c:when test="${!empty recentLocCorListIndex}">
+											<c:forEach var="i" begin="0" end="${recentLocCorListIndex.size()-1}">
+												<c:choose>
+													<c:when test="${recentLocCorTypeList.get(i).equalsIgnoreCase('Loc')}">
+														<tr onclick="location.href='/service/loc_detail?locNo=${recentLocList.get(recentLocCorListIndex.get(i)).loc_no}'"
+														style="background: #ffdef2; cursor: pointer;">
+															<td>${i+1}</td>
+															<td>${recentLocList.get(recentLocCorListIndex.get(i)).loc_no}</td>
+															<td>${recentLocUserNicList.get(recentLocCorListIndex.get(i))}</td>
+															<td>${recentLocList.get(recentLocCorListIndex.get(i)).loc_name}</td>
+															<td>장소</td>
+															<td>${recentLocList.get(recentLocCorListIndex.get(i)).likeCount}</td>
+															<td>Null</td>
+															<td>${recentLocList.get(recentLocCorListIndex.get(i)).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}</td>
+														</tr>
+													</c:when>
+													<c:when test="${recentLocCorTypeList.get(i).equalsIgnoreCase('Cor')}">
+														<tr onclick="location.href='/service/cor_detail?corNo=${recentCorList.get(recentLocCorListIndex.get(i)).cor_no}'"
+														style="background: #e2eeff; cursor:pointer;">
+															<td>${i+1}</td>
+															<td>${recentCorList.get(recentLocCorListIndex.get(i)).cor_no}</td>
+															<td>${recentCorUserNicList.get(recentLocCorListIndex.get(i))}</td>
+															<td>${recentCorList.get(recentLocCorListIndex.get(i)).cor_name}</td>
+															<td>코스</td>
+															<td>${recentCorList.get(recentLocCorListIndex.get(i)).likeCount}</td>
+															<td>Null</td>
+															<td>${recentCorList.get(recentLocCorListIndex.get(i)).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}</td>
+														</tr>
+													</c:when>
+												</c:choose>
+											</c:forEach>
+										</c:when>
+										<c:otherwise>
+											<span>해당하는 정보가 없습니다.</span>
+										</c:otherwise>
+									</c:choose>
 									</tbody>
 								</table>
 							</div>
@@ -229,6 +269,78 @@
 					</div>
 					<div class="tab-pane fade" id="hot-post" role="tabpanel" aria-labelledby="hot-post-tab">
 						<span>test hot-post-tab</span>
+						<div class="row my-3">
+							<div class="col-12 d-flex justify-content-center align-items-md-center">
+								<table class="table text-center" id="hotLocCorTable">
+									<thead>
+									<th scope="col">#</th>
+									<th scope="col">장소 번호</th>
+									<th scope="col">작성자</th>
+									<th scope="col">제목</th>
+									<th scope="col">
+										<div class="dropdown">
+											<button class="btn btn-secondary dropdown-toggle" type="button" id="hotLocCorDrop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+												구분
+											</button>
+											<div class="dropdown-menu" aria-labelledby="hotLocCorDrop">
+												<a class="dropdown-item">전체</a>
+												<a class="dropdown-item">장소</a>
+												<a class="dropdown-item">코스</a>
+											</div>
+										</div>
+									</th>
+									<th scope="col">추천수</th>
+									<th scope="col">신고수</th>
+									<th scope="col">등록일</th>
+									</thead>
+									<tbody id="hotLocCorTableBody">
+									<c:choose>
+										<c:when test="${!empty hotLocCorListIndex}">
+											<c:forEach var="i" begin="0" end="${hotLocCorListIndex.size() - 1}">
+												<c:choose>
+													<c:when test="${hotLocCorTypeList.get(i).equalsIgnoreCase('Loc')}">
+														<tr onclick="location.href='/service/loc_detail?locNo=${hotLocList.get(hotLocCorListIndex.get(i)).loc_no}'"
+															style="background: #ffdef2; cursor: pointer;">
+															<td>${i+1}</td>
+															<td>${hotLocList.get(hotLocCorListIndex.get(i)).loc_no}</td>
+															<td>${hotLocUserNicList.get(hotLocCorListIndex.get(i))}</td>
+															<td>${hotLocList.get(hotLocCorListIndex.get(i)).loc_name}</td>
+															<td>장소</td>
+															<td>${hotLocList.get(hotLocCorListIndex.get(i)).likeCount}</td>
+															<td>Null</td>
+															<td>${hotLocList.get(hotLocCorListIndex.get(i)).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}</td>
+														</tr>
+													</c:when>
+													<c:when test="${hotLocCorTypeList.get(i).equalsIgnoreCase('Cor')}">
+														<tr onclick="location.href='/service/cor_detail?corNo=${hotCorList.get(hotLocCorListIndex.get(i)).cor_no}'"
+															style="background: #e2eeff; cursor:pointer;">
+															<td>${i+1}</td>
+															<td>${hotCorList.get(hotLocCorListIndex.get(i)).cor_no}</td>
+															<td>${hotCorUserNicList.get(hotLocCorListIndex.get(i))}</td>
+															<td>${hotCorList.get(hotLocCorListIndex.get(i)).cor_name}</td>
+															<td>코스</td>
+															<td>${hotCorList.get(hotLocCorListIndex.get(i)).likeCount}</td>
+															<td>Null</td>
+															<td>${hotCorList.get(hotLocCorListIndex.get(i)).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}</td>
+														</tr>
+													</c:when>
+												</c:choose>
+											</c:forEach>
+										</c:when>
+										<c:otherwise>
+											<span>해당하는 정보가 없습니다.</span>
+										</c:otherwise>
+									</c:choose>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="recent-comrev" role="tabpanel" aria-labelledby="recent-comrev-tab">
+						<span>test recent-revcom-tab</span>
+					</div>
+					<div class="tab-pane fade" id="hot-comrev" role="tabpanel" aria-labelledby="hot-comrev-tab">
+						<span>test hot-revcom-tab</span>
 					</div>
 				</div>
 			</div>

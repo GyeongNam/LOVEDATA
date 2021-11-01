@@ -6,6 +6,7 @@ import com.project.love_data.dto.LocationDTO;
 import com.project.love_data.dto.PageRequestDTO;
 import com.project.love_data.dto.PageResultDTO;
 import com.project.love_data.model.service.*;
+import com.project.love_data.model.user.User;
 import com.project.love_data.security.model.AuthUserModel;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,8 @@ public class AdminController {
     UserRecentLocService userRecentLocService;
     @Autowired
     ReviewService reviewService;
+    @Autowired
+    UserService userService;
 
     List<String> tagList = new ArrayList<>();
 
@@ -56,7 +59,7 @@ public class AdminController {
                                    Authentication authentication,
                                    Model model) {
         String pageNumber = request.getParameter("page");
-        if (pageNumber == null){
+        if (pageNumber == null) {
             pageNumber = "1";
         }
         int pageNum = Integer.parseInt(pageNumber);
@@ -81,7 +84,7 @@ public class AdminController {
             for (int i = 0; i < resultDTO.getDtoList().size(); i++) {
                 Long loc_no = resultDTO.getDtoList().get(i).getLoc_no();
                 UserLikeLoc item = userLikeLocService.selectByLocNoAndUserNo(loc_no, user_no);
-                if (item != null){
+                if (item != null) {
                     isLikedList.add(true);
                 } else {
                     isLikedList.add(false);
@@ -102,7 +105,7 @@ public class AdminController {
     }
 
     @GetMapping(value = "/loc_recommend/search")
-    public String getLocSearchValue(HttpServletRequest request, Model model){
+    public String getLocSearchValue(HttpServletRequest request, Model model) {
         String keyword = request.getParameter("keyword");
         String order = request.getParameter("sortOrder");
         String tagString = request.getParameter("tags");
@@ -126,23 +129,23 @@ public class AdminController {
             }
         }
 
-        switch (order){
-            case "LIKE_DES" :
+        switch (order) {
+            case "LIKE_DES":
                 // 좋아요 순
                 sortCriterion = SortCriterion.LIKE;
                 sortingOrder = SortingOrder.DES;
                 break;
-            case "DATE_DES" :
+            case "DATE_DES":
                 // 최신 등록순
                 sortCriterion = SortCriterion.DATE;
                 sortingOrder = SortingOrder.DES;
                 break;
-            case "DATE_ASC" :
+            case "DATE_ASC":
                 // 오래된 등록순
                 sortCriterion = SortCriterion.DATE;
                 sortingOrder = SortingOrder.ASC;
                 break;
-            case "VIEW_DES" :
+            case "VIEW_DES":
                 // 조회순
             default:
                 sortCriterion = SortCriterion.VIEW;
@@ -241,7 +244,7 @@ public class AdminController {
     }
 
     @GetMapping(value = "/cor_recommend/search")
-    public String getCorSearchValue(HttpServletRequest request, Model model){
+    public String getCorSearchValue(HttpServletRequest request, Model model) {
         String keyword = request.getParameter("keyword");
         String order = request.getParameter("sortOrder");
         String tagString = request.getParameter("tags");
@@ -265,23 +268,23 @@ public class AdminController {
             }
         }
 
-        switch (order){
-            case "LIKE_DES" :
+        switch (order) {
+            case "LIKE_DES":
                 // 좋아요 순
                 sortCriterion = SortCriterion.LIKE;
                 sortingOrder = SortingOrder.DES;
                 break;
-            case "DATE_DES" :
+            case "DATE_DES":
                 // 최신 등록순
                 sortCriterion = SortCriterion.DATE;
                 sortingOrder = SortingOrder.DES;
                 break;
-            case "DATE_ASC" :
+            case "DATE_ASC":
                 // 오래된 등록순
                 sortCriterion = SortCriterion.DATE;
                 sortingOrder = SortingOrder.ASC;
                 break;
-            case "VIEW_DES" :
+            case "VIEW_DES":
                 // 조회순
             default:
                 sortCriterion = SortCriterion.VIEW;
@@ -343,7 +346,207 @@ public class AdminController {
     }
 
     @GetMapping("/dash")
-    public String adminDashboadr() {
+    public String adminDashboadr(HttpServletRequest request, Model model) {
+        final int size = 20;
+        final int dateDuration = 2;
+        final int minLikeCount = 0;
+
+        List<Location> tempLocationList = new ArrayList<>();
+        List<LocationDTO> recentLocationList = new ArrayList<>();
+        List<LocationDTO> hotLocationList = new ArrayList<>();
+        List<Course> tempCourseList = new ArrayList<>();
+        List<CourseDTO> recentCourseList = new ArrayList<>();
+        List<CourseDTO> hotCourseList = new ArrayList<>();
+        List<Integer> recentLocCorListIndex = new ArrayList<>();
+        List<String> recentLocCorTypeList = new ArrayList<>();
+        List<Integer> hotLocCorListIndex = new ArrayList<>();
+        List<String> hotLocCorTypeList = new ArrayList<>();
+
+        List<String> recentLocUserNicList = new ArrayList<>();
+        List<String> hotLocUserNicList = new ArrayList<>();
+        List<String> recentCorUserNicList = new ArrayList<>();
+        List<String> hotCorUserNicList = new ArrayList<>();
+
+        // dateDuration 만큼의 일수 차이가 나고 size 만큼의 양을 가진  locationDTOList
+        tempLocationList = locService.recentLocationList(size, dateDuration);
+        for (Location entity : tempLocationList) {
+            recentLocationList.add(locService.entityToDto(entity));
+            User user = userService.select(entity.getUser_no());
+            if (user == null) {
+                recentLocUserNicList.add("삭제된 유저");
+            } else {
+                recentLocUserNicList.add(user.getUser_nic());
+            }
+        }
+
+        tempLocationList.clear();
+        tempLocationList = locService.hotLocationList(size, dateDuration, minLikeCount);
+        for (Location entity : tempLocationList) {
+            hotLocationList.add(locService.entityToDto(entity));
+            User user = userService.select(entity.getUser_no());
+            if (user == null) {
+                hotLocUserNicList.add("삭제된 유저");
+            } else {
+                hotLocUserNicList.add(user.getUser_nic());
+            }
+        }
+
+        tempCourseList = corService.recentCourseList(size, dateDuration);
+        for (Course entity : tempCourseList) {
+            recentCourseList.add(corService.entityToDto(entity));
+            User user = userService.select(entity.getUser_no());
+            if (user == null) {
+                recentCorUserNicList.add("삭제된 유저");
+            } else {
+                recentCorUserNicList.add(user.getUser_nic());
+            }
+        }
+
+        tempCourseList.clear();
+        tempCourseList = corService.hotCourseList(size, dateDuration, minLikeCount);
+        for (Course entity : tempCourseList) {
+            hotCourseList.add(corService.entityToDto(entity));
+            User user = userService.select(entity.getUser_no());
+            if (user == null) {
+                hotCorUserNicList.add("삭제된 유저");
+            } else {
+                hotCorUserNicList.add(user.getUser_nic());
+            }
+        }
+
+        int x = 0;
+        int y = 0;
+        boolean isLocIterFinished = false;
+        boolean isCorIterFinished = false;
+        for (int i = 0; i < 20; i++) {
+            if (!recentLocationList.isEmpty() && !recentCourseList.isEmpty()) {
+                if (!isLocIterFinished && !isCorIterFinished) {
+                    if (recentLocationList.get(x).getRegDate().isAfter(recentCourseList.get(y).getRegDate())) {
+                        recentLocCorListIndex.add(x++);
+                        recentLocCorTypeList.add("Loc");
+                        if (x >= recentLocationList.size()) {
+                            isLocIterFinished = true;
+                        }
+                    } else {
+                        recentLocCorListIndex.add(y++);
+                        recentLocCorTypeList.add("Cor");
+                        if (y >= recentCourseList.size()) {
+                            isCorIterFinished = true;
+                        }
+                    }
+                    log.info("RecentLocCorList #" + i + " : " + recentLocCorListIndex.get(i).getClass().getName());
+                } else {
+                    if (isLocIterFinished && isCorIterFinished) {
+                        break;
+                    } else if (isLocIterFinished && !isCorIterFinished) {
+                        recentLocCorListIndex.add(y++);
+                        recentLocCorTypeList.add("Cor");
+                        if (y >= recentCourseList.size()) {
+                            isCorIterFinished = true;
+                        }
+                    } else if (!isLocIterFinished && isCorIterFinished) {
+                        recentLocCorListIndex.add(x++);
+                        recentLocCorTypeList.add("Loc");
+                        if (x >= recentLocationList.size()) {
+                            isLocIterFinished = true;
+                        }
+                    }
+                }
+            } else {
+                if (isLocIterFinished && isCorIterFinished) {
+                    break;
+                } else if (recentLocationList.isEmpty()) {
+                    isLocIterFinished = true;
+                    recentLocCorListIndex.add(y++);
+                    recentLocCorTypeList.add("Cor");
+                    if (y >= recentCourseList.size()) {
+                        isCorIterFinished = true;
+                    }
+                } else if (recentCourseList.isEmpty()) {
+                    isCorIterFinished = true;
+                    recentLocCorListIndex.add(x++);
+                    recentLocCorTypeList.add("Loc");
+                    if (x >= recentLocationList.size()) {
+                        isLocIterFinished = true;
+                    }
+                }
+            }
+        }
+
+        x = 0;
+        y = 0;
+        isLocIterFinished = false;
+        isCorIterFinished = false;
+        for (int i = 0; i < 20; i++) {
+            if (!hotLocationList.isEmpty() && !hotCourseList.isEmpty()) {
+                if (!isLocIterFinished && !isCorIterFinished) {
+                    // 추천수가 같으면 코스가 우선
+                    if (hotLocationList.get(x).getLikeCount() <= hotCourseList.get(y).getLikeCount()) {
+                        hotLocCorListIndex.add(x++);
+                        hotLocCorTypeList.add("Loc");
+                        if (x >= hotLocationList.size()) {
+                            isLocIterFinished = true;
+                        }
+                    } else {
+                        hotLocCorListIndex.add(y++);
+                        hotLocCorTypeList.add("Cor");
+                        if (y >= hotCourseList.size()) {
+                            isCorIterFinished = true;
+                        }
+                    }
+                } else {
+                    if (isLocIterFinished && isCorIterFinished) {
+                        break;
+                    } else if (isLocIterFinished && !isCorIterFinished) {
+                        hotLocCorListIndex.add(y++);
+                        hotLocCorTypeList.add("Cor");
+                        if (y >= hotCourseList.size()) {
+                            isCorIterFinished = true;
+                        }
+                    } else if (!isLocIterFinished && isCorIterFinished) {
+                        hotLocCorListIndex.add(x++);
+                        hotLocCorTypeList.add("Loc");
+                        if (x >= hotLocationList.size()) {
+                            isLocIterFinished = true;
+                        }
+                    }
+                }
+            } else {
+                if (isLocIterFinished && isCorIterFinished) {
+                    break;
+                } else if (hotLocationList.isEmpty()) {
+                    isLocIterFinished = true;
+                    hotLocCorListIndex.add(y++);
+                    hotLocCorTypeList.add("Cor");
+                    if (y >= hotCourseList.size()) {
+                        isCorIterFinished = true;
+                    }
+                } else if (hotCourseList.isEmpty()) {
+                    isCorIterFinished = true;
+                    hotLocCorListIndex.add(x++);
+                    hotLocCorTypeList.add("Loc");
+                    if (x >= hotLocationList.size()) {
+                        isLocIterFinished = true;
+                    }
+                }
+            }
+        }
+
+        model.addAttribute("recentLocList", recentLocationList);
+        model.addAttribute("hotLocList", hotLocationList);
+        model.addAttribute("recentCorList", recentCourseList);
+        model.addAttribute("hotCorList", hotCourseList);
+
+        model.addAttribute("recentLocUserNicList", recentLocUserNicList);
+        model.addAttribute("hotLocUserNicList", hotLocUserNicList);
+        model.addAttribute("recentCorUserNicList", recentCorUserNicList);
+        model.addAttribute("hotCorUserNicList", hotCorUserNicList);
+
+        model.addAttribute("recentLocCorListIndex", recentLocCorListIndex);
+        model.addAttribute("recentLocCorTypeList", recentLocCorTypeList);
+        model.addAttribute("hotLocCorListIndex", hotLocCorListIndex);
+        model.addAttribute("hotLocCorTypeList", hotLocCorTypeList);
+
         return "/admin/admin_dash";
     }
 }
