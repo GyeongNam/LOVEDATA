@@ -1,6 +1,7 @@
 package com.project.love_data.repository;
 
 import com.project.love_data.model.service.Comment;
+import com.project.love_data.model.service.Location;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -33,6 +34,14 @@ public interface CommentRepository extends JpaRepository<Comment, Long>,
     // 베스트 댓글로 불러오는 갯수는 최대 3개이고, 최소 추천수 3개 이상이어야함
     @Query(value = "SELECT * FROM comment c WHERE c.location_loc_no = :loc_no AND c.likecount > 3 ORDER BY c.likecount desc limit 3", nativeQuery = true)
     Optional<List<Comment>> getBestComment(@Param("loc_no") Long locNo);
+
+    // 어드민 대쉬보드 최근 댓글
+    @Query(value = "SELECT * FROM comment c WHERE datediff(now(), c.regdate) <= :date ORDER BY c.regdate desc limit :count", nativeQuery = true)
+    Optional<List<Comment>> getRecentCommentsByCountAndDateDuration(@Param("count")int count, @Param("date") int dateDuration);
+
+    // 어드민 대쉬보드 인기 댓글
+    @Query(value = "SELECT * FROM comment c WHERE datediff(now(), c.regdate) <= :date AND c.likecount >= :min_like ORDER BY c.likecount desc limit :count", nativeQuery = true)
+    Optional<List<Comment>> getHotCommentsByCountAndDateDuration(@Param("count")int count, @Param("date") int dateDuration, @Param("min_like") int minLikeCount);
 
     @Modifying
     @Query(value = "DELETE FROM comment WHERE cmt_no = :cmt_no", nativeQuery = true)

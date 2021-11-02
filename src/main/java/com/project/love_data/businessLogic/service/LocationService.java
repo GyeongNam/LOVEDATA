@@ -629,8 +629,8 @@ public class LocationService {
             return null;
         }
 
-        if (dateDuration <= 0) {
-//            log.info("Date duration is below 0. Please input value above 1");
+        if (dateDuration < 0) {
+//            log.info("Date duration is under 0. Please input value above 0);
             return null;
         }
 

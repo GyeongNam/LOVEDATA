@@ -371,4 +371,41 @@ public class ReviewService {
             return null;
         }
     }
+
+    public List<Review> recentReviewList(int count, int dateDuration) {
+        if (count <= 0) {
+//            log.info("Count is below 0. Please input value above 1");
+            return null;
+        }
+
+        if (dateDuration < 0) {
+//            log.info("Date duration is below 0. Please input value above 0");
+            return null;
+        }
+
+        Optional<List<Review>> items = repository.getRecentReviewsByCountAndDateDuration(count, dateDuration);
+
+        return items.orElse(null);
+    }
+
+    public List<Review> hotReviewList(int count, int dateDuration, int minLikeCount) {
+        if (count <= 0) {
+//            log.info("Count is below 0. Please input value above 1");
+            return null;
+        }
+
+        if (dateDuration <= 0) {
+//            log.info("Date duration is below 0. Please input value above 1");
+            return null;
+        }
+
+        if (minLikeCount <= 0) {
+//            log.info("minLikeCount Should above at least 1. Change minLike Count to 1");
+            minLikeCount = 1;
+        }
+
+        Optional<List<Review>> items = repository.getHotReviewsByCountAndDateDuration(count, dateDuration, minLikeCount);
+
+        return items.orElse(null);
+    }
 }

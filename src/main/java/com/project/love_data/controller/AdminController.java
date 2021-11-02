@@ -1,10 +1,7 @@
 package com.project.love_data.controller;
 
 import com.project.love_data.businessLogic.service.*;
-import com.project.love_data.dto.CourseDTO;
-import com.project.love_data.dto.LocationDTO;
-import com.project.love_data.dto.PageRequestDTO;
-import com.project.love_data.dto.PageResultDTO;
+import com.project.love_data.dto.*;
 import com.project.love_data.model.service.*;
 import com.project.love_data.model.user.User;
 import com.project.love_data.security.model.AuthUserModel;
@@ -40,6 +37,8 @@ public class AdminController {
     ReviewService reviewService;
     @Autowired
     UserService userService;
+    @Autowired
+    CommentService comService;
 
     List<String> tagList = new ArrayList<>();
 
@@ -348,7 +347,7 @@ public class AdminController {
     @GetMapping("/dash")
     public String adminDashboadr(HttpServletRequest request, Model model) {
         final int size = 20;
-        final int dateDuration = 2;
+        final int dateDuration = 30;
         final int minLikeCount = 0;
 
         List<Location> tempLocationList = new ArrayList<>();
@@ -434,7 +433,6 @@ public class AdminController {
                             isCorIterFinished = true;
                         }
                     }
-                    log.info("RecentLocCorList #" + i + " : " + recentLocCorListIndex.get(i).getClass().getName());
                 } else {
                     if (isLocIterFinished && isCorIterFinished) {
                         break;
@@ -454,6 +452,8 @@ public class AdminController {
                 }
             } else {
                 if (isLocIterFinished && isCorIterFinished) {
+                    break;
+                } else if (recentLocationList.isEmpty() && recentCourseList.isEmpty()) {
                     break;
                 } else if (recentLocationList.isEmpty()) {
                     isLocIterFinished = true;
@@ -481,7 +481,7 @@ public class AdminController {
             if (!hotLocationList.isEmpty() && !hotCourseList.isEmpty()) {
                 if (!isLocIterFinished && !isCorIterFinished) {
                     // 추천수가 같으면 코스가 우선
-                    if (hotLocationList.get(x).getLikeCount() <= hotCourseList.get(y).getLikeCount()) {
+                    if (hotLocationList.get(x).getLikeCount() > hotCourseList.get(y).getLikeCount()) {
                         hotLocCorListIndex.add(x++);
                         hotLocCorTypeList.add("Loc");
                         if (x >= hotLocationList.size()) {
@@ -513,6 +513,8 @@ public class AdminController {
                 }
             } else {
                 if (isLocIterFinished && isCorIterFinished) {
+                    break;
+                } else if (hotLocationList.isEmpty() && hotCourseList.isEmpty()) {
                     break;
                 } else if (hotLocationList.isEmpty()) {
                     isLocIterFinished = true;
@@ -546,6 +548,237 @@ public class AdminController {
         model.addAttribute("recentLocCorTypeList", recentLocCorTypeList);
         model.addAttribute("hotLocCorListIndex", hotLocCorListIndex);
         model.addAttribute("hotLocCorTypeList", hotLocCorTypeList);
+
+        List<Comment> tempCommentList = new ArrayList<>();
+        List<CommentDTO> recentCommentList = new ArrayList<>();
+        List<CommentDTO> hotCommentList = new ArrayList<>();
+        List<Review> tempReviewList = new ArrayList<>();
+        List<ReviewDTO> recentReviewList = new ArrayList<>();
+        List<ReviewDTO> hotReviewList = new ArrayList<>();
+        List<Integer> recentComRevListIndex = new ArrayList<>();
+        List<String> recentComRevTypeList = new ArrayList<>();
+        List<Integer> hotComRevListIndex = new ArrayList<>();
+        List<String> hotComRevTypeList = new ArrayList<>();
+
+        List<String> recentComUserNicList = new ArrayList<>();
+        List<String> hotComUserNicList = new ArrayList<>();
+        List<String> recentRevUserNicList = new ArrayList<>();
+        List<String> hotRevUserNicList = new ArrayList<>();
+
+        // dateDuration 만큼의 일수 차이가 나고 size 만큼의 양을 가진  commentDTOList
+        tempCommentList = comService.recentCommentList(size, dateDuration);
+        for (Comment entity : tempCommentList) {
+            recentCommentList.add(comService.entityToDto(entity));
+            User user = userService.select(entity.getUser().getUser_no());
+            if (user == null) {
+                recentComUserNicList.add("삭제된 유저");
+            } else {
+                recentComUserNicList.add(user.getUser_nic());
+            }
+        }
+
+        tempCommentList.clear();
+        tempCommentList = comService.hotCommentList(size, dateDuration, minLikeCount);
+        for (Comment entity : tempCommentList) {
+            hotCommentList.add(comService.entityToDto(entity));
+            User user = userService.select(entity.getUser().getUser_no());
+            if (user == null) {
+                hotComUserNicList.add("삭제된 유저");
+            } else {
+                hotComUserNicList.add(user.getUser_nic());
+            }
+        }
+
+        tempReviewList = reviewService.recentReviewList(size, dateDuration);
+        for (Review entity : tempReviewList) {
+            recentReviewList.add(reviewService.entityToDto(entity));
+            User user = userService.select(entity.getUser_no());
+            if (user == null) {
+                recentRevUserNicList.add("삭제된 유저");
+            } else {
+                recentRevUserNicList.add(user.getUser_nic());
+            }
+        }
+
+        tempReviewList.clear();
+        tempReviewList = reviewService.hotReviewList(size, dateDuration, minLikeCount);
+        for (Review entity : tempReviewList) {
+            hotReviewList.add(reviewService.entityToDto(entity));
+            User user = userService.select(entity.getUser_no());
+            if (user == null) {
+                hotRevUserNicList.add("삭제된 유저");
+            } else {
+                hotRevUserNicList.add(user.getUser_nic());
+            }
+        }
+
+        x = 0;
+        y = 0;
+        boolean isComIterFinished = false;
+        boolean isRevIterFinished = false;
+        for (int i = 0; i < 20; i++) {
+            if (!recentCommentList.isEmpty() && !recentReviewList.isEmpty()) {
+                if (!isComIterFinished && !isRevIterFinished) {
+                    if (recentCommentList.get(x).getRegDate().isAfter(recentReviewList.get(y).getRegDate())) {
+                        recentComRevListIndex.add(x++);
+                        recentComRevTypeList.add("Com");
+                        if (x >= recentCommentList.size()) {
+                            isComIterFinished = true;
+                        }
+                    } else {
+                        recentComRevListIndex.add(y++);
+                        recentComRevTypeList.add("Rev");
+                        if (y >= recentReviewList.size()) {
+                            isRevIterFinished = true;
+                        }
+                    }
+                } else {
+                    if (isComIterFinished && isRevIterFinished) {
+                        break;
+                    } else if (isComIterFinished && !isRevIterFinished) {
+                        recentComRevListIndex.add(y++);
+                        recentComRevTypeList.add("Rev");
+                        if (y >= recentReviewList.size()) {
+                            isRevIterFinished = true;
+                        }
+                    } else if (!isComIterFinished && isRevIterFinished) {
+                        recentComRevListIndex.add(x++);
+                        recentComRevTypeList.add("Com");
+                        if (x >= recentCommentList.size()) {
+                            isComIterFinished = true;
+                        }
+                    }
+                }
+            } else {
+                if (isComIterFinished && isRevIterFinished) {
+                    break;
+                } else if (recentCommentList.isEmpty() && recentReviewList.isEmpty()) {
+                    break;
+                } else if (recentCommentList.isEmpty()) {
+                    isComIterFinished = true;
+                    recentComRevListIndex.add(y++);
+                    recentComRevTypeList.add("Rev");
+                    if (y >= recentReviewList.size()) {
+                        isRevIterFinished = true;
+                    }
+                } else if (recentReviewList.isEmpty()) {
+                    isRevIterFinished = true;
+                    recentComRevListIndex.add(x++);
+                    recentComRevTypeList.add("Com");
+                    if (x >= recentCommentList.size()) {
+                        isComIterFinished = true;
+                    }
+                }
+            }
+        }
+
+        x = 0;
+        y = 0;
+        isComIterFinished = false;
+        isRevIterFinished = false;
+        for (int i = 0; i < 20; i++) {
+            if (!hotCommentList.isEmpty() && !hotReviewList.isEmpty()) {
+                if (!isComIterFinished && !isRevIterFinished) {
+                    // 추천수가 같으면 리뷰가 우선
+                    if (hotCommentList.get(x).getLikeCount() > hotReviewList.get(y).getRev_like()) {
+                        hotComRevListIndex.add(x++);
+                        hotComRevTypeList.add("Com");
+                        if (x >= hotCommentList.size()) {
+                            isComIterFinished = true;
+                        }
+                    } else {
+                        hotComRevListIndex.add(y++);
+                        hotComRevTypeList.add("Rev");
+                        if (y >= hotReviewList.size()) {
+                            isRevIterFinished = true;
+                        }
+                    }
+                } else {
+                    if (isComIterFinished && isRevIterFinished) {
+                        break;
+                    } else if (isComIterFinished && !isRevIterFinished) {
+                        hotComRevListIndex.add(y++);
+                        hotComRevTypeList.add("Rev");
+                        if (y >= hotReviewList.size()) {
+                            isRevIterFinished = true;
+                        }
+                    } else if (!isComIterFinished && isRevIterFinished) {
+                        hotComRevListIndex.add(x++);
+                        hotComRevTypeList.add("Com");
+                        if (x >= hotCommentList.size()) {
+                            isComIterFinished = true;
+                        }
+                    }
+                }
+            } else {
+                if (isComIterFinished && isRevIterFinished) {
+                    break;
+                } else if (hotCommentList.isEmpty() && hotReviewList.isEmpty()) {
+                    break;
+                }else if (hotCommentList.isEmpty()) {
+                    isComIterFinished = true;
+                    hotComRevListIndex.add(y++);
+                    hotComRevTypeList.add("Rev");
+                    if (y >= hotReviewList.size()) {
+                        isRevIterFinished = true;
+                    }
+                } else if (hotReviewList.isEmpty()) {
+                    isRevIterFinished = true;
+                    hotComRevListIndex.add(x++);
+                    hotComRevTypeList.add("Com");
+                    if (x >= hotCommentList.size()) {
+                        isComIterFinished = true;
+                    }
+                }
+            }
+        }
+
+        model.addAttribute("recentComList", recentCommentList);
+        model.addAttribute("hotComList", hotCommentList);
+        model.addAttribute("recentRevList", recentReviewList);
+        model.addAttribute("hotRevList", hotReviewList);
+
+        model.addAttribute("recentComUserNicList", recentComUserNicList);
+        model.addAttribute("hotComUserNicList", hotComUserNicList);
+        model.addAttribute("recentRevUserNicList", recentRevUserNicList);
+        model.addAttribute("hotRevUserNicList", hotRevUserNicList);
+
+        model.addAttribute("recentComRevListIndex", recentComRevListIndex);
+        model.addAttribute("recentComRevTypeList", recentComRevTypeList);
+        model.addAttribute("hotComRevListIndex", hotComRevListIndex);
+        model.addAttribute("hotComRevTypeList", hotComRevTypeList);
+
+        tempLocationList.clear();
+        tempCourseList.clear();
+        tempCommentList.clear();
+        tempReviewList.clear();
+
+        tempLocationList = locService.recentLocationList(Integer.MAX_VALUE, 0);
+        tempCourseList = corService.recentCourseList(Integer.MAX_VALUE, 0);
+        tempCommentList = comService.recentCommentList(Integer.MAX_VALUE, 0);
+        tempReviewList = reviewService.recentReviewList(Integer.MAX_VALUE, 0);
+
+        long todayLocCorCount = 0;
+        long todayComRevCount = 0;
+
+        if (tempLocationList != null) {
+            todayLocCorCount += tempLocationList.size();
+        }
+
+        if (tempCourseList != null) {
+            todayLocCorCount += tempCourseList.size();
+        }
+
+        if (tempCommentList != null) {
+            todayComRevCount += tempCommentList.size();
+        }
+
+        if (tempReviewList != null) {
+            todayComRevCount += tempReviewList.size();
+        }
+
+        model.addAttribute("todayLocCorCount", todayLocCorCount);
+        model.addAttribute("todayComRevCount", todayComRevCount);
 
         return "/admin/admin_dash";
     }

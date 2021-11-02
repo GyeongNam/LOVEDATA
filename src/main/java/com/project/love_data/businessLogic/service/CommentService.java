@@ -468,4 +468,41 @@ public class CommentService {
             return null;
         }
     }
+
+    public List<Comment> recentCommentList(int count, int dateDuration) {
+        if (count <= 0) {
+//            log.info("Count is below 0. Please input value above 1");
+            return null;
+        }
+
+        if (dateDuration < 0) {
+//            log.info("Date duration is below 0. Please input value above 0");
+            return null;
+        }
+
+        Optional<List<Comment>> items = cmtRepository.getRecentCommentsByCountAndDateDuration(count, dateDuration);
+
+        return items.orElse(null);
+    }
+
+    public List<Comment> hotCommentList(int count, int dateDuration, int minLikeCount) {
+        if (count <= 0) {
+//            log.info("Count is below 0. Please input value above 1");
+            return null;
+        }
+
+        if (dateDuration <= 0) {
+//            log.info("Date duration is below 0. Please input value above 1");
+            return null;
+        }
+
+        if (minLikeCount <= 0) {
+//            log.info("minLikeCount Should above at least 1. Change minLike Count to 1");
+            minLikeCount = 1;
+        }
+
+        Optional<List<Comment>> items = cmtRepository.getHotCommentsByCountAndDateDuration(count, dateDuration, minLikeCount);
+
+        return items.orElse(null);
+    }
 }
