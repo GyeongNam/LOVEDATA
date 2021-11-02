@@ -35,6 +35,14 @@ public interface ReviewRepository extends JpaRepository<Review, Long>,
     @Query(value = "SELECT * FROM review r WHERE r.cor_no = :cor_no AND r.rev_like > 3 ORDER BY r.rev_like desc limit 3", nativeQuery = true)
     Optional<List<Review>> getBestReview(@Param("cor_no") Long corNo);
 
+    // 어드민 대쉬보드 최근 댓글
+    @Query(value = "SELECT * FROM review r WHERE datediff(now(), r.regdate) <= :date ORDER BY r.regdate desc limit :count", nativeQuery = true)
+    Optional<List<Review>> getRecentReviewsByCountAndDateDuration(@Param("count")int count, @Param("date") int dateDuration);
+
+    // 어드민 대쉬보드 인기 댓글
+    @Query(value = "SELECT * FROM review r WHERE datediff(now(), r.regdate) <= :date AND r.rev_like >= :min_like ORDER BY r.rev_like desc limit :count", nativeQuery = true)
+    Optional<List<Review>> getHotReviewsByCountAndDateDuration(@Param("count")int count, @Param("date") int dateDuration, @Param("min_like") int minLikeCount);
+
     @Modifying
     @Query(value = "DELETE FROM review WHERE rev_no = :rev_no", nativeQuery = true)
     @Transactional

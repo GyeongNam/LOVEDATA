@@ -40,6 +40,14 @@ public interface CourseRepository extends JpaRepository<Course, Long>
     @Query(value = "SELECT * FROM course c WHERE c.user_no = :user_no", nativeQuery = true)
     Optional<List<Course>> findByAllUser_no(@Param("user_no")Long userNo);
 
+    // 어드민 대쉬보드 최근 코스
+    @Query(value = "SELECT * FROM course c WHERE datediff(now(), c.regdate) <= :date ORDER BY c.regdate desc limit :count", nativeQuery = true)
+    Optional<List<Course>> getRecentCoursesByCountAndDateDuration(@Param("count")int count, @Param("date") int dateDuration);
+
+    // 어드민 대쉬보드 인기 코스
+    @Query(value = "SELECT * FROM course c WHERE datediff(now(), c.regdate) <= :date AND c.likecount >= :min_like ORDER BY c.likecount desc limit :count", nativeQuery = true)
+    Optional<List<Course>> getHotCoursesByCountAndDateDuration(@Param("count")int count, @Param("date") int dateDuration, @Param("min_like") int minLikeCount);
+
 //    @Query(value = "SELECT DISTINCT ls.course_cor_no from course_tag_set ls WHERE ls.tag_set LIKE :tag")
 //    Long findCourseNoByTag(@Param("tag")String tag);
 

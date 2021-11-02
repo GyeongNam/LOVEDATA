@@ -7,6 +7,7 @@ import com.project.love_data.dto.PageResultDTO;
 import com.project.love_data.model.resource.CourseImage;
 import com.project.love_data.model.service.CorLocMapper;
 import com.project.love_data.model.service.Course;
+import com.project.love_data.model.service.Location;
 import com.project.love_data.model.service.QCourse;
 import com.project.love_data.repository.CourseImageRepository;
 import com.project.love_data.repository.CourseRepository;
@@ -549,5 +550,42 @@ public class CourseService {
         course.setThumbnail(corImgDTO.getImg_url());
 
         update(course);
+    }
+
+    public List<Course> recentCourseList(int count, int dateDuration) {
+        if (count <= 0) {
+//            log.info("Count is below 0. Please input value above 1");
+            return null;
+        }
+
+        if (dateDuration < 0) {
+//            log.info("Date duration is below 0. Please input value above 0");
+            return null;
+        }
+
+        Optional<List<Course>> items = repository.getRecentCoursesByCountAndDateDuration(count, dateDuration);
+
+        return items.orElse(null);
+    }
+
+    public List<Course> hotCourseList(int count, int dateDuration, int minLikeCount) {
+        if (count <= 0) {
+//            log.info("Count is below 0. Please input value above 1");
+            return null;
+        }
+
+        if (dateDuration <= 0) {
+//            log.info("Date duration is below 0. Please input value above 1");
+            return null;
+        }
+
+        if (minLikeCount <= 0) {
+//            log.info("minLikeCount Should above at least 1. Change minLike Count to 1");
+            minLikeCount = 1;
+        }
+
+        Optional<List<Course>> items = repository.getHotCoursesByCountAndDateDuration(count, dateDuration, minLikeCount);
+
+        return items.orElse(null);
     }
 }

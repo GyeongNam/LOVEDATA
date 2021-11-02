@@ -1,5 +1,6 @@
 package com.project.love_data.repository;
 
+import com.project.love_data.model.service.Comment;
 import com.project.love_data.model.service.Location;
 import com.project.love_data.model.user.User;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -53,6 +54,14 @@ public interface LocationRepository extends JpaRepository<Location, Long>
 
     @Query(value = "SELECT * from location l WHERE  l.loc_uuid = :loc_uuid AND l.is_deleted = false", nativeQuery = true)
     Optional<Location> findLiveLocByUUID(@Param("loc_uuid") String loc_uuid);
+
+    // 어드민 대쉬보드 최근 장소
+    @Query(value = "SELECT * FROM location l WHERE datediff(now(), l.regdate) <= :date ORDER BY l.regdate desc limit :count", nativeQuery = true)
+    Optional<List<Location>> getRecentLocationsByCountAndDateDuration(@Param("count")int count, @Param("date") int dateDuration);
+
+    // 어드민 대쉬보드 인기 장소
+    @Query(value = "SELECT * FROM location l WHERE datediff(now(), l.regdate) <= :date AND l.likecount >= :min_like ORDER BY l.likecount desc limit :count", nativeQuery = true)
+    Optional<List<Location>> getHotLocationsByCountAndDateDuration(@Param("count")int count, @Param("date") int dateDuration, @Param("min_like") int minLikeCount);
 
 //    @Query(value = "SELECT DISTINCT ls.location_loc_no from location_tag_set ls WHERE ls.tag_set LIKE :tag")
 //    Long findLocationNoByTag(@Param("tag")String tag);

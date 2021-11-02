@@ -36,7 +36,7 @@
         <div>
         </div>
         <p>
-            <label for="username" class="sr-only">Username</label>
+            <label for="username" class="sr-only">Email</label>
             <input type="text" id="username" name="username" class="form-control" placeholder="이메일" required autofocus>
         </p>
         <p>

@@ -38,10 +38,10 @@ public class LocationService {
 
         repository.save(entity);
 
-        for (int i = 0; i < filePath.size(); i+=2) {
+        for (int i = 0; i < filePath.size(); i += 2) {
             // filePath.get(i)  ==  Parent Folder (URI)
             // filePath.get(i+1)  ==  fileNames
-            LocationImage locImage = imgService.getImageEntity(reqParam.get("user_no"), filePath.get(i), filePath.get(i+1), entity, i/2);
+            LocationImage locImage = imgService.getImageEntity(reqParam.get("user_no"), filePath.get(i), filePath.get(i + 1), entity, i / 2);
             LocationImage imgEntity = imgService.update(locImage);
             imgList.add(imgEntity);
         }
@@ -226,7 +226,7 @@ public class LocationService {
         boolean flagASC = false;
 
         Pageable pageable;
-        switch (requestDTO.getSortingOrder()){
+        switch (requestDTO.getSortingOrder()) {
             case ASC:
                 flagASC = true;
                 break;
@@ -235,19 +235,19 @@ public class LocationService {
                 break;
         }
 
-        switch (requestDTO.getSortCriterion()){
+        switch (requestDTO.getSortCriterion()) {
             case DATE:
                 if (flagASC) {
                     pageable = requestDTO.getPageable(Sort.by("regDate").ascending());
                 } else {
-                    pageable =  requestDTO.getPageable(Sort.by("regDate").descending());
+                    pageable = requestDTO.getPageable(Sort.by("regDate").descending());
                 }
                 break;
             case LIKE:
                 if (flagASC) {
                     pageable = requestDTO.getPageable(Sort.by("likeCount").ascending());
                 } else {
-                    pageable =  requestDTO.getPageable(Sort.by("likeCount").descending());
+                    pageable = requestDTO.getPageable(Sort.by("likeCount").descending());
                 }
                 break;
             case VIEW:
@@ -297,7 +297,7 @@ public class LocationService {
         QLocation qLocation = QLocation.location;
         boolean isContainDeletedLocation = false;
 
-        switch (requestDTO.getSearchType()){
+        switch (requestDTO.getSearchType()) {
             case DISABLED_USER:
                 isContainDeletedLocation = true;
             case USER:
@@ -323,7 +323,7 @@ public class LocationService {
                 }
                 break;
             case DISABLED_TAG:
-               isContainDeletedLocation = true;
+                isContainDeletedLocation = true;
             case TAG:
                 for (String s : tagList) {
                     conditionBuilder.and(qLocation.tagSet.contains(s));
@@ -341,7 +341,7 @@ public class LocationService {
         }
     }
 
-    public List<Location> locationNameSearch(String loc_name){
+    public List<Location> locationNameSearch(String loc_name) {
         return locationNameSearch(loc_name, MatchOption.CONTAIN);
     }
 
@@ -473,7 +473,7 @@ public class LocationService {
     public void rollback(Long locNo) {
         Location loc = selectLoc(locNo);
 
-        if (loc.is_deleted()){
+        if (loc.is_deleted()) {
             loc = enableLocation(loc);
             List<LocationImage> locImageList = imgService.getLastDeletedImageList(locNo);
             for (LocationImage image : locImageList) {
@@ -485,7 +485,7 @@ public class LocationService {
     public void rollback(String uuid) {
         Location loc = selectLoc(uuid);
 
-        if (loc.is_deleted()){
+        if (loc.is_deleted()) {
             loc = enableLocation(loc);
             List<LocationImage> locImageList = imgService.getLastDeletedImageList(imgService.getFirstIndexOfLastDeletedLocationImage(loc.getLoc_no()));
             for (LocationImage image : locImageList) {
@@ -545,7 +545,7 @@ public class LocationService {
             entity.addLocTag(item);
         }
 
-        for (int i = 0; i < filePath.size(); i+=2) {
+        for (int i = 0; i < filePath.size(); i += 2) {
             // filePath.get(0)  ==  Parent Folder (URI)
             // filePath.get(i)  ==  fileNames
 //            if (dto.getImgList().size() > i) {
@@ -560,9 +560,9 @@ public class LocationService {
 //            log.info(filePath.get(i));
             // Todo 현재는 기존에 이미 등록되어 있던 이미지는 삭제하고, 새로 등록하도록 했음
             // 나중에는 기존에 이미  등록되어 있던 이미지를 삭제하지 않고, 업데이트해서 등록하도록 바꿀것
-            imgService.delete(filePath.get(i+1));
+            imgService.delete(filePath.get(i + 1));
 
-            LocationImage locImage = imgService.getImageEntity(reqParam.get("user_no"), filePath.get(i), filePath.get(i+1), entity, i/2);
+            LocationImage locImage = imgService.getImageEntity(reqParam.get("user_no"), filePath.get(i), filePath.get(i + 1), entity, i / 2);
             LocationImage imgEntity = imgService.update(locImage);
             imgList.add(imgEntity);
         }
@@ -611,5 +611,52 @@ public class LocationService {
         update(loc);
 
         return selectLoc(loc.getLoc_no());
+    }
+
+    /**
+     * This method returns Location List of given count and dateDuration.
+     * Locations that are returns Subtract now and location.
+     * So it should be Now() - Location.regDate = dateDuration
+     * Also Limit the result amount by count
+     *
+     * @param count        How much result amount you want
+     * @param dateDuration How much date diff you want
+     * @return List of Locations or if is invalid returns null
+     */
+    public List<Location> recentLocationList(int count, int dateDuration) {
+        if (count <= 0) {
+//            log.info("Count is below 0. Please input value above 1");
+            return null;
+        }
+
+        if (dateDuration < 0) {
+//            log.info("Date duration is under 0. Please input value above 0);
+            return null;
+        }
+
+        Optional<List<Location>> items = repository.getRecentLocationsByCountAndDateDuration(count, dateDuration);
+
+        return items.orElse(null);
+    }
+
+    public List<Location> hotLocationList(int count, int dateDuration, int minLikeCount) {
+        if (count <= 0) {
+//            log.info("Count is below 0. Please input value above 1");
+            return null;
+        }
+
+        if (dateDuration <= 0) {
+//            log.info("Date duration is below 0. Please input value above 1");
+            return null;
+        }
+
+        if (minLikeCount <= 0) {
+//            log.info("minLikeCount Should above at least 1. Change minLike Count to 1");
+            minLikeCount = 1;
+        }
+
+        Optional<List<Location>> items = repository.getHotLocationsByCountAndDateDuration(count, dateDuration, minLikeCount);
+
+        return items.orElse(null);
     }
 }
