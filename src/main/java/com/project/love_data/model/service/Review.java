@@ -69,8 +69,8 @@ public class Review extends TimeEntity {
     @Column(name = "user_no", nullable = false)
     private Long user_no;
 
-    @Column(name = "user_name", nullable = false)
-    private String user_name;
+    @Column(name = "user_nickname", nullable = false)
+    private String user_nickname;
 
     @Column(name = "rev_like", nullable = false)
     @Builder.Default

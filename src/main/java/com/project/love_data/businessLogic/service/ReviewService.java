@@ -38,7 +38,7 @@ public class ReviewService {
                 .revUuid(dto.getRevUuid())
                 .user_no(dto.getUserNo())
                 .revNo(dto.getRevNo())
-                .user_name(dto.getUserName())
+                .user_nickname(dto.getUserNickname())
                 .rev_like(dto.getRev_like())
                 .rev_dislike(dto.getRev_dislike())
                 .view_count(dto.getView_count())
@@ -64,7 +64,7 @@ public class ReviewService {
                 .userNo(entity.getUser_no())
                 .revNo(entity.getRevNo())
                 .reported_count(entity.getReported_count())
-                .userName(entity.getUser_name())
+                .userNickname(entity.getUser_nickname())
                 .rev_like(entity.getRev_like())
                 .rev_dislike(entity.getRev_dislike())
                 .view_count(entity.getView_count())
@@ -141,7 +141,7 @@ public class ReviewService {
                     .sc_loc(scoreMap.get("sc_loc"))
                     .sc_move(scoreMap.get("sc_move"))
                     .sc_revisit(scoreMap.get("sc_revisit"))
-                    .user_name(user.get().getUser_name())
+                    .user_nickname(user.get().getUser_nic())
                     .build();
 
             return entity;
@@ -356,6 +356,20 @@ public class ReviewService {
     public List<Review> getBestReview(Long corNo) {
         Optional<List<Review>> items = repository.getBestReview(corNo);
 
-        return items.orElse(null);
+        if (items.isPresent()) {
+            List<Review> entities = items.get();
+            Iterator<Review> itr = entities.iterator();
+            while (itr.hasNext()) {
+                Optional<User> user = userRepository.findById(itr.next().getUser_no());
+                if (!user.isPresent()) {
+                    itr.remove();
+                    entities.remove(itr);
+                }
+            }
+
+            return entities;
+        } else {
+            return null;
+        }
     }
 }

@@ -56,6 +56,11 @@ public class ServiceCenterService {
         return questions.orElse(new ArrayList<>());
     }
 
+    public List<Questions> qua_all(){
+        Optional<List<Questions>> questions = questionsRepository.qua_All();
+        return questions.orElse(new ArrayList<>());
+    }
+
     public Notice noti_select_no(String no){
         Notice notice = noticeRepository.noti_find_no(no);
         return notice;

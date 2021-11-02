@@ -34,7 +34,7 @@ public class UserDetailsService implements org.springframework.security.core.use
             log.warn("This user accounts already deleted. Can't signup with this email");
             throw new AlreadyRegisteredEmailException("Can't proceed signup with this email. Please try another email");
         }
-        log.info("어스 리설트 확인" + result);
+//        log.info("어스 리설트 확인" + result);
         // DB에 저장된 유저 정보가 없을 때
         if (!result.isPresent()) {
 //            throw new UsernameNotFoundException("Check Email");

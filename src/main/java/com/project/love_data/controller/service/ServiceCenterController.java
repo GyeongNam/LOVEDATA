@@ -342,6 +342,67 @@ public class ServiceCenterController {
         return "/service/qu_detail";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping(value = "/admin/qna/{page}")
+    public String admin_qna(@PathVariable("page") String page, Model model, HttpServletResponse response , Principal principal) throws IOException {
+        List<Questions> questions = serviceCenterService.qua_all();
+        List<Questions> questions_page = null;
+        model.addAttribute("search", false);
+        long qu_size = questions.size();
+        long qu_page = questions.size()/15;
+        long qu_page_na = questions.size()%15;
+        long qu_page_size = qu_page/10;
+        long qu_page_size_na = qu_page%10;
+        Date today = new Date();
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+        model.addAttribute("qu_time", format1.format(today));
+
+        if(qu_page_size_na >= 1){
+            qu_page_size = qu_page_size+1;
+            model.addAttribute("qu_page_size",qu_page_size);
+        }
+        else {
+            model.addAttribute("qu_page_size",qu_page_size);
+        }
+
+
+        if(qu_page_na >= 1){
+            qu_page = qu_page+1;
+            model.addAttribute("qu_page",qu_page);
+        }
+        else {
+            model.addAttribute("qu_page",qu_page);
+        }
+        model.addAttribute("qu_size",questions.size());
+
+        // 페이지네이션
+        long j=0;
+
+        if(questions.size()<15){
+            model.addAttribute("qu",questions);
+        }else {
+            for (int i = 0; i < qu_size; i++) {
+                questions_page = questions.subList(0,15);
+
+                if (i % 15 == 0) {
+                    j = j + 1;
+                    if (j == Long.parseLong(page)) {
+                        model.addAttribute("qu",questions_page);
+                        break;
+                    } else {
+                        questions.subList(0,15).clear();
+
+                        if(questions.size()<15){
+                            model.addAttribute("qu",questions);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return "admin/admin_qna";
+    }
+
     @GetMapping(value = "/ServiceCenter/Questions_Post/{num}")
     public String Questions_no(@PathVariable("num") String num, Model model, HttpServletResponse response , Principal principal) throws IOException {
         Questions questions = serviceCenterService.qu_select_no(num);
@@ -385,6 +446,7 @@ public class ServiceCenterController {
         Questions questions = Questions.builder()
                 .qu_answer(false)
                 .qu_date(format1.format(today))
+                .qu_type(request.getParameter("qu_type"))
                 .qu_secret(secret)
                 .qu_user(user.getUser_nic())
                 .qu_user_no(user.getUser_no().toString())
@@ -701,6 +763,8 @@ public class ServiceCenterController {
                 String r = req.getSession().getServletContext().getRealPath("/");
                 int idx =  r.indexOf("main");
                 String imgpath =r.substring(0, idx)+"main\\resources\\static\\image\\upload\\";
+
+
                 String path = imgpath;
                 File file = new File(path);
                 System.out.print(path);
@@ -723,9 +787,11 @@ public class ServiceCenterController {
     public void multiImgUpload(HttpServletRequest req, HttpServletResponse res, Principal principal){
         try{
             String sFileInfo = "";
+            // os판단 if("Windows_NT".equals(System.getenv().get("OS")))
             String r = req.getSession().getServletContext().getRealPath("/");
             int idx =  r.indexOf("main");
             String imgpath =r.substring(0, idx)+"main\\resources\\static\\image\\upload\\";
+            // else = /opt/apache-tomcat-9.0.46/webapps/love_data/WEB-INF/classes/static/image/upload \\ qna loc
             String fileName = req.getHeader("file-name");
             log.info("여기 오긴오니?" + imgpath);
             String prifix = fileName.substring(fileName.lastIndexOf(".")+1);

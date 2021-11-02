@@ -17,6 +17,7 @@ import org.apache.catalina.filters.ExpiresFilter;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.servlet.HttpEncodingAutoConfiguration;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -92,7 +93,6 @@ public class UserController {
 		if (tempStr == null || !tempStr.equals("")) {
 			Integer.parseInt(tempStr);
 		}
-
 		User user = User.builder()
 				.user_email(email1 + "@" + email2)
 				.user_pw(passwordEncoder.encode(pwd))
@@ -103,7 +103,7 @@ public class UserController {
 				.user_sex(gender)
 				.user_email_re(recv_email)
 				.user_social(social)
-				.social_info(social_info)
+				.social_info(social_info.equals("") ? "웹페이지" : social_info)
 				.social_id(social_id)
 				.build();
 		user.addUserRole(UserRole.USER);
@@ -484,6 +484,21 @@ public class UserController {
 			map.put("msg","0");
 		}
 		return map;
+	}
+
+	@GetMapping(value = "/lovedata_delete")
+	public String lovedata_delete(HttpServletRequest request){
+
+		return "redirect:/";
+	}
+
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping(value = "/admin/user")
+	public String admin_user(HttpServletRequest request, Model model){
+		List<User> User = userService.finduserAll();
+		model.addAttribute("user", User);
+
+		return "admin/admin_user";
 	}
 
 	//alert 창 설정 class

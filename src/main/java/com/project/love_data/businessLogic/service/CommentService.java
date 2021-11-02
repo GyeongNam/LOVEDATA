@@ -8,6 +8,7 @@ import com.project.love_data.model.resource.LocationImage;
 import com.project.love_data.model.service.Comment;
 import com.project.love_data.model.service.Location;
 import com.project.love_data.model.service.QComment;
+import com.project.love_data.model.service.Review;
 import com.project.love_data.model.user.User;
 import com.project.love_data.repository.CommentRepository;
 import com.project.love_data.repository.LocationRepository;
@@ -449,8 +450,22 @@ public class CommentService {
     }
 
     public List<Comment> getBestComment(Long locNo) {
-        Optional<List<Comment>> item = cmtRepository.getBestComment(locNo);
+        Optional<List<Comment>> items = cmtRepository.getBestComment(locNo);
 
-        return item.orElse(null);
+        if (items.isPresent()) {
+            List<Comment> entities = items.get();
+            Iterator<Comment> itr = entities.iterator();
+            while (itr.hasNext()) {
+                Optional<User> user = userRepository.findById(itr.next().getUser().getUser_no());
+                if (!user.isPresent()) {
+                    itr.remove();
+                    entities.remove(itr);
+                }
+            }
+
+            return entities;
+        } else {
+            return null;
+        }
     }
 }

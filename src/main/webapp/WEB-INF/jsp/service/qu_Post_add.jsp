@@ -72,6 +72,16 @@
             <input class="form-control" type="text" id="name" name="name" value="<sec:authentication property="principal.user_nic"/>" readonly>
         </div>
         <div class="form-group">
+            <label>문의 유형</label>
+            <select class="select2-dropdown form-control" name="qu_type" id="qu_type">
+                <option value="기타" selected>기타(선택)</option>
+                <option value="장소" >장소</option>
+                <option value="코스">코스</option>
+                <option value="캘린더">캘린더</option>
+                <option value="유저정보">유저정보</option>
+            </select>
+        </div>
+        <div class="form-group">
             <label>내용</label>
             <textarea class="form-control" rows="10" maxlength="150" name="info" id="info" required></textarea>
         </div>

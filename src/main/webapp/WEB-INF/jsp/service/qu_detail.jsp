@@ -87,6 +87,14 @@
                 </div>
             </div>
             <div class="form-group">
+                <label>문의 유형</label>
+                <div class="form-control">
+                    <div class="col-sm-12">
+                        ${qu.qu_type}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
                 <label>내용</label>
                 <div class="form-control">
                     <div class="col-sm-12">

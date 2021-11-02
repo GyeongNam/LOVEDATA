@@ -86,6 +86,12 @@ public class UserService {
         return dto;
     }
 
+    public User selectLive(long id) {
+        Optional<User> item = userRepository.selectLiveUser(id);
+
+        return item.orElse(null);
+    }
+
     public User select(long id) {
         Optional<User> item = userRepository.findById(id);
 
@@ -130,6 +136,12 @@ public class UserService {
     public String finduserNo(String email){
         String no = userRepository.finduserNo(email);
         return no;
+    }
+
+    public List<User> finduserAll(){
+        List<User> item = userRepository.findAll();
+
+        return item;
     }
 
 //    public LocationDTO LocDTO(Long loc_no) {

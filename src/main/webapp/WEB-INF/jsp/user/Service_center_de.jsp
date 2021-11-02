@@ -144,7 +144,7 @@
                 </div>
         </div>
         <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
-        <button id="userOut" onclick="location.href='/user/deleteAccount'" >(임시)회원탈퇴</button>
+        <button id="userOut" onclick="location.href='/user/lovedata_delete'" >(임시)회원탈퇴</button>
     </div>
 </div>
 </body>
