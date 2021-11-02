@@ -33,7 +33,7 @@ public class LocationTest {
     @Test
     public void InsertInitLocation() {
 //        Long user_no = (long) new Random().nextInt(4) + 1L;
-        Long user_no = 3L;
+        Long user_no = 1L;
 
         Location loc = Location.builder()
                 .loc_name("중부대학교 충청캠퍼스")

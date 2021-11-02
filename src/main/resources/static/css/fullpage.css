@@ -1,76 +1,56 @@
-/* fullpage scroll */
-#fullpage {
-    position:relative;
-    top:0px;
-    z-index:9;
-    width:100%;
-    height:100%;
-}
+/*!* fullpage scroll *!*/
+/*#fullpage {*/
+/*    position:relative;*/
+/*    top:0px;*/
+/*    z-index:9;*/
+/*    width:100%;*/
+/*    height:100%;*/
+/*}*/
 
-.fullsection{
-    width:100%;
-    height:100%;
-    position:relative;
-}
+/*.fullsection{*/
+/*    width:100%;*/
+/*    height:100%;*/
+/*    position:relative;*/
+/*}*/
 
-.full1{
-    background-color: #F1E7F7;
-}
+/*!*.full1{*!*/
+/*!*    background-color: #ffffff;*!*/
+/*!*    height: 1080px;*!*/
+/*!*}*!*/
 
-.full2{
-    background:#F1E7F7;
-}
+/*!*.full2{*!*/
+/*!*    background:#ffffff;*!*/
+/*!*    height: 1080px;*!*/
+/*!*}*!*/
 
-.full3{
-    background:#F1E7F7;
-}
+/*!*.full3{*!*/
+/*!*    background:#ffffff;*!*/
+/*!*    height: 1080px;*!*/
+/*!*}*!*/
 
-.full4{
-    background:blue;
-}
+/*!* quick button css *!*/
+/*ul, li{*/
+/*    margin:0;*/
+/*    padding:0;*/
+/*    !*list-style:none*!*/
+/*}*/
 
-.full5{
-    background:purple;
-}
-
-/*#fullpage span{*/
-/*    display:block;*/
-/*    position:absolute;*/
+/*.quick {*/
+/*    position:fixed;*/
+/*    right:20px;*/
 /*    top:50%;*/
-/*    left:50%;*/
-/*    transform:translate(-50%,-50%);*/
-/*    color:#fff;*/
-/*    font-size:4em;*/
-/*    font-weight:bold;*/
+/*    transform:translateY(-50%);*/
+/*    z-index:100000*/
 /*}*/
 
-/*.full2 span{*/
-/*    color:#000;*/
+/*.quick li {*/
+/*    width:10px;*/
+/*    height:10px;*/
+/*    margin-bottom:10px;*/
+/*    border-radius:15px;*/
+/*    background:  #FFA3C2;*/
+/*    cursor:pointer;*/
 /*}*/
-
-/* quick button css */
-ul, li{
-    margin:0;
-    padding:0;
-    /*list-style:none*/
-}
-
-.quick {
-    position:fixed;
-    right:20px;
-    top:50%;
-    transform:translateY(-50%);
-    z-index:100000
-}
-
-.quick li {
-    width:10px;
-    height:10px;
-    margin-bottom:10px;
-    border-radius:15px;
-    background:  #FFA3C2;
-    cursor:pointer;
-}
-.quick .on {
-    background: #FF0D5D;
-}
+/*.quick .on {*/
+/*    background: #FF0D5D;*/
+/*}*/

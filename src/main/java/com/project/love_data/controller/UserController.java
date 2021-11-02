@@ -280,10 +280,14 @@ public class UserController {
 			return "redirect:/login";
 		} else {
 			AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
-			List<Review> myRevList = reviewService.findAllByCor_no(authUserModel.getUser_no());
+			List<Review> myRevList = reviewService.findAllByUser_no(authUserModel.getUser_no());
+
+			log.info("getUser_no 확인 : " + authUserModel.getUser_no() );
+
 			model.addAttribute("my_rev", myRevList);
 
-			log.info("my RevList확인 :" , myRevList);
+			log.info("my RevList확인 :" + myRevList);
+
 			return "user/mypage_myreview";
 		}
 	}

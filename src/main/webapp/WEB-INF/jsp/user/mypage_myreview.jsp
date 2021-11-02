@@ -81,7 +81,7 @@
 						<c:when test="${rev._deleted eq false}">
 							<tr>
 								<td><span>${rev.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</span></td>
-								<td><a href="">${rev.cor_name}</a></td>
+								<td><a href="">${rev.revContent}</a></td>
 								<td>${rev.view_count}</td>
 							</tr>
 						</c:when>
