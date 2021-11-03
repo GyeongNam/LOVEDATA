@@ -486,6 +486,7 @@
 															 class="loc_comment-profile-image-wh">
 														<div class="flex-column">
 															<p class="visually-hidden" id="best_rev_id_${b}">${bestRevList.get(b).revUuid}</p>
+															<p class="visually-hidden" id="best_rev_no_${b}">${bestRevList.get(b).revNo}</p>
 															<span class="d-block font-weight-bold name">
 																	${bestRevList.get(b).userNickname}
 															</span>
@@ -587,6 +588,7 @@
 															class="loc_comment-profile-image-wh">
 														<div class="flex-column">
 															<p class="visually-hidden" id="rev_id_${c}">${revDTO.get(c).revUuid}</p>
+															<p class="visually-hidden" id="rev_no_${c}">${revDTO.get(c).revNo}</p>
 															<span class="d-block font-weight-bold name">${revDTO.get(c).userNickname}</span>
 															<div>
 																<span class="date text-black-50 ml-5">${revDTO.get(c).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}</span>
@@ -833,11 +835,25 @@
     window.onload = function() {
         let params = new URLSearchParams(location.search);
 
-        if (params.has("page")) {
-            let offsetTop = document.querySelector("#pills-tab").offsetTop - 100;
+        if (params.has("page") && params.has("revNo")){
+            let revCount = ${revDTO.size()};
 
-            window.scrollTo({top:offsetTop, behavior: 'smooth'});
-        }
+            let rev;
+            for (let i = 0; i < revCount; i++) {
+                rev = document.getElementById("rev_no_" + i);
+                if (rev.innerText === params.get("revNo")){
+                    let offsetTop = rev.offsetTop - 100;
+                    window.scrollTo({top:offsetTop, behavior:'smooth'});
+                    break;
+                }
+            }
+		} else {
+            if (params.has("page")) {
+                let offsetTop = document.querySelector("#pills-tab").offsetTop - 100;
+
+                window.scrollTo({top:offsetTop, behavior: 'smooth'});
+            }
+		}
     }
 
     var revImgList = [];

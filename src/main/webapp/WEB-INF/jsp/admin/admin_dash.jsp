@@ -159,9 +159,9 @@
 												전체
 											</button>
 											<div class="dropdown-menu" aria-labelledby="recentLocCorDropDownBtn">
-												<a class="dropdown-item" onclick="changeToTotalRecentTable()">전체</a>
-												<a class="dropdown-item" onclick="changeToLocOnlyRecentTable()">장소</a>
-												<a class="dropdown-item" onclick="changeToCorOnlyRecentTable()">코스</a>
+												<a class="dropdown-item" onclick="changeToTotalRecentLocCorTable()">전체</a>
+												<a class="dropdown-item" onclick="changeToLocOnlyRecentLocCorTable()">장소</a>
+												<a class="dropdown-item" onclick="changeToCorOnlyRecentLocCorTable()">코스</a>
 											</div>
 										</div>
 									</th>
@@ -229,9 +229,9 @@
 												전체
 											</button>
 											<div class="dropdown-menu" aria-labelledby="hotLocCorDropDownBtn">
-												<a class="dropdown-item" onclick="changeToTotalHotTable()">전체 </a>
-												<a class="dropdown-item" onclick="changeToLocOnlyHotTable()">장소 </a>
-												<a class="dropdown-item" onclick="changeToCorOnlyHotTable()">코스 </a>
+												<a class="dropdown-item" onclick="changeToTotalHotLocCorTable()">전체 </a>
+												<a class="dropdown-item" onclick="changeToLocOnlyHotLocCorTable()">장소 </a>
+												<a class="dropdown-item" onclick="changeToCorOnlyHotLocCorTable()">코스 </a>
 											</div>
 										</div>
 									</th>
@@ -298,9 +298,9 @@
 												전체
 											</button>
 											<div class="dropdown-menu" aria-labelledby="recentComRevDropDownBtn">
-												<a class="dropdown-item" onclick="">전체</a>
-												<a class="dropdown-item" onclick="">댓글</a>
-												<a class="dropdown-item" onclick="">리뷰</a>
+												<a class="dropdown-item" onclick="changeToTotalRecentComRevTable()">전체</a>
+												<a class="dropdown-item" onclick="changeToComOnlyRecentComRevTable()">댓글</a>
+												<a class="dropdown-item" onclick="changeToRevOnlyRecentComRevTable()">리뷰</a>
 											</div>
 										</div>
 									</th>
@@ -314,7 +314,9 @@
 											<c:forEach var="i" begin="0" end="${recentComRevListIndex.size()-1}">
 												<c:choose>
 													<c:when test="${recentComRevTypeList.get(i).equalsIgnoreCase('Com')}">
-														<tr onclick="location.href='/service/loc_detail?locNo=${recentComList.get(recentComRevListIndex.get(i)).location.loc_no}&page=${recentComRevPageNum.get(i)}'"
+														<tr onclick="location.href=
+																'/service/loc_detail?locNo=${recentComList.get(recentComRevListIndex.get(i)).location.loc_no}' +
+																'&page=${recentComRevPageNum.get(i)}&cmtNo=${recentComList.get(recentComRevListIndex.get(i)).cmtNo}'"
 															style="background: #ffdef2; cursor: pointer;">
 															<td>${i+1}</td>
 															<td>${recentComList.get(recentComRevListIndex.get(i)).cmtNo}</td>
@@ -327,7 +329,9 @@
 														</tr>
 													</c:when>
 													<c:when test="${recentComRevTypeList.get(i).equalsIgnoreCase('Rev')}">
-														<tr onclick="location.href='/service/cor_detail?corNo=${recentRevList.get(recentComRevListIndex.get(i)).corNo}&page=${recentComRevPageNum.get(i)}'"
+														<tr onclick="location.href=
+																'/service/cor_detail?corNo=${recentRevList.get(recentComRevListIndex.get(i)).corNo}' +
+																'&page=${recentComRevPageNum.get(i)}&revNo=${recentRevList.get(recentComRevListIndex.get(i)).revNo}'"
 															style="background: #e2eeff; cursor:pointer;">
 															<td>${i+1}</td>
 															<td>${recentRevList.get(recentComRevListIndex.get(i)).revNo}</td>
@@ -365,9 +369,9 @@
 												전체
 											</button>
 											<div class="dropdown-menu" aria-labelledby="hotComRevDropDownBtn">
-												<a class="dropdown-item" onclick="">전체</a>
-												<a class="dropdown-item" onclick="">댓글</a>
-												<a class="dropdown-item" onclick="">리뷰</a>
+												<a class="dropdown-item" onclick="changeToTotalHotComRevTable()">전체</a>
+												<a class="dropdown-item" onclick="changeToComOnlyHotComRevTable()">댓글</a>
+												<a class="dropdown-item" onclick="changeToRevOnlyHotComRevTable()">리뷰</a>
 											</div>
 										</div>
 									</th>
@@ -381,7 +385,9 @@
 											<c:forEach var="i" begin="0" end="${hotComRevListIndex.size()-1}">
 												<c:choose>
 													<c:when test="${hotComRevTypeList.get(i).equalsIgnoreCase('Com')}">
-														<tr onclick="location.href='/service/loc_detail?locNo=${hotComList.get(hotComRevListIndex.get(i)).location.loc_no}&page=${hotComRevPageNum.get(i)}'"
+														<tr onclick=
+																	"location.href='/service/loc_detail?locNo=${hotComList.get(hotComRevListIndex.get(i)).location.loc_no}' +
+																	'&page=${hotComRevPageNum.get(i)}&cmtNo=${hotComList.get(hotComRevListIndex.get(i)).cmtNo}'"
 															style="background: #ffdef2; cursor: pointer;">
 															<td>${i+1}</td>
 															<td>${hotComList.get(hotComRevListIndex.get(i)).cmtNo}</td>
@@ -394,7 +400,8 @@
 														</tr>
 													</c:when>
 													<c:when test="${hotComRevTypeList.get(i).equalsIgnoreCase('Rev')}">
-														<tr onclick="location.href='/service/cor_detail?corNo=${hotRevList.get(hotComRevListIndex.get(i)).corNo}&page=${hotComRevPageNum.get(i)}'"
+														<tr onclick="location.href='/service/cor_detail?corNo=${hotRevList.get(hotComRevListIndex.get(i)).corNo}' +
+																'&page=${hotComRevPageNum.get(i)}&revNo=${hotRevList.get(hotComRevListIndex.get(i)).revNo}'"
 															style="background: #e2eeff; cursor:pointer;">
 															<td>${i+1}</td>
 															<td>${hotRevList.get(hotComRevListIndex.get(i)).revNo}</td>
@@ -435,11 +442,11 @@
 		crossorigin="anonymous"></script>
 <%--<script defer src="/js/bootstrap.js"></script>--%>
 <script defer>
-	let tableColCount = 8;
+	let tableLocCorColumnCount = 8;
 	let tempHolder = [];
 
-	let recentTotalHolder = [];
-    let recentTotalType = [];
+	let recentTotalLocCorHolder = [];
+    let recentLocCorTotalType = [];
     let recentLocHolder = [];
     let recentCorHolder = [];
 
@@ -450,8 +457,10 @@
 
     let recentLocCorTableBody = document.getElementById("recentLocCorTableBody");
 	let hotLocCorTableBody = document.getElementById("hotLocCorTableBody");
+    let recentComRevTableBody = document.getElementById("recentComRevTableBody");
+    let hotComRevTableBody = document.getElementById("hotComRevTableBody");
 
-    <c:set var="tableColCount" value="8"/>
+    <c:set var="tableLocCorColCount" value="8"/>
    <c:choose>
 		<c:when test="${!empty recentLocCorListIndex}">
 			<c:forEach var="i" begin="0" end="${recentLocCorListIndex.size() - 1}">
@@ -465,9 +474,9 @@
 						// TODO 신고수 (추후 값 추가되면 그 때 넣기)
 						tempHolder.push('Null');
 						tempHolder.push('${recentLocList.get(recentLocCorListIndex.get(i)).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}');
-                        recentTotalHolder.push(tempHolder);
+                        recentTotalLocCorHolder.push(tempHolder);
                         tempHolder = [];
-                        recentTotalType.push('Loc');
+                        recentLocCorTotalType.push('Loc');
 					</c:when>
 					<c:when test="${recentLocCorTypeList.get(i).equalsIgnoreCase('Cor')}">
 						tempHolder.push('${recentCorList.get(recentLocCorListIndex.get(i)).cor_no}');
@@ -478,9 +487,9 @@
 						// TODO 신고수 (추후 값 추가되면 그 때 넣기)
 						tempHolder.push('Null');
 						tempHolder.push('${recentCorList.get(recentLocCorListIndex.get(i)).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}');
-                        recentTotalHolder.push(tempHolder);
+                        recentTotalLocCorHolder.push(tempHolder);
                         tempHolder = [];
-    					recentTotalType.push('Cor');
+    					recentLocCorTotalType.push('Cor');
 					</c:when>
 				</c:choose>
 			</c:forEach>
@@ -585,63 +594,217 @@
 		</c:when>
     </c:choose>
 
-	function changeToTotalRecentTable() {
+    let tableComRevColumnCount = 7;
+	tempHolder = [];
+    let recentTotalComRevHolder = [];
+    let recentComRevTotalType = [];
+    let recentComHolder = [];
+    let recentRevHolder = [];
+
+    let hotTotalComRevHolder = [];
+    let hotComRevTotalType = [];
+    let hotComHolder = [];
+    let hotRevHolder = [];
+
+    let recentComRevPageNumHolder = [];
+    let hotComRevPageNumHolder = [];
+    let recentComRevSourcePageIdHolder = [];
+    let hotComRevSourcePageIdHolder = [];
+
+    <c:set var="tableComRevColCount" value="7"/>
+    <c:choose>
+		<c:when test="${!empty recentComRevListIndex}">
+			<c:forEach var="i" begin="0" end="${recentComRevListIndex.size() - 1}">
+				<c:choose>
+					<c:when test="${recentComRevTypeList.get(i).equalsIgnoreCase('Com')}">
+						tempHolder.push('${recentComList.get(recentComRevListIndex.get(i)).cmtNo}');
+						tempHolder.push('${recentComUserNicList.get(recentComRevListIndex.get(i))}');
+						tempHolder.push('댓글');
+						tempHolder.push('${recentComList.get(recentComRevListIndex.get(i)).likeCount}');
+						// TODO 신고수 (추후 값 추가되면 그 때 넣기)
+						tempHolder.push('Null');
+						tempHolder.push('${recentComList.get(recentComRevListIndex.get(i)).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}');
+                        tempHolder.push('${recentComList.get(recentComRevListIndex.get(i)).location.loc_no}');
+						recentTotalComRevHolder.push(tempHolder);
+						tempHolder = [];
+						recentComRevTotalType.push('Com');
+					</c:when>
+					<c:when test="${recentComRevTypeList.get(i).equalsIgnoreCase('Rev')}">
+						tempHolder.push('${recentRevList.get(recentComRevListIndex.get(i)).revNo}');
+						tempHolder.push('${recentRevUserNicList.get(recentComRevListIndex.get(i))}');
+						tempHolder.push('리뷰');
+						tempHolder.push('${recentRevList.get(recentComRevListIndex.get(i)).rev_like}');
+						// TODO 신고수 (추후 값 추가되면 그 때 넣기)
+						tempHolder.push('Null');
+						tempHolder.push('${recentRevList.get(recentComRevListIndex.get(i)).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}');
+                        tempHolder.push('${recentRevList.get(recentComRevListIndex.get(i)).corNo}');
+						recentTotalComRevHolder.push(tempHolder);
+						tempHolder = [];
+						recentComRevTotalType.push('Rev');
+					</c:when>
+				</c:choose>
+    			recentComRevPageNumHolder.push('${recentComRevPageNum.get(i)}');
+			</c:forEach>
+		</c:when>
+    </c:choose>
+    <c:choose>
+		<c:when test="${!empty recentComList}">
+			<c:forEach var="i" begin="0" end="${recentComList.size() - 1}">
+				tempHolder.push('${recentComList.get(i).cmtNo}');
+				tempHolder.push('${recentComUserNicList.get(i)}');
+				tempHolder.push('댓글');
+				tempHolder.push('${recentComList.get(i).likeCount}');
+				// TODO 신고수 (추후 값 추가되면 그 때 넣기)
+				tempHolder.push('Null');
+				tempHolder.push('${recentComList.get(i).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}');
+    			tempHolder.push('${recentComList.get(recentComRevListIndex.get(i)).location.loc_no}');
+				recentComHolder.push(tempHolder);
+				tempHolder = [];
+			</c:forEach>
+		</c:when>
+    </c:choose>
+    <c:choose>
+		<c:when test="${!empty recentRevList}">
+			<c:forEach var="i" begin="0" end="${recentRevList.size() - 1}">
+				tempHolder.push('${recentRevList.get(i).revNo}');
+				tempHolder.push('${recentRevUserNicList.get(i)}');
+				tempHolder.push('리뷰');
+				tempHolder.push('${recentRevList.get(i).rev_like}');
+				// TODO 신고수 (추후 값 추가되면 그 때 넣기)
+				tempHolder.push('Null');
+				tempHolder.push('${recentRevList.get(i).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}');
+    			tempHolder.push('${recentRevList.get(recentComRevListIndex.get(i)).corNo}');
+				recentRevHolder.push(tempHolder);
+				tempHolder = [];
+			</c:forEach>
+		</c:when>
+    </c:choose>
+
+    <c:choose>
+		<c:when test="${!empty hotComRevListIndex}">
+			<c:forEach var="i" begin="0" end="${hotComRevListIndex.size() - 1}">
+				<c:choose>
+					<c:when test="${hotComRevTypeList.get(i).equalsIgnoreCase('Com')}">
+						tempHolder.push('${hotComList.get(hotComRevListIndex.get(i)).cmtNo}');
+						tempHolder.push('${hotComUserNicList.get(hotComRevListIndex.get(i))}');
+						tempHolder.push('댓글');
+						tempHolder.push('${hotComList.get(hotComRevListIndex.get(i)).likeCount}');
+						// TODO 신고수 (추후 값 추가되면 그 때 넣기)
+						tempHolder.push('Null');
+						tempHolder.push('${hotComList.get(hotComRevListIndex.get(i)).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}');
+    					tempHolder.push('${hotComList.get(hotComRevListIndex.get(i)).location.loc_no}');
+						hotTotalComRevHolder.push(tempHolder);
+						tempHolder = [];
+						hotComRevTotalType.push('Com');
+					</c:when>
+					<c:when test="${hotComRevTypeList.get(i).equalsIgnoreCase('Rev')}">
+						tempHolder.push('${hotRevList.get(hotComRevListIndex.get(i)).revNo}');
+						tempHolder.push('${hotRevUserNicList.get(hotComRevListIndex.get(i))}');
+						tempHolder.push('리뷰');
+						tempHolder.push('${hotRevList.get(hotComRevListIndex.get(i)).rev_like}');
+						// TODO 신고수 (추후 값 추가되면 그 때 넣기)
+						tempHolder.push('Null');
+						tempHolder.push('${hotRevList.get(hotComRevListIndex.get(i)).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}');
+    					tempHolder.push('${hotRevList.get(hotComRevListIndex.get(i)).corNo}');
+						hotTotalComRevHolder.push(tempHolder);
+						tempHolder = [];
+						hotComRevTotalType.push('Rev');
+					</c:when>
+				</c:choose>
+    			hotComRevPageNumHolder.push('${hotComRevPageNum.get(i)}');
+			</c:forEach>
+		</c:when>
+    </c:choose>
+    <c:choose>
+		<c:when test="${!empty hotComList}">
+			<c:forEach var="i" begin="0" end="${hotComList.size() - 1}">
+				tempHolder.push('${hotComList.get(i).cmtNo}');
+				tempHolder.push('${hotComUserNicList.get(i)}');
+				tempHolder.push('댓글');
+				tempHolder.push('${hotComList.get(i).likeCount}');
+				// TODO 신고수 (추후 값 추가되면 그 때 넣기)
+				tempHolder.push('Null');
+				tempHolder.push('${hotComList.get(i).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}');
+    			tempHolder.push('${hotComList.get(hotComRevListIndex.get(i)).location.loc_no}');
+				hotComHolder.push(tempHolder);
+				tempHolder = [];
+			</c:forEach>
+		</c:when>
+    </c:choose>
+    <c:choose>
+		<c:when test="${!empty hotRevList}">
+			<c:forEach var="i" begin="0" end="${hotRevList.size() - 1}">
+				tempHolder.push('${hotRevList.get(i).revNo}');
+				tempHolder.push('${hotRevUserNicList.get(i)}');
+				tempHolder.push('리뷰');
+				tempHolder.push('${hotRevList.get(i).rev_like}');
+				// TODO 신고수 (추후 값 추가되면 그 때 넣기)
+				tempHolder.push('Null');
+				tempHolder.push('${hotRevList.get(i).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}');
+    			tempHolder.push('${hotRevList.get(hotComRevListIndex.get(i)).corNo}');
+				hotRevHolder.push(tempHolder);
+				tempHolder = [];
+			</c:forEach>
+		</c:when>
+    </c:choose>
+
+	function changeToTotalRecentLocCorTable() {
         deleteRecentLocCorTableRow();
 
         let rows = [];
         let temp = [];
         let cells = [];
 
-        for (let i = 0; i < recentTotalHolder.length; i++) {
+        for (let i = 0; i < recentTotalLocCorHolder.length; i++) {
             rows.push(recentLocCorTableBody.insertRow());
-            for (let j = 0; j < tableColCount; j++) {
+            for (let j = 0; j < tableLocCorColumnCount; j++) {
                 temp.push(rows[i].insertCell());
             }
             cells.push(temp);
             temp = [];
         }
 
-        for (let i = 0; i < recentTotalHolder.length; i++) {
-            if (recentTotalType[i] === 'Loc') {
+        for (let i = 0; i < recentTotalLocCorHolder.length; i++) {
+            if (recentLocCorTotalType[i] === 'Loc') {
                 rows[i].onclick = function() {
-                    window.location = '/service/loc_detail?locNo=' + recentTotalHolder[i][0];
+                    window.location = '/service/loc_detail?locNo=' + recentTotalLocCorHolder[i][0];
                 }
                 rows[i].style.background = "#ffdef2";
             }
-            else if (recentTotalType[i] === 'Cor') {
+            else if (recentLocCorTotalType[i] === 'Cor') {
                 rows[i].onclick = function() {
-                    location.href = '/service/cor_detail?corNo=' + recentTotalHolder[i][0];
+                    location.href = '/service/cor_detail?corNo=' + recentTotalLocCorHolder[i][0];
                 }
                 rows[i].style.background = "#e2eeff";
             }
             rows[i].style.cursor = "hand";
 
             cells[i][0].innerHTML = i+1;
-            for (let j = 0; j < tableColCount - 1; j++) {
-                cells[i][j+1].innerHTML = recentTotalHolder[i][j];
+            for (let j = 0; j < tableLocCorColumnCount - 1; j++) {
+                cells[i][j+1].innerHTML = recentTotalLocCorHolder[i][j];
             }
         }
 
         document.getElementById("recentLocCorDropDownBtn").innerHTML = "전체 ";
 	}
 
-    function changeToLocOnlyRecentTable() {
+    function changeToLocOnlyRecentLocCorTable() {
         deleteRecentLocCorTableRow();
 
         let rows = [];
         let temp = [];
         let cells = [];
 
-        for (let i = 0; i < recentCorHolder.length; i++) {
+        for (let i = 0; i < recentLocHolder.length; i++) {
             rows.push(recentLocCorTableBody.insertRow());
-            for (let j = 0; j < tableColCount; j++) {
+            for (let j = 0; j < tableLocCorColumnCount; j++) {
                 temp.push(rows[i].insertCell());
             }
             cells.push(temp);
             temp = [];
         }
 
-        for (let i = 0; i < recentCorHolder.length; i++) {
+        for (let i = 0; i < recentLocHolder.length; i++) {
             rows[i].onclick = function() {
                 window.location = '/service/loc_detail?locNo=' + recentLocHolder[i][0];
             }
@@ -649,7 +812,7 @@
             rows[i].style.cursor = "hand";
 
             cells[i][0].innerHTML = i+1;
-            for (let j = 0; j < tableColCount - 1; j++) {
+            for (let j = 0; j < tableLocCorColumnCount - 1; j++) {
                 cells[i][j+1].innerHTML = recentLocHolder[i][j];
             }
         }
@@ -657,7 +820,7 @@
         document.getElementById("recentLocCorDropDownBtn").innerHTML = "장소 ";
 	}
 
-    function changeToCorOnlyRecentTable() {
+    function changeToCorOnlyRecentLocCorTable() {
         deleteRecentLocCorTableRow();
 
         let rows = [];
@@ -666,7 +829,7 @@
 
         for (let i = 0; i < recentCorHolder.length; i++) {
             rows.push(recentLocCorTableBody.insertRow());
-            for (let j = 0; j < tableColCount; j++) {
+            for (let j = 0; j < tableLocCorColumnCount; j++) {
                 temp.push(rows[i].insertCell());
             }
             cells.push(temp);
@@ -681,7 +844,7 @@
             rows[i].style.cursor = "hand";
 
             cells[i][0].innerHTML = i+1;
-            for (let j = 0; j < tableColCount - 1; j++) {
+            for (let j = 0; j < tableLocCorColumnCount - 1; j++) {
                 cells[i][j+1].innerHTML = recentCorHolder[i][j];
             }
         }
@@ -695,7 +858,7 @@
         }
 	}
 
-    function changeToTotalHotTable() {
+    function changeToTotalHotLocCorTable() {
         deleteHotLocCorTableRow();
 
         let rows = [];
@@ -704,7 +867,7 @@
 
         for (let i = 0; i < hotTotalHolder.length; i++) {
             rows.push(hotLocCorTableBody.insertRow());
-            for (let j = 0; j < tableColCount; j++) {
+            for (let j = 0; j < tableLocCorColumnCount; j++) {
                 temp.push(rows[i].insertCell());
             }
             cells.push(temp);
@@ -727,7 +890,7 @@
             rows[i].style.cursor = "hand";
 
             cells[i][0].innerHTML = i+1;
-            for (let j = 0; j < tableColCount - 1; j++) {
+            for (let j = 0; j < tableLocCorColumnCount - 1; j++) {
                 cells[i][j+1].innerHTML = hotTotalHolder[i][j];
             }
         }
@@ -735,23 +898,23 @@
         document.getElementById("hotLocCorDropDownBtn").innerHTML = "전체 ";
     }
 
-    function changeToLocOnlyHotTable() {
+    function changeToLocOnlyHotLocCorTable() {
         deleteHotLocCorTableRow();
 
         let rows = [];
         let temp = [];
         let cells = [];
 
-        for (let i = 0; i < hotCorHolder.length; i++) {
+        for (let i = 0; i < hotLocHolder.length; i++) {
             rows.push(hotLocCorTableBody.insertRow());
-            for (let j = 0; j < tableColCount; j++) {
+            for (let j = 0; j < tableLocCorColumnCount; j++) {
                 temp.push(rows[i].insertCell());
             }
             cells.push(temp);
             temp = [];
         }
 
-        for (let i = 0; i < hotCorHolder.length; i++) {
+        for (let i = 0; i < hotLocHolder.length; i++) {
             rows[i].onclick = function() {
                 window.location = '/service/loc_detail?locNo=' + hotLocHolder[i][0];
             }
@@ -759,7 +922,7 @@
             rows[i].style.cursor = "hand";
 
             cells[i][0].innerHTML = i+1;
-            for (let j = 0; j < tableColCount - 1; j++) {
+            for (let j = 0; j < tableLocCorColumnCount - 1; j++) {
                 cells[i][j+1].innerHTML = hotLocHolder[i][j];
             }
         }
@@ -767,7 +930,7 @@
         document.getElementById("hotLocCorDropDownBtn").innerHTML = "장소 ";
     }
 
-    function changeToCorOnlyHotTable() {
+    function changeToCorOnlyHotLocCorTable() {
         deleteHotLocCorTableRow();
 
         let rows = [];
@@ -776,7 +939,7 @@
 
         for (let i = 0; i < hotCorHolder.length; i++) {
             rows.push(hotLocCorTableBody.insertRow());
-            for (let j = 0; j < tableColCount; j++) {
+            for (let j = 0; j < tableLocCorColumnCount; j++) {
                 temp.push(rows[i].insertCell());
             }
             cells.push(temp);
@@ -791,7 +954,7 @@
             rows[i].style.cursor = "hand";
 
             cells[i][0].innerHTML = i+1;
-            for (let j = 0; j < tableColCount - 1; j++) {
+            for (let j = 0; j < tableLocCorColumnCount - 1; j++) {
                 cells[i][j+1].innerHTML = hotCorHolder[i][j];
             }
         }
@@ -802,6 +965,234 @@
     function deleteHotLocCorTableRow() {
         while(hotLocCorTableBody.rows.length > 0) {
             hotLocCorTableBody.deleteRow(hotLocCorTableBody.rows.length - 1);
+        }
+    }
+
+    function changeToTotalRecentComRevTable() {
+        deleteRecentComRevTableRow();
+
+        let rows = [];
+        let temp = [];
+        let cells = [];
+
+        for (let i = 0; i < recentTotalComRevHolder.length; i++) {
+            rows.push(recentComRevTableBody.insertRow());
+            for (let j = 0; j < tableComRevColumnCount; j++) {
+                temp.push(rows[i].insertCell());
+            }
+            cells.push(temp);
+            temp = [];
+        }
+
+        for (let i = 0; i < recentTotalComRevHolder.length; i++) {
+            if (recentComRevTotalType[i] === 'Com') {
+                rows[i].onclick = function() {
+                    window.location = '/service/loc_detail?locNo=' + recentTotalComRevHolder[i][6]
+						+ "&page=" + recentComRevPageNumHolder[i] + "&cmtNo=" + recentTotalComRevHolder[i][0];
+                }
+                rows[i].style.background = "#ffdef2";
+            }
+            else if (recentComRevTotalType[i] === 'Rev') {
+                rows[i].onclick = function() {
+                    window.location = '/service/cor_detail?corNo=' + recentTotalComRevHolder[i][6]
+                        + "&page=" + recentComRevPageNumHolder[i] + "&revNo=" + recentTotalComRevHolder[i][0];
+                }
+                rows[i].style.background = "#e2eeff";
+            }
+            rows[i].style.cursor = "hand";
+
+            cells[i][0].innerHTML = i+1;
+            for (let j = 0; j < tableComRevColumnCount - 1; j++) {
+                cells[i][j+1].innerHTML = recentTotalComRevHolder[i][j];
+            }
+        }
+
+        document.getElementById("recentComRevDropDownBtn").innerHTML = "전체 ";
+    }
+
+    function changeToComOnlyRecentComRevTable() {
+        deleteRecentComRevTableRow();
+
+        let rows = [];
+        let temp = [];
+        let cells = [];
+
+        for (let i = 0; i < recentComHolder.length; i++) {
+            rows.push(recentComRevTableBody.insertRow());
+            for (let j = 0; j < tableComRevColumnCount; j++) {
+                temp.push(rows[i].insertCell());
+            }
+            cells.push(temp);
+            temp = [];
+        }
+
+        for (let i = 0; i < recentComHolder.length; i++) {
+            rows[i].onclick = function() {
+                window.location = '/service/loc_detail?locNo=' + recentComHolder[i][6]
+                    + "&page=" + recentComRevPageNumHolder[i] + "&cmtNo=" + recentComHolder[i][0];
+            }
+            rows[i].style.background = "#ffdef2";
+            rows[i].style.cursor = "hand";
+
+            cells[i][0].innerHTML = i+1;
+            for (let j = 0; j < tableComRevColumnCount - 1; j++) {
+                cells[i][j+1].innerHTML = recentComHolder[i][j];
+            }
+        }
+
+        document.getElementById("recentComRevDropDownBtn").innerHTML = "댓글 ";
+    }
+
+    function changeToRevOnlyRecentComRevTable() {
+        deleteRecentComRevTableRow();
+
+        let rows = [];
+        let temp = [];
+        let cells = [];
+
+        for (let i = 0; i < recentRevHolder.length; i++) {
+            rows.push(recentComRevTableBody.insertRow());
+            for (let j = 0; j < tableComRevColumnCount; j++) {
+                temp.push(rows[i].insertCell());
+            }
+            cells.push(temp);
+            temp = [];
+        }
+
+        for (let i = 0; i < recentRevHolder.length; i++) {
+            rows[i].onclick = function() {
+                window.location = '/service/cor_detail?corNo=' + recentRevHolder[i][6]
+                    + "&page=" + recentComRevPageNumHolder[i] + "&revNo=" + recentRevHolder[i][0];
+            }
+            rows[i].style.background = "#e2eeff";
+            rows[i].style.cursor = "hand";
+
+            cells[i][0].innerHTML = i+1;
+            for (let j = 0; j < tableComRevColumnCount - 1; j++) {
+                cells[i][j+1].innerHTML = recentRevHolder[i][j];
+            }
+        }
+
+        document.getElementById("recentComRevDropDownBtn").innerHTML = "리뷰 ";
+    }
+
+    function deleteRecentComRevTableRow() {
+        while(recentComRevTableBody.rows.length > 0) {
+            recentComRevTableBody.deleteRow(recentComRevTableBody.rows.length - 1);
+        }
+    }
+
+    function changeToTotalHotComRevTable() {
+        deleteHotComRevTableRow();
+
+        let rows = [];
+        let temp = [];
+        let cells = [];
+
+        for (let i = 0; i < hotTotalComRevHolder.length; i++) {
+            rows.push(hotComRevTableBody.insertRow());
+            for (let j = 0; j < tableComRevColumnCount; j++) {
+                temp.push(rows[i].insertCell());
+            }
+            cells.push(temp);
+            temp = [];
+        }
+
+        for (let i = 0; i < hotTotalComRevHolder.length; i++) {
+            if (hotComRevTotalType[i] === 'Com') {
+                rows[i].onclick = function() {
+                    window.location = '/service/loc_detail?locNo=' + hotTotalComRevHolder[i][6]
+                        + "&page=" + hotComRevPageNumHolder[i] + "&cmtNo=" + hotTotalComRevHolder[i][0];
+                }
+                rows[i].style.background = "#ffdef2";
+            }
+            else if (hotComRevTotalType[i] === 'Cor') {
+                rows[i].onclick = function() {
+                    window.location = '/service/cor_detail?corNo=' + hotTotalComRevHolder[i][6]
+                        + "&page=" + hotComRevPageNumHolder[i] + "&revNo=" + hotTotalComRevHolder[i][0];
+                }
+                rows[i].style.background = "#e2eeff";
+            }
+            rows[i].style.cursor = "hand";
+
+            cells[i][0].innerHTML = i+1;
+            for (let j = 0; j < tableComRevColumnCount - 1; j++) {
+                cells[i][j+1].innerHTML = hotTotalComRevHolder[i][j];
+            }
+        }
+
+        document.getElementById("hotComRevDropDownBtn").innerHTML = "전체 ";
+    }
+
+    function changeToComOnlyHotComRevTable() {
+        deleteHotComRevTableRow();
+
+        let rows = [];
+        let temp = [];
+        let cells = [];
+
+        for (let i = 0; i < hotComHolder.length; i++) {
+            rows.push(hotComRevTableBody.insertRow());
+            for (let j = 0; j < tableComRevColumnCount; j++) {
+                temp.push(rows[i].insertCell());
+            }
+            cells.push(temp);
+            temp = [];
+        }
+
+        for (let i = 0; i < hotComHolder.length; i++) {
+            rows[i].onclick = function() {
+                window.location = '/service/loc_detail?locNo=' + hotComHolder[i][6]
+                    + "&page=" + hotComRevPageNumHolder[i] + "&cmtNo=" + hotComHolder[i][0];
+            }
+            rows[i].style.background = "#ffdef2";
+            rows[i].style.cursor = "hand";
+
+            cells[i][0].innerHTML = i+1;
+            for (let j = 0; j < tableComRevColumnCount - 1; j++) {
+                cells[i][j+1].innerHTML = hotComHolder[i][j];
+            }
+        }
+
+        document.getElementById("hotComRevDropDownBtn").innerHTML = "댓글 ";
+    }
+
+    function changeToRevOnlyHotComRevTable() {
+        deleteHotComRevTableRow();
+
+        let rows = [];
+        let temp = [];
+        let cells = [];
+
+        for (let i = 0; i < hotRevHolder.length; i++) {
+            rows.push(hotComRevTableBody.insertRow());
+            for (let j = 0; j < tableComRevColumnCount; j++) {
+                temp.push(rows[i].insertCell());
+            }
+            cells.push(temp);
+            temp = [];
+        }
+
+        for (let i = 0; i < hotRevHolder.length; i++) {
+            rows[i].onclick = function() {
+                window.location = '/service/cor_detail?corNo=' + hotRevHolder[i][6]
+                    + "&page=" + hotComRevPageNumHolder[i] + "&revNo=" + hotRevHolder[i][0];
+            }
+            rows[i].style.background = "#e2eeff";
+            rows[i].style.cursor = "hand";
+
+            cells[i][0].innerHTML = i+1;
+            for (let j = 0; j < tableComRevColumnCount - 1; j++) {
+                cells[i][j+1].innerHTML = hotRevHolder[i][j];
+            }
+        }
+
+        document.getElementById("hotComRevDropDownBtn").innerHTML = "리뷰 ";
+    }
+
+    function deleteHotComRevTableRow() {
+        while(hotComRevTableBody.rows.length > 0) {
+            hotComRevTableBody.deleteRow(hotComRevTableBody.rows.length - 1);
         }
     }
 </script>

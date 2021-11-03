@@ -303,6 +303,7 @@
 															 class="loc_comment-profile-image-wh">
 														<div class="flex-column">
 															<p class="visually-hidden" id="best_cmt_id_${b}">${bestCmtList.get(b).cmtUuid}</p>
+															<p class="visually-hidden" id="best_cmt_no_${b}">${bestCmtList.get(b).cmtNo}</p>
 															<span class="d-block font-weight-bold name">
 																	${bestCmtList.get(b).user.user_nic}
 															</span>
@@ -377,6 +378,7 @@
 																class="loc_comment-profile-image-wh">
 														<div class="flex-column">
 															<p class="visually-hidden" id="cmt_id_${c}">${cmtDTO.get(c).cmtUuid}</p>
+															<p class="visually-hidden" id="cmt_no_${c}">${cmtDTO.get(c).cmtNo}</p>
 															<span class="d-block font-weight-bold name">
 																	${cmtDTO.get(c).user.user_nic}
 															</span>
@@ -438,7 +440,7 @@
 															</div>
 															<c:choose>
 																<c:when test="${user_no eq cmtDTO.get(c).user.user_no}">
-																	<span class="d-none visually-hidden" id="cmt_user_email_${c}">${cmtDTO.get(c).user.user_email}</span>
+<%--																	<span class="d-none visually-hidden" id="cmt_user_email_${c}">${cmtDTO.get(c).user.user_email}</span>--%>
 																	<div class="d-flex col justify-content-end align-items-center">
 																		<button class="btn btn-primary" onclick="openCmtEditMenu(${c})">수정</button>
 																		<button class="btn btn-primary ms-2" onclick="onClickDeleteComment(${c})">삭제</button>
@@ -562,20 +564,25 @@
         // console.log(params.get("locNo"));
         // console.log(params.get("page"));
 
-		if (params.has("page")) {
-            let offsetTop = document.querySelector("#pills-tab").offsetTop - 100;
+		if (params.has("page") && params.has("cmtNo")){
+            let cmtCount = ${cmtDTO.size()};
 
-		    window.scrollTo({top:offsetTop, behavior: 'smooth'});
-<%--		    let location_info = document.getElementById("location-info");--%>
-<%--		    let location_info_tab = document.getElementById("location-info-tab");--%>
-<%--		    let location_comment = document.getElementById("location-comment");--%>
-<%--		    let location_comment_tab = document.getElementById("location-comment-tab");--%>
+            let cmt;
+            for (let i = 0; i < cmtCount; i++) {
+				cmt = document.getElementById("cmt_no_" + i);
+                if (cmt.innerText === params.get("cmtNo")){
+                    let offsetTop = cmt.offsetTop - 100;
+                    window.scrollTo({top:offsetTop, behavior:'smooth'});
+                    break;
+                }
+            }
+		} else {
+            if (params.has("page")) {
+                let offsetTop = document.querySelector("#pills-tab").offsetTop - 100;
 
-<%--		    location_info_tab.setAttribute("class", "nav-link");--%>
-<%--		    location_comment_tab.setAttribute("class", "mw-100 mh-100 nav-link active");--%>
-<%--            location_info.setAttribute("class", "tab-pane fade");--%>
-<%--            location_comment.setAttribute("class", "tab-pane fade active show");--%>
-		}
+                window.scrollTo({top:offsetTop, behavior: 'smooth'});
+            }
+        }
 	}
 </script>
 <script defer>
