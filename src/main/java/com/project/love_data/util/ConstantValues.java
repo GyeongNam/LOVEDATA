@@ -11,4 +11,5 @@ public class ConstantValues {
     public final static int REV_MIN_UPLOAD_COUNT = 0;
     public final static int REV_MAX_UPLOAD_COUNT = 3;
     public final static int MAX_LOCATION_HISTORY_COUNT = 10;
+    public final static String Linux_Image_Upload_Path = "/opt/apache-tomcat-9.0.46/webapps/love_data/WEB-INF/classes/static/image/";
 }
