@@ -26,6 +26,8 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.function.Function;
 
+import static com.project.love_data.util.ConstantValues.MAX_COM_COUNT;
+
 @Service
 @Log4j2
 public class CommentService {
@@ -504,5 +506,51 @@ public class CommentService {
         Optional<List<Comment>> items = cmtRepository.getHotCommentsByCountAndDateDuration(count, dateDuration, minLikeCount);
 
         return items.orElse(null);
+    }
+
+    public Integer getCommentCurrentPageNum(long cmtNo) {
+        if (cmtNo < 0) {
+            return null;
+        }
+
+        Comment entity = select(cmtNo);
+
+        if (entity == null) {
+            log.info("Given cmtNo is not valid. No Matching Comment");
+            return null;
+        }
+
+        if (entity.getLocation() == null) {
+            log.info("Location is not valid. It may Deleted");
+            return null;
+        }
+
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+                .locNo(entity.getLocation().getLoc_no())
+                .size(MAX_COM_COUNT)
+                .build();
+        PageResultDTO<CommentDTO, Comment> pageResultDTO = getCmtPage(pageRequestDTO, CommentPageType.LOCATION,
+                CommentSortType.IDX_DES, CommentSearchType.All);
+
+        int pagEnd = pageResultDTO.getEnd();
+        int result = 0;
+
+        Loop1 :
+        for (int i = 1; i <= pagEnd; i++) {
+            if (i != 1) {
+                pageRequestDTO.setPage(i);
+                pageResultDTO = getCmtPage(pageRequestDTO, CommentPageType.LOCATION,
+                        CommentSortType.IDX_DES, CommentSearchType.All);
+            }
+
+            for (int j = 0; j < pageResultDTO.getDtoList().size(); j++) {
+                if (cmtNo == pageResultDTO.getDtoList().get(j).getCmtNo()){
+                    result = pageResultDTO.getPage();
+                    break Loop1;
+                }
+            }
+        }
+
+        return result;
     }
 }

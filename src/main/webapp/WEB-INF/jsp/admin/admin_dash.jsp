@@ -314,7 +314,7 @@
 											<c:forEach var="i" begin="0" end="${recentComRevListIndex.size()-1}">
 												<c:choose>
 													<c:when test="${recentComRevTypeList.get(i).equalsIgnoreCase('Com')}">
-														<tr onclick="location.href='/'"
+														<tr onclick="location.href='/service/loc_detail?locNo=${recentComList.get(recentComRevListIndex.get(i)).location.loc_no}&page=${recentComRevPageNum.get(i)}'"
 															style="background: #ffdef2; cursor: pointer;">
 															<td>${i+1}</td>
 															<td>${recentComList.get(recentComRevListIndex.get(i)).cmtNo}</td>
@@ -327,7 +327,7 @@
 														</tr>
 													</c:when>
 													<c:when test="${recentComRevTypeList.get(i).equalsIgnoreCase('Rev')}">
-														<tr onclick="location.href='/'"
+														<tr onclick="location.href='/service/cor_detail?corNo=${recentRevList.get(recentComRevListIndex.get(i)).corNo}&page=${recentComRevPageNum.get(i)}'"
 															style="background: #e2eeff; cursor:pointer;">
 															<td>${i+1}</td>
 															<td>${recentRevList.get(recentComRevListIndex.get(i)).revNo}</td>
@@ -381,7 +381,7 @@
 											<c:forEach var="i" begin="0" end="${hotComRevListIndex.size()-1}">
 												<c:choose>
 													<c:when test="${hotComRevTypeList.get(i).equalsIgnoreCase('Com')}">
-														<tr onclick="location.href='/'"
+														<tr onclick="location.href='/service/loc_detail?locNo=${hotComList.get(hotComRevListIndex.get(i)).location.loc_no}&page=${hotComRevPageNum.get(i)}'"
 															style="background: #ffdef2; cursor: pointer;">
 															<td>${i+1}</td>
 															<td>${hotComList.get(hotComRevListIndex.get(i)).cmtNo}</td>
@@ -394,7 +394,7 @@
 														</tr>
 													</c:when>
 													<c:when test="${hotComRevTypeList.get(i).equalsIgnoreCase('Rev')}">
-														<tr onclick="location.href='/'"
+														<tr onclick="location.href='/service/cor_detail?corNo=${hotRevList.get(hotComRevListIndex.get(i)).corNo}&page=${hotComRevPageNum.get(i)}'"
 															style="background: #e2eeff; cursor:pointer;">
 															<td>${i+1}</td>
 															<td>${hotRevList.get(hotComRevListIndex.get(i)).revNo}</td>

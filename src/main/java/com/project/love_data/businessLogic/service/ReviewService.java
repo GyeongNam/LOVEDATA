@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.function.Function;
 
+import static com.project.love_data.util.ConstantValues.MAX_COM_COUNT;
+
 @Service
 @AllArgsConstructor
 @Log4j2
@@ -408,5 +410,53 @@ public class ReviewService {
         Optional<List<Review>> items = repository.getHotReviewsByCountAndDateDuration(count, dateDuration, minLikeCount);
 
         return items.orElse(null);
+    }
+
+    public Integer getReviewCurrentPageNum(long revNo) {
+        if (revNo < 0) {
+            return null;
+        }
+
+        Review entity = select(revNo);
+
+        if (entity == null) {
+            log.info("Given revNo is not valid. No Matching Review");
+            return null;
+        }
+
+        Optional<Course> corEntity = corRepository.findById(entity.getCorNo());
+
+        if (!corEntity.isPresent()) {
+            log.info("Course is not valid. It may Deleted");
+            return null;
+        }
+
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+                .corNo(corEntity.get().getCor_no())
+                .size(MAX_COM_COUNT)
+                .build();
+        PageResultDTO<ReviewDTO, Review> pageResultDTO = getRevPage(pageRequestDTO, SortingOrder.DES,
+                ReviewSearchType.ALL);
+
+        int pagEnd = pageResultDTO.getEnd();
+        int result = 0;
+
+        Loop1 :
+        for (int i = 1; i <= pagEnd; i++) {
+            if (i != 1) {
+                pageRequestDTO.setPage(i);
+                pageResultDTO = getRevPage(pageRequestDTO, SortingOrder.DES,
+                        ReviewSearchType.ALL);
+            }
+
+            for (int j = 0; j < pageResultDTO.getDtoList().size(); j++) {
+                if (revNo == pageResultDTO.getDtoList().get(j).getRevNo()){
+                    result = pageResultDTO.getPage();
+                    break Loop1;
+                }
+            }
+        }
+
+        return result;
     }
 }

@@ -780,6 +780,44 @@ public class AdminController {
         model.addAttribute("todayLocCorCount", todayLocCorCount);
         model.addAttribute("todayComRevCount", todayComRevCount);
 
+        List<Integer> recentComRevPageNum = new ArrayList<>();
+        List<Integer> hotComRevPageNum = new ArrayList<>();
+
+        for (int i = 0; i < recentComRevListIndex.size(); i++) {
+            if (recentComRevTypeList.get(i).equalsIgnoreCase("Com")) {
+                Integer temp = comService.getCommentCurrentPageNum(recentCommentList.get(recentComRevListIndex.get(i)).getCmtNo());
+                if (temp == null) {
+                    temp = -1;
+                }
+                recentComRevPageNum.add(temp);
+            } else if (recentComRevTypeList.get(i).equalsIgnoreCase("Rev")) {
+                Integer temp = reviewService.getReviewCurrentPageNum(recentReviewList.get(recentComRevListIndex.get(i)).getRevNo());
+                if (temp == null) {
+                    temp = -1;
+                }
+                recentComRevPageNum.add(temp);
+            }
+        }
+
+        for (int i = 0; i < hotComRevListIndex.size(); i++) {
+            if (hotComRevTypeList.get(i).equalsIgnoreCase("Com")) {
+                Integer temp = comService.getCommentCurrentPageNum(hotCommentList.get(hotComRevListIndex.get(i)).getCmtNo());
+                if (temp == null) {
+                    temp = -1;
+                }
+                hotComRevPageNum.add(temp);
+            } else if (hotComRevTypeList.get(i).equalsIgnoreCase("Rev")) {
+                Integer temp = reviewService.getReviewCurrentPageNum(hotReviewList.get(hotComRevListIndex.get(i)).getRevNo());
+                if (temp == null) {
+                    temp = -1;
+                }
+                hotComRevPageNum.add(temp);
+            }
+        }
+
+        model.addAttribute("recentComRevPageNum", recentComRevPageNum);
+        model.addAttribute("hotComRevPageNum", hotComRevPageNum);
+
         return "/admin/admin_dash";
     }
 }
