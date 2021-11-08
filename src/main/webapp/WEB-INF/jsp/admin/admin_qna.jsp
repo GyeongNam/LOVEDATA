@@ -46,7 +46,15 @@
                             <p><a href="/admin/dash" class="highlight-not-selected-text-menu">대시보드</a></p>
                             <p><a href="/admin/user" class="highlight-not-selected-text-menu">유저 관리</a></p>
                             <p><a href="/admin/dash" class="highlight-not-selected-text-menu">메시지 발송</a></p>
-                            <p><a href="/admin/qna/1" class="highlight-selected-text-menu">공지사항과 문의사항</a></p>
+                            <p><a type="button" class="accordion highlight-selected-text-menu" data-toggle="collapse" data-target="#service_collapse" aria-expanded="false">공지사항과 문의사항</a></p>
+                            <div id="service_collapse" class="collapse show" >
+                                <p>
+                                    <a href="/admin/notice_add" class="highlight-not-selected-text-menu">- 공지사항 작성</a>
+                                </p>
+                                <p>
+                                    <a href="/admin/qna/1" class="highlight-selected-text-menu">- 문의사항 답변</a>
+                                </p>
+                            </div>
                             <p><a href="/admin/dash" class="highlight-not-selected-text-menu">upload 파일 캐시 삭제</a></p>
                             <p class="mb-0"><a href="" class="highlight-not-selected-text-menu">신고 센터</a></p>
                         </div>
@@ -76,18 +84,18 @@
                                     <c:when test="${qu.qu_secret eq true}">
                                         <sec:authorize access="isAuthenticated()">
                                             <sec:authorize access="hasAnyRole('ADMIN')">
-                                                <td onclick=location.href='/ServiceCenter/Questions_Post_mana/${qu.qu_no}';>${qu.qu_title} <img src="/image/icon/user/secret.png" class="img_s" id="imgDisplay" name="imgDisplay" ></td>
+                                                <td onclick=location.href='/admin/Questions_Post_mana/${qu.qu_no}';>${qu.qu_title} <img src="/image/icon/user/secret.png" class="img_s" id="imgDisplay" name="imgDisplay" ></td>
                                             </sec:authorize>
                                             <sec:authorize access="!hasRole('ADMIN')">
-                                                <td onclick=location.href='/ServiceCenter/Questions_Post/${qu.qu_no}';>${qu.qu_title} <img src="/image/icon/user/secret.png" class="img_s"  id="imgDisplay" name="imgDisplay" ></td>
+                                                <td onclick=location.href='/admin/Questions_Post/${qu.qu_no}';>${qu.qu_title} <img src="/image/icon/user/secret.png" class="img_s"  id="imgDisplay" name="imgDisplay" ></td>
                                             </sec:authorize>
                                         </sec:authorize>
                                         <sec:authorize access="isAnonymous()">
-                                            <td onclick=location.href='/ServiceCenter/Questions_Post/${qu.qu_no}';>${qu.qu_title} <img src="/image/icon/user/secret.png" class="img_s"  id="imgDisplay" name="imgDisplay" ></td>
+                                            <td onclick=location.href='/admin/Questions_Post/${qu.qu_no}';>${qu.qu_title} <img src="/image/icon/user/secret.png" class="img_s"  id="imgDisplay" name="imgDisplay" ></td>
                                         </sec:authorize>
                                     </c:when>
                                     <c:when test="${qu.qu_secret eq false}">
-                                        <td onclick=location.href='/ServiceCenter/Questions_Post/${qu.qu_no}';>${qu.qu_title}</td>
+                                        <td onclick=location.href='/admin/Questions_Post/${qu.qu_no}';>${qu.qu_title}</td>
                                     </c:when>
                                 </c:choose>
                                 <td>${qu.qu_user}</td>

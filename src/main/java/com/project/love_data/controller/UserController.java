@@ -68,6 +68,10 @@ public class UserController {
 	ReviewService reviewService;
 	@Autowired
 	FileUploadService fileUploadService;
+	@Autowired
+	CommentService cmtService;
+	@Autowired
+	ServiceCenterService serviceCenterService;
 
 	@RequestMapping(value = "/signup_add", method = RequestMethod.POST)
 	public String signup(
@@ -486,9 +490,34 @@ public class UserController {
 		return map;
 	}
 
-	@GetMapping(value = "/lovedata_delete")
+	@PostMapping(value = "/lovedata_delete")
 	public String lovedata_delete(HttpServletRequest request){
-
+		String user_no = request.getParameter("user_no");
+		log.info("user_no:"+ user_no);
+		User user = userService.select(Long.parseLong(user_no));
+		List<Comment> comment = cmtService.findAllByUser_no(Long.parseLong(user_no));
+		List<Review> reviews = reviewService.findAllByUser_no(Long.parseLong(user_no));
+		List<Questions> questions = serviceCenterService.qu_findAllByUser_no(user_no);
+		List<Calender> calenders = calenderService.Cal_select(user.getUser_email());
+		user.set_deleted(true);
+		user.setUser_Activation(false);
+		userService.update(user);
+		for(int i = 0; i<comment.size(); i++){
+			comment.get(i).set_deleted(true);
+			cmtService.update(comment.get(i));
+		}
+		for(int i = 0; i<reviews.size(); i++){
+			reviews.get(i).set_deleted(true);
+			reviewService.update(reviews.get(i));
+		}
+		for(int i = 0; i<questions.size(); i++){
+			questions.get(i).setQu_activation(false);
+			serviceCenterService.qu_update(questions.get(i));
+		}
+		for(int i = 0; i<calenders.size(); i++){
+			calenders.get(i).setCal_Activation(false);
+			calenderService.update(calenders.get(i));
+		}
 		return "redirect:/";
 	}
 
@@ -498,6 +527,18 @@ public class UserController {
 		List<User> User = userService.finduserAll();
 		model.addAttribute("user", User);
 
+		return "admin/admin_user";
+	}
+
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping(value = "/admin/user/search/{menu}/{text}/{page}")
+	public String Nsearch( @PathVariable("page") String page,
+						   @PathVariable("text") String text,
+						   @PathVariable("menu") String menu,
+						   Model model,
+						   Principal principal)  {
+		List<User> user = userService.search_user(menu, text);
+		model.addAttribute("user", user);
 		return "admin/admin_user";
 	}
 

@@ -117,4 +117,9 @@ public class ServiceCenterService {
         Optional<List<NoticeIMG>> imglist = noticeIMGRepository.select_notiimg(num);
         return imglist.orElse(new ArrayList<>());
     }
+
+    public List<Questions> qu_findAllByUser_no(String user_no){
+        Optional<List<Questions>> item = questionsRepository.qu_findAllByUser_no(user_no);
+        return item.orElse(new ArrayList<>());
+    }
 }

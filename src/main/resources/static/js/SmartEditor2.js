@@ -22,7 +22,14 @@ function save(){
     //스마트 에디터 값을 텍스트컨텐츠로 전달
     var content = document.getElementById("smartEditor").value;
     $("#form_name").val(content);
-    $("Form").submit();
+    var title = $("#title").val();
+    if (title.replace(/\s|　/gi, "").length == 0) {
+        alert("제목을 입력해주세요.");
+        $("#title").focus();
+    }else {
+        $("Form").submit();
+    }
+
     // alert(document.getElementById("smartEditor").value);
     // 값을 불러올 땐 document.get으로 받아오기
     return;
@@ -33,7 +40,13 @@ function upload(){
     //스마트 에디터 값을 텍스트컨텐츠로 전달
     var content = document.getElementById("smartEditor").value;
     $("#form_name").val(content);
-    $("Form").submit();
+    var title = $("#title").val();
+    if (title.replace(/\s|　/gi, "").length == 0) {
+        alert("제목을 입력해주세요.");
+        $("#title").focus();
+    }else {
+        $("Form").submit();
+    }
     // alert(document.getElementById("smartEditor").value);
     // 값을 불러올 땐 document.get으로 받아오기
     return;

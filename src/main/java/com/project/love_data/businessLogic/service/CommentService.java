@@ -553,4 +553,9 @@ public class CommentService {
 
         return result;
     }
+
+    public List<Comment> findAllByUser_no(Long user_no){
+        List<Comment> item = cmtRepository.findAllByUser_no(user_no);
+        return item;
+    }
 }

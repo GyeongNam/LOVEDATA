@@ -47,7 +47,15 @@
 								<p><a href="/admin/dash" class="highlight-selected-text-menu">대시보드</a></p>
 								<p><a href="/admin/user" class="highlight-not-selected-text-menu">유저 관리</a></p>
 								<p><a href="/admin/dash" class="highlight-not-selected-text-menu">메시지 발송</a></p>
-								<p><a href="/admin/dash" class="highlight-not-selected-text-menu">공지사항과 문의사항</a></p>
+								<p><a type="button" class="highlight-not-selected-text-menu" data-toggle="collapse" data-target="#service_collapse" aria-expanded="false">공지사항과 문의사항</a></p>
+								<div id="service_collapse" class="panel-collapse collapse">
+									<p>
+										<a href="/admin/notice_add" class="highlight-not-selected-text-menu">- 공지사항 작성</a>
+									</p>
+									<p>
+										<a href="/admin/qna/1" class="highlight-not-selected-text-menu">- 문의사항 답변</a>
+									</p>
+								</div>
 								<p><a href="/admin/dash" class="highlight-not-selected-text-menu">upload 파일 캐시 삭제</a></p>
 <%--								<p><a href="/admin/loc_recommend" class="highlight-not-selected-text-menu">- 추천 장소(어드민)</a></p>--%>
 <%--								<p><a href="/admin/cor_recommend" class="highlight-not-selected-text-menu">- 추천 코스(어드민)</a></p>--%>

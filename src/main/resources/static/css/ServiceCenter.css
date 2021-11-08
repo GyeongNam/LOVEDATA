@@ -67,10 +67,6 @@ th, td{
     width: 100px;
     height: 100px;
 }
-img{
-    width: 100px;
-    height: 100px;
-}
 #sec_line {
     text-align: left;
 }
@@ -207,6 +203,12 @@ img{
 .img_s{
     width: 15px;
     height: 15px;
+    margin-right: 1px;
+    margin-left: 1px;
+}
+
+img {
+    max-width: 100%;
     margin-right: 1px;
     margin-left: 1px;
 }

@@ -56,6 +56,23 @@ function Qsearch(){
     }
 }
 
+function Usearch(){
+    var select =$('#Notice_select').val();
+    var text =$('#keyword').val();
+
+    var special_pattern = /[`~!@#$%^&*|\\\'\";:\/?]/gi;
+    if( text == '' ||text == null ){
+        alert( '값을 입력해주세요' );
+    }
+    else {
+        if(special_pattern.test(text) == true) {
+            alert("특수문자는 안됩니다.")
+        } else {
+            return location.href="/admin/user/search/"+select+"/"+text+"/1";
+        }
+    }
+}
+
 function Nsearch(){
     var select =$('#Notice_select').val();
     var text =$('#keyword').val();
@@ -223,3 +240,19 @@ $(document).ready(function() {
         if(width >= 10) target_imgs.eq(i).css("width", "10");
     }
 });
+
+function noti_de(){
+    if (confirm("정말 삭제하시겠습니까??") == true){    //확인
+        document.getElementById('nform').submit();
+    }else{   //취소
+        return false;
+    }
+}
+
+function lovedata_delete(){
+    if (confirm("정말 탈퇴하시겠습니까??") == true){    //확인
+        document.getElementById('lovedata_delete').submit();
+    }else{   //취소
+        return false;
+    }
+}

@@ -58,26 +58,19 @@
         </ul>
     </div>
     <div class="container-fluid" id="display_center" style="margin-right: 30px">
-        <div class="col" id="top_navbar">
-
-            <form name="Form" action="/ServiceCenter/Notice_Post_Update/update"  method="post">
-                <input  name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
-                <div class=" container d-flex justify-content-center">
-                    <span class=" d-flex">제목</span>
-                    <input class="container d-flex justify-content-center" value="${noti.noti_title}" type="text" name="title" id="title">
-                </div>
-            <div class="d-flex container" >
-                <input name="num" type="hidden" value="${noti.noti_no}">
-                <textarea name="notice_content" id="smartEditor"  style="width: auto; height: auto;">${noti.noti_text}</textarea>
+        <form name="Form" action="/ServiceCenter/Notice_Post_Update/update"  method="post">
+            <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
+            <input name="num" type="hidden" value="${noti.noti_no}">
+            <div class="d-flex container">
+                <span class="d-flex col-1 justify-content-center align-middle select-item border border-secondary" >제목</span>
+                <input class="d-flex container justify-content-center "  type="text" name="title" id="title" value="${noti.noti_title}"  placeholder="제목을 입력해주세요.">
+                <button class="d-flex col-1 container justify-content-center "  type="button"  onclick="upload();">글쓰기</button>
             </div>
-             <div class="col" id="pu_navbar">
-                <div class="container d-flex justify-content-center" id="">
-                    <input type="button"  onclick="upload();" value="글쓰기">
-                </div>
-            </div>
+            <div class="d-flex container">
+                <textarea name="notice_content" id="smartEditor" style="width: auto; max-height: 10%">${noti.noti_text}</textarea>
                 <input type="hidden" name="form_name" id="form_name" value="">
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 </div>
 </body>

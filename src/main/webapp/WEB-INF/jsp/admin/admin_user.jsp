@@ -44,7 +44,15 @@
                             <p><a href="/admin/dash" class="highlight-not-selected-text-menu">대시보드</a></p>
                             <p><a href="/admin/user" class="highlight-selected-text-menu">유저 관리</a></p>
                             <p><a href="/admin/dash" class="highlight-not-selected-text-menu">메시지 발송</a></p>
-                            <p><a href="/admin/qna/1" class="highlight-not-selected-text-menu">공지사항과 문의사항</a></p>
+                            <p><a type="button" class="accordion highlight-not-selected-text-menu" data-toggle="collapse" data-target="#service_collapse" aria-expanded="false">공지사항과 문의사항</a></p>
+                            <div id="service_collapse" class="panel-collapse collapse">
+                                <p>
+                                    <a href="/admin/notice_add" class="highlight-not-selected-text-menu">- 공지사항 작성</a>
+                                </p>
+                                <p>
+                                    <a href="/admin/qna/1" class="highlight-not-selected-text-menu">- 문의사항 답변</a>
+                                </p>
+                            </div>
                             <p><a href="/admin/dash" class="highlight-not-selected-text-menu">upload 파일 캐시 삭제</a></p>
                             <p class="mb-0"><a href="" class="highlight-not-selected-text-menu">신고 센터</a></p>
                         </div>
@@ -67,7 +75,7 @@
                                         <option value="2">유저 닉네임</option>
                                     </select>
                                     <input type="text" class="input-box mx-2" placeholder="검색" id="keyword" name="keyword"/>
-                                    <button class="btn btn-primary mx-2" type="button" id="searchBtn" onclick="Qsearch()">Search</button>
+                                    <button class="btn btn-primary mx-2" type="button" id="searchBtn" onclick="Usearch()">Search</button>
 
                             </div>
                             <table class="table text-center" id="searchResultTable">
@@ -114,13 +122,8 @@
 </body>
 <!--  부트스트랩 js 사용 -->
 <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<%--slim 사용시 ajax 미지원--%>
-<%-- https://song8420.tistory.com/236 --%>
-<%--<script defer src="https://code.jquery.com/jquery-3.5.1.slim.min.js"--%>
-<%--		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"--%>
-<%--		crossorigin="anonymous"></script>--%>
 <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
         crossorigin="anonymous"></script>
-<%--<script defer src="/js/bootstrap.js"></script>--%>
+<script defer src="/js/ServiceCenter.js"></script>
 </html>

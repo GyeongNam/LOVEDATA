@@ -321,7 +321,17 @@ public class ServiceCenterController {
         }
         return "user/Service_center_qu";
     }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping(value = "/ServiceCenter/Notice_Delete")
+    public String Notice_Delete(Principal principal,HttpServletRequest request){
+        String noti_no= request.getParameter("noti_no");
+        Notice notice = serviceCenterService.noti_select_no(noti_no);
+        notice.setNoti_activation(false);
+        serviceCenterService.not_update(notice);
 
+
+        return "redirect:/ServiceCenter/Notice/1";
+    }
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(value = "/ServiceCenter/Questions_answer/{num}")
     public String Questions_answer(@PathVariable("num") String num,Principal principal,HttpServletRequest request){
@@ -332,6 +342,18 @@ public class ServiceCenterController {
         questions.setQu_answer_text(request.getParameter("info"));
         serviceCenterService.qu_update(questions);
         return "redirect:/ServiceCenter/Questions_Post_mana/"+num;
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping(value = "/admin/Questions_answer/{num}")
+    public String admin_Questions_answer(@PathVariable("num") String num,Principal principal,HttpServletRequest request){
+        User user = userService.select(principal.getName());
+        Questions questions = serviceCenterService.qu_select_no(num);
+        questions.setQu_answer(true);
+        questions.setQu_answer_manager(user.getUser_nic());
+        questions.setQu_answer_text(request.getParameter("info"));
+        serviceCenterService.qu_update(questions);
+        return "redirect:/admin/Questions_Post/"+num;
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -428,6 +450,31 @@ public class ServiceCenterController {
             model.addAttribute("qu", questions);
         }
         return "/service/qu_detail";
+    }
+
+    @GetMapping(value = "/admin/Questions_Post/{num}")
+    public String admin_Questions_no(@PathVariable("num") String num, Model model, HttpServletResponse response , Principal principal) throws IOException {
+        Questions questions = serviceCenterService.qu_select_no(num);
+        List<QuestionsImage> questionsImage = questionsImageService.qu_no_imgselect(num);
+        if (questions.isQu_secret()) {
+            if (principal == null) {
+                scriptUtils.alertAndMovePage(response, "로그인 해주세요.", "/login");
+            } else {
+                String user_no = userService.finduserNo(principal.getName());
+                Questions questions2 = serviceCenterService.secret_check(num, user_no);
+
+                if (questions2 == null) {
+                    scriptUtils.alertAndBackPage(response, "비밀글입니다.");
+                } else {
+                    model.addAttribute("qu_img", questionsImage);
+                    model.addAttribute("qu", questions);
+                }
+            }
+        } else {
+            model.addAttribute("qu_img", questionsImage);
+            model.addAttribute("qu", questions);
+        }
+        return "admin/admin_qna_detail";
     }
 
     @PostMapping(value = "/ServiceCenter/Questions_Post_add/add")
@@ -536,6 +583,15 @@ public class ServiceCenterController {
             scriptUtils.alertAndMovePage(response, "로그인 해주세요.", "/login");
         }
         return "/service/noti_Post_add";
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping(value = "/admin/notice_add")
+    public String admin_Post_add_noti(Principal principal, HttpServletResponse response) throws IOException {
+        if(principal == null){
+            scriptUtils.alertAndMovePage(response, "로그인 해주세요.", "/login");
+        }
+        return "admin/admin_notice";
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

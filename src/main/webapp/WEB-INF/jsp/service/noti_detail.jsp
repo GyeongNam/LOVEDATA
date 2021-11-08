@@ -15,6 +15,7 @@
     <meta name="_csrf_header" content="${_csrf.headerName}">
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/service/loc.css">
+    <link rel="stylesheet" href="/css/ServiceCenter.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
 
@@ -54,23 +55,25 @@
         </ul>
     </div>
     <div class="container col-lg-6 ">
-<%--        <input type="hidden" id="text" value="${noti.noti_text}">--%>
-<%--       <span> ${noti.noti_no}</span>--%>
-       <span>제목 : ${noti.noti_title}</span>
-    <sec:authorize access="isAuthenticated()">
-    <sec:authorize access="hasAnyRole('ADMIN')">
-    <div>
-        <button onclick="onclick=location.href='/ServiceCenter/Notice_Update/'+${noti.noti_no}">수정하기</button>
-    </div>
-    </sec:authorize>
-    </sec:authorize>
-<%--       <span> ${noti.noti_manager}</span>--%>
 
+    <div class="d-flex container">
+        <h2 class="mx-2">제목 : ${noti.noti_title}</h2>
+        <sec:authorize access="isAuthenticated()">
+            <sec:authorize access="hasAnyRole('ADMIN')">
+                <form method="post" action="/ServiceCenter/Notice_Delete" id="nform">
+                    <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
+                    <button class="mx-2" onclick="onclick=location.href='/ServiceCenter/Notice_Update/'+${noti.noti_no}">수정하기</button>
+                    <input type="hidden" name="noti_no" value="${noti.noti_no}">
+                    <button class="mx-2" onclick="noti_de()">삭제하기</button>
+                </form>
+            </sec:authorize>
+        </sec:authorize>
+    </div>
+    <div>
        <span>${noti.noti_text}</span>
-<%--       <span> ${noti.noti_date}</span>--%>
-<%--       <span> ${noti.noti_viewCount}</span>--%>
-<%--       <span> ${noti.noti_activation}</span>--%>
+    </div>
     </div>
 </div>
 </body>
+<script defer src="/js/ServiceCenter.js"></script>
 </html>

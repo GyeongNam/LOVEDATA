@@ -139,12 +139,15 @@
             </div>
                 <div class="card" style="padding:20px; border-radius: 15px; margin: 20px auto;">
                     <spen id="s_relult">비밀번호 확인</spen>
-                    <input id="password_ck"/>
+                    <input type="password" id="password_ck"/>
                     <button id="password_ck_b" onclick="password_ck()">확인</button>
                 </div>
         </div>
-        <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
-        <button id="userOut" onclick="location.href='/user/lovedata_delete'" >(임시)회원탈퇴</button>
+        <form method="post" action="/lovedata_delete" id="lovedata_delete">
+            <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
+            <input type="hidden" name="user_no" id="user_no" value="<sec:authentication property="principal.user_no"/>"/>
+            <button id="userOut" onclick="lovedata_delete()" >(임시)회원탈퇴</button>
+        </form>
     </div>
 </div>
 </body>

@@ -30,4 +30,6 @@ public interface QuestionsRepository extends JpaRepository<Questions, Long> , Qu
     @Query(value = "select * from questions q where q.qu_text LIKE :text and q.qu_activation=true order by q.qu_no desc", nativeQuery = true)
     Optional<List<Questions>> qu_search_text(String text);
 
+    @Query(value = "select * from questions where qu_user_no = :no ", nativeQuery = true)
+    Optional<List<Questions>> qu_findAllByUser_no(String no);
 }

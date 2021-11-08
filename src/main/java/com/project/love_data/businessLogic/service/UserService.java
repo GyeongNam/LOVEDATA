@@ -2,6 +2,7 @@ package com.project.love_data.businessLogic.service;
 
 import com.project.love_data.dto.UserDTO;
 import com.project.love_data.model.service.Comment;
+import com.project.love_data.model.service.Notice;
 import com.project.love_data.model.user.User;
 import com.project.love_data.repository.LocationRepository;
 import com.project.love_data.repository.UserRepository;
@@ -142,6 +143,17 @@ public class UserService {
         List<User> item = userRepository.findAll();
 
         return item;
+    }
+    public List<User> search_user(String menu, String text){
+        Optional<List<User>> item;
+        if(menu.equals("1")){
+            item = userRepository.name_search("%"+text+"%");
+            return item.orElse(new ArrayList<>());
+        }
+        else{
+            item = userRepository.nic_search("%"+text+"%");
+            return item.orElse(new ArrayList<>());
+        }
     }
 
 //    public LocationDTO LocDTO(Long loc_no) {
