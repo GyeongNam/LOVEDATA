@@ -8,18 +8,22 @@
 <head>
 	<link href="/css/fullpage.css" rel="stylesheet">
 	<link href="/css/home.css" rel="stylesheet">
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+		body {
+			font-family: 'Jua', sans-serif;
+		}
+	</style>
 	<title>Home</title>
 </head>
 <script src="https://www.jsdelivr.com/package/npm/fullpage.js?version=2.9.4"></script>
 <%@ include file="layout/header.jsp" %>
 <body>
 <div id="fullpage">
-<%--	<div class='quick'>--%>
-<%--		<ul style="list-style: none"></ul>--%>
-<%--	</div>--%>
 	<div id="gotop" style="display: none;">
 		<div id="object" class="floating">
-			<img src="image/cl.png" alt="gotop">
+			<img class="topbtbt" src="/image/icon/home/topbt.png" alt="gotop">
 		</div>
 	</div>
 	<div class="fullsection full1" pageNum="1">
@@ -66,26 +70,56 @@
 
 				</div>
 			</div>
-			<div class="class1">
-				<%--			<a href="/find_id">회원정보 찾기 수정</a>--%>
-				<a href="/user/deleteAccount">(임시)회원탈퇴</a>
-				<a href="/admin/service/loc_recommend/list">어드민 장소 추천 페이지</a>
-				<br><br>
-				<%--	<a href="/bootstrap">부트스트랩 테스트</a>--%>
-				<%--	<a href="/service/loc_recommend">장소_추천</a>--%>
-				<%--	<a href="/service/loc_recommend">장소 추천</a>--%>
-				<%--	<a href="/service/loc_detail/ex">장소 보기 예시</a>--%>
-				<%--	<a href="/service/cor_index">코스 인덱스</a>--%>
-				<a href="/fullpage">fullpage테스트</a>
-				<%--			<a href="/sample/index">테스트</a>--%>
-				<%--			<a href="/service/loc_index">장소_인덱스</a>--%>
-				<a href="/ServiceCenter/Notice/1">공지사항</a>
-					<a href="/ServiceCenter/Questions/1">문의사항</a>
+		</div>
+	</div>
+	<div class="full2">
+		<div class="main-2">
+			<div class="main-2-leftBox">
+				<div class="slideshow-container2">
+					<!-- Full-width images with number and caption text -->
+					<div class="mySlides2 fade2">
+						<img class="imgslide2" src="/image/icon/home/main2page1.png" alt="">
+					</div>
+
+					<div class="mySlides2 fade2">
+						<img class="imgslide2" src="/image/icon/home/placeload.png" alt="">
+					</div>
+
+					<div class="mySlides2 fade2">
+						<img class="imgslide2" src="">
+					</div>
+
+					<!-- Next and previous buttons -->
+					<div>
+						<a class="preve" onclick="moveSlides2(-1)">&#10094;</a>
+						<a class="nextt" onclick="moveSlides2(1)">&#10095;</a>
+					</div>
+					<div style="list-style: none">
+						<span class="dot2" onclick="currentSlide2(0)"></span>
+						<span class="dot2" onclick="currentSlide2(1)"></span>
+						<span class="dot2" onclick="currentSlide2(2)"></span>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="main-2-rightBox">
+				<div class="icon-box">
+
+					<a href="/ServiceCenter/Notice/1" >
+						<img class="main-2btpic" src="/image/icon/home/notice (1).png" href="/ServiceCenter/Notice/1">
+<%--						공지사항--%>
+					</a>
+				</div>
+				<div class="icon-box">
+					<a href="/ServiceCenter/Questions/1">
+						<img class="main-2btpic" src="/image/icon/home/qa.png" href="/ServiceCenter/Questions/1">
+<%--						문의사항--%>
+					</a>
+				</div>
 			</div>
 		</div>
 
-	</div>
-	<div class="full2">
 	</div>
 	<div class="full3">
 		<div class="container2">

@@ -33,10 +33,7 @@ import java.io.*;
 import java.io.PrintWriter;
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static com.project.love_data.util.ConstantValues.MAX_UPLOAD_COUNT;
 import static com.project.love_data.util.ConstantValues.MIN_UPLOAD_COUNT;
@@ -72,6 +69,10 @@ public class UserController {
 	CommentService cmtService;
 	@Autowired
 	ServiceCenterService serviceCenterService;
+	@Autowired
+	UserLikeLocService userLikeLocService;
+	@Autowired
+	UserLikeCorService userLikeCorService;
 
 	@RequestMapping(value = "/signup_add", method = RequestMethod.POST)
 	public String signup(
@@ -331,10 +332,36 @@ public class UserController {
 			return "redirect:/login";
 		} else {
 			AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
-			List<Location> myLocList = locService.findLocByUserNo(authUserModel.getUser_no());
-			model.addAttribute("my_like", myLocList);
+			List<UserLikeLoc> myLoclikeList = userLikeLocService.selectByAllUserNo(authUserModel.getUser_no());
+			List<Location> location = new ArrayList<>();
+			for(int i =0; i < myLoclikeList.size(); i++)
+			{
+				Location locationlike = locService.selectLoc(myLoclikeList.get(i).getLoc_no());
+				location.add(locationlike);
+			}
+			model.addAttribute("my_Loclike", location);
 
 			return "user/mypage_mylike";
+		}
+	}
+
+	//CHOI
+	@GetMapping(value = "/mypage_myCorlike")
+	public String myCorlike(Authentication authentication, Model model) {
+		if (authentication == null) {
+			return "redirect:/login";
+		} else {
+			AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
+			List<UserLikeCor> myCorlikeList = userLikeCorService.selectByAllUserNo(authUserModel.getUser_no());
+			List<Course> course = new ArrayList<>();
+			for(int i =0; i < myCorlikeList.size(); i++)
+			{
+				Course courselike = corService.selectCor(myCorlikeList.get(i).getCor_no());
+				course.add(courselike);
+			}
+			model.addAttribute("my_Corlike", course);
+
+			return "user/mypage_myCorlike";
 		}
 	}
 

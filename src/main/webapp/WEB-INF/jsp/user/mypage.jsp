@@ -40,22 +40,30 @@
 				</p>
 			</div>
 			<div>
-				<span>나의코스/장소</span>
 				<div>
-					<p>
-						<a href="/mypage_mycorse" >나의 코스</a>
-					</p>
-				</div>
-				<div>
-					<p>
-						<a href="/mypage_myplace" >나의 장소</a>
-					</p>
+					<button class="accordion">나의코스/장소</button>
+					<div class="panel">
+						<p>
+							<a href="/mypage_mycorse" >나의 코스</a>
+						</p>
+						<p>
+							<a href="/mypage_myplace" >나의 장소</a>
+						</p>
+					</div>
 				</div>
 			</div>
 			<div>
-				<p>
-					<a href="/mypage_mylike" >나의 찜 목록</a>
-				</p>
+				<div>
+					<button class="accordion">나의 찜 목록</button>
+					<div class="panel">
+						<p>
+							<a href="/mypage_mylike" >내가 찜한 장소</a>
+						</p>
+						<p>
+							<a href="/mypage_myCorlike" >내가 찜한 코스</a>
+						</p>
+					</div>
+				</div>
 			</div>
 			<div>
 				<p>

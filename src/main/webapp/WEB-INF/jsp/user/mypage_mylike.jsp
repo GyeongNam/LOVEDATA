@@ -11,6 +11,13 @@
 <jsp:useBean id="simpleDateTimeFormatter" class="com.project.love_data.util.SimpleLocalDateTimeFormatter"></jsp:useBean>
 <html>
 <head>
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+		body {
+			font-family: 'Jua', sans-serif;
+		}
+	</style>
     <link href="/css/mypage.css" rel="stylesheet">
     <title>Home</title>
 </head>
@@ -40,22 +47,30 @@
 				</p>
 			</div>
 			<div>
-				<span>나의코스/장소</span>
 				<div>
-					<p>
-						<a href="/mypage_mycorse" >나의 코스</a>
-					</p>
-				</div>
-				<div>
-					<p>
-						<a href="/mypage_myplace" >나의 장소</a>
-					</p>
+					<button class="accordion">나의코스/장소</button>
+					<div class="panel">
+						<p>
+							<a href="/mypage_mycorse" >나의 코스</a>
+						</p>
+						<p>
+							<a href="/mypage_myplace" >나의 장소</a>
+						</p>
+					</div>
 				</div>
 			</div>
 			<div>
-				<p>
-					<a href="/mypage_mylike" >나의 찜 목록</a>
-				</p>
+				<div>
+					<button class="accordion">나의 찜 목록</button>
+					<div class="panel">
+						<p>
+							<a href="/mypage_mylike" >내가 찜한 장소</a>
+						</p>
+						<p>
+							<a href="/mypage_myCorlike" >내가 찜한 코스</a>
+						</p>
+					</div>
+				</div>
 			</div>
 			<div>
 				<p>
@@ -76,13 +91,13 @@
 				</tr>
 				</thead>
 				<tbody>
-				<c:forEach var="mlike" items="${my_like}" >
+				<c:forEach var="mlike" items="${my_Loclike}" >
 				<c:choose>
 				<c:when test="${mlike._deleted eq false}">
 				<tbody>
 				<tr>
 					<td><span>${mlike.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</span></td>
-					<td>${mlike.loc_name}</td>
+					<td><a href="/service/loc_detail?locNo=${mlike.loc_no}">${mlike.loc_name}</a></td>
 					<td>${mlike.viewCount}</td>
 				</tr>
 				</c:when>
@@ -90,6 +105,9 @@
 				</c:forEach>
 				</tbody>
 			</table>
+			${my_Loclike.get(0).loc_no}
+
+			${my_Corlike.get(0).cor_no}
 			<div class="pagination">
 				<a href="#">&laquo;</a>
 				<a href="#">1</a>

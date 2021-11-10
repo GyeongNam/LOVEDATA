@@ -1,8 +1,12 @@
 /* new setting */
+body{
+  background-color: #f5f6f7;
+}
+
 #header{
   position: relative;
   overflow: hidden;
-  padding: 60px 0 54px;
+  padding: 30px 0 30px;
   box-sizing: border-box;
 }
 .input_style{
@@ -30,9 +34,9 @@
     border-collapse: collapse;
     text-align: left;
     line-height: 1.5;
-    border: 1px solid #ccc;
+    /*border: 1px solid #ccc;*/
+    width: 530px;
     margin: 0 auto;
-    width: 550px;
   }
   table.signup thead {
     border-right: 1px solid #ccc;
@@ -52,7 +56,7 @@
     font-weight: bold;
     vertical-align : middle;
     border-bottom: 1px solid #ccc;
-    background: #fcf1f4;
+    /*background: #c6aac5;*/
   }
   table.signup td {
 
@@ -100,14 +104,15 @@
     width: 25%;
   }
   .content{
-  	margin: 0 auto;
-  	width:50%;
+    margin: 0 auto;
+    max-width: 768px;
+    min-width: 460px;
   }
   #str_email01, #str_email02, #selectEmail{
-    width: 20%;
+    width: 50%;
   }
    #str_phone02, #str_phone03 {
-    width: 10%;
+    width: 30%;
   }
 
 
@@ -175,4 +180,55 @@
   height: 15%;
   width: 100%;
   resize: none; /* 사용자 임의 변경 불가 */
+}
+
+.submit{
+  color: #fff;
+  border: solid 1px rgba(0,0,0,.08);
+  background-color: #ef319b;
+  width: 200px;
+  padding: 15px 0 15px;
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.back{
+  color: #fff;
+  border: solid 1px rgba(0,0,0,.08);
+  background-color: #929292;
+  width: 200px;
+  padding: 15px 0 15px;
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.selectmenu{
+  /*display: block;*/
+  position: relative;
+  width: 100%;
+  height: 51px;
+  border: solid 1px #dadada;
+
+}
+.phone-selectmenu{
+  position: relative;
+  width: 28%;
+  height: 51px;
+  border: solid 1px #dadada;
+
+}
+
+.phone_nums{
+  /*display: block;*/
+  position: relative;
+  width: 50%;
+  height: 51px;
+  border: solid 1px #dadada;
+
 }

@@ -19,7 +19,7 @@
 }
 
 .active{
-    background-color: #eebaba;
+    /*background-color: #eebaba;*/
     transition-duration: 0.5s;
     transition-timing-function: ease;
 

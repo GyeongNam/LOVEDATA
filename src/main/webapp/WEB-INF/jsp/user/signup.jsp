@@ -11,6 +11,13 @@
 
 <html>
 <head>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+        body {
+            font-family: 'Jua', sans-serif;
+        }
+    </style>
     <meta name="_csrf" content="${_csrf.token}">
     <meta name="_csrf_header" content="${_csrf.headerName}">
     <title>회원가입ㅣLOVEDATA</title>
@@ -31,7 +38,8 @@
         <table class="signup">
             <tr>
                 <td class="thead"><label class="label"><strong>이메일(아이디)
-                    *</strong></label></td>
+                    *</strong></label>
+                </td>
                 <td>
                     <div class="emailcontent">
                         <c:choose>
@@ -175,7 +183,7 @@
                     *</strong></label></td>
                 <td>
                     <div class="str_phone">
-                        <select name="str_phone01" id="selectphone" required="required">
+                        <select class="phone-selectmenu" name="str_phone01" id="selectphone" required="required">
                             <option value="010">010</option>
                             <option value="011">011</option>
                             <option value="017">017</option>
@@ -208,7 +216,7 @@
             <tr>
                 <td class="thead"><label class="label"><strong>성별</strong></label>
                 </td>
-                <td><select name="gender" id="gender" required="required">
+                <td><select class="selectmenu" name="gender" id="gender" required="required">
                     <option value=true>남자</option>
                     <option value=false>여자</option>
                 </select></td>

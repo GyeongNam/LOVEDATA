@@ -12,7 +12,16 @@
 
 <html>
 <head>
+	<meta name="_csrf" content="${_csrf.token}">
+	<meta name="_csrf_header" content="${_csrf.headerName}">
     <link href="/css/mypage.css" rel="stylesheet">
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+		body {
+			font-family: 'Jua', sans-serif;
+		}
+	</style>
     <title>Home</title>
 </head>
 <%@ include file="../layout/header.jsp"%>
@@ -41,22 +50,30 @@
 				</p>
 			</div>
 			<div>
-				<span>나의코스/장소</span>
 				<div>
-					<p>
-						<a href="/mypage_mycorse" >나의 코스</a>
-					</p>
-				</div>
-				<div>
-					<p>
-						<a href="/mypage_myplace" >나의 장소</a>
-					</p>
+					<button class="accordion">나의코스/장소</button>
+					<div class="panel">
+						<p>
+							<a href="/mypage_mycorse" >나의 코스</a>
+						</p>
+						<p>
+							<a href="/mypage_myplace" >나의 장소</a>
+						</p>
+					</div>
 				</div>
 			</div>
 			<div>
-				<p>
-					<a href="/mypage_mylike" >나의 찜 목록</a>
-				</p>
+				<div>
+					<button class="accordion">나의 찜 목록</button>
+					<div class="panel">
+						<p>
+							<a href="/mypage_mylike" >내가 찜한 장소</a>
+						</p>
+						<p>
+							<a href="/mypage_myCorlike" >내가 찜한 코스</a>
+						</p>
+					</div>
+				</div>
 			</div>
 			<div>
 				<p>
@@ -86,7 +103,7 @@
 					</td>
 					<td>
 						<a href="/service/cor_detail?corNo=${cor.cor_no}">${cor.cor_name}</a>
-						<button>삭제</button>
+						<button onclick="onClickRemoveLocation(${cor.cor_no})">삭제</button>
 						<button onclick="location.href='/service/cor_edit?corNo=${cor.cor_no}'">수정</button>
 					</td>
 					<td>${cor.viewCount}</td>
@@ -108,8 +125,26 @@
 </sec:authorize>
 <%--</form>--%>
 </body>
+
 <!--   부트스트랩 js 사용  -->
 <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script defer type="text/javascript" src="/resource/js/bootstrap.js"></script>
 <script defer src="/js/mypage.js"></script>
+<script>
+	//장소 삭제 버튼
+	function onClickRemoveLocation(param) {
+		if (!window.confirm("장소를 삭제하시겠습니까?")) {
+			return;
+		}
+
+
+		let form;
+		form = document.createElement("form");
+		form.method = "post";
+		form.action= "/service/cor_delete?corNo=" + param;
+
+		document.body.appendChild(form);
+		form.submit();
+	}
+</script>
 </html>
