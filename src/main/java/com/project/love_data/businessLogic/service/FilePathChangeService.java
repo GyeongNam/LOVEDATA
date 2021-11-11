@@ -7,16 +7,14 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 
 @Service
 @RequiredArgsConstructor
 @Log4j2
 public class FilePathChangeService {
-    public boolean execute(String fileName, FileAction fileAction, UploadPathType pathType, FileExtension fileExtension) {
+    public boolean execute(String fileName, FileAction fileAction, PathType pathType, FileExtension fileExtension) {
         String pathStr;
         Path resPath;
         Path dumpPath;
@@ -94,6 +92,15 @@ public class FilePathChangeService {
                             "image" + File.separator +
                             "user_pic" + File.separator + fileName);
                     break;
+                case UPLOAD:
+                    resPath = Paths.get(pathStr + File.separator +
+                            "src" + File.separator +
+                            "main" + File.separator +
+                            "resources" + File.separator +
+                            "static" + File.separator +
+                            "image" + File.separator +
+                            "upload" + File.separator + fileName);
+                    break;
                 default:
                     return false;
             }
@@ -123,6 +130,9 @@ public class FilePathChangeService {
                     break;
                 case USER_PIC:
                     resPath = Paths.get(pathStr + File.separator + "user_pic" + File.separator + fileName);
+                    break;
+                case UPLOAD:
+                    resPath = Paths.get(pathStr + File.separator + "upload" + File.separator + fileName);
                     break;
                 default:
                     return false;

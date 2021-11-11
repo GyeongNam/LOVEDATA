@@ -1,12 +1,8 @@
 package com.project.love_data.controller.service;
 
 import com.project.love_data.businessLogic.service.*;
-import com.project.love_data.dto.CommentDTO;
-import com.project.love_data.dto.LocationDTO;
 import com.project.love_data.dto.PageRequestDTO;
-import com.project.love_data.dto.PageResultDTO;
 import com.project.love_data.model.resource.ReviewImage;
-import com.project.love_data.model.service.Comment;
 import com.project.love_data.model.service.Course;
 import com.project.love_data.model.service.Review;
 import lombok.extern.log4j.Log4j2;
@@ -73,7 +69,7 @@ public class ReviewController {
 
         if (!fileList.isEmpty()) {
             filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE, UploadFileCount.MULTIPLE,
-                    REV_MIN_UPLOAD_COUNT, REV_MAX_UPLOAD_COUNT, UploadPathType.REV, request);
+                    REV_MIN_UPLOAD_COUNT, REV_MAX_UPLOAD_COUNT, PathType.REV, request);
 
             if (filePath == null) {
                 log.warn("파일이 제대로 저장되지 않았습니다.");
@@ -146,7 +142,7 @@ public class ReviewController {
             rev_temp.set_modified(true);
             entity = revService.update(rev_temp);
             filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE, UploadFileCount.MULTIPLE,
-                    REV_MIN_UPLOAD_COUNT, REV_MAX_UPLOAD_COUNT, UploadPathType.REV, request);
+                    REV_MIN_UPLOAD_COUNT, REV_MAX_UPLOAD_COUNT, PathType.REV, request);
             revImgService.updateOldImage(revNo, filePath);
         }
 

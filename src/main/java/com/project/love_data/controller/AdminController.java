@@ -2,6 +2,9 @@ package com.project.love_data.controller;
 
 import com.project.love_data.businessLogic.service.*;
 import com.project.love_data.dto.*;
+import com.project.love_data.model.resource.CourseImage;
+import com.project.love_data.model.resource.LocationImage;
+import com.project.love_data.model.resource.ReviewImage;
 import com.project.love_data.model.service.*;
 import com.project.love_data.model.user.User;
 import com.project.love_data.security.model.AuthUserModel;
@@ -14,6 +17,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static com.project.love_data.util.ConstantValues.MAX_COR_LIST_SIZE;
@@ -39,6 +45,14 @@ public class AdminController {
     UserService userService;
     @Autowired
     CommentService comService;
+    @Autowired
+    FileManagementService fileManagementService;
+    @Autowired
+    LocationImageService locImageService;
+    @Autowired
+    CourseImageService corImageService;
+    @Autowired
+    ReviewImageService revImageService;
 
     List<String> tagList = new ArrayList<>();
 
@@ -823,6 +837,115 @@ public class AdminController {
 
     @GetMapping("/upload_cache")
     public String adminUploadCache(HttpServletRequest request, Model model) {
+        List<File> fileList = new ArrayList<>();
+        List<LocalDateTime> lastModifiedTimeList = new ArrayList<>();
+        List<String> fileSizeList = new ArrayList<>();
+        List<String> fileNameList = new ArrayList<>();
+        List<String> fileTypeList = new ArrayList<>();
+        List<Long> fileNoList = new ArrayList<>();
+        List<String> fileUploadUserList = new ArrayList<>();
+        List<LocalDateTime> fileUploadTimeList = new ArrayList<>();
+
+        fileList = fileManagementService.getAllFilesList(PathType.UPLOAD);
+
+        // 가장 최근 파일 삭제일이 위로 가도록 정렬하기
+//        for (File file : fileList) {
+//
+//        }
+
+        for (File file : fileList) {
+            String fileName = file.getName();
+            String type = "";
+            String uuid = "";
+            lastModifiedTimeList.add(LocalDateTime.ofInstant(Instant.ofEpochMilli(file.lastModified()), TimeZone.getTimeZone("Asia/Seoul").toZoneId()));
+            fileSizeList.add(String.valueOf(file.length()));
+            fileNameList.add(fileName);
+
+            int index = fileName.indexOf("^");
+            type = fileName.substring(0, index);
+//            fileTypeList.add(type);
+
+            uuid = fileName.substring(index + 1, fileName.length());
+            index = uuid.indexOf(".");
+            uuid = uuid.substring(0, index);
+
+            switch (type) {
+                case "LOC" :
+                    fileTypeList.add("장소");
+                    LocationImage locImg = locImageService.getImage(uuid);
+                    if (locImg == null) {
+                        fileNoList.add(null);
+                        fileUploadTimeList.add(null);
+                        fileUploadUserList.add("삭제 된 사용자");
+                    } else {
+                        fileNoList.add(locImg.getImg_no());
+                        fileUploadTimeList.add(locImg.getRegDate());
+                        User user = userService.select(locImg.getUser_no());
+                        if (user == null) {
+                            fileUploadUserList.add("삭제 된 사용자");
+                        } else {
+                            fileUploadUserList.add(user.getUser_nic());
+                        }
+                    }
+                    break;
+                case "COR" :
+                    fileTypeList.add("코스");
+                    CourseImage corImg = corImageService.getImage(uuid);
+                    if (corImg == null) {
+                        fileNoList.add(null);
+                        fileUploadTimeList.add(null);
+                        fileUploadUserList.add("삭제 된 사용자");
+                    } else {
+                        fileNoList.add(corImg.getImg_no());
+                        fileUploadTimeList.add(corImg.getRegDate());
+                        User user = userService.select(corImg.getUser_no());
+                        if (user == null) {
+                            fileUploadUserList.add("삭제 된 사용자");
+                        } else {
+                            fileUploadUserList.add(user.getUser_nic());
+                        }
+                    }
+                    break;
+                case "REV" :
+                    fileTypeList.add("리뷰");
+                    ReviewImage revImg = revImageService.getImage(uuid);
+                    if (revImg == null) {
+                        fileNoList.add(null);
+                        fileUploadTimeList.add(null);
+                        fileUploadUserList.add("삭제 된 사용자");
+                    } else {
+                        fileNoList.add(revImg.getImg_no());
+                        fileUploadTimeList.add(revImg.getRegDate());
+                        User user = userService.select(revImg.getUser_no());
+                        if (user == null) {
+                            fileUploadUserList.add("삭제 된 사용자");
+                        } else {
+                            fileUploadUserList.add(user.getUser_nic());
+                        }
+                    }
+                    break;
+                case "PIC" :
+                    fileTypeList.add("프로필");
+                    break;
+                case "QNA" :
+                    fileTypeList.add("문의사항");
+                    break;
+                case "NTC" :
+                    fileTypeList.add("공지사항");
+                    break;
+                default :
+                    break;
+            }
+        }
+
+        model.addAttribute("lastModifiedTimeList", lastModifiedTimeList);
+        model.addAttribute("fileSizeList", fileSizeList);
+        model.addAttribute("fileNameList", fileNameList);
+        model.addAttribute("fileTypeList", fileTypeList);
+        model.addAttribute("fileNoList", fileNoList);
+        model.addAttribute("fileUploadUserList", fileUploadUserList);
+        model.addAttribute("fileUploadTimeList", fileUploadTimeList);
+
         return "/admin/admin_upload_cache";
     }
 }

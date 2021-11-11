@@ -1,7 +1,6 @@
 package com.project.love_data.businessLogic.service;
 
 import com.project.love_data.dto.ReviewImageDTO;
-import com.project.love_data.model.resource.CourseImage;
 import com.project.love_data.model.resource.ReviewImage;
 import com.project.love_data.model.service.Review;
 import com.project.love_data.repository.ReviewImageRepository;
@@ -134,7 +133,7 @@ public class ReviewImageService {
     private ReviewImage disable(ReviewImage img) {
         String extension = pathChangeService.getFileExtension(img.getImg_url());
         if (pathChangeService.execute(img.getImg_uuid(), FileAction.DELETE,
-                UploadPathType.REV, FileExtension.valueOf(extension.toUpperCase(Locale.ROOT)))){
+                PathType.REV, FileExtension.valueOf(extension.toUpperCase(Locale.ROOT)))){
             img.set_deleted(true);
             img.setImg_url("/image/upload/REV^" + img.getImg_uuid());
             update(img);
@@ -146,7 +145,7 @@ public class ReviewImageService {
     private ReviewImage enable(ReviewImage img) {
         String extension = pathChangeService.getFileExtension(img.getImg_url());
         if (pathChangeService.execute(img.getImg_uuid(), FileAction.ROLLBACK,
-                UploadPathType.REV, FileExtension.valueOf(extension.toUpperCase(Locale.ROOT)))){
+                PathType.REV, FileExtension.valueOf(extension.toUpperCase(Locale.ROOT)))){
             img.set_deleted(false);
             img.setImg_url("/image/review/" + img.getImg_uuid());
             update(img);

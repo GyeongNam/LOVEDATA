@@ -80,64 +80,56 @@
 							<thead>
 							<th scope="col">#</th>
 							<th scope="col">ID</th>
-							<th scope="col">작성자</th>
+							<th scope="col">업로드 유저</th>
 							<th scope="col">파일명</th>
-							<th scope="col">
-								<div class="dropdown">
-									<button id="recentLocCorDropDownBtn" class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										전체
-									</button>
-									<div class="dropdown-menu" aria-labelledby="recentLocCorDropDownBtn">
-										<a class="dropdown-item" onclick="changeToTotalRecentLocCorTable()">전체</a>
-										<a class="dropdown-item" onclick="changeToLocOnlyRecentLocCorTable()">장소</a>
-										<a class="dropdown-item" onclick="changeToCorOnlyRecentLocCorTable()">코스</a>
-									</div>
-								</div>
-							</th>
-							<th scope="col">추천수</th>
-							<th scope="col">신고수</th>
+							<th scope="col">타입</th>
 							<th scope="col">등록일</th>
+							<th scope="col">삭제일</th>
 							</thead>
-							<tbody id="recentLocCorTableBody">
-							<c:choose>
-								<c:when test="${!empty recentLocCorListIndex}">
-									<c:forEach var="i" begin="0" end="${recentLocCorListIndex.size()-1}">
-										<c:choose>
-											<c:when test="${recentLocCorTypeList.get(i).equalsIgnoreCase('Loc')}">
-												<tr onclick="location.href='/service/loc_detail?locNo=${recentLocList.get(recentLocCorListIndex.get(i)).loc_no}'"
-													style="background: #ffdef2; cursor: pointer;">
-													<td>${i+1}</td>
-													<td>${recentLocList.get(recentLocCorListIndex.get(i)).loc_no}</td>
-													<td>${recentLocUserNicList.get(recentLocCorListIndex.get(i))}</td>
-													<td>${recentLocList.get(recentLocCorListIndex.get(i)).loc_name}</td>
-													<td>장소</td>
-													<td>${recentLocList.get(recentLocCorListIndex.get(i)).likeCount}</td>
-														<%--															Todo 추후 신고 추가되면 추가하기--%>
-													<td>Null</td>
-													<td>${recentLocList.get(recentLocCorListIndex.get(i)).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}</td>
-												</tr>
-											</c:when>
-											<c:when test="${recentLocCorTypeList.get(i).equalsIgnoreCase('Cor')}">
-												<tr onclick="location.href='/service/cor_detail?corNo=${recentCorList.get(recentLocCorListIndex.get(i)).cor_no}'"
-													style="background: #e2eeff; cursor:pointer;">
-													<td>${i+1}</td>
-													<td>${recentCorList.get(recentLocCorListIndex.get(i)).cor_no}</td>
-													<td>${recentCorUserNicList.get(recentLocCorListIndex.get(i))}</td>
-													<td>${recentCorList.get(recentLocCorListIndex.get(i)).cor_name}</td>
-													<td>코스</td>
-													<td>${recentCorList.get(recentLocCorListIndex.get(i)).likeCount}</td>
-														<%--															Todo 추후 신고 추가되면 추가하기--%>
-													<td>Null</td>
-													<td>${recentCorList.get(recentLocCorListIndex.get(i)).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}</td>
-												</tr>
-											</c:when>
-										</c:choose>
-									</c:forEach>
-								</c:when>
-								<c:otherwise>
-									<%--											<span>해당하는 정보가 없습니다.</span>--%>
-								</c:otherwise>
-							</c:choose>
+							<tbody id="table">
+								<c:choose>
+									<c:when test="${!empty fileNameList}">
+										<c:forEach var="i" begin="0" end="${fileNameList.size() - 1}">
+											<tr>
+												<td>${i + 1}</td>
+												<c:choose>
+													<c:when test="${fileNoList.get(i) ne null}">
+														<td>${fileNoList.get(i)}</td>
+													</c:when>
+													<c:otherwise>
+														<td>NULL</td>
+													</c:otherwise>
+												</c:choose>
+												<c:choose>
+													<c:when test="${fileUploadUserList.get(i) ne null}">
+														<td>${fileUploadUserList.get(i)}</td>
+													</c:when>
+													<c:otherwise>
+														<td>NULL</td>
+													</c:otherwise>
+												</c:choose>
+												<td>${fileNameList.get(i)}</td>
+												<td>${fileTypeList.get(i)}</td>
+												<c:choose>
+													<c:when test="${fileUploadTimeList.get(i) ne null}">
+														<td>${fileUploadTimeList.get(i).format(defaultDateTimeFormatter.dateTimeFormatter)}</td>
+													</c:when>
+													<c:otherwise>
+														<td>NULL</td>
+													</c:otherwise>
+												</c:choose>
+												<c:choose>
+													<c:when test="${lastModifiedTimeList.get(i) ne null}">
+														<td>${lastModifiedTimeList.get(i).format(defaultDateTimeFormatter.dateTimeFormatter)}</td>
+													</c:when>
+													<c:otherwise>
+														<td>NULL</td>
+													</c:otherwise>
+												</c:choose>
+											</tr>
+										</c:forEach>
+									</c:when>
+								</c:choose>
 							</tbody>
 						</table>
 					</div>

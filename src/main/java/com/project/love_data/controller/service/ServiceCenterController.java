@@ -20,8 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.net.URL;
-import java.nio.file.Paths;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -486,7 +484,7 @@ public class ServiceCenterController {
         User user = userService.select(principal.getName());
 
         filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE, UploadFileCount.MULTIPLE,
-                0, 3, UploadPathType.QNA, request);
+                0, 3, PathType.QNA, request);
 
         Boolean secret = false;
         if(request.getParameter("secret").equals("1")){
@@ -555,7 +553,7 @@ public class ServiceCenterController {
                 log.info(i+" :존재하지 않음");
                 List<MultipartFile> fileList2 = fileList.subList(i,i+1);
                 filePath = fileUploadService.execute(fileList2, UploadFileType.IMAGE, UploadFileCount.MULTIPLE,
-                        0, 3, UploadPathType.QNA, request);
+                        0, 3, PathType.QNA, request);
 
                 questions.setQu_secret(secret);
                 questions.setQu_text(request.getParameter("info"));

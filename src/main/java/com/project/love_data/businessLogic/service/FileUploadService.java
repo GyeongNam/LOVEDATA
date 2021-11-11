@@ -11,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -29,7 +28,7 @@ public class FileUploadService {
 
     public void execute(List<MultipartFile> fileList,
                         UploadFileType fileType,
-                        UploadPathType pathType,
+                        PathType pathType,
                         HttpServletRequest request) {
         execute(fileList, fileType, UploadFileCount.SINGLE, 1,
                 1, pathType, request);
@@ -40,7 +39,7 @@ public class FileUploadService {
                                 UploadFileCount fileCount,
                                 int minFileUploadCount,
                                 int maxFileUploadCount,
-                                UploadPathType pathType,
+                                PathType pathType,
                                 HttpServletRequest request) {
         // 업로드하는 파일이 실제로 저장되는 위치
         String pathStr;
@@ -87,7 +86,7 @@ public class FileUploadService {
     private List<String> singleFileUpload(MultipartFile file,
                                           String pathStr,
                                           UploadFileType fileType,
-                                          UploadPathType pathType,
+                                          PathType pathType,
                                           HttpServletRequest request) {
         String filePath = getUploadPath(pathStr, pathType);
         String URIPath = getURIPath(pathType);
@@ -146,7 +145,7 @@ public class FileUploadService {
                                          UploadFileType fileType,
                                          int minFileUploadCount,
                                          int maxFileUploadCount,
-                                         UploadPathType pathType,
+                                         PathType pathType,
                                          HttpServletRequest request) {
         String filePath = getUploadPath(pathStr, pathType);
         String URIPath = getURIPath(pathType);
@@ -237,7 +236,7 @@ public class FileUploadService {
     }
 
     // 업로드된 파일의 저장 위치 설정
-    private String getUploadPath(String pathStr, UploadPathType pathType) {
+    private String getUploadPath(String pathStr, PathType pathType) {
         // 현재 프로젝트 폴더 하위 폴더인 images 폴더를 업로드 폴더로 지정
         Path path;
 
@@ -363,7 +362,7 @@ public class FileUploadService {
         return path.toString();
     }
 
-    private String getURIPath(UploadPathType pathType) {
+    private String getURIPath(PathType pathType) {
 //        if ("Windows_NT".equals(System.getenv().get("OS"))) {
 //            switch (pathType) {
 //                case LOC:

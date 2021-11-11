@@ -1,6 +1,6 @@
 package com.project.love_data.businessLogic.service;
 
-public enum UploadPathType {
+public enum PathType {
     LOC,
     COR,
     REV,

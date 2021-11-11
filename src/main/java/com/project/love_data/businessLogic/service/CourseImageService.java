@@ -103,7 +103,7 @@ public class CourseImageService {
     private CourseImage disable(CourseImage img) {
         String extension = pathChangeService.getFileExtension(img.getImg_url());
         if (pathChangeService.execute(img.getImg_uuid(), FileAction.DELETE,
-                UploadPathType.COR, FileExtension.valueOf(extension.toUpperCase(Locale.ROOT)))){
+                PathType.COR, FileExtension.valueOf(extension.toUpperCase(Locale.ROOT)))){
             img.set_deleted(true);
             img.setImg_url("/image/upload/COR^" + img.getImg_uuid());
             update(img);
@@ -115,7 +115,7 @@ public class CourseImageService {
     private CourseImage enable(CourseImage img) {
         String extension = pathChangeService.getFileExtension(img.getImg_url());
         if (pathChangeService.execute(img.getImg_uuid(), FileAction.ROLLBACK,
-                UploadPathType.COR, FileExtension.valueOf(extension.toUpperCase(Locale.ROOT)))){
+                PathType.COR, FileExtension.valueOf(extension.toUpperCase(Locale.ROOT)))){
             img.set_deleted(false);
             img.setImg_url("/image/course/" + img.getImg_uuid());
             update(img);

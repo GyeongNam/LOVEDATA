@@ -196,7 +196,7 @@ public class UserController {
 			Map<String, String> mypgup = new HashMap<>();
 
 			filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE, UploadFileCount.MULTIPLE,
-					1, MAX_UPLOAD_COUNT, UploadPathType.USER_PIC, request);
+					1, MAX_UPLOAD_COUNT, PathType.USER_PIC, request);
 
 			if(filePath != null){
 				user.setProfile_pic(filePath.get(0) + "/" + filePath.get(1));
