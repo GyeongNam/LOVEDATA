@@ -14,7 +14,7 @@ import java.util.*;
 public interface CommentRepository extends JpaRepository<Comment, Long>,
         QuerydslPredicateExecutor<Comment> {
     @Query(value = "SELECT * FROM comment c WHERE c.location_loc_no = :loc_no", nativeQuery = true)
-    List<Comment> findAllByLoc_no(@Param("loc_no") Long locNo);
+    Optional<List<Comment>> findAllByLoc_no(@Param("loc_no") Long locNo);
 
     @Query(value = "SELECT * FROM comment c WHERE c.user_user_no = :user_no", nativeQuery = true)
     List<Comment> findAllByUser_no(@Param("user_no") Long userNo);

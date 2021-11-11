@@ -3,6 +3,7 @@ package com.project.love_data.businessLogic.service;
 import com.project.love_data.dto.PageRequestDTO;
 import com.project.love_data.dto.PageResultDTO;
 import com.project.love_data.dto.ReviewDTO;
+import com.project.love_data.model.resource.ReviewImage;
 import com.project.love_data.model.service.*;
 import com.project.love_data.model.user.User;
 import com.project.love_data.repository.CourseRepository;
@@ -29,6 +30,7 @@ public class ReviewService {
     private final ReviewRepository repository;
     private final CourseRepository corRepository;
     private final UserRepository userRepository;
+    private final ReviewImageService revImgService;
 
     public Review dtoToEntity(ReviewDTO dto) {
         Review entity = Review.builder()
@@ -130,7 +132,10 @@ public class ReviewService {
             long index = 0;
 
             if (reviewList.isPresent()) {
-                index = reviewList.get().size();
+                List<Review> temp = reviewList.get();
+                if (!temp.isEmpty()) {
+                    index = temp.get(temp.size()-1).getRevIdx() + 1;
+                }
             }
 
             Review entity = Review.builder()
@@ -231,20 +236,58 @@ public class ReviewService {
         return update(review);
     }
 
-    public void delete(Long revNo) {
+    public boolean delete(Long revNo) {
         Review rev = select(revNo);
 
         if (!rev.is_deleted()) {
-            disable(rev);
+            List<ReviewImage> list = revImgService.getAllLiveImageByRevNo(revNo);
+            List<ReviewImage> finishedList = new ArrayList<>();
+            boolean isRevImageDeleted = true;
+
+            for (ReviewImage reviewImage : list) {
+                revImgService.delete(reviewImage.getImg_no());
+                if (!revImgService.getImage(reviewImage.getImg_no()).is_deleted()) {
+                    for (ReviewImage image : finishedList) {
+                        revImgService.rollback(image.getImg_no());
+                    }
+                    isRevImageDeleted = false;
+                }
+            }
+
+            if (isRevImageDeleted) {
+                disable(rev);
+                return true;
+            }
         }
+
+        return false;
     }
 
-    public void delete(String uuid) {
+    public boolean delete(String uuid) {
         Review rev = select(uuid);
 
         if (!rev.is_deleted()) {
-            disable(rev);
+            List<ReviewImage> list = revImgService.getAllLiveImageByRevNo(rev.getRevNo());
+            List<ReviewImage> finishedList = new ArrayList<>();
+            boolean isRevImageDeleted = true;
+
+            for (ReviewImage reviewImage : list) {
+                revImgService.delete(reviewImage.getImg_no());
+                if (!revImgService.getImage(reviewImage.getImg_no()).is_deleted()) {
+                    for (ReviewImage image : finishedList) {
+                        revImgService.rollback(image.getImg_no());
+                    }
+                    isRevImageDeleted = false;
+                }
+            }
+
+            if (isRevImageDeleted) {
+                disable(rev);
+                return true;
+            }
         }
+
+        return false;
     }
 
     public void permaDelete(Review rev) {
@@ -255,6 +298,33 @@ public class ReviewService {
         PageResultDTO<ReviewDTO, Review> revResultList = getRevPage(requestDTO, SortingOrder.ASC, ReviewSearchType.Live);
 
         repository.deleteByRev_no(rev.getRevNo());
+    }
+
+    public boolean rollback(Long revNo) {
+        Review rev = select(revNo);
+
+        if (rev.is_deleted()) {
+            List<ReviewImage> list = revImgService.getLastDeletedImageByRevNo(revNo);
+            List<ReviewImage> finishedList = new ArrayList<>();
+            boolean isRevImageRollback = true;
+
+            for (ReviewImage reviewImage : list) {
+                revImgService.rollback(reviewImage.getImg_no());
+                if (!revImgService.getImage(reviewImage.getImg_no()).is_deleted()) {
+                    for (ReviewImage image : finishedList) {
+                        revImgService.delete(image.getImg_no());
+                    }
+                    isRevImageRollback = false;
+                }
+            }
+
+            if (isRevImageRollback) {
+                enable(rev);
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public Review select(String uuid) {

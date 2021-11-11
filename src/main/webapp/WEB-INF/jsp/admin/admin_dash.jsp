@@ -35,14 +35,12 @@
 					<div class="card">
 						<div class="card-header" id="headingLoc">
 							<h2 class="mb-0">
-								<button class="btn btn-link btn-block loc_highlight-selected-nav-menu" type="button"
-										data-toggle="collapse"
-										data-target="#loc_collapse" aria-expanded="true" aria-controls="collapseOne">
+								<button class="btn btn-link btn-block loc_highlight-selected-nav-menu" type="button" aria-expanded="true" aria-controls="collapseOne">
 									어드민
 								</button>
 							</h2>
 						</div>
-						<div id="loc_collapse" class="collapse show" aria-labelledby="headingLoc" data-parent="#loc">
+						<div id="loc_collapse" class="show">
 							<div class="card-body center-pill">
 								<p><a href="/admin/dash" class="highlight-selected-text-menu">대시보드</a></p>
 								<p><a href="/admin/user" class="highlight-not-selected-text-menu">유저 관리</a></p>
@@ -56,7 +54,7 @@
 										<a href="/admin/qna/1" class="highlight-not-selected-text-menu">- 문의사항 답변</a>
 									</p>
 								</div>
-								<p><a href="/admin/dash" class="highlight-not-selected-text-menu">upload 파일 캐시 삭제</a></p>
+								<p><a href="/admin/upload_cache" class="highlight-not-selected-text-menu">upload 파일 캐시 삭제</a></p>
 <%--								<p><a href="/admin/loc_recommend" class="highlight-not-selected-text-menu">- 추천 장소(어드민)</a></p>--%>
 <%--								<p><a href="/admin/cor_recommend" class="highlight-not-selected-text-menu">- 추천 코스(어드민)</a></p>--%>
 								<p class="mb-0"><a href="" class="highlight-not-selected-text-menu">신고 센터</a></p>

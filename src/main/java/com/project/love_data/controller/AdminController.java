@@ -345,9 +345,9 @@ public class AdminController {
     }
 
     @GetMapping("/dash")
-    public String adminDashboadr(HttpServletRequest request, Model model) {
+    public String adminDashboard(HttpServletRequest request, Model model) {
         final int size = 20;
-        final int dateDuration = 30;
+        final int dateDuration = 7;
         final int minLikeCount = 0;
 
         List<Location> tempLocationList = new ArrayList<>();
@@ -819,5 +819,10 @@ public class AdminController {
         model.addAttribute("hotComRevPageNum", hotComRevPageNum);
 
         return "/admin/admin_dash";
+    }
+
+    @GetMapping("/upload_cache")
+    public String adminUploadCache(HttpServletRequest request, Model model) {
+        return "/admin/admin_upload_cache";
     }
 }

@@ -451,47 +451,114 @@ public class LocationService {
         repository.deleteByLoc_uuid(loc.getLoc_uuid());
     }
 
-    public void delete(Long locNo) {
+    public boolean delete(Long locNo) {
         Location loc = selectLoc(locNo);
 
         if (!loc.is_deleted()) {
-            disableLocation(loc);
+            boolean isLocImageDeleted = true;
+            List<LocationImage> finishedList = new ArrayList<>();
             for (LocationImage locationImage : loc.getImgSet()) {
                 imgService.delete(locationImage.getImg_no());
+                if (!imgService.getImage(locationImage.getImg_no()).is_deleted()) {
+                    isLocImageDeleted = false;
+                    for (LocationImage image : finishedList) {
+                        imgService.rollback(image.getImg_no());
+                    }
+                    break;
+                }
+                finishedList.add(locationImage);
+            }
+
+            if (isLocImageDeleted) {
+                disableLocation(loc);
+                return true;
             }
         }
+
+        return false;
     }
 
-    public void delete(String uuid) {
+    public boolean delete(String uuid) {
         Location loc = selectLoc(uuid);
 
         if (!loc.is_deleted()) {
-            disableLocation(loc);
+            boolean isLocImageDeleted = true;
+            List<LocationImage> finishedList = new ArrayList<>();
+            for (LocationImage locationImage : loc.getImgSet()) {
+                imgService.delete(locationImage.getImg_no());
+                if (imgService.getImage(locationImage.getImg_no()).is_deleted() != true) {
+                    isLocImageDeleted = false;
+                    for (LocationImage image : finishedList) {
+                        imgService.rollback(image.getImg_no());
+                    }
+                    break;
+                }
+                finishedList.add(locationImage);
+            }
+
+            if (isLocImageDeleted) {
+                disableLocation(loc);
+                return true;
+            }
         }
+
+        return false;
     }
 
-    public void rollback(Long locNo) {
+    public boolean rollback(Long locNo) {
         Location loc = selectLoc(locNo);
 
         if (loc.is_deleted()) {
-            loc = enableLocation(loc);
+            boolean isLocImageDeleted = false;
             List<LocationImage> locImageList = imgService.getLastDeletedImageList(locNo);
+            List<LocationImage> finishedList = new ArrayList<>();
             for (LocationImage image : locImageList) {
                 imgService.rollback(image.getImg_no());
+                if (imgService.getImage(image.getImg_no()).is_deleted()) {
+                    isLocImageDeleted = true;
+                    for (LocationImage locationImage : finishedList) {
+                        imgService.delete(locationImage.getImg_no());
+                    }
+                    break;
+                }
+                finishedList.add(image);
+            }
+
+            if (!isLocImageDeleted) {
+                loc = enableLocation(loc);
+                return true;
             }
         }
+
+        return false;
     }
 
-    public void rollback(String uuid) {
+    public boolean rollback(String uuid) {
         Location loc = selectLoc(uuid);
 
         if (loc.is_deleted()) {
-            loc = enableLocation(loc);
-            List<LocationImage> locImageList = imgService.getLastDeletedImageList(imgService.getFirstIndexOfLastDeletedLocationImage(loc.getLoc_no()));
+            boolean isLocImageDeleted = false;
+            List<LocationImage> locImageList = imgService.getLastDeletedImageList(loc.getLoc_no());
+            List<LocationImage> finishedList = new ArrayList<>();
             for (LocationImage image : locImageList) {
                 imgService.rollback(image.getImg_no());
+                if (imgService.getImage(image.getImg_no()).is_deleted()) {
+                    isLocImageDeleted = true;
+                    for (LocationImage locationImage : finishedList) {
+                        imgService.delete(locationImage.getImg_no());
+                    }
+                    break;
+                }
+                finishedList.add(image);
+            }
+
+            if (!isLocImageDeleted) {
+                loc = enableLocation(loc);
+                return true;
             }
         }
+
+        return false;
     }
 
     public boolean onClickLike(Long loc_no) {
@@ -536,6 +603,7 @@ public class LocationService {
 
     public Location edit(Map<String, String> reqParam, List<String> tagList, List<String> filePath) {
         List<LocationImage> imgList = new ArrayList<>();
+        List<LocationImage> duplicatedImg = new ArrayList<>();
         Location entity = selectLoc(reqParam.get("loc_uuid"));
         entity = updateLocationEntity(entity, reqParam);
 
@@ -545,26 +613,30 @@ public class LocationService {
             entity.addLocTag(item);
         }
 
-        for (int i = 0; i < filePath.size(); i += 2) {
+        imgList = imgService.getAllLiveImageByLocNo(entity.getLoc_no());
+        int i = 0;
+        for (LocationImage img : imgList) {
+            if (!filePath.get(i + 1).equals(img.getImg_uuid())) {
+                delete(img.getImg_no());
+            } else {
+                duplicatedImg.add(img);
+            }
+            i += 2;
+        }
+
+        int j = 0;
+        imgList.clear();
+        for (i = 0; i < filePath.size(); i += 2) {
             // filePath.get(0)  ==  Parent Folder (URI)
             // filePath.get(i)  ==  fileNames
-//            if (dto.getImgList().size() > i) {
-//                for (int j = 0; j < dto.getImgList().size(); j++) {
-//                    if (dto.getImgList().get(j).getImg_uuid().equals(filePath.get(i))){
-//                        imgList.add(imgService.editImageEntityIndex(filePath.get(i), (long) (i - 1)));
-////                        flag = true;
-//                        continue;
-//                    }
-//                }
-//            }
-//            log.info(filePath.get(i));
-            // Todo 현재는 기존에 이미 등록되어 있던 이미지는 삭제하고, 새로 등록하도록 했음
-            // 나중에는 기존에 이미  등록되어 있던 이미지를 삭제하지 않고, 업데이트해서 등록하도록 바꿀것
-            imgService.delete(filePath.get(i + 1));
-
-            LocationImage locImage = imgService.getImageEntity(reqParam.get("user_no"), filePath.get(i), filePath.get(i + 1), entity, i / 2);
-            LocationImage imgEntity = imgService.update(locImage);
-            imgList.add(imgEntity);
+            if (!filePath.get(i + 1).equals(duplicatedImg.get(j).getImg_uuid())) {
+                LocationImage locImage = imgService.getImageEntity(reqParam.get("user_no"), filePath.get(i), filePath.get(i + 1), entity, i / 2);
+                LocationImage imgEntity = imgService.update(locImage);
+                imgList.add(imgEntity);
+            } else {
+                imgList.add(duplicatedImg.get(j));
+            }
+            j += 1;
         }
 
         entity.setImgSet(new HashSet<>(imgList));

@@ -1,7 +1,6 @@
 package com.project.love_data.controller;
 
 import com.project.love_data.businessLogic.service.*;
-import com.project.love_data.dto.CalenderDTO;
 import com.project.love_data.dto.UserDTO;
 import com.project.love_data.model.service.*;
 import com.project.love_data.model.user.User;
@@ -13,10 +12,8 @@ import com.project.love_data.security.model.UserRole;
 import com.project.love_data.businessLogic.SmsService;
 import com.project.love_data.businessLogic.account.UserAccountDelete;
 import lombok.extern.log4j.Log4j2;
-import org.apache.catalina.filters.ExpiresFilter;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.servlet.HttpEncodingAutoConfiguration;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,11 +29,9 @@ import java.io.IOException;
 import java.io.*;
 import java.io.PrintWriter;
 import java.security.Principal;
-import java.time.LocalDateTime;
 import java.util.*;
 
 import static com.project.love_data.util.ConstantValues.MAX_UPLOAD_COUNT;
-import static com.project.love_data.util.ConstantValues.MIN_UPLOAD_COUNT;
 
 @Log4j2
 @Controller
@@ -522,7 +517,7 @@ public class UserController {
 		String user_no = request.getParameter("user_no");
 		log.info("user_no:"+ user_no);
 		User user = userService.select(Long.parseLong(user_no));
-		List<Comment> comment = cmtService.findAllByUser_no(Long.parseLong(user_no));
+		List<Comment> comment = cmtService.findAllByUserNo(Long.parseLong(user_no));
 		List<Review> reviews = reviewService.findAllByUser_no(Long.parseLong(user_no));
 		List<Questions> questions = serviceCenterService.qu_findAllByUser_no(user_no);
 		List<Calender> calenders = calenderService.Cal_select(user.getUser_email());

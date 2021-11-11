@@ -99,7 +99,7 @@ public class LocationImageService {
         if (pathChangeService.execute(img.getImg_uuid(), FileAction.DELETE, UploadPathType.LOC,
                 FileExtension.valueOf(extension.toUpperCase(Locale.ROOT)))) {
             img.set_deleted(true);
-            img.setImg_url("/image/upload/" + img.getImg_uuid());
+            img.setImg_url("/image/upload/" + "LOC^"  + img.getImg_uuid());
         }
 
         update(img);
@@ -188,5 +188,19 @@ public class LocationImageService {
         img.setIdx(img_Index);
 
         return img;
+    }
+
+    public List<LocationImage> getAllLiveImageByLocNo(Long locNo) {
+        if (locNo == null) {
+            return null;
+        }
+
+        if (locNo < 0) {
+            return null;
+        }
+
+        Optional<List<LocationImage>> items = repository.findAllLiveImageByLoc_no(locNo);
+
+        return items.orElse(null);
     }
 }

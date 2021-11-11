@@ -14,7 +14,7 @@ public interface LocationImageRepository extends JpaRepository<LocationImage, Lo
     List<LocationImage> findAllLiveImageByUser_no(@Param("user_no") Long user_no);
 
     @Query(value = "SELECT * from loc_image i WHERE  i.location_loc_no = :loc_no AND is_deleted = false", nativeQuery = true)
-    List<LocationImage> findAllLiveImageByLoc_no(@Param("loc_no") Long loc_no);
+    Optional<List<LocationImage>> findAllLiveImageByLoc_no(@Param("loc_no") Long loc_no);
 
 //    @Query(value = "SELECT * from loc_image i WHERE  i.loc_uuid = :loc_uuid", nativeQuery = true)
 //    List<Image> findAllByLoc_uuid(@Param("loc_uuid") String loc_uuid);

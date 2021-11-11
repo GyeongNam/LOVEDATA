@@ -284,21 +284,21 @@
 					<c:choose>
 						<c:when test="${dto.user_no eq currUserNo}">
 							<sec:authorize access="hasAnyRole('ADMIN')">
-								<img src="/image/icon/trash.png" class="loc_icon_big me-2" alt="장소 삭제"
+								<img src="/image/icon/trash.png" class="loc_icon_big me-2" alt="코스 삭제"
 									 onclick="onClickRemoveCourse()">
-								<img src="/image/icon/rollback.png" class="loc_icon_big me-2" alt="장소 복원"
+								<img src="/image/icon/rollback.png" class="loc_icon_big me-2" alt="코스 복원"
 									 onclick="onClickRollbackCourse()">
 							</sec:authorize>
 							<sec:authorize access="hasRole('USER') && !hasRole('ADMIN')">
-								<img src="/image/icon/trash.png" class="loc_icon_big me-2" alt="장소 삭제"
+								<img src="/image/icon/trash.png" class="loc_icon_big me-2" alt="코스 삭제"
 									 onclick="onClickRemoveCourse()">
 							</sec:authorize>
 						</c:when>
 						<c:otherwise>
 							<sec:authorize access="hasAnyRole('ADMIN')">
-								<img src="/image/icon/trash.png" class="loc_icon_big me-2" alt="장소 삭제"
+								<img src="/image/icon/trash.png" class="loc_icon_big me-2" alt="코스 삭제"
 									 onclick="onClickRemoveCourse()">
-								<img src="/image/icon/rollback.png" class="loc_icon_big me-2" alt="장소 복원"
+								<img src="/image/icon/rollback.png" class="loc_icon_big me-2" alt="코스 복원"
 									 onclick="onClickRollbackCourse()">
 							</sec:authorize>
 						</c:otherwise>
@@ -594,12 +594,12 @@
 																<span class="date text-black-50 ml-5">${revDTO.get(c).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}</span>
 																<c:choose>
 																	<c:when test="${revDTO.get(c)._modified eq true}">
-																		<span class="date text-black-50 ml-5">(수정됨)</span>
+																		<span class="date text-primary ml-5">(수정됨)</span>
 																	</c:when>
 																</c:choose>
 																<c:choose>
 																	<c:when test="${revDTO.get(c)._deleted eq true}">
-																		<span class="date text-black-50 ml-5">(삭제됨)</span>
+																		<span class="date text-danger ml-5">(삭제됨)</span>
 																	</c:when>
 																</c:choose>
 															</div>
@@ -676,8 +676,15 @@
 																	<c:choose>
 																		<c:when test="${user_no eq revDTO.get(c).userNo}">
 																			<div class="col d-flex justify-content-end align-content-center">
-																				<button class="btn btn-primary" onclick="openReviewEditPopup(${revDTO.get(c).revNo})">수정</button>
-																				<button class="btn btn-primary ms-2" onclick="deleteReview('${revDTO.get(c).revNo}', '${revDTO.get(c).revUuid}')">삭제</button>
+																				<c:choose>
+																					<c:when test="${revDTO.get(c)._deleted eq true}">
+																						<button class="btn btn-primary" onclick="rollbackReview(${revDTO.get(c).revNo})">롤백</button>
+																					</c:when>
+																					<c:otherwise>
+																						<button class="btn btn-primary" onclick="openReviewEditPopup(${revDTO.get(c).revNo})">수정</button>
+																						<button class="btn btn-primary ms-2" onclick="deleteReview('${revDTO.get(c).revNo}', '${revDTO.get(c).revUuid}')">삭제</button>
+																					</c:otherwise>
+																				</c:choose>
 																			</div>
 																		</c:when>
 																	</c:choose>
@@ -1304,6 +1311,51 @@
         document.body.appendChild(form);
         form.submit();
 	}
+
+    function rollbackReview(revNo, revUuid) {
+        if (!window.confirm("리뷰를 롤백하시겠습니까?")) {
+            return;
+        }
+
+        let url = "/service/rev_rollback";
+        let form;
+        form = document.createElement("form");
+        form.method = "post";
+        form.action = url;
+
+        let input = [];
+        for (let i = 0; i < 4; i++) {
+            input[i] = document.createElement("input");
+            $(input[i]).attr("type", "hidden");
+
+            if (i === 0) {
+                $(input[0]).attr("name", "cor_no");
+                $(input[0]).attr("value", "${dto.cor_no}");
+            }
+
+            if (i === 1) {
+                $(input[1]).attr("name", "rev_no");
+                $(input[1]).attr("value", revNo);
+            }
+
+            if (i === 2) {
+                $(input[2]).attr("name", "rev_id");
+                $(input[2]).attr("value", revUuid);
+            }
+
+            <sec:authorize access="isAuthenticated()">
+            if (i === 3) {
+                $(input[3]).attr("name", "user_no");
+                $(input[3]).attr("value", "${user_no}");
+            }
+            </sec:authorize>
+
+            form.appendChild(input[i]);
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+    }
 </script>
 <script>
     function onClickRemoveCourse() {

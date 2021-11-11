@@ -154,37 +154,107 @@ public class ReviewController {
     }
 
     @PostMapping("/service/rev_del")
-    public String delReview(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public String delReview(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
         Long revNo = Long.valueOf(request.getParameter("rev_no"));
         String revId = request.getParameter("rev_id");
         Long corNo = Long.valueOf(request.getParameter("cor_no"));
         Long userNo = Long.valueOf(request.getParameter("user_no"));
-        boolean returnFlag = false;
+        String returnURL = request.getParameter("returnURL");
 
         Course course_temp = corService.selectCor(corNo);
         Review rev_temp = revService.select(revNo);
 
         if (course_temp == null || rev_temp == null) {
             log.warn("No Matching Result of Given Course Or Review");
-            scriptUtils.alertAndBackPage(response, "[오류 발생] 해당하는 코스나 리뷰에 관한 결과가 없습니다.");
-            returnFlag = true;
+            model.addAttribute("alertMsg", "[오류 발생] 해당하는 코스나 리뷰에 관한 결과가 없습니다.");
+            if (returnURL != null) {
+                model.addAttribute("redirectURL", returnURL);
+            } else {
+                model.addAttribute("redirectURL", "/service/cor_detail?corNo=" + corNo + "&page=1");
+            }
+            return "/alert/alert";
         }
 
         if (!rev_temp.getUser_no().equals(userNo)) {
             log.warn("Not Match User of given userNo");
-            scriptUtils.alertAndBackPage(response, "[오류 발생] 리뷰를 등록한 유저와 같지 않습니다.");
-            returnFlag = true;
+            model.addAttribute("alertMsg", "[오류 발생] 리뷰를 등록한 유저와 같지 않습니다.");
+            if (returnURL != null) {
+                model.addAttribute("redirectURL", returnURL);
+            } else {
+                model.addAttribute("redirectURL", "/service/cor_detail?corNo=" + corNo + "&page=1");
+            }
+            return "/alert/alert";
         }
 
         if (!rev_temp.getCorNo().equals(course_temp.getCor_no())){
             log.warn("Review isn't belong to Course");
-            scriptUtils.alertAndBackPage(response, "[오류 발생] 리뷰가 해당 코스에 작성되어 있지 않습니다.");
-            returnFlag = true;
+            model.addAttribute("alertMsg", "[오류 발생] 리뷰가 해당 코스에 작성되어 있지 않습니다.");
+            if (returnURL != null) {
+                model.addAttribute("redirectURL", returnURL);
+            } else {
+                model.addAttribute("redirectURL", "/service/cor_detail?corNo=" + corNo + "&page=1");
+            }
+            return "/alert/alert";
         }
 
-       if (!returnFlag) {
-           revService.delete(revNo);
-       }
+        revService.delete(revNo);
+
+        if (returnURL != null) {
+            return "redirect:" + returnURL;
+        }
+
+        return "redirect:/service/cor_detail?corNo=" + corNo + "&page=1";
+    }
+
+    @PostMapping("/service/rev_rollback")
+    public String rollbackReview(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
+        Long revNo = Long.valueOf(request.getParameter("rev_no"));
+        String revId = request.getParameter("rev_id");
+        Long corNo = Long.valueOf(request.getParameter("cor_no"));
+        Long userNo = Long.valueOf(request.getParameter("user_no"));
+        String returnURL = request.getParameter("returnURL");
+
+        Course course_temp = corService.selectCor(corNo);
+        Review rev_temp = revService.select(revNo);
+
+        if (course_temp == null || rev_temp == null) {
+            log.warn("No Matching Result of Given Course Or Review");
+            model.addAttribute("alertMsg", "[오류 발생] 해당하는 코스나 리뷰에 관한 결과가 없습니다.");
+            if (returnURL != null) {
+                model.addAttribute("redirectURL", returnURL);
+            } else {
+                model.addAttribute("redirectURL", "/service/cor_detail?corNo=" + corNo + "&page=1");
+            }
+            return "/alert/alert";
+        }
+
+        if (!rev_temp.getUser_no().equals(userNo)) {
+            log.warn("Not Match User of given userNo");
+            model.addAttribute("alertMsg", "[오류 발생] 리뷰를 등록한 유저와 같지 않습니다.");
+            if (returnURL != null) {
+                model.addAttribute("redirectURL", returnURL);
+            } else {
+                model.addAttribute("redirectURL", "/service/cor_detail?corNo=" + corNo + "&page=1");
+            }
+            return "/alert/alert";
+        }
+
+        if (!rev_temp.getCorNo().equals(course_temp.getCor_no())){
+            log.warn("Review isn't belong to Course");
+            model.addAttribute("alertMsg", "[오류 발생] 리뷰가 해당 코스에 작성되어 있지 않습니다.");
+            if (returnURL != null) {
+                model.addAttribute("redirectURL", returnURL);
+            } else {
+                model.addAttribute("redirectURL", "/service/cor_detail?corNo=" + corNo + "&page=1");
+            }
+            return "/alert/alert";
+        }
+
+        revService.delete(revNo);
+
+        if (returnURL != null) {
+            return "redirect:" + returnURL;
+        }
 
         return "redirect:/service/cor_detail?corNo=" + corNo + "&page=1";
     }

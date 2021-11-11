@@ -8,19 +8,18 @@ import com.project.love_data.model.resource.LocationImage;
 import com.project.love_data.model.service.Comment;
 import com.project.love_data.model.service.Location;
 import com.project.love_data.model.service.QComment;
-import com.project.love_data.model.service.Review;
 import com.project.love_data.model.user.User;
 import com.project.love_data.repository.CommentRepository;
 import com.project.love_data.repository.LocationRepository;
 import com.project.love_data.repository.UserRepository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -74,13 +73,20 @@ public class CommentService {
     public Comment createCmtEntity(Long locNo, Long userNo, String cmtContent) {
         Optional<Location> loc = locRepository.findLocByLoc_no(locNo);
         Optional<User> user = userRepository.findById(userNo);
+        List<Comment> cmtList = findAllByLocNo(locNo);
+
+        long index = 0;
+
+        if (!cmtList.isEmpty()) {
+            index = cmtList.get(cmtList.size()-1).getCmtIdx() + 1;
+        }
 
         if (loc.isPresent() && user.isPresent()) {
             Comment entity = Comment.builder()
                     .location(loc.get())
                     .cmtUuid(UUID.randomUUID().toString())
                     .user(user.get())
-                    .cmtIdx((long) loc.get().getCmtSet().size())
+                    .cmtIdx(index)
                     .cmtContent(cmtContent).build();
 
             return entity;
@@ -554,8 +560,13 @@ public class CommentService {
         return result;
     }
 
-    public List<Comment> findAllByUser_no(Long user_no){
-        List<Comment> item = cmtRepository.findAllByUser_no(user_no);
+    public List<Comment> findAllByUserNo(Long userNo){
+        List<Comment> item = cmtRepository.findAllByUser_no(userNo);
         return item;
+    }
+
+    public List<Comment> findAllByLocNo(Long locNo){
+        Optional<List<Comment>> items = cmtRepository.findAllByLoc_no(locNo);
+        return items.orElse(null);
     }
 }

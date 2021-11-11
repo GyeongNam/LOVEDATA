@@ -57,7 +57,9 @@ public class PopupController {
 
         if (authentication == null) {
             log.info("Anonymous User Can't access to Review Edit");
-            scriptUtils.alertPageout(response, "로그인 하지 않은 상태로 리뷰를 수정할 수 없습니다.");
+            model.addAttribute("alertMsg", "로그인 하지 않은 상태로 리뷰를 수정할 수 없습니다.");
+
+            return "/alert/alertAndClose";
         }
 
         ReviewDTO reviewDTO = revService.selectDTO(Long.valueOf(revNo));

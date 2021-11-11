@@ -16,7 +16,7 @@ import java.nio.file.StandardCopyOption;
 @RequiredArgsConstructor
 @Log4j2
 public class FilePathChangeService {
-    public boolean execute(String uuid, FileAction fileAction, UploadPathType pathType, FileExtension fileExtension) {
+    public boolean execute(String fileName, FileAction fileAction, UploadPathType pathType, FileExtension fileExtension) {
         String pathStr;
         Path resPath;
         Path dumpPath;
@@ -56,7 +56,7 @@ public class FilePathChangeService {
                             "resources" + File.separator +
                             "static" + File.separator +
                             "image" + File.separator +
-                            "location" + File.separator + uuid);
+                            "location" + File.separator + fileName);
                     break;
                 case COR:
                     resPath = Paths.get(pathStr + File.separator +
@@ -65,7 +65,7 @@ public class FilePathChangeService {
                             "resources" + File.separator +
                             "static" + File.separator +
                             "image" + File.separator +
-                            "course" + File.separator + uuid);
+                            "course" + File.separator + fileName);
                     break;
                 case REV:
                     resPath = Paths.get(pathStr + File.separator +
@@ -74,7 +74,7 @@ public class FilePathChangeService {
                             "resources" + File.separator +
                             "static" + File.separator +
                             "image" + File.separator +
-                            "review" + File.separator + uuid);
+                            "review" + File.separator + fileName);
                     break;
                 case QNA:
                     resPath = Paths.get(pathStr + File.separator +
@@ -83,7 +83,7 @@ public class FilePathChangeService {
                             "resources" + File.separator +
                             "static" + File.separator +
                             "image" + File.separator +
-                            "qna" + File.separator + uuid);
+                            "qna" + File.separator + fileName);
                     break;
                 case USER_PIC:
                     resPath = Paths.get(pathStr + File.separator +
@@ -92,7 +92,7 @@ public class FilePathChangeService {
                             "resources" + File.separator +
                             "static" + File.separator +
                             "image" + File.separator +
-                            "user_pic" + File.separator + uuid);
+                            "user_pic" + File.separator + fileName);
                     break;
                 default:
                     return false;
@@ -104,31 +104,31 @@ public class FilePathChangeService {
                     "resources" + File.separator +
                     "static" + File.separator +
                     "image" + File.separator +
-                    "upload" + File.separator + uuid);
+                    "upload" + File.separator + pathType + "^" + fileName);
         } else {
             // 윈도우 이외의 OS에서 돌아갈 경우 /home/tomcat/LoveData-Storage에 위치로 지정
             pathStr = "/home/tomcat/LoveData-Storage";
             switch (pathType) {
                 case LOC:
-                    resPath = Paths.get(pathStr + File.separator + "location" + File.separator + uuid);
+                    resPath = Paths.get(pathStr + File.separator + "location" + File.separator + fileName);
                     break;
                 case COR:
-                    resPath = Paths.get(pathStr + File.separator + "course" + File.separator + uuid);
+                    resPath = Paths.get(pathStr + File.separator + "course" + File.separator + fileName);
                     break;
                 case REV:
-                    resPath = Paths.get(pathStr + File.separator + "review" + File.separator + uuid);
+                    resPath = Paths.get(pathStr + File.separator + "review" + File.separator + fileName);
                     break;
                 case QNA:
-                    resPath = Paths.get(pathStr + File.separator + "qna" + File.separator + uuid);
+                    resPath = Paths.get(pathStr + File.separator + "qna" + File.separator + fileName);
                     break;
                 case USER_PIC:
-                    resPath = Paths.get(pathStr + File.separator + "user_pic" + File.separator + uuid);
+                    resPath = Paths.get(pathStr + File.separator + "user_pic" + File.separator + fileName);
                     break;
                 default:
                     return false;
             }
 
-            dumpPath = Paths.get(pathStr + File.separator + "user_pic" + File.separator + uuid);
+            dumpPath = Paths.get(pathStr + File.separator + "upload" + File.separator + pathType + "^" + fileName);
         }
 
 //        if (!Files.exists(srcPath)) {
@@ -143,12 +143,14 @@ public class FilePathChangeService {
                 case DELETE:
                     //                Files.move(srcPath, destPath, StandardCopyOption.REPLACE_EXISTING);
                     srcFile = new File(resPath.toString());
+//                    destFile = new File(new StringBuilder().append(pathType).append("/").append(dumpPath.toString()).toString());
                     destFile = new File(dumpPath.toString());
                     FileUtils.moveFile(srcFile, destFile);
                     return true;
                 case ROLLBACK:
                 default:
                     //                Files.move(srcPath, destPath, StandardCopyOption.REPLACE_EXISTING);
+//                    srcFile = new File(new StringBuilder().append(pathType).append("/").append(dumpPath.toString()).toString());
                     srcFile = new File(dumpPath.toString());
                     destFile = new File(resPath.toString());
                     FileUtils.moveFile(srcFile, destFile);

@@ -216,14 +216,25 @@ public class CourseController {
                 model.addAttribute("locList", null);
             }
 
-            Integer revCounter = reviewService.getLiveReviewsByCorNo(corNo).size();
+            Integer revCounter = 0;
+            if (isAdmin) {
+                reviewService.getReviewsByCorNo(corNo).size();
+            } else {
+                reviewService.getLiveReviewsByCorNo(corNo).size();
+            }
             List<List<ReviewImageDTO>> revImgDTOList = new ArrayList<>();
             List<String> revImgURLStringList = new ArrayList<>();
             String revImgURL = "";
             List<String> revUserPicList = new ArrayList<>();
 
             for (int i = 0; i < resultReviewDTO.getDtoList().size(); i++) {
-                List<ReviewImage> revImgList = revImgService.getAllLiveImageByCorNoAndRevNo(corNo, resultReviewDTO.getDtoList().get(i).getRevNo());
+                List<ReviewImage> revImgList = new ArrayList<>();
+                if (isAdmin){
+                    revImgList = revImgService.getAllImageByCorNoAndRevNo(corNo, resultReviewDTO.getDtoList().get(i).getRevNo());
+//                    revImgService.getAllImageByCorNoAndRevNo(corNo, resultReviewDTO.getDtoList().get(i).getRevNo());
+                } else {
+                    revImgList = revImgService.getAllLiveImageByCorNoAndRevNo(corNo, resultReviewDTO.getDtoList().get(i).getRevNo());
+                }
                 revImgURL = "";
 
                 if (revImgList == null) {
@@ -694,6 +705,7 @@ public class CourseController {
     @PostMapping("/service/cor_delete")
     public String corDelete(HttpServletRequest request,
                             RedirectAttributes redirectAttributes,
+                            Model model,
                             Authentication authentication, Long corNo) {
         if (authentication == null) {
             return "redirect:/service/cor_recommend";
@@ -709,18 +721,18 @@ public class CourseController {
         Long user_no = authUserModel.getUser_no();
         Set<GrantedAuthority> authorities = (Set<GrantedAuthority>) authUserModel.getAuthorities();
 
-        log.info(request.isUserInRole("ROLE_ADMIN"));
-
         if (!entity.getUser_no().equals(user_no) && !request.isUserInRole("ROLE_ADMIN")) {
             log.warn("장소 삭제를 요청한 유저가 장소를 등록한 유저와 같지 않습니다.");
             return "redirect:/service/cor_recommend";
         }
 
-        corService.delete(entity.getCor_no());
+        if (!corService.delete(entity.getCor_no())) {
+            log.warn("코스를 삭제하는 과정에서 오류 발생!");
+            model.addAttribute("alertMsg", "코스를 삭제하는 과정에서 오류 발생!");
+            model.addAttribute("redirectURL", "/service/cor_recommend");
+            return "/alert/alert";
+        }
         corService.updateThumbnail(entity.getCor_no());
-
-        log.info(request.getRequestURL());
-        log.info(request.getRequestURI());
 
         return "redirect:/service/cor_recommend";
     }
@@ -728,6 +740,7 @@ public class CourseController {
     @PostMapping("/service/cor_rollback")
     public String corRollback(HttpServletRequest request,
                               RedirectAttributes redirectAttributes,
+                              Model model,
                               Authentication authentication, Long corNo) {
         if (authentication == null) {
             return "redirect:/service/cor_recommend";
@@ -750,7 +763,12 @@ public class CourseController {
             return "redirect:/service/cor_recommend";
         }
 
-        corService.rollback(entity.getCor_no());
+        if (!corService.rollback(entity.getCor_no())) {
+            log.warn("코스를 롤백하는 과정에서 오류 발생!");
+            model.addAttribute("alertMsg", "코스를 롤백하는 과정에서 오류 발생!");
+            model.addAttribute("redirectURL", "/service/cor_recommend");
+            return "/alert/alert";
+        }
         corService.updateThumbnail(entity.getCor_no());
 
         return "redirect:/service/cor_recommend";

@@ -105,7 +105,7 @@ public class CourseImageService {
         if (pathChangeService.execute(img.getImg_uuid(), FileAction.DELETE,
                 UploadPathType.COR, FileExtension.valueOf(extension.toUpperCase(Locale.ROOT)))){
             img.set_deleted(true);
-            img.setImg_url("/image/upload/" + img.getImg_uuid());
+            img.setImg_url("/image/upload/COR^" + img.getImg_uuid());
             update(img);
         }
 

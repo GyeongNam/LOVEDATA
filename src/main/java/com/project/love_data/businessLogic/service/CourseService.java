@@ -36,8 +36,9 @@ public class CourseService {
         CourseDTO dto = updateCourseDto(reqParam, tagList);
         List<CourseImage> imgList = new ArrayList<>();
         Course entity = dtoToEntity(dto);
-        CourseImage courseImage;
+        CourseImage firstImage = new CourseImage();
         List<Long> locNoList = new ArrayList<>();
+        List<CourseImage> duplicatedImg = new ArrayList<>();
 
         repository.save(entity);
 
@@ -47,21 +48,42 @@ public class CourseService {
 
         imgList = imgService.getLiveImagesByCorNo(Long.valueOf(reqParam.get("cor_no")));
 
+        int  j = 0;
         for (int i = 0; i < imgList.size(); i++) {
-            imgService.delete(imgList.get(i).getImg_uuid());
+            if (!filePath.get(j + 1).equals(imgList.get(i).getImg_uuid())) {
+                imgService.delete(imgList.get(i).getImg_uuid());
+            } else {
+                duplicatedImg.add(imgList.get(i));
+            }
+            j += 2;
         }
         imgList.clear();
 
+        j = 0;
         for (int i = 0; i < filePath.size(); i += 2) {
             // filePath.get(i)  ==  Parent Folder (URI)
             // filePath.get(i+1)  ==  fileNames
-            CourseImage locImage = imgService.getImageEntity(reqParam.get("user_no"),
-                    filePath.get(i), filePath.get(i+1), entity.getCor_no(), (i/2));
-            CourseImage imgEntity = imgService.update(locImage);
-            imgList.add(imgEntity);
+            if (!filePath.get(i + 1).equals(duplicatedImg.get(j).getImg_uuid())) {
+                CourseImage locImage = imgService.getImageEntity(reqParam.get("user_no"),
+                        filePath.get(i), filePath.get(i+1), entity.getCor_no(), (i/2));
+                CourseImage imgEntity = imgService.update(locImage);
+                imgList.add(imgEntity);
+                if (i == 0) {
+                    firstImage = imgEntity;
+                }
+            } else {
+                if (i == 0) {
+                    firstImage = duplicatedImg.get(0);
+                }
+            }
+            j += 1;
         }
 
-        entity.setThumbnail(imgList.get(0).getImg_url());
+        if (imgList.isEmpty()) {
+            entity.setThumbnail(duplicatedImg.get(0).getImg_url());
+        } else {
+            entity.setThumbnail(firstImage.getImg_url());
+        }
 
         List<CorLocMapper> corLocMappers = corLocMapperService.getLocationsByCorNo(Long.valueOf(reqParam.get("cor_no")));
 
@@ -387,68 +409,123 @@ public class CourseService {
         repository.deleteByCor_uuid(cor.getCor_uuid());
     }
 
-    public void delete(Long corNo) {
+    public boolean delete(Long corNo) {
         Course cor = selectCor(corNo);
 
         if (!cor.is_deleted()) {
-            disableCourse(cor);
-
+            boolean isCourseDelete = true;
             List<CourseImage> list = new ArrayList<CourseImage>();
             list = imgService.getLiveImagesByCorNo(cor.getCor_no());
 
             for (CourseImage CourseImage : list) {
                 imgService.delete(CourseImage.getImg_no());
+                if (!imgService.getImage(CourseImage.getImg_no()).is_deleted()) {
+                    isCourseDelete = false;
+                    break;
+                }
+            }
+
+            if (isCourseDelete) {
+                disableCourse(cor);
+                return true;
             }
         }
+        return false;
     }
 
-    public void delete(String uuid) {
+    public boolean delete(String uuid) {
         Course cor = selectCor(uuid);
 
         if (!cor.is_deleted()) {
-            disableCourse(cor);
-
+            boolean isCourseDelete = true;
             List<CourseImage> list = new ArrayList<CourseImage>();
+            List<CourseImage> finishedList = new ArrayList<>();
             list = imgService.getLiveImagesByCorNo(cor.getCor_no());
 
             for (CourseImage CourseImage : list) {
                 imgService.delete(CourseImage.getImg_no());
+                if (!imgService.getImage(CourseImage.getImg_no()).is_deleted()) {
+                    isCourseDelete = false;
+                    for (CourseImage courseImage : finishedList) {
+                        imgService.rollback(courseImage.getImg_no());
+                    }
+                    break;
+                }
+                finishedList.add(CourseImage);
+            }
+
+            if (isCourseDelete) {
+                disableCourse(cor);
+                return true;
             }
         }
+        return false;
     }
 
-    public void rollback(Long corNo) {
+    public boolean rollback(Long corNo) {
         Course cor = selectCor(corNo);
 
         if (cor.is_deleted()){
-            enableCourse(cor);
-
+            boolean isCourseRollback = true;
             List<CourseImage> list = new ArrayList<CourseImage>();
+            List<CourseImage> finishedList = new ArrayList<>();
             list = imgService.getLastDeletedCourseImageList(corNo);
 
             if (list == null) {
-                return;
+                return false;
             }
 
             for (CourseImage CourseImage : list) {
                 imgService.rollback(CourseImage.getImg_no());
+                if (imgService.getImage(CourseImage.getImg_no()).is_deleted()) {
+                    isCourseRollback = false;
+                    for (CourseImage courseImage : finishedList) {
+                        imgService.delete(courseImage.getImg_no());
+                    }
+                    break;
+                }
+                finishedList.add(CourseImage);
+            }
+
+            if (isCourseRollback) {
+                enableCourse(cor);
+                return true;
             }
         }
+        return false;
     }
 
-    public void rollback(String uuid) {
+    public boolean rollback(String uuid) {
         Course cor = selectCor(uuid);
 
         if (cor.is_deleted()){
-            enableCourse(cor);
-
+            boolean isCourseRollback = true;
             List<CourseImage> list = new ArrayList<CourseImage>();
-            list = imgService.getLiveImagesByCorNo(cor.getCor_no());
+            List<CourseImage> finishedList = new ArrayList<>();
+            list = imgService.getLastDeletedCourseImageList(cor.getCor_no());
+
+            if (list == null) {
+                return false;
+            }
 
             for (CourseImage CourseImage : list) {
                 imgService.rollback(CourseImage.getImg_no());
+                if (imgService.getImage(CourseImage.getImg_no()).is_deleted()) {
+                    isCourseRollback = false;
+                    for (CourseImage courseImage : finishedList) {
+                        imgService.delete(courseImage.getImg_no());
+                    }
+                    break;
+                }
+                finishedList.add(CourseImage);
+            }
+
+            if (isCourseRollback) {
+                enableCourse(cor);
+                return true;
             }
         }
+        return false;
     }
 
     public boolean onClickLike(Long corNo) {
@@ -497,20 +574,20 @@ public class CourseService {
         return CourseList.orElse(null);
     }
 
-    private Course disableCourse(Course loc) {
-        loc.set_deleted(true);
+    private Course disableCourse(Course cor) {
+        cor.set_deleted(true);
 
-        update(loc);
+        update(cor);
 
-        return selectCor(loc.getCor_no());
+        return selectCor(cor.getCor_no());
     }
 
-    private Course enableCourse(Course loc) {
-        loc.set_deleted(false);
+    private Course enableCourse(Course cor) {
+        cor.set_deleted(false);
 
-        update(loc);
+        update(cor);
 
-        return selectCor(loc.getCor_no());
+        return selectCor(cor.getCor_no());
     }
 
     public List<Course> courseNameSearch(String cor_name){

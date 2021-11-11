@@ -49,7 +49,7 @@
     </div>
     <div class="container-fluid" id="display_center" style="margin-right: 30px">
         <div class="col" id="top_navbar">
-            <nav class="navbar navbar-expand-sm navbar-light bg-light static-top">
+            <nav class="navbar navbar-expand-sm navbar-light static-top">
                 <h3 class="mx-3">LOVE DATA 정책</h3>
             </nav>
         </div>

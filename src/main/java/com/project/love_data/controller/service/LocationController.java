@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 import static com.project.love_data.util.ConstantValues.*;
@@ -44,6 +45,9 @@ public class LocationController {
     UserLikeCmtService userLikeCmtService;
     @Autowired
     UserDislikeCmtService userDislikeCmtService;
+    @Autowired
+    ControllerScriptUtils scriptUtils;
+
     List<String> tagList = new ArrayList<>();
 
     @RequestMapping("/service/loc_registration")
@@ -510,7 +514,9 @@ public class LocationController {
 
     @PostMapping("/service/loc_delete")
     public String locDelete(HttpServletRequest request,
+                            HttpServletResponse response,
                             RedirectAttributes redirectAttributes,
+                            Model model,
                             Authentication authentication, Long locNo) {
         if (authentication == null) {
             return "redirect:/service/loc_recommend";
@@ -526,17 +532,17 @@ public class LocationController {
         Long user_no = authUserModel.getUser_no();
         Set<GrantedAuthority> authorities = (Set<GrantedAuthority>) authUserModel.getAuthorities();
 
-        log.info(request.isUserInRole("ROLE_ADMIN"));
-
         if (!entity.getUser_no().equals(user_no) && !request.isUserInRole("ROLE_ADMIN")) {
             log.warn("장소 삭제를 요청한 유저가 장소를 등록한 유저와 같지 않습니다.");
             return "redirect:/service/loc_recommend";
         }
 
-        locService.delete(entity.getLoc_no());
-
-        log.info(request.getRequestURL());
-        log.info(request.getRequestURI());
+        if (!locService.delete(entity.getLoc_no())) {
+            log.warn("장소를 삭제하는 과정에서 오류 발생!");
+            model.addAttribute("alertMsg", "장소를 삭제하는 과정에서 오류 발생!");
+            model.addAttribute("redirectURL", "/service/loc_recommend");
+            return "/alert/alert";
+        }
 
         return "redirect:/service/loc_recommend";
     }
@@ -544,6 +550,7 @@ public class LocationController {
     @PostMapping("/service/loc_rollback")
     public String locRollback(HttpServletRequest request,
                               RedirectAttributes redirectAttributes,
+                              Model model,
                               Authentication authentication, Long locNo) {
         if (authentication == null) {
             return "redirect:/service/loc_recommend";
@@ -559,14 +566,17 @@ public class LocationController {
         Long user_no = authUserModel.getUser_no();
         Set<GrantedAuthority> authorities = (Set<GrantedAuthority>) authUserModel.getAuthorities();
 
-        log.info(request.isUserInRole("ROLE_ADMIN"));
-
         if (!request.isUserInRole("ROLE_ADMIN")) {
             log.warn("장소 복원을 요청한 유저가 어드민 권한을 가지고 있지 않습니다.");
             return "redirect:/service/loc_recommend";
         }
 
-        locService.rollback(entity.getLoc_no());
+        if (!locService.rollback(entity.getLoc_no())) {
+            log.warn("장소를 복원하는 과정에서 오류 발생!");
+            model.addAttribute("alertMsg", "장소를 복원하는 과정에서 오류 발생!");
+            model.addAttribute("redirectURL", "/service/loc_recommend");
+            return "/alert/alert";
+        }
 
         return "redirect:/service/loc_recommend";
     }

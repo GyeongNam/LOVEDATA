@@ -115,12 +115,10 @@ public class OAuthController {
                 alertMessage += "\\n(프로필)";
             }
 
-//                PrintWriter out = response.getWriter();
-//                out.println("<script>alert('" + alertMessage + "');</script>");
-//                out.flush();
-            scriptUtils.alert(response, alertMessage);
+            model.addAttribute("alertMsg", alertMessage);
+            model.addAttribute("redirectURL", "/guide/agreePersonal");
 
-            return "/guide/agreePersonal";
+            return "/alert/alert";
         }
 
         try {
@@ -138,8 +136,10 @@ public class OAuthController {
 
             // 이미 유저 이메일로 등록한 계정이 있는 경우 발생하는 오류
             if ("Can't proceed signup with this email. Please try another email".equals(msg)) {
-                scriptUtils.alert(response, "삭제된 계정과 동일한 이메일을 사용할 수 없습니다.");
-                return "/";
+                model.addAttribute("alertMsg", "삭제된 계정과 동일한 이메일을 사용할 수 없습니다.");
+                model.addAttribute("redirectURL", "/");
+
+                return "/alert/alert";
             }
 
             log.info("UserInfo Not in the DB");
@@ -203,6 +203,7 @@ public class OAuthController {
             HttpServletRequest request,
             HttpServletResponse response,
             HttpSession session,
+            Model model,
             RedirectAttributes redirectAttributes
     ) throws IOException {
         token = new NaverAuthToken();
@@ -237,9 +238,12 @@ public class OAuthController {
                 alertMessage += "\\n(프로필)";
             }
 
-            scriptUtils.alert(response, alertMessage);
+//            scriptUtils.alert(response, alertMessage);
 
-            return  "/guide/agreePersonal";
+            model.addAttribute("alertMsg", alertMessage);
+            model.addAttribute("redirectURL", "/guide/agreePersonal");
+
+            return "/alert/alert";
         }
 
         try {
@@ -261,9 +265,10 @@ public class OAuthController {
 
             // 이미 유저 이메일로 등록한 계정이 있는 경우 발생하는 오류
             if ("Can't proceed signup with this email. Please try another email".equals(msg)) {
-                scriptUtils.alert(response, "삭제된 계정과 동일한 이메일을 사용할 수 없습니다.");
+                model.addAttribute("alertMsg", "삭제된 계정과 동일한 이메일을 사용할 수 없습니다.");
+                model.addAttribute("redirectURL", "/");
 
-                return "/";
+                return "/alert/alert";
             }
 
             log.info("UserInfo Not in the DB");

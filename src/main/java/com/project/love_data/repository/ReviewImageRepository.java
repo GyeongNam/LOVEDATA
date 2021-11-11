@@ -23,6 +23,9 @@ public interface ReviewImageRepository extends JpaRepository<ReviewImage, Long> 
     @Query(value = "SELECT * from rev_image i WHERE  i.cor_no = :cor_no AND i.rev_no = :rev_no AND is_deleted = false", nativeQuery = true)
     Optional<List<ReviewImage>> findAllLiveImageByCor_noAndRev_no(@Param("cor_no") Long cor_no, @Param("rev_no") Long rev_no);
 
+    @Query(value = "SELECT * from rev_image i WHERE  i.cor_no = :cor_no AND i.rev_no = :rev_no AND img_no >= (SELECT max(img_no) from rev_image WHERE  rev_no = :rev_no AND img_idx = 0)", nativeQuery = true)
+    Optional<List<ReviewImage>> findAllImageByCor_noAndRev_no(@Param("cor_no") Long cor_no, @Param("rev_no") Long rev_no);
+
     @Query(value = "SELECT * from rev_image i WHERE  i.img_uuid = :img_uuid AND is_deleted = false", nativeQuery = true)
     Optional<ReviewImage> findLiveImageByImg_uuid(@Param("img_uuid") String img_uuid);
 
@@ -46,6 +49,9 @@ public interface ReviewImageRepository extends JpaRepository<ReviewImage, Long> 
 
     @Query(value = "SELECT * from rev_image i WHERE  i.img_uuid = :img_uuid", nativeQuery = true)
     Optional<ReviewImage> findImageByImg_uuid(@Param("img_uuid") String img_uuid);
+
+    @Query(value = "SELECT * FROM rev_image WHERE rev_no = :rev_no AND img_no >= (SELECT max(img_no) from rev_image WHERE  rev_no = :rev_no AND is_deleted = true AND img_idx = 0)", nativeQuery = true)
+    Optional<List<ReviewImage>> findLastDeletedReviewImagesByRevNo(@Param("rev_no") Long revNo);
 
     @Modifying
     @Query(value = "DELETE FROM rev_image  WHERE img_uuid = :img_uuid", nativeQuery = true)

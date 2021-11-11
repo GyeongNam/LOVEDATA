@@ -17,6 +17,7 @@ import java.util.*;
 public class ReviewImageService {
     public final ReviewRepository revRepository;
     private final ReviewImageRepository repository;
+    private final FilePathChangeService pathChangeService;
 
     public ReviewImage getImage(Long imgId) {
         Optional<ReviewImage> item = repository.findById(imgId);
@@ -48,10 +49,22 @@ public class ReviewImageService {
         return items.orElse(null);
     }
 
+    public List<ReviewImage> getAllImageByCorNoAndRevNo(Long corNo, Long revNo) {
+        Optional<List<ReviewImage>> items = repository.findAllImageByCor_noAndRev_no(corNo, revNo);
+
+        return items.orElse(null);
+    }
+
     public List<ReviewImage> getLiveImagesByCorNo(Long corNo) {
         Optional<List<ReviewImage>> itmes = repository.findAllLiveImageByCor_no(corNo);
 
         return itmes.orElse(null);
+    }
+
+    public List<ReviewImage> getLastDeletedImageByRevNo(Long revNo) {
+        Optional<List<ReviewImage>> items = repository.findLastDeletedReviewImagesByRevNo(revNo);
+
+        return items.orElse(null);
     }
 
     public ReviewImage getImageEntity(Long user_no, String fileRootPath, String fileName, Long corNo, Long revNo, Long img_index) {
@@ -119,15 +132,25 @@ public class ReviewImageService {
     }
 
     private ReviewImage disable(ReviewImage img) {
-        img.set_deleted(true);
-
-        update(img);
+        String extension = pathChangeService.getFileExtension(img.getImg_url());
+        if (pathChangeService.execute(img.getImg_uuid(), FileAction.DELETE,
+                UploadPathType.REV, FileExtension.valueOf(extension.toUpperCase(Locale.ROOT)))){
+            img.set_deleted(true);
+            img.setImg_url("/image/upload/REV^" + img.getImg_uuid());
+            update(img);
+        }
 
         return getImage(img.getImg_no());
     }
 
     private ReviewImage enable(ReviewImage img) {
-        img.set_deleted(false);
+        String extension = pathChangeService.getFileExtension(img.getImg_url());
+        if (pathChangeService.execute(img.getImg_uuid(), FileAction.ROLLBACK,
+                UploadPathType.REV, FileExtension.valueOf(extension.toUpperCase(Locale.ROOT)))){
+            img.set_deleted(false);
+            img.setImg_url("/image/review/" + img.getImg_uuid());
+            update(img);
+        }
 
         update(img);
 
@@ -162,6 +185,14 @@ public class ReviewImageService {
         return img;
     }
 
+    public void rollback(Long imgNo) {
+        ReviewImage img = getImage(imgNo);
+
+        if (img.is_deleted()) {
+            enable(img);
+        }
+    }
+
     public List<ReviewImage> updateOldImage(Long revNo, List<String> filePath) {
         Optional<Review> revItem = revRepository.findByRev_no(revNo);
         Optional<List<ReviewImage>> items = repository.findAllLiveImageByRev_no(revNo);
@@ -170,19 +201,30 @@ public class ReviewImageService {
         }
 
         List<ReviewImage> entities = items.get();
+        List<ReviewImage> duplicatedImg = new ArrayList<>();
 
+        int i = 0;
         for (ReviewImage image : entities) {
-            delete(image.getImg_no());
+            if (!filePath.get(i + 1).equals(image.getImg_uuid())) {
+                delete(image.getImg_no());
+            } else {
+                duplicatedImg.add(image);
+            }
+            i += 2;
         }
         entities.clear();
 
-        for (int i = 0; i < filePath.size(); i += 2) {
+        int j = 0;
+        for (i = 0; i < filePath.size(); i += 2) {
             // filePath.get(i)  ==  Parent Folder (URI)
             // filePath.get(i+1)  ==  fileNames
-            ReviewImage revImage = getImageEntity(revItem.get().getUser_no(),
-                    filePath.get(i), filePath.get(i+1), revItem.get().getCorNo(), revItem.get().getRevNo(), (long) (i / 2));
-            ReviewImage imgEntity = update(revImage);
-            entities.add(imgEntity);
+            if (!filePath.get(i + 1).equals(duplicatedImg.get(j).getImg_uuid())) {
+                ReviewImage revImage = getImageEntity(revItem.get().getUser_no(),
+                        filePath.get(i), filePath.get(i+1), revItem.get().getCorNo(), revItem.get().getRevNo(), (long) (i / 2));
+                ReviewImage imgEntity = update(revImage);
+                entities.add(imgEntity);
+            }
+            j += 1;
         }
 
         return entities;
