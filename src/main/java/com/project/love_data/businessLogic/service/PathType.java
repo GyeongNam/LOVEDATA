@@ -5,5 +5,6 @@ public enum UploadPathType {
     COR,
     REV,
     USER_PIC,
-    QNA
+    QNA,
+    UPLOAD
 }
