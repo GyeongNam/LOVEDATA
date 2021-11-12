@@ -66,9 +66,15 @@
 				</div>
 			</div>
 			<div>
-				<p>
-					<a href="/mypage_recent_view_corse" >최근 본 코스</a>
-				</p>
+				<button class="accordion">최근 본 장소/코스</button>
+				<div class="panel">
+					<p>
+						<a href="/mypage_recent_view_location" >최근 본 장소</a>
+					</p>
+					<p>
+						<a href="/mypage_recent_view_corse" >최근 본 코스</a>
+					</p>
+				</div>
 			</div>
 		</div>
 	</div>

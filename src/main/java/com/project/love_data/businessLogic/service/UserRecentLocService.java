@@ -4,6 +4,7 @@ import com.project.love_data.model.service.UserRecentLoc;
 import com.project.love_data.model.user.User;
 import com.project.love_data.repository.UserRecentLocRepository;
 import com.project.love_data.util.RecentLoc_Delete_Condition;
+import jdk.nashorn.internal.runtime.options.Option;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -159,5 +160,11 @@ public class UserRecentLocService {
         Optional<UserRecentLoc> item = repository.findByLoc_noAndUser_no(locNo, userNo);
 
         return item.orElse(null);
+    }
+
+    public List<UserRecentLoc> selectByUserNo(Long userNo) {
+        Optional<List<UserRecentLoc>> items = repository.findUser_no(userNo);
+
+        return items.orElse(null);
     }
 }

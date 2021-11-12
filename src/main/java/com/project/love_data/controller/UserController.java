@@ -68,6 +68,10 @@ public class UserController {
 	UserLikeLocService userLikeLocService;
 	@Autowired
 	UserLikeCorService userLikeCorService;
+	@Autowired
+	UserRecentLocService userRecentLocService;
+	@Autowired
+	UserRecentCorService userRecentCorService;
 
 	@RequestMapping(value = "/signup_add", method = RequestMethod.POST)
 	public String signup(
@@ -361,13 +365,40 @@ public class UserController {
 	}
 
 	//CHOI
-	@GetMapping(value = "/mypage_recent_view_corse")
-	public String myrecview(Principal principal, Model model) {
-		if (principal == null) {
+	@GetMapping(value = "/mypage_recent_view_location")
+	public String recviewloc(Authentication authentication, Model model) {
+		if (authentication == null) {
 			return "redirect:/login";
 		} else {
-			UserDTO userDTO = userService.DTOselect(principal.getName());
-			model.addAttribute("UserDTO", userDTO);
+			AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
+			List<UserRecentLoc> myRecentLoc = userRecentLocService.selectByUserNo(authUserModel.getUser_no());
+			List<Location> location = new ArrayList<>();
+			for(int i=0; i< myRecentLoc.size(); i++)
+			{
+				Location viewlocation = locService.selectLoc(myRecentLoc.get(i).getLoc_no());
+				location.add(viewlocation);
+			}
+			model.addAttribute("RecviewLoc", location);
+
+			return "user/mypage_recent_view_location";
+		}
+	}
+
+	//CHOI
+	@GetMapping(value = "/mypage_recent_view_corse")
+	public String recviewcor(Authentication authentication, Model model) {
+		if (authentication == null) {
+			return "redirect:/login";
+		} else {
+			AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
+			List<UserRecentCor> myRecentCor = userRecentCorService.selectByUserNo(authUserModel.getUser_no());
+			List<Course> course = new ArrayList<>();
+			for(int i=0; i< myRecentCor.size(); i++)
+			{
+				Course viewCourse = corService.selectCor(myRecentCor.get(i).getCor_no());
+				course.add(viewCourse);
+			}
+			model.addAttribute("RecviewCor", course);
 
 			return "user/mypage_recent_view_corse";
 		}
