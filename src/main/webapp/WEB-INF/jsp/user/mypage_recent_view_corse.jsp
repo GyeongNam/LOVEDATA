@@ -7,7 +7,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.Date" %>
 <%@ page session="false" %>
-
+<jsp:useBean id="defaultDateTimeFormatter" class="com.project.love_data.util.DefaultLocalDateTimeFormatter"></jsp:useBean>
+<jsp:useBean id="simpleDateTimeFormatter" class="com.project.love_data.util.SimpleLocalDateTimeFormatter"></jsp:useBean>
 <html>
 <head>
 	<meta name="_csrf" content="${_csrf.token}">
@@ -74,9 +75,17 @@
 				</div>
 			</div>
 			<div>
-				<p>
-					<a href="/mypage_recent_view_corse" >최근 본 코스</a>
-				</p>
+				<div>
+					<button class="accordion">최근 본 장소/코스</button>
+					<div class="panel">
+						<p>
+							<a href="/mypage_recent_view_location" >최근 본 장소</a>
+						</p>
+						<p>
+							<a href="/mypage_recent_view_corse" >최근 본 코스</a>
+						</p>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -86,52 +95,24 @@
 			<table>
 				<thead>
 				<tr>
-					<th>No.</th>
-					<th>등록 날짜</th>
+					<th>날짜</th>
 					<th>제목</th>
+					<th>조회수</th>
 				</tr>
 				</thead>
 				<tbody>
+				<c:forEach var="viewCor" items="${RecviewCor}" >
+				<c:choose>
+				<c:when test="${viewCor._deleted eq false}">
+				<tbody>
 				<tr>
-					<td>1</td>
-					<td><span>2022-01-01</span></td>
-					<td>인생 맛집 투어</td>
+					<td><span>${viewCor.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</span></td>
+					<td><a href="/service/cor_detail?corNo=${viewCor.cor_no}">${viewCor.cor_name}</a></td>
+					<td>${viewCor.viewCount}</td>
 				</tr>
-				<tr>
-					<td>2</td>
-					<td><span>2021-12-01</span></td>
-					<td>누가 그 집에 가보았는가</td>
-				</tr>
-				<tr>
-					<td>3</td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>4</td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>5</td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>6</td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>7</td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>8</td>
-					<td></td>
-					<td></td>
-				</tr>
+				</c:when>
+				</c:choose>
+				</c:forEach>
 				</tbody>
 			</table>
 			* 최근 본 8개 장소만 표시됩니다.

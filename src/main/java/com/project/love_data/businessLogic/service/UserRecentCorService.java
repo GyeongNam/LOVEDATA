@@ -1,6 +1,7 @@
 package com.project.love_data.businessLogic.service;
 
 import com.project.love_data.model.service.UserRecentCor;
+import com.project.love_data.model.service.UserRecentLoc;
 import com.project.love_data.model.user.User;
 import com.project.love_data.repository.UserRecentCorRepository;
 import com.project.love_data.util.RecentLoc_Delete_Condition;
@@ -159,5 +160,10 @@ public class UserRecentCorService {
         Optional<UserRecentCor> item = repository.findByCor_noAndUser_no(corNo, userNo);
 
         return item.orElse(null);
+    }
+    public List<UserRecentCor> selectByUserNo(Long userNo) {
+        Optional<List<UserRecentCor>> items = repository.findUser_no(userNo);
+
+        return items.orElse(null);
     }
 }

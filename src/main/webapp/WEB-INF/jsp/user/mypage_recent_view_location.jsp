@@ -11,6 +11,9 @@
 <jsp:useBean id="simpleDateTimeFormatter" class="com.project.love_data.util.SimpleLocalDateTimeFormatter"></jsp:useBean>
 <html>
 <head>
+	<meta name="_csrf" content="${_csrf.token}">
+	<meta name="_csrf_header" content="${_csrf.headerName}">
+    <link href="/css/mypage.css" rel="stylesheet">
 	<style>
 		@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
 
@@ -18,8 +21,7 @@
 			font-family: 'Jua', sans-serif;
 		}
 	</style>
-    <link href="/css/mypage.css" rel="stylesheet">
-    <title>Home</title>
+    <title>최근 본 장소</title>
 </head>
 <%@ include file="../layout/header.jsp"%>
 <body>
@@ -73,52 +75,47 @@
 				</div>
 			</div>
 			<div>
-				<button class="accordion">최근 본 장소/코스</button>
-				<div class="panel">
-					<p>
-						<a href="/mypage_recent_view_location" >최근 본 장소</a>
-					</p>
-					<p>
-						<a href="/mypage_recent_view_corse" >최근 본 코스</a>
-					</p>
+				<div>
+					<button class="accordion">최근 본 장소/코스</button>
+					<div class="panel">
+						<p>
+							<a href="/mypage_recent_view_location" >최근 본 장소</a>
+						</p>
+						<p>
+							<a href="/mypage_recent_view_corse" >최근 본 코스</a>
+						</p>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div id="jb-content">
-		<div id="LikeList" class="tabcontent">
-			<h3>찜 목록</h3>
+		<div id="RecView" class="tabcontent">
+			<h3>최근 본 코스</h3>
 			<table>
 				<thead>
 				<tr>
-					<th>등록 날짜</th>
+					<th>날짜</th>
 					<th>제목</th>
 					<th>조회수</th>
 				</tr>
 				</thead>
 				<tbody>
-				<c:forEach var="mCorlike" items="${my_Corlike}" >
+				<c:forEach var="viewLoc" items="${RecviewLoc}" >
 				<c:choose>
-				<c:when test="${mCorlike._deleted eq false}">
+				<c:when test="${viewLoc._deleted eq false}">
 				<tbody>
 				<tr>
-					<td><span>${mCorlike.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</span></td>
-					<td><a href="/service/cor_detail?corNo=${mCorlike.cor_no}">${mCorlike.cor_name}</a></td>
-					<td>${mCorlike.viewCount}</td>
+					<td><span>${viewLoc.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</span></td>
+					<td><a href="/service/loc_detail?locNo=${viewLoc.loc_no}">${viewLoc.loc_name}</a></td>
+					<td>${viewLoc.viewCount}</td>
 				</tr>
 				</c:when>
 				</c:choose>
 				</c:forEach>
 				</tbody>
 			</table>
-			${my_Loclike.get(0).loc_no}
-
-			${my_Corlike.get(0).cor_no}
-			<div class="pagination">
-				<a href="#">&laquo;</a>
-				<a href="#">1</a>
-				<a href="#">&raquo;</a>
-			</div>
+			* 최근 본 8개 장소만 표시됩니다.
 		</div>
 	</div>
 </div>

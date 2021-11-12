@@ -26,4 +26,7 @@ public interface UserRecentLocRepository extends JpaRepository<UserRecentLoc, Lo
     @Query(value = "DELETE FROM user_recent_loc WHERE user_no = :user_no AND loc_no = :loc_no", nativeQuery = true)
     @Transactional
     void deleteByLoc_noAndUser_no(@Param("loc_no") Long loc_no, @Param("user_no") Long user_no);
+
+    @Query(value = "select * from user_recent_loc where user_no = :userNB ORDER BY user_recent_loc_no desc limit 8", nativeQuery = true)
+    public Optional<List <UserRecentLoc>> findUser_no(@Param("userNB") Long userNo);
 }
