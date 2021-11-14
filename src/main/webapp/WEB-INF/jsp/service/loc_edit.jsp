@@ -465,11 +465,9 @@
                             type: "POST",
                             url: "/service/loc/tags",
                             data: {
-                                tags: tagList //notice that "myArray" matches the value for @RequestParam
-                                //on the Java side
+                                tags: tagList
                             },
                             success: function (response) {
-                                // do something ...
                                 console.log("장소 등록 성공");
                                 alert("장소 등록 성공");
                             },
@@ -573,7 +571,7 @@
         }
 
         console.log("list count : " + index);
-        console.log(tagList);
+        // console.log(tagList);
     }
 
     function removeTag(tag) {
@@ -582,7 +580,7 @@
 
         tag.parentElement.style.display = "none";
         tagList.splice(tagIndex, 1);
-        console.log(tagList);
+        // console.log(tagList);
     }
 </script>
 <script defer>

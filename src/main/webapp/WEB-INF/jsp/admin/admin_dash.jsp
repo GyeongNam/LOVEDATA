@@ -323,7 +323,7 @@
 														<tr onclick="location.href=
 																'/service/loc_detail?locNo=${recentComList.get(recentComRevListIndex.get(i)).location.loc_no}' +
 																'&page=${recentComRevPageNum.get(i)}&cmtNo=${recentComList.get(recentComRevListIndex.get(i)).cmtNo}'"
-															style="background: #ffdef2; cursor: pointer;">
+															style="background: #fcf4dd; cursor: pointer;">
 															<td>${i+1}</td>
 															<td>${recentComList.get(recentComRevListIndex.get(i)).cmtNo}</td>
 															<td>${recentComUserNicList.get(recentComRevListIndex.get(i))}</td>
@@ -338,7 +338,7 @@
 														<tr onclick="location.href=
 																'/service/cor_detail?corNo=${recentRevList.get(recentComRevListIndex.get(i)).corNo}' +
 																'&page=${recentComRevPageNum.get(i)}&revNo=${recentRevList.get(recentComRevListIndex.get(i)).revNo}'"
-															style="background: #e2eeff; cursor:pointer;">
+															style="background: #C3FFC3; cursor:pointer;">
 															<td>${i+1}</td>
 															<td>${recentRevList.get(recentComRevListIndex.get(i)).revNo}</td>
 															<td>${recentRevUserNicList.get(recentComRevListIndex.get(i))}</td>
@@ -394,7 +394,7 @@
 														<tr onclick=
 																	"location.href='/service/loc_detail?locNo=${hotComList.get(hotComRevListIndex.get(i)).location.loc_no}' +
 																	'&page=${hotComRevPageNum.get(i)}&cmtNo=${hotComList.get(hotComRevListIndex.get(i)).cmtNo}'"
-															style="background: #ffdef2; cursor: pointer;">
+															style="background: #fcf4dd; cursor: pointer;">
 															<td>${i+1}</td>
 															<td>${hotComList.get(hotComRevListIndex.get(i)).cmtNo}</td>
 															<td>${hotComUserNicList.get(hotComRevListIndex.get(i))}</td>
@@ -408,7 +408,7 @@
 													<c:when test="${hotComRevTypeList.get(i).equalsIgnoreCase('Rev')}">
 														<tr onclick="location.href='/service/cor_detail?corNo=${hotRevList.get(hotComRevListIndex.get(i)).corNo}' +
 																'&page=${hotComRevPageNum.get(i)}&revNo=${hotRevList.get(hotComRevListIndex.get(i)).revNo}'"
-															style="background: #e2eeff; cursor:pointer;">
+															style="background: #C3FFC3; cursor:pointer;">
 															<td>${i+1}</td>
 															<td>${hotRevList.get(hotComRevListIndex.get(i)).revNo}</td>
 															<td>${hotRevUserNicList.get(hotComRevListIndex.get(i))}</td>

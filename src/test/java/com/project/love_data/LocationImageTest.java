@@ -36,7 +36,7 @@ public class LocationImageTest {
     @Test
     public void ImageGetTest() {
         LocationImage img1 = imgService.getImage(1L);
-        LocationImage img2 = imgService.getImage("44ae4245-25da-470e-9260-0ff59e29eb95.jpg");
+        LocationImage img2 = imgService.getLiveImage("44ae4245-25da-470e-9260-0ff59e29eb95.jpg");
 
         if (img1 != null) {
             System.out.println(img1);

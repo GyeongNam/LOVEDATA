@@ -15,16 +15,22 @@ public class CourseImageService {
     private final CourseImageRepository repository;
     private final FilePathChangeService pathChangeService;
 
-    public CourseImage getImage(Long imgId) {
+    public CourseImage getLiveImage(Long imgId) {
         Optional<CourseImage> item = repository.findById(imgId);
 
-        return item.isPresent() ? item.get() : null;
+        return item.orElse(null);
     }
 
-    public CourseImage getImage(String uuid) {
+    public CourseImage getLiveImage(String uuid) {
         Optional<CourseImage> item = repository.findLiveImageByImg_uuid(uuid);
 
-        return item.isPresent() ? item.get() : null;
+        return item.orElse(null);
+    }
+
+    public CourseImage getAllImage(String uuid) {
+        Optional<CourseImage> item = repository.findImageByImg_uuid(uuid);
+
+        return item.orElse(null);
     }
 
     public List<CourseImage> getAllImagesByCorNo(Long corNo) {
@@ -109,7 +115,7 @@ public class CourseImageService {
             update(img);
         }
 
-        return getImage(img.getImg_no());
+        return getLiveImage(img.getImg_no());
     }
 
     private CourseImage enable(CourseImage img) {
@@ -121,11 +127,11 @@ public class CourseImageService {
             update(img);
         }
 
-        return getImage(img.getImg_no());
+        return getLiveImage(img.getImg_no());
     }
 
     public void delete(Long imgNo) {
-        CourseImage img = getImage(imgNo);
+        CourseImage img = getLiveImage(imgNo);
 
         if (!img.is_deleted()) {
             disable(img);
@@ -133,7 +139,7 @@ public class CourseImageService {
     }
 
     public void delete(String uuid) {
-        CourseImage img = getImage(uuid);
+        CourseImage img = getLiveImage(uuid);
 
         if (!img.is_deleted()) {
             disable(img);
@@ -141,7 +147,7 @@ public class CourseImageService {
     }
 
     public void rollback(Long imgNo) {
-        CourseImage img = getImage(imgNo);
+        CourseImage img = getLiveImage(imgNo);
 
         if (img.is_deleted()) {
             enable(img);
@@ -153,7 +159,7 @@ public class CourseImageService {
     }
 
     public CourseImage editImageEntityIndex(String uuid, Long img_Index) {
-        CourseImage img = getImage(uuid);
+        CourseImage img = getLiveImage(uuid);
 
         img.setIdx(img_Index);
 
