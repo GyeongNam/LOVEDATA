@@ -20,13 +20,19 @@ public class LocationImageService {
     public LocationImage getImage(Long imgId) {
         Optional<LocationImage> item = repository.findById(imgId);
 
-        return item.isPresent() ? item.get() : null;
+        return item.orElse(null);
     }
 
-    public LocationImage getImage(String uuid) {
+    public LocationImage getLiveImage(String uuid) {
         Optional<LocationImage> item = repository.findLiveImageByImg_uuid(uuid);
 
-        return item.isPresent() ? item.get() : null;
+        return item.orElse(null);
+    }
+
+    public LocationImage getAllImage(String uuid) {
+        Optional<LocationImage> item = repository.findLiveImageByImg_uuid(uuid);
+
+        return item.orElse(null);
     }
 
     public LocationImage getImageEntity(String user_no, String fileRootPath, String fileName, Location location, long img_index) {
@@ -153,7 +159,7 @@ public class LocationImageService {
     }
 
     public void delete(String uuid) {
-        LocationImage img = getImage(uuid);
+        LocationImage img = getAllImage(uuid);
 
         if (!img.is_deleted()) {
             disable(img);
@@ -183,7 +189,7 @@ public class LocationImageService {
     }
 
     public LocationImage editImageEntityIndex(String uuid, Long img_Index) {
-        LocationImage img = getImage(uuid);
+        LocationImage img = getAllImage(uuid);
 
         img.setIdx(img_Index);
 

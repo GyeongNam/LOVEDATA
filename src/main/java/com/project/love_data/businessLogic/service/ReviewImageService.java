@@ -21,13 +21,19 @@ public class ReviewImageService {
     public ReviewImage getImage(Long imgId) {
         Optional<ReviewImage> item = repository.findById(imgId);
 
-        return item.isPresent() ? item.get() : null;
+        return item.orElse(null);
     }
 
-    public ReviewImage getImage(String uuid) {
+    public ReviewImage getAllImage(String uuid) {
+        Optional<ReviewImage> item = repository.findImageByImg_uuid(uuid);
+
+        return item.orElse(null);
+    }
+
+    public ReviewImage getLiveImage(String uuid) {
         Optional<ReviewImage> item = repository.findLiveImageByImg_uuid(uuid);
 
-        return item.isPresent() ? item.get() : null;
+        return item.orElse(null);
     }
 
     public List<ReviewImage> getAllLiveImageByRevNo(Long revNo) {
@@ -165,7 +171,7 @@ public class ReviewImageService {
     }
 
     public void delete(String uuid) {
-        ReviewImage img = getImage(uuid);
+        ReviewImage img = getAllImage(uuid);
 
         if (!img.is_deleted()) {
             disable(img);
@@ -177,7 +183,7 @@ public class ReviewImageService {
     }
 
     public ReviewImage editImageEntityIndex(String uuid, Long img_Index) {
-        ReviewImage img = getImage(uuid);
+        ReviewImage img = getAllImage(uuid);
 
         img.setIdx(img_Index);
 

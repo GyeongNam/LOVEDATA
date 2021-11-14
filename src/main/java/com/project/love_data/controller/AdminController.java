@@ -8,13 +8,14 @@ import com.project.love_data.model.resource.ReviewImage;
 import com.project.love_data.model.service.*;
 import com.project.love_data.model.user.User;
 import com.project.love_data.security.model.AuthUserModel;
+import com.project.love_data.util.FileLastDateComparator;
+import com.project.love_data.util.FileSizeCalculator;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -53,6 +54,7 @@ public class AdminController {
     CourseImageService corImageService;
     @Autowired
     ReviewImageService revImageService;
+    FileSizeCalculator fileSizeCalculator = new FileSizeCalculator();
 
     List<String> tagList = new ArrayList<>();
 
@@ -845,96 +847,124 @@ public class AdminController {
         List<Long> fileNoList = new ArrayList<>();
         List<String> fileUploadUserList = new ArrayList<>();
         List<LocalDateTime> fileUploadTimeList = new ArrayList<>();
+        List<String> fileOriginURLList = new ArrayList<>();
 
         fileList = fileManagementService.getAllFilesList(PathType.UPLOAD);
+        if (fileList != null && !fileList.isEmpty()) {
+            Collections.sort(fileList, new FileLastDateComparator().reversed());
 
-        // 가장 최근 파일 삭제일이 위로 가도록 정렬하기
-//        for (File file : fileList) {
-//
-//        }
+            for (File file : fileList) {
+                String fileName = file.getName();
+                String type = "";
+                String uuid = "";
+                String uuidAndExtenstion = "";
+                lastModifiedTimeList.add(LocalDateTime.ofInstant(Instant.ofEpochMilli(file.lastModified()), TimeZone.getTimeZone("Asia/Seoul").toZoneId()));
+                fileSizeList.add(fileSizeCalculator.execute(file.length()));
+                fileNameList.add(fileName);
 
-        for (File file : fileList) {
-            String fileName = file.getName();
-            String type = "";
-            String uuid = "";
-            lastModifiedTimeList.add(LocalDateTime.ofInstant(Instant.ofEpochMilli(file.lastModified()), TimeZone.getTimeZone("Asia/Seoul").toZoneId()));
-            fileSizeList.add(String.valueOf(file.length()));
-            fileNameList.add(fileName);
-
-            int index = fileName.indexOf("^");
-            type = fileName.substring(0, index);
+                int index = fileName.indexOf("^");
+                type = fileName.substring(0, index);
 //            fileTypeList.add(type);
 
-            uuid = fileName.substring(index + 1, fileName.length());
-            index = uuid.indexOf(".");
-            uuid = uuid.substring(0, index);
+                uuidAndExtenstion = fileName.substring(index + 1, fileName.length());
+                index = uuidAndExtenstion.indexOf(".");
+                uuid = uuidAndExtenstion.substring(0, index);
 
-            switch (type) {
-                case "LOC" :
-                    fileTypeList.add("장소");
-                    LocationImage locImg = locImageService.getImage(uuid);
-                    if (locImg == null) {
+                switch (type) {
+                    case "LOC" :
+                        fileTypeList.add("장소");
+                        LocationImage locImg = locImageService.getAllImage(uuidAndExtenstion);
+                        if (locImg == null) {
+                            fileNoList.add(null);
+                            fileUploadTimeList.add(null);
+                            fileUploadUserList.add("삭제 된 사용자");
+                            fileOriginURLList.add(null);
+                        } else {
+                            fileNoList.add(locImg.getImg_no());
+                            fileUploadTimeList.add(locImg.getRegDate());
+                            fileOriginURLList.add("/service/loc_detail?locNo=" + locImg.getLocation().getLoc_no());
+                            User user = userService.select(locImg.getUser_no());
+                            if (user == null) {
+                                fileUploadUserList.add("삭제 된 사용자");
+                            } else {
+                                fileUploadUserList.add(user.getUser_nic());
+                            }
+                        }
+                        break;
+                    case "COR" :
+                        fileTypeList.add("코스");
+                        CourseImage corImg = corImageService.getAllImage(uuidAndExtenstion);
+                        if (corImg == null) {
+                            fileNoList.add(null);
+                            fileUploadTimeList.add(null);
+                            fileUploadUserList.add("삭제 된 사용자");
+                            fileOriginURLList.add(null);
+                        } else {
+                            fileNoList.add(corImg.getImg_no());
+                            fileUploadTimeList.add(corImg.getRegDate());
+                            fileOriginURLList.add("/service/cor_detail?corNo=" + corImg.getCor_no());
+                            User user = userService.select(corImg.getUser_no());
+                            if (user == null) {
+                                fileUploadUserList.add("삭제 된 사용자");
+                            } else {
+                                fileUploadUserList.add(user.getUser_nic());
+                            }
+                        }
+                        break;
+                    case "REV" :
+                        fileTypeList.add("리뷰");
+                        ReviewImage revImg = revImageService.getAllImage(uuidAndExtenstion);
+                        if (revImg == null) {
+                            fileNoList.add(null);
+                            fileUploadTimeList.add(null);
+                            fileUploadUserList.add("삭제 된 사용자");
+                            fileOriginURLList.add(null);
+                        } else {
+                            fileNoList.add(revImg.getImg_no());
+                            fileUploadTimeList.add(revImg.getRegDate());
+                            Integer pageNum = reviewService.getReviewCurrentPageNum(revImg.getRev_no());
+                            if (pageNum == null) {
+                                fileOriginURLList.add(null);
+                            } else {
+                                fileOriginURLList.add("/service/cor_detail?corNo=" + revImg.getCor_no() + "&page=" + pageNum + "&revNo=" + revImg.getRev_no());
+                            }
+                            User user = userService.select(revImg.getUser_no());
+                            if (user == null) {
+                                fileUploadUserList.add("삭제 된 사용자");
+                            } else {
+                                fileUploadUserList.add(user.getUser_nic());
+                            }
+                        }
+                        break;
+                    case "PIC" :
+                        fileTypeList.add("프로필");
                         fileNoList.add(null);
                         fileUploadTimeList.add(null);
+                        fileOriginURLList.add(null);
                         fileUploadUserList.add("삭제 된 사용자");
-                    } else {
-                        fileNoList.add(locImg.getImg_no());
-                        fileUploadTimeList.add(locImg.getRegDate());
-                        User user = userService.select(locImg.getUser_no());
-                        if (user == null) {
-                            fileUploadUserList.add("삭제 된 사용자");
-                        } else {
-                            fileUploadUserList.add(user.getUser_nic());
-                        }
-                    }
-                    break;
-                case "COR" :
-                    fileTypeList.add("코스");
-                    CourseImage corImg = corImageService.getImage(uuid);
-                    if (corImg == null) {
+                        break;
+                    case "QNA" :
+                        fileTypeList.add("문의사항");
                         fileNoList.add(null);
                         fileUploadTimeList.add(null);
+                        fileOriginURLList.add(null);
                         fileUploadUserList.add("삭제 된 사용자");
-                    } else {
-                        fileNoList.add(corImg.getImg_no());
-                        fileUploadTimeList.add(corImg.getRegDate());
-                        User user = userService.select(corImg.getUser_no());
-                        if (user == null) {
-                            fileUploadUserList.add("삭제 된 사용자");
-                        } else {
-                            fileUploadUserList.add(user.getUser_nic());
-                        }
-                    }
-                    break;
-                case "REV" :
-                    fileTypeList.add("리뷰");
-                    ReviewImage revImg = revImageService.getImage(uuid);
-                    if (revImg == null) {
+                        break;
+                    case "NTC" :
+                        fileTypeList.add("공지사항");
                         fileNoList.add(null);
                         fileUploadTimeList.add(null);
+                        fileOriginURLList.add(null);
                         fileUploadUserList.add("삭제 된 사용자");
-                    } else {
-                        fileNoList.add(revImg.getImg_no());
-                        fileUploadTimeList.add(revImg.getRegDate());
-                        User user = userService.select(revImg.getUser_no());
-                        if (user == null) {
-                            fileUploadUserList.add("삭제 된 사용자");
-                        } else {
-                            fileUploadUserList.add(user.getUser_nic());
-                        }
-                    }
-                    break;
-                case "PIC" :
-                    fileTypeList.add("프로필");
-                    break;
-                case "QNA" :
-                    fileTypeList.add("문의사항");
-                    break;
-                case "NTC" :
-                    fileTypeList.add("공지사항");
-                    break;
-                default :
-                    break;
+                        break;
+                    default :
+                        fileTypeList.add("NULL");
+                        fileNoList.add(null);
+                        fileUploadTimeList.add(null);
+                        fileOriginURLList.add(null);
+                        fileUploadUserList.add("삭제 된 사용자");
+                        break;
+                }
             }
         }
 
@@ -945,7 +975,29 @@ public class AdminController {
         model.addAttribute("fileNoList", fileNoList);
         model.addAttribute("fileUploadUserList", fileUploadUserList);
         model.addAttribute("fileUploadTimeList", fileUploadTimeList);
+        model.addAttribute("fileOriginURLList", fileOriginURLList);
 
         return "/admin/admin_upload_cache";
+    }
+
+    @PostMapping("/del_upload_cache")
+    @ResponseBody
+    public List<Boolean> deleteUploadCache(HttpServletRequest request,
+                                           Model model,
+                                           @RequestParam("pathName[]") String[] pathNameAry,
+                                           @RequestParam("pathType") String pathType) {
+        if (pathNameAry.length > 0) {
+            List<String> pathNameList = new ArrayList<>();
+            pathNameList = Arrays.asList(pathNameAry);
+            List<Boolean> result = fileManagementService.deleteFiles(PathType.valueOf(pathType), pathNameList);
+
+            for (int i = 0; i < pathNameList.size(); i++) {
+                log.info("File " + pathNameList.get(i) + " " + (result.get(i) ? "successfully deleted" : "delete failed"));
+            }
+
+            return result;
+        }
+
+        return null;
     }
 }

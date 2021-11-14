@@ -442,11 +442,11 @@ public class FileUploadService {
 
     private String getDupElementURIPath(String originalFileName) {
 
-        LocationImage item = locationImageService.getImage(originalFileName);
+        LocationImage item = locationImageService.getLiveImage(originalFileName);
 
-        CourseImage item2 = courseImageService.getImage(originalFileName);
+        CourseImage item2 = courseImageService.getLiveImage(originalFileName);
 
-        ReviewImage item3 = reviewImageService.getImage(originalFileName);
+        ReviewImage item3 = reviewImageService.getLiveImage(originalFileName);
 
         if (item != null) {
             String url = item.getImg_url();
@@ -509,11 +509,11 @@ public class FileUploadService {
     }
 
     private boolean isDuplicated(String fileName) {
-        LocationImage item = locationImageService.getImage(fileName);
+        LocationImage item = locationImageService.getLiveImage(fileName);
 
-        CourseImage item2 = courseImageService.getImage(fileName);
+        CourseImage item2 = courseImageService.getLiveImage(fileName);
 
-        ReviewImage item3 = reviewImageService.getImage(fileName);
+        ReviewImage item3 = reviewImageService.getLiveImage(fileName);
 
         if (item == null && item2 == null && item3 == null) {
             return false;

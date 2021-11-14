@@ -7,7 +7,6 @@ import com.project.love_data.dto.PageResultDTO;
 import com.project.love_data.model.resource.CourseImage;
 import com.project.love_data.model.service.CorLocMapper;
 import com.project.love_data.model.service.Course;
-import com.project.love_data.model.service.Location;
 import com.project.love_data.model.service.QCourse;
 import com.project.love_data.repository.CourseImageRepository;
 import com.project.love_data.repository.CourseRepository;
@@ -419,7 +418,7 @@ public class CourseService {
 
             for (CourseImage CourseImage : list) {
                 imgService.delete(CourseImage.getImg_no());
-                if (!imgService.getImage(CourseImage.getImg_no()).is_deleted()) {
+                if (!imgService.getLiveImage(CourseImage.getImg_no()).is_deleted()) {
                     isCourseDelete = false;
                     break;
                 }
@@ -444,7 +443,7 @@ public class CourseService {
 
             for (CourseImage CourseImage : list) {
                 imgService.delete(CourseImage.getImg_no());
-                if (!imgService.getImage(CourseImage.getImg_no()).is_deleted()) {
+                if (!imgService.getLiveImage(CourseImage.getImg_no()).is_deleted()) {
                     isCourseDelete = false;
                     for (CourseImage courseImage : finishedList) {
                         imgService.rollback(courseImage.getImg_no());
@@ -477,7 +476,7 @@ public class CourseService {
 
             for (CourseImage CourseImage : list) {
                 imgService.rollback(CourseImage.getImg_no());
-                if (imgService.getImage(CourseImage.getImg_no()).is_deleted()) {
+                if (imgService.getLiveImage(CourseImage.getImg_no()).is_deleted()) {
                     isCourseRollback = false;
                     for (CourseImage courseImage : finishedList) {
                         imgService.delete(courseImage.getImg_no());
@@ -510,7 +509,7 @@ public class CourseService {
 
             for (CourseImage CourseImage : list) {
                 imgService.rollback(CourseImage.getImg_no());
-                if (imgService.getImage(CourseImage.getImg_no()).is_deleted()) {
+                if (imgService.getLiveImage(CourseImage.getImg_no()).is_deleted()) {
                     isCourseRollback = false;
                     for (CourseImage courseImage : finishedList) {
                         imgService.delete(courseImage.getImg_no());
