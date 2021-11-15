@@ -89,6 +89,23 @@ function Nsearch(){
         }
     }
 }
+
+function admin_Nsearch(){
+    var select =$('#Notice_select').val();
+    var text =$('#keyword').val();
+
+    var special_pattern = /[`~!@#$%^&*|\\\'\";:\/?]/gi;
+    if( text == '' ||text == null ){
+        alert( '값을 입력해주세요' );
+    }
+    else {
+        if(special_pattern.test(text) == true) {
+            alert("특수문자는 안됩니다.")
+        } else {
+            return location.href="/admin/notice/search/"+select+"/"+text+"/1";
+        }
+    }
+}
 var setCookie = function(name, value, exp) {
     var date = new Date();
     date.setTime(date.getTime() + exp*24*60*60*1000);
@@ -172,6 +189,77 @@ function subpage(){
     }
 }
 
+function ad_pages_open(pagess){
+    var is_page = getCookie("ad_page");
+    if(is_page==null){
+        console.log("쿠키없음");
+        setCookie("ad_page", "1", 1);
+        pages=1;
+    }else {
+        console.log("쿠키있음: "+ is_page);
+        pages = parseInt(is_page);
+        pagess= is_page;
+    }
+
+    console.log("pages : "+ pagess);
+    var qu_pages = $("#qu_pages").val();
+    var qu_pagess = $("#qu_pagess").val();
+    for(var i=1; i<=parseInt(qu_pagess); i++) {
+        var item = document.getElementById(i);
+        item.style.display="none";
+    }
+    if(pagess==1){
+        for(var i=1; i<=10; i++) {
+            var item = document.getElementById(i);
+            item.style.display="block";
+        }
+    }
+    if(pagess==qu_pages){
+        console.log("끝pagess: "+pagess*10);
+        console.log("끝qu_pagess: "+qu_pagess);
+        for(var i=(pagess-1)*10+1; i<=parseInt(qu_pagess); i++) {
+            var item = document.getElementById(i);
+            item.style.display="block";
+        }
+    }
+    if(pagess>1 && pagess<qu_pages){
+        console.log("중간");
+        for(var i=(pagess-1)*10+1; i<=(pagess-1)*10+10; i++) {
+            var item = document.getElementById(i);
+            item.style.display="block";
+        }
+    }
+}
+function ad_plupage(){
+    var qu_pages = $("#qu_pages").val();
+    pages = pages+1;
+
+    if(pages<=qu_pages){
+        setCookie("ad_page", pages, 1);
+        ad_pages_open(pages)
+    }
+    else {
+        pages = qu_pages;
+        setCookie("ad_page", pages, 1);
+        alert("최대페이지 입니다.")
+    }
+}
+
+function ad_subpage(){
+    var qu_pages = $("#qu_pages").val();
+    pages = pages-1;
+    console.log("쿠키확인"+pages);
+    if(pages>=1){
+        setCookie("ad_page", pages, 1);
+        ad_pages_open(pages)
+    }
+    else {
+        pages = 1;
+        setCookie("ad_page", pages, 1);
+        alert("최소페이지 입니다.")
+    }
+}
+
 function password_ck(){
     // ajax token
     var token = $("meta[name='_csrf']").attr("content");
@@ -213,21 +301,29 @@ $(document).ready(function() {
     $("#userOut").prop('disabled', true);
 
     var is_page = getCookie("sc_page");
-    console.log("맨처음 쿠키"+is_page);
-    var target_imgs = $("#imgDisplay");
-    console.log(target_imgs)
-    var qu_pages = $("#qu_pages").val();
+
+    var ad_page = getCookie("ad_page");
+
     var qu_pagess = $("#qu_pagess").val();
     for(var i=1; i<=parseInt(qu_pagess); i++) {
         var item = document.getElementById(i);
         item.style.display="none";
     }
-    var is_page = getCookie("sc_page");
+
     if(is_page==null){
         pages_open(1);
     }else {
         pages_open(is_page);
     }
+
+    if(ad_page==null){
+        ad_pages_open(1);
+    }else {
+        ad_pages_open(ad_page);
+    }
+
+    var target_imgs = $("#imgDisplay");
+    console.log(target_imgs)
 
     target_imgs.load(function(){
         var width = $(this).outerWidth();

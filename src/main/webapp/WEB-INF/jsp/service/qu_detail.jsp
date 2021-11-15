@@ -16,7 +16,13 @@
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/service/loc.css">
     <link rel="stylesheet" href="/css/qu_detail.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
 
+        body {
+            font-family: 'Jua', sans-serif;
+        }
+    </style>
 
     <title>문의사항 : ${qu.qu_no}</title>
 </head>
@@ -164,12 +170,8 @@
 </div>
 </body>
 </html>
-
+<script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+        crossorigin="anonymous"></script>
 <script defer src="/js/qu_detail.js"></script>
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
-
-    body {
-        font-family: 'Jua', sans-serif;
-    }
-</style>
