@@ -606,7 +606,7 @@ public class UserController {
 			cor.add(Integer.toString(courses.size()));
 			List<Review> reviews = reviewService.findAllByUser_no(User.get(i).getUser_no());
 			re.add(Integer.toString(reviews.size()));
-			List<Comment> comments = cmtService.findAllByUser_no(User.get(i).getUser_no());
+			List<Comment> comments = cmtService.findAllByUserNo(User.get(i).getUser_no());
 			com.add(Integer.toString(comments.size()));
 		}
 
@@ -705,7 +705,7 @@ public class UserController {
 			cor.add(Integer.toString(courses.size()));
 			List<Review> reviews = reviewService.findAllByUser_no(User.get(i).getUser_no());
 			re.add(Integer.toString(reviews.size()));
-			List<Comment> comments = cmtService.findAllByUser_no(User.get(i).getUser_no());
+			List<Comment> comments = cmtService.findAllByUserNo(User.get(i).getUser_no());
 			com.add(Integer.toString(comments.size()));
 		}
 
