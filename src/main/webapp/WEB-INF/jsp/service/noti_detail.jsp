@@ -55,25 +55,26 @@
         </ul>
     </div>
     <div class="container col-lg-6 ">
-
-    <div class="d-flex container">
         <h2 class="mx-2">제목 : ${noti.noti_title}</h2>
         <sec:authorize access="isAuthenticated()">
             <sec:authorize access="hasAnyRole('ADMIN')">
+                <button class="mx-2" onclick="onclick=location.href='/ServiceCenter/Notice_Update/'+${noti.noti_no}">수정하기</button>
                 <form method="post" action="/ServiceCenter/Notice_Delete" id="nform">
                     <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
-                    <button class="mx-2" onclick="onclick=location.href='/ServiceCenter/Notice_Update/'+${noti.noti_no}">수정하기</button>
                     <input type="hidden" name="noti_no" value="${noti.noti_no}">
                     <button class="mx-2" onclick="noti_de()">삭제하기</button>
                 </form>
             </sec:authorize>
         </sec:authorize>
-    </div>
     <div>
        <span>${noti.noti_text}</span>
     </div>
     </div>
 </div>
 </body>
+<script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+        crossorigin="anonymous"></script>
 <script defer src="/js/ServiceCenter.js"></script>
 </html>

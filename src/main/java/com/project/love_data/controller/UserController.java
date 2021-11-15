@@ -33,10 +33,7 @@ import java.io.*;
 import java.io.PrintWriter;
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static com.project.love_data.util.ConstantValues.MAX_UPLOAD_COUNT;
 import static com.project.love_data.util.ConstantValues.MIN_UPLOAD_COUNT;
@@ -522,10 +519,96 @@ public class UserController {
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping(value = "/admin/user")
-	public String admin_user(HttpServletRequest request, Model model){
+	@GetMapping(value = "/admin/user/{page}")
+	public String admin_user(@PathVariable("page") String page, HttpServletRequest request, Model model){
 		List<User> User = userService.finduserAll();
-		model.addAttribute("user", User);
+		model.addAttribute("search", false);
+		List<String> loc = new ArrayList<>();
+		List<String> cor = new ArrayList<>();
+		List<String> re = new ArrayList<>();
+		List<String> com = new ArrayList<>();
+		List<User> user_page = null;
+		List<String> user_loc = null;
+		List<String> user_cor = null;
+		List<String> user_re = null;
+		List<String> user_com = null;
+		long no_size = User.size();
+		long no_page = User.size()/10;
+		long no_page_na = User.size()%10;
+		long no_page_size = no_page/10;
+		long no_page_size_na = no_page%10;
+
+		for(int i= 0; i<User.size(); i++){
+			List<Location> locations = locService.findLocByUserNo(User.get(i).getUser_no());
+			loc.add(Integer.toString(locations.size()));
+			List<Course> courses = corService.findCorByUserNo(User.get(i).getUser_no());
+			cor.add(Integer.toString(courses.size()));
+			List<Review> reviews = reviewService.findAllByUser_no(User.get(i).getUser_no());
+			re.add(Integer.toString(reviews.size()));
+			List<Comment> comments = cmtService.findAllByUser_no(User.get(i).getUser_no());
+			com.add(Integer.toString(comments.size()));
+		}
+
+		if(no_page_size_na >= 1){
+			no_page_size = no_page_size+1;
+			model.addAttribute("qu_page_size",no_page_size);
+		}
+		else {
+			model.addAttribute("qu_page_size",no_page_size);
+		}
+
+		if(no_page_na >= 1){
+			no_page = no_page+1;
+			model.addAttribute("qu_page",no_page);
+		}
+		else {
+			model.addAttribute("qu_page",no_page);
+		}
+		model.addAttribute("qu_size",User.size());
+
+		long j=0;
+
+		if(User.size()<10){
+			model.addAttribute("user",User);
+			model.addAttribute("loc", loc);
+			model.addAttribute("cor", cor);
+			model.addAttribute("re", re);
+			model.addAttribute("com", com);
+
+		}else {
+			for (int i = 0; i < no_size; i++) {
+				user_page = User.subList(0,10);
+				user_loc = loc.subList(0,10);;
+				user_cor = cor.subList(0,10);;
+				user_re = re.subList(0,10);;
+				user_com = com.subList(0,10);;
+				if (i % 10 == 0) {
+					j = j + 1;
+					if (j == Long.parseLong(page)) {
+						model.addAttribute("user",user_page);
+						model.addAttribute("loc", user_loc);
+						model.addAttribute("cor", user_cor);
+						model.addAttribute("re", user_re);
+						model.addAttribute("com", user_com);
+						break;
+					} else {
+						User.subList(0,10).clear();
+						loc.subList(0,10).clear();
+						cor.subList(0,10).clear();
+						re.subList(0,10).clear();
+						com.subList(0,10).clear();
+						if(User.size()<10){
+							model.addAttribute("user",User);
+							model.addAttribute("loc", loc);
+							model.addAttribute("cor", cor);
+							model.addAttribute("re", re);
+							model.addAttribute("com", com);
+							break;
+						}
+					}
+				}
+			}
+		}
 
 		return "admin/admin_user";
 	}
@@ -537,8 +620,96 @@ public class UserController {
 						   @PathVariable("menu") String menu,
 						   Model model,
 						   Principal principal)  {
-		List<User> user = userService.search_user(menu, text);
-		model.addAttribute("user", user);
+		List<User> User = userService.search_user(menu, text);
+		model.addAttribute("search", true);
+		List<String> loc = new ArrayList<>();
+		List<String> cor = new ArrayList<>();
+		List<String> re = new ArrayList<>();
+		List<String> com = new ArrayList<>();
+		List<User> user_page = null;
+		List<String> user_loc = null;
+		List<String> user_cor = null;
+		List<String> user_re = null;
+		List<String> user_com = null;
+		long no_size = User.size();
+		long no_page = User.size()/10;
+		long no_page_na = User.size()%10;
+		long no_page_size = no_page/10;
+		long no_page_size_na = no_page%10;
+
+		for(int i= 0; i<User.size(); i++){
+			List<Location> locations = locService.findLocByUserNo(User.get(i).getUser_no());
+			loc.add(Integer.toString(locations.size()));
+			List<Course> courses = corService.findCorByUserNo(User.get(i).getUser_no());
+			cor.add(Integer.toString(courses.size()));
+			List<Review> reviews = reviewService.findAllByUser_no(User.get(i).getUser_no());
+			re.add(Integer.toString(reviews.size()));
+			List<Comment> comments = cmtService.findAllByUser_no(User.get(i).getUser_no());
+			com.add(Integer.toString(comments.size()));
+		}
+
+		if(no_page_size_na >= 1){
+			no_page_size = no_page_size+1;
+			model.addAttribute("qu_page_size",no_page_size);
+		}
+		else {
+			model.addAttribute("qu_page_size",no_page_size);
+		}
+
+		if(no_page_na >= 1){
+			no_page = no_page+1;
+			model.addAttribute("qu_page",no_page);
+		}
+		else {
+			model.addAttribute("qu_page",no_page);
+		}
+		model.addAttribute("qu_size",User.size());
+
+		long j=0;
+
+		if(User.size()<10){
+			model.addAttribute("user",User);
+			model.addAttribute("loc", loc);
+			model.addAttribute("cor", cor);
+			model.addAttribute("re", re);
+			model.addAttribute("com", com);
+
+		}else {
+			for (int i = 0; i < no_size; i++) {
+				user_page = User.subList(0,10);
+				user_loc = loc.subList(0,10);;
+				user_cor = cor.subList(0,10);;
+				user_re = re.subList(0,10);;
+				user_com = com.subList(0,10);;
+				if (i % 10 == 0) {
+					j = j + 1;
+					if (j == Long.parseLong(page)) {
+						model.addAttribute("user",user_page);
+						model.addAttribute("loc", user_loc);
+						model.addAttribute("cor", user_cor);
+						model.addAttribute("re", user_re);
+						model.addAttribute("com", user_com);
+						break;
+					} else {
+						User.subList(0,10).clear();
+						loc.subList(0,10).clear();
+						cor.subList(0,10).clear();
+						re.subList(0,10).clear();
+						com.subList(0,10).clear();
+						if(User.size()<10){
+							model.addAttribute("user",User);
+							model.addAttribute("loc", loc);
+							model.addAttribute("cor", cor);
+							model.addAttribute("re", re);
+							model.addAttribute("com", com);
+							break;
+						}
+					}
+				}
+			}
+		}
+
+
 		return "admin/admin_user";
 	}
 

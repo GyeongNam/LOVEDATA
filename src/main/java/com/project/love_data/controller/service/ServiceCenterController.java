@@ -109,6 +109,68 @@ public class ServiceCenterController {
         return "/user/Service_center_no";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping(value = "/admin/notice/{page}")
+    public String admin_Notice(@PathVariable("page") String page, Model model, HttpServletResponse response) {
+        List<Notice> notice = serviceCenterService.not_select_all();
+        List<Notice> notice_page = null;
+        model.addAttribute("search", false);
+        long no_size = notice.size();
+        long no_page = notice.size()/15;
+        long no_page_na = notice.size()%15;
+        long no_page_size = no_page/10;
+        long no_page_size_na = no_page%10;
+
+        Date today = new Date();
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+        model.addAttribute("no_time", format1.format(today));
+
+        if(no_page_size_na >= 1){
+            no_page_size = no_page_size+1;
+            model.addAttribute("no_page_size",no_page_size);
+        }
+        else {
+            model.addAttribute("no_page_size",no_page_size);
+        }
+
+        if(no_page_na >= 1){
+            no_page = no_page+1;
+            model.addAttribute("no_page",no_page);
+        }
+        else {
+            model.addAttribute("no_page",no_page);
+        }
+        model.addAttribute("no_size",notice.size());
+
+        // 페이지네이션
+        long j=0;
+
+        if(notice.size()<15){
+            model.addAttribute("noti",notice);
+        }else {
+            for (int i = 0; i < no_size; i++) {
+                notice_page = notice.subList(0,15);
+
+                if (i % 15 == 0) {
+                    j = j + 1;
+                    if (j == Long.parseLong(page)) {
+                        model.addAttribute("noti",notice_page);
+                        break;
+                    } else {
+                        notice.subList(0,15).clear();
+
+                        if(notice.size()<15){
+                            model.addAttribute("noti",notice);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return "admin/admin_notice";
+    }
+
     @GetMapping(value = "/ServiceCenter/Notice/search/{menu}/{text}/{page}")
     public String Nsearch( @PathVariable("page") String page,
                            @PathVariable("text") String text,
@@ -178,6 +240,76 @@ public class ServiceCenterController {
         return "/user/Service_center_no";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping(value = "/admin/notice/search/{menu}/{text}/{page}")
+    public String admin_Nsearch( @PathVariable("page") String page,
+                           @PathVariable("text") String text,
+                           @PathVariable("menu") String menu,
+                           Model model,
+                           Principal principal)  {
+        List<Notice> notice = serviceCenterService.no_search_all(menu, text);
+        model.addAttribute("search", true);
+        model.addAttribute("text", text);
+        model.addAttribute("menu", menu);
+
+        List<Notice> notice_page = null;
+        model.addAttribute("search", false);
+        long no_size = notice.size();
+        long no_page = notice.size()/15;
+        long no_page_na = notice.size()%15;
+        long no_page_size = no_page/10;
+        long no_page_size_na = no_page%10;
+
+        Date today = new Date();
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+        model.addAttribute("no_time", format1.format(today));
+
+        if(no_page_size_na >= 1){
+            no_page_size = no_page_size+1;
+            model.addAttribute("no_page_size",no_page_size);
+        }
+        else {
+            model.addAttribute("no_page_size",no_page_size);
+        }
+
+        if(no_page_na >= 1){
+            no_page = no_page+1;
+            model.addAttribute("no_page",no_page);
+        }
+        else {
+            model.addAttribute("no_page",no_page);
+        }
+        model.addAttribute("no_size",notice.size());
+
+        // 페이지네이션
+        long j=0;
+
+        if(notice.size()<15){
+            model.addAttribute("noti",notice);
+        }else {
+            for (int i = 0; i < no_size; i++) {
+                notice_page = notice.subList(0,15);
+
+                if (i % 15 == 0) {
+                    j = j + 1;
+                    if (j == Long.parseLong(page)) {
+                        model.addAttribute("noti",notice_page);
+                        break;
+                    } else {
+                        notice.subList(0,15).clear();
+
+                        if(notice.size()<15){
+                            model.addAttribute("noti",notice);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return "/admin/admin_notice";
+    }
+
     @GetMapping(value = "/ServiceCenter/Notice_Post/{num}")
     public String Notice_no(@PathVariable("num") String num, Model model, HttpServletResponse response)  {
         Notice notice = serviceCenterService.noti_select_no(num);
@@ -185,6 +317,16 @@ public class ServiceCenterController {
         serviceCenterService.not_update(notice);
         model.addAttribute("noti",notice);
         return "/service/noti_detail";
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping(value = "/admin/notice_post/{num}")
+    public String admin_Notice_no(@PathVariable("num") String num, Model model, HttpServletResponse response)  {
+        Notice notice = serviceCenterService.noti_select_no(num);
+        notice.setNoti_viewCount(notice.getNoti_viewCount()+1);
+        serviceCenterService.not_update(notice);
+        model.addAttribute("noti",notice);
+        return "/admin/admin_notice_detail";
     }
 
     @GetMapping(value = "/ServiceCenter/Questions/{page}")
@@ -591,7 +733,7 @@ public class ServiceCenterController {
         if(principal == null){
             scriptUtils.alertAndMovePage(response, "로그인 해주세요.", "/login");
         }
-        return "admin/admin_notice";
+        return "admin/admin_notice_add";
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -664,9 +806,80 @@ public class ServiceCenterController {
 
         return "redirect:/ServiceCenter/Notice/1";
     }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping(value = "/admin/notice_post_add/add")
+    public String admin_Post_add_noti_add(HttpServletRequest request, Principal principal, HttpServletResponse response) throws IOException {
+        if(principal == null){
+            scriptUtils.alertAndMovePage(response, "로그인 해주세요.", "/login");
+        }else {
+            User user = userService.select(principal.getName());
+            Date today = new Date();
+            SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            String body = request.getParameter("form_name");
+            List<NoticeIMG> noticeIMG = serviceCenterService.select_notiimg(user.getUser_nic());
+            log.info("사진 갯수"+noticeIMG.size());
+            for( int i = 0; i < noticeIMG.size() ; i++ )
+            {
+                log.info("폴문안에 body는 : "+body);
+                log.info("사진명은 : "+noticeIMG.get(i).getNotiimg_name());
+                if(body.contains(noticeIMG.get(i).getNotiimg_name())){
+
+                    // 포함
+                    body = body.replace("/image/upload/"+noticeIMG.get(i).getNotiimg_name(),"/image/notice/"+noticeIMG.get(i).getNotiimg_name());
+
+                    try {
+
+                        String imgpath;
+                        if("Windows_NT".equals(System.getenv().get("OS"))){
+                            String r = request.getSession().getServletContext().getRealPath("/");
+                            int idx =  r.indexOf("main");
+                            imgpath =r.substring(0, idx)+"main/resources/static/image/upload/"+noticeIMG.get(i).getNotiimg_name();
+
+                            File file = FileUtils.getFile(imgpath);
+                            File fileToMove = FileUtils.getFile(r.substring(0, idx)+"main/resources/static/image/notice/"+noticeIMG.get(i).getNotiimg_name());
+                            FileUtils.moveFile(file, fileToMove);
+                        }else {
+                            imgpath = Linux_Image_Upload_Path+"upload/"+noticeIMG.get(i).getNotiimg_name();
+
+                            File file = FileUtils.getFile(imgpath);
+                            File fileToMove = FileUtils.getFile(Linux_Image_Upload_Path+"notice/"+noticeIMG.get(i).getNotiimg_name());
+                            FileUtils.moveFile(file, fileToMove);
+                        }
+
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    // 미포함
+                    noticeIMG.get(i).setNoti_activation(false);
+                }
+            }
+
+            Notice notices = Notice.builder()
+                    .noti_activation(true)
+                    .noti_manager(user.getUser_nic())
+                    .noti_title(request.getParameter("title"))
+                    .noti_text(body)
+                    .noti_date(format1.format(today))
+                    .noti_viewCount(0)
+                    .build();
+            noticeRepository.save(notices);
+            for( int i = 0; i < noticeIMG.size() ; i++ )
+            {
+                noticeIMG.get(i).setNotiimg_postno(notices.getNoti_no().toString());
+                serviceCenterService.notiimg_update(noticeIMG.get(i));
+            }
+        }
+
+        return "redirect:/admin/notice/1";
+    }
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(value = "/ServiceCenter/Notice_Post_Update/update")
-    public String Post_update_noti_update(HttpServletRequest request, Principal principal, HttpServletResponse response) throws IOException {
+    public String admin_Post_update_noti_update(HttpServletRequest request, Principal principal, HttpServletResponse response) throws IOException {
         if(principal == null){
             scriptUtils.alertAndMovePage(response, "로그인 해주세요.", "/login");
         }else {
@@ -757,6 +970,99 @@ public class ServiceCenterController {
         return "redirect:/ServiceCenter/Notice/1";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping(value = "/admin/Notice_Post_Update/update")
+    public String Post_update_noti_update(HttpServletRequest request, Principal principal, HttpServletResponse response) throws IOException {
+        if(principal == null){
+            scriptUtils.alertAndMovePage(response, "로그인 해주세요.", "/login");
+        }else {
+            User user = userService.select(principal.getName());
+            Date today = new Date();
+            SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            String body = request.getParameter("form_name");
+            List<NoticeIMG> noticeIMG_ol = serviceCenterService.select_notiimg_num(request.getParameter("num"));
+            for( int i = 0; i < noticeIMG_ol.size() ; i++ )
+            {
+                if(body.contains(noticeIMG_ol.get(i).getNotiimg_name())){}
+                else {
+                    // 없다면
+                    try {
+                        noticeIMG_ol.get(i).setNoti_activation(false);
+                        serviceCenterService.notiimg_update(noticeIMG_ol.get(i));
+
+                        if("Windows_NT".equals(System.getenv().get("OS"))) {
+                            String r = request.getSession().getServletContext().getRealPath("/");
+                            int idx = r.indexOf("main");
+                            String imgpath = r.substring(0, idx) + "main/resources/static/image/notice/" + noticeIMG_ol.get(i).getNotiimg_name();
+
+                            File file = FileUtils.getFile(imgpath);
+                            File fileToMove = FileUtils.getFile(r.substring(0, idx) + "main/resources/static/image/upload/" + noticeIMG_ol.get(i).getNotiimg_name());
+                            FileUtils.moveFile(file, fileToMove);
+                        }
+                        else {
+                            String imgpath = Linux_Image_Upload_Path+"notice/"+noticeIMG_ol.get(i).getNotiimg_name();
+                            File file = FileUtils.getFile(imgpath);
+                            File fileToMove = FileUtils.getFile(Linux_Image_Upload_Path+"upload/" + noticeIMG_ol.get(i).getNotiimg_name());
+                            FileUtils.moveFile(file, fileToMove);
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            List<NoticeIMG> noticeIMG = serviceCenterService.select_notiimg(user.getUser_nic());
+            log.info("사진 갯수"+noticeIMG.size());
+            for( int i = 0; i < noticeIMG.size() ; i++ )
+            {
+                log.info("폴문안에 body는 : "+body);
+                log.info("사진명은 : "+noticeIMG.get(i).getNotiimg_name());
+                if(body.contains(noticeIMG.get(i).getNotiimg_name())){
+
+                    // 포함
+                    body = body.replace("/image/upload/"+noticeIMG.get(i).getNotiimg_name(),"/image/notice/"+noticeIMG.get(i).getNotiimg_name());
+
+                    try {
+                        if("Windows_NT".equals(System.getenv().get("OS"))) {
+                            String r = request.getSession().getServletContext().getRealPath("/");
+                            int idx = r.indexOf("main");
+                            String imgpath = r.substring(0, idx) + "main/resources/static/image/upload/" + noticeIMG.get(i).getNotiimg_name();
+
+                            File file = FileUtils.getFile(imgpath);
+                            File fileToMove = FileUtils.getFile(r.substring(0, idx) + "main/resources/static/image/notice/" + noticeIMG.get(i).getNotiimg_name());
+                            FileUtils.moveFile(file, fileToMove);
+                        }else {
+                            String imgpath = Linux_Image_Upload_Path+"upload/"+noticeIMG.get(i).getNotiimg_name();
+
+                            File file = FileUtils.getFile(imgpath);
+                            File fileToMove = FileUtils.getFile(Linux_Image_Upload_Path+"notice/" + noticeIMG.get(i).getNotiimg_name());
+                            FileUtils.moveFile(file, fileToMove);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    // 미포함
+                    noticeIMG.get(i).setNoti_activation(false);
+                }
+            }
+
+            Notice notices = serviceCenterService.noti_select_no(request.getParameter("num"));
+            notices.setNoti_title(request.getParameter("title"));
+            notices.setNoti_text(body);
+            noticeRepository.save(notices);
+            for( int i = 0; i < noticeIMG.size() ; i++ )
+            {
+                noticeIMG.get(i).setNotiimg_postno(notices.getNoti_no().toString());
+                serviceCenterService.notiimg_update(noticeIMG.get(i));
+            }
+        }
+
+        return "redirect:/admin/notice/1";
+    }
+
     @GetMapping(value = "/ServiceCenter/Questions_Post_add")
     public String Post_add(Principal principal, HttpServletResponse response) throws IOException {
         if(principal == null){
@@ -819,6 +1125,19 @@ public class ServiceCenterController {
             return "/service/noti_Post_update";
         }
         return "redirect:/ServiceCenter/Notice_Post/"+num;
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping(value = "/admin/notice_update/{num}")
+    public String admin_Notice_Update(@PathVariable("num") String num, Model model, Principal principal, HttpServletResponse response) throws IOException {
+        if(principal == null){
+            scriptUtils.alertAndMovePage(response, "로그인 해주세요.", "/login");
+        }else {
+            Notice notice = serviceCenterService.noti_select_no(num);
+            model.addAttribute("noti",notice);
+            return "admin/admin_notice_update";
+        }
+        return "redirect:/admin/notice_post/"+num;
     }
 
 
