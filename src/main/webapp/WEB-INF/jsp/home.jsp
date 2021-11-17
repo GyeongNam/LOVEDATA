@@ -23,7 +23,7 @@
 <div id="fullpage">
 	<div id="gotop" style="display: none;">
 		<div id="object" class="floating">
-			<img class="topbtbt" src="/image/icon/home/topbt.png" alt="gotop">
+			<img class="topbtbt" src="/image/icon/home/top.png" alt="gotop">
 		</div>
 	</div>
 	<div class="fullsection full1" pageNum="1">
@@ -126,42 +126,26 @@
 			<div class="flex-page2">
 				<div class="cuchon">
 					<h2>추천 코스</h2>
+					<c:forEach items="${corhotList}" var="hot_cor">
 					<div class="cuchon-img">
-						<img name="" class="cos_img" src="/image/icon/home/looftoppicnic.jpeg">
-						<span class="cosname">루프탑 피크닉</span>
+						<a href="/service/cor_detail?corNo=${hot_cor.cor_no}">
+							<img name="" class="cos_img" src="${hot_cor.thumbnail}">
+						</a>
+						<span class="cosname">${hot_cor.cor_name}</span>
 					</div>
-					<div class="cuchon-img">
-						<img name="" class="cos_img" src="/image/icon/home/chungguecheon.jpeg">
-						<span class="cosname">청계천 걷기</span>
-					</div>
-					<div class="cuchon-img">
-						<img name="" class="cos_img" src="/image/icon/home/chungguecheon.jpeg">
-						<span class="cosname">코스 이름</span>
-					</div>
-					<div class="cuchon-img">
-						<img name="" class="cos_img" src="/image/icon/home/chungguecheon.jpeg">
-						<span class="cosname">코스 이름</span>
-					</div>
+					</c:forEach>
 				</div>
 				<div class="jibcok">
 					<h2>인기 장소</h2>
 					<div class="">
+						<c:forEach items="${lochotList}" var="hot_loc">
 						<div class="cuchon-img">
-							<img name="" class="cos_img" src="/image/icon/home/dalgona.jpeg">
-							<span class="cosname">달고나 커피 만들기</span>
+							<a href="/service/loc_detail?locNo=${hot_loc.loc_no}">
+							<img name="" class="cos_img" src="${hot_loc.thumbnail}" href="">
+							</a>
+							<span class="cosname">${hot_loc.loc_name}</span>
 						</div>
-						<div class="cuchon-img">
-							<img name="" class="cos_img" src="/image/icon/home/bosuksibjasu.jpg">
-							<span class="cosname">보석 십자수</span>
-						</div>
-						<div class="cuchon-img">
-							<img name="" class="cos_img" src="/image/icon/home/bosuksibjasu.jpg">
-							<span class="cosname">장소 이름</span>
-						</div>
-						<div class="cuchon-img">
-							<img name="" class="cos_img" src="/image/icon/home/bosuksibjasu.jpg">
-							<span class="cosname">장소 이름</span>
-						</div>
+						</c:forEach>
 					</div>
 				</div>
 			</div>

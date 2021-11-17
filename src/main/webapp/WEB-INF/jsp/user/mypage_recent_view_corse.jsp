@@ -45,7 +45,7 @@
 			</div>
 			<div>
 				<p>
-					<a href="/mypage_myreview" >나의 리뷰</a>
+					<a href="/mypage_myreview/1" >나의 리뷰</a>
 				</p>
 			</div>
 			<div>
@@ -53,10 +53,10 @@
 					<button class="accordion">나의코스/장소</button>
 					<div class="panel">
 						<p>
-							<a href="/mypage_mycorse" >나의 코스</a>
+							<a href="/mypage_mycorse/1" >나의 코스</a>
 						</p>
 						<p>
-							<a href="/mypage_myplace" >나의 장소</a>
+							<a href="/mypage_myplace/1" >나의 장소</a>
 						</p>
 					</div>
 				</div>
@@ -66,10 +66,10 @@
 					<button class="accordion">나의 찜 목록</button>
 					<div class="panel">
 						<p>
-							<a href="/mypage_mylike" >내가 찜한 장소</a>
+							<a href="/mypage_mylike/1" >내가 찜한 장소</a>
 						</p>
 						<p>
-							<a href="/mypage_myCorlike" >내가 찜한 코스</a>
+							<a href="/mypage_myCorlike/1" >내가 찜한 코스</a>
 						</p>
 					</div>
 				</div>

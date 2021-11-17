@@ -156,23 +156,23 @@ padding: 20px;
 border: 1px solid #bcbcbc;
 }
 
-/*pagenation*/
-.pagination{
-    text-align: center;
-    margin: 20px;
-}
-.pagination a {
-    color: black;
-    padding: 8px 16px;
-    text-decoration: none;
-    transition: background-color .3s;
-}
+/*!*pagenation*!*/
+/*.pagination{*/
+/*    text-align: center;*/
+/*    margin: 20px;*/
+/*}*/
+/*.pagination a {*/
+/*    color: black;*/
+/*    padding: 8px 16px;*/
+/*    text-decoration: none;*/
+/*    transition: background-color .3s;*/
+/*}*/
 
-.pagination a.active {
-    background-color: dodgerblue;
-    color: white;
-}
-/*pagenation*/
+/*.pagination a.active {*/
+/*    background-color: dodgerblue;*/
+/*    color: white;*/
+/*}*/
+/*!*pagenation*!*/
 
 @media ( max-width: 480px ) {
 #jb-container {
@@ -187,3 +187,22 @@ border: 1px solid #bcbcbc;
     width: auto;
 }
 }
+
+/*pagenation*/
+.pagination{
+    display: flex;
+    text-align: center;
+    margin: 20px;
+}
+.pagination a {
+    /*color: black;*/
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+}
+
+.pagination a.active {
+    /*background-color: dodgerblue;*/
+    /*color: white;*/
+}
+/*pagenation*/

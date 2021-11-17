@@ -45,7 +45,7 @@
 			</div>
 			<div>
 				<p>
-					<a href="/mypage_myreview" >나의 리뷰</a>
+					<a href="/mypage_myreview/1" >나의 리뷰</a>
 				</p>
 			</div>
 			<div>
@@ -53,10 +53,10 @@
 					<button class="accordion">나의코스/장소</button>
 					<div class="panel">
 						<p>
-							<a href="/mypage_mycorse" >나의 코스</a>
+							<a href="/mypage_mycorse/1" >나의 코스</a>
 						</p>
 						<p>
-							<a href="/mypage_myplace" >나의 장소</a>
+							<a href="/mypage_myplace/1" >나의 장소</a>
 						</p>
 					</div>
 				</div>
@@ -66,10 +66,10 @@
 					<button class="accordion">나의 찜 목록</button>
 					<div class="panel">
 						<p>
-							<a href="/mypage_mylike" >내가 찜한 장소</a>
+							<a href="/mypage_mylike/1" >내가 찜한 장소</a>
 						</p>
 						<p>
-							<a href="/mypage_myCorlike" >내가 찜한 코스</a>
+							<a href="/mypage_myCorlike/1" >내가 찜한 코스</a>
 						</p>
 					</div>
 				</div>
@@ -104,18 +104,35 @@
 						<c:when test="${rev._deleted eq false}">
 							<tr>
 								<td><span>${rev.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</span></td>
-								<td><a href="">${rev.revContent}</a></td>
+								<td><a href="/service/cor_detail?corNo=${rev.corNo}&page=1">${rev.revContent}</a></td>
 								<td>${rev.view_count}</td>
+
 							</tr>
 						</c:when>
 					</c:choose>
 				</c:forEach>
 				</tbody>
 			</table>
-			<div class="pagination">
-				<a href="#">&laquo;</a>
-				<a href="#">1</a>
-				<a href="#">&raquo;</a>
+			<div class="col" id="pu_navbar">
+				<div class="container d-flex" id="">
+					<div class="col" id="page_number">
+						<nav aria-label="Page navigation example">
+							<input id="qu_pages" value="${qu_page_size}" type="hidden">
+							<input id="qu_pagess" value="${qu_page}" type="hidden">
+							<div class="pagination justify-content-center" , id="pagination justify-content-center">
+								<p onclick="subpage()"> < </p>
+								<c:forEach var="qu_pages" begin="1" end="${qu_page}" step="1">
+									<div class="page-item" id="${qu_pages}">
+										<li class="page-item ${qu_pages}">
+											<a href="/mypage_mylike/${qu_pages}">${qu_pages}</a>
+										</li>
+									</div>
+								</c:forEach>
+								<p onclick="plupage()"> > </p>
+							</div>
+						</nav>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -126,5 +143,6 @@
 <!--   부트스트랩 js 사용  -->
 <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script defer type="text/javascript" src="/resource/js/bootstrap.js"></script>
+<script defer src="/js/ServiceCenter.js"></script>
 <script defer src="/js/mypage.js"></script>
 </html>

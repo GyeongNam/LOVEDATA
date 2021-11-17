@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.*;
 import java.io.PrintWriter;
 import java.security.Principal;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -283,27 +284,79 @@ public class UserController {
 	}
 
 	//CHOI
-	@GetMapping(value = "/mypage_myreview")
-	public String myreview(Authentication authentication, Model model) {
+	@GetMapping(value = "/mypage_myreview/{page}")
+	public String myreview(@PathVariable("page") String page, Authentication authentication, Model model) {
 		if (authentication == null) {
 			return "redirect:/login";
 		} else {
 			AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
 			List<Review> myRevList = reviewService.findAllByUser_no(authUserModel.getUser_no());
 
-			log.info("getUser_no 확인 : " + authUserModel.getUser_no() );
+//			model.addAttribute("my_rev", myRevList);
 
-			model.addAttribute("my_rev", myRevList);
+			List<Review> revlist_page = null;
+			model.addAttribute("search", false);
+			long qu_size = myRevList.size();
+			long qu_page = myRevList.size()/8;
+			long qu_page_na = myRevList.size()%8;
+			long qu_page_size = qu_page/10;
+			long qu_page_size_na = qu_page%10;
+			Date today = new Date();
+			SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+			model.addAttribute("qu_time", format1.format(today));
 
-			log.info("my RevList확인 :" + myRevList);
+			if(qu_page_size_na >= 1){
+				qu_page_size = qu_page_size+1;
+				model.addAttribute("qu_page_size",qu_page_size);
+			}
+			else {
+				model.addAttribute("qu_page_size",qu_page_size);
+			}
+
+
+			if(qu_page_na >= 1){
+				qu_page = qu_page+1;
+				model.addAttribute("qu_page",qu_page);
+			}
+			else {
+				model.addAttribute("qu_page",qu_page);
+			}
+			model.addAttribute("qu_size",myRevList.size());
+
+			// 페이지네이션
+			long j=0;
+
+			if(myRevList.size()<8){
+				model.addAttribute("my_rev",myRevList);
+			}else {
+				for (int i = 0; i < qu_size; i++) {
+					revlist_page = myRevList.subList(0,8);
+
+					if (i % 8 == 0) {
+						j = j + 1;
+						if (j == Long.parseLong(page)) {
+							model.addAttribute("my_rev",revlist_page);
+							break;
+						} else {
+							myRevList.subList(0,8).clear();
+
+							if(myRevList.size()<8){
+								model.addAttribute("my_rev",myRevList);
+								break;
+							}
+						}
+					}
+				}
+			}
+
 
 			return "user/mypage_myreview";
 		}
 	}
 
 	//CHOI
-	@GetMapping(value = "/mypage_mycorse")
-	public String mycorse(Authentication authentication, Model model) {
+	@GetMapping(value = "/mypage_mycorse/{page}")
+	public String mycorse(@PathVariable("page") String page, Authentication authentication, Model model) {
 		if (authentication == null) {
 			return "redirect:/login";
 		} else {
@@ -311,27 +364,138 @@ public class UserController {
 			List<Course> myCorList = corService.findCorByUserNo(authUserModel.getUser_no());
 			model.addAttribute("my_cor", myCorList);
 
+			List<Course> corlist_page = null;
+			model.addAttribute("search", false);
+			long qu_size = myCorList.size();
+			long qu_page = myCorList.size()/8;
+			long qu_page_na = myCorList.size()%8;
+			long qu_page_size = qu_page/10;
+			long qu_page_size_na = qu_page%10;
+			Date today = new Date();
+			SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+			model.addAttribute("qu_time", format1.format(today));
+
+			if(qu_page_size_na >= 1){
+				qu_page_size = qu_page_size+1;
+				model.addAttribute("qu_page_size",qu_page_size);
+			}
+			else {
+				model.addAttribute("qu_page_size",qu_page_size);
+			}
+
+
+			if(qu_page_na >= 1){
+				qu_page = qu_page+1;
+				model.addAttribute("qu_page",qu_page);
+			}
+			else {
+				model.addAttribute("qu_page",qu_page);
+			}
+			model.addAttribute("qu_size",myCorList.size());
+
+			// 페이지네이션
+			long j=0;
+
+			if(myCorList.size()<8){
+				model.addAttribute("my_cor",myCorList);
+			}else {
+				for (int i = 0; i < qu_size; i++) {
+					corlist_page = myCorList.subList(0,8);
+
+					if (i % 8 == 0) {
+						j = j + 1;
+						if (j == Long.parseLong(page)) {
+							model.addAttribute("my_cor",corlist_page);
+							break;
+						} else {
+							myCorList.subList(0,8).clear();
+
+							if(myCorList.size()<8){
+								model.addAttribute("my_cor",myCorList);
+								break;
+							}
+						}
+					}
+				}
+			}
+
 			return "user/mypage_mycorse";
 		}
 	}
 
 	//CHOI
-	@GetMapping(value = "/mypage_myplace")
-	public String myplace(Authentication authentication, Model model) {
+	@GetMapping(value = "/mypage_myplace/{page}")
+	public String myplace(@PathVariable("page") String page, Authentication authentication, Model model) {
 		if (authentication == null) {
 			return "redirect:/login";
 		}else {
 			AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
 			List<Location> myLocList = locService.findLocByUserNo(authUserModel.getUser_no());
-			model.addAttribute("my_place", myLocList);
+
+//			model.addAttribute("my_place", myLocList);
+
+			List<Location> locationplace_page = null;
+			model.addAttribute("search", false);
+			long qu_size = myLocList.size();
+			long qu_page = myLocList.size()/8;
+			long qu_page_na = myLocList.size()%8;
+			long qu_page_size = qu_page/10;
+			long qu_page_size_na = qu_page%10;
+			Date today = new Date();
+			SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+			model.addAttribute("qu_time", format1.format(today));
+
+			if(qu_page_size_na >= 1){
+				qu_page_size = qu_page_size+1;
+				model.addAttribute("qu_page_size",qu_page_size);
+			}
+			else {
+				model.addAttribute("qu_page_size",qu_page_size);
+			}
+
+
+			if(qu_page_na >= 1){
+				qu_page = qu_page+1;
+				model.addAttribute("qu_page",qu_page);
+			}
+			else {
+				model.addAttribute("qu_page",qu_page);
+			}
+			model.addAttribute("qu_size",myLocList.size());
+
+			// 페이지네이션
+			long j=0;
+
+			if(myLocList.size()<8){
+				model.addAttribute("my_place",myLocList);
+			}else {
+				for (int i = 0; i < qu_size; i++) {
+					locationplace_page = myLocList.subList(0,8);
+
+					if (i % 8 == 0) {
+						j = j + 1;
+						if (j == Long.parseLong(page)) {
+							model.addAttribute("my_place",locationplace_page);
+							break;
+						} else {
+							myLocList.subList(0,8).clear();
+
+							if(myLocList.size()<8){
+								model.addAttribute("my_place",myLocList);
+								break;
+							}
+						}
+					}
+				}
+			}
 
 			return "user/mypage_myplace";
 		}
 	}
 
 	//CHOI
-	@GetMapping(value = "/mypage_mylike")
-	public String mylike(Authentication authentication, Model model) {
+	@GetMapping(value = "/mypage_mylike/{page}")
+	public String mylike(@PathVariable("page") String page, Authentication authentication, Model model) {
 		if (authentication == null) {
 			return "redirect:/login";
 		} else {
@@ -343,15 +507,70 @@ public class UserController {
 				Location locationlike = locService.selectLoc(myLoclikeList.get(i).getLoc_no());
 				location.add(locationlike);
 			}
-			model.addAttribute("my_Loclike", location);
+//			model.addAttribute("my_Loclike", location);
+
+			List<Location> locations_page = null;
+			model.addAttribute("search", false);
+			long qu_size = location.size();
+			long qu_page = location.size()/8;
+			long qu_page_na = location.size()%8;
+			long qu_page_size = qu_page/10;
+			long qu_page_size_na = qu_page%10;
+			Date today = new Date();
+			SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+			model.addAttribute("qu_time", format1.format(today));
+
+			if(qu_page_size_na >= 1){
+				qu_page_size = qu_page_size+1;
+				model.addAttribute("qu_page_size",qu_page_size);
+			}
+			else {
+				model.addAttribute("qu_page_size",qu_page_size);
+			}
+
+
+			if(qu_page_na >= 1){
+				qu_page = qu_page+1;
+				model.addAttribute("qu_page",qu_page);
+			}
+			else {
+				model.addAttribute("qu_page",qu_page);
+			}
+			model.addAttribute("qu_size",location.size());
+
+			// 페이지네이션
+			long j=0;
+
+			if(location.size()<8){
+				model.addAttribute("my_Loclike",location);
+			}else {
+				for (int i = 0; i < qu_size; i++) {
+					locations_page = location.subList(0,8);
+
+					if (i % 8 == 0) {
+						j = j + 1;
+						if (j == Long.parseLong(page)) {
+							model.addAttribute("my_Loclike",locations_page);
+							break;
+						} else {
+							location.subList(0,8).clear();
+
+							if(location.size()<8){
+								model.addAttribute("my_Loclike",location);
+								break;
+							}
+						}
+					}
+				}
+			}
 
 			return "user/mypage_mylike";
 		}
 	}
 
 	//CHOI
-	@GetMapping(value = "/mypage_myCorlike")
-	public String myCorlike(Authentication authentication, Model model) {
+	@GetMapping(value = "/mypage_myCorlike/{page}")
+	public String myCorlike(@PathVariable("page") String page, Authentication authentication, Model model) {
 		if (authentication == null) {
 			return "redirect:/login";
 		} else {
@@ -363,7 +582,62 @@ public class UserController {
 				Course courselike = corService.selectCor(myCorlikeList.get(i).getCor_no());
 				course.add(courselike);
 			}
-			model.addAttribute("my_Corlike", course);
+//			model.addAttribute("my_Corlike", course);
+
+			List<Course> course_page = null;
+			model.addAttribute("search", false);
+			long qu_size = course.size();
+			long qu_page = course.size()/8;
+			long qu_page_na = course.size()%8;
+			long qu_page_size = qu_page/10;
+			long qu_page_size_na = qu_page%10;
+			Date today = new Date();
+			SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+			model.addAttribute("qu_time", format1.format(today));
+
+			if(qu_page_size_na >= 1){
+				qu_page_size = qu_page_size+1;
+				model.addAttribute("qu_page_size",qu_page_size);
+			}
+			else {
+				model.addAttribute("qu_page_size",qu_page_size);
+			}
+
+
+			if(qu_page_na >= 1){
+				qu_page = qu_page+1;
+				model.addAttribute("qu_page",qu_page);
+			}
+			else {
+				model.addAttribute("qu_page",qu_page);
+			}
+			model.addAttribute("qu_size",course.size());
+
+			// 페이지네이션
+			long j=0;
+
+			if(course.size()<8){
+				model.addAttribute("my_Corlike",course);
+			}else {
+				for (int i = 0; i < qu_size; i++) {
+					course_page = course.subList(0,8);
+
+					if (i % 8 == 0) {
+						j = j + 1;
+						if (j == Long.parseLong(page)) {
+							model.addAttribute("my_Corlike",course_page);
+							break;
+						} else {
+							course.subList(0,8).clear();
+
+							if(course.size()<8){
+								model.addAttribute("my_Corlike",course);
+								break;
+							}
+						}
+					}
+				}
+			}
 
 			return "user/mypage_myCorlike";
 		}
