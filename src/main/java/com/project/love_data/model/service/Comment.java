@@ -57,4 +57,8 @@ public class Comment extends TimeEntity {
     @Column(length = 60, nullable = false)
     @Builder.Default
     private String cmtUuid = UUID.randomUUID().toString();
+
+    @Column(name = "is_reported", nullable = false)
+    @Builder.Default
+    private boolean is_reported = false;
 }

@@ -105,12 +105,6 @@ public class CourseController {
         if (tagList.isEmpty()) {
             log.warn("No Location Tag Found (Must add tag before submit location)");
             return "redirect:/service/cor_recommend";
-        } else {
-            log.info("tagList : " + tagList);
-        }
-
-        for (String s : request.getParameterMap().keySet()) {
-            log.info(s + "\t:\t" + Arrays.toString(request.getParameterMap().get(s)));
         }
 
         for (int i = 1; i <= Integer.parseInt(reqParam.get("location_length")); i++) {
@@ -120,10 +114,6 @@ public class CourseController {
 //            reqParam.put("loc_addr_" + i, request.getParameter("loc_addr_" + i));
 //            reqParam.put("loc_tel_" + i, request.getParameter("loc_tel_" + i));
 //            reqParam.put("loc_info_" + i, request.getParameter("loc_info_" + i));
-        }
-
-        for (String s : reqParam.keySet()) {
-            log.info(s + "\t:\t" + reqParam.get(s));
         }
 
         filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE, UploadFileCount.MULTIPLE,
@@ -545,12 +535,6 @@ public class CourseController {
         if (tagList.isEmpty()) {
             log.warn("No Location Tag Found (Must add tag before submit location)");
             return "redirect:/service/cor_recommend";
-        } else {
-            log.info("tagList : " + tagList);
-        }
-
-        for (String s : request.getParameterMap().keySet()) {
-            log.info(s + "\t:\t" + Arrays.toString(request.getParameterMap().get(s)));
         }
 
         for (int i = 1; i <= Integer.parseInt(reqParam.get("location_length")); i++) {
@@ -560,10 +544,6 @@ public class CourseController {
 //            reqParam.put("loc_addr_" + i, request.getParameter("loc_addr_" + i));
 //            reqParam.put("loc_tel_" + i, request.getParameter("loc_tel_" + i));
 //            reqParam.put("loc_info_" + i, request.getParameter("loc_info_" + i));
-        }
-
-        for (String s : reqParam.keySet()) {
-            log.info(s + "\t:\t" + reqParam.get(s));
         }
 
         filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE, UploadFileCount.MULTIPLE,

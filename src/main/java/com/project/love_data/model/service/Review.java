@@ -40,7 +40,7 @@ public class Review extends TimeEntity {
 
     @Column(name = "is_reported", nullable = false)
     @Builder.Default
-    private Long reported_count = 0L;
+    private boolean is_reported = false;
 
     @Column(name = "sc_total", nullable = false)
     @Builder.Default

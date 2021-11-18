@@ -159,6 +159,7 @@ public class CourseService {
                 .viewCount(dto.getViewCount())
                 .is_deleted(dto.is_deleted())
                 .accommodations_info(dto.getAccommodations_info())
+                .is_reported(dto.is_reported())
                 .build();
 
         return entity;
@@ -184,6 +185,7 @@ public class CourseService {
                 .modDate(entity.getModDate())
                 .regDate(entity.getRegDate())
                 .accommodations_info(entity.getAccommodations_info())
+                .is_reported(entity.is_reported())
                 .build();
 
         return dto;

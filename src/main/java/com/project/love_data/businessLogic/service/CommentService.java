@@ -47,6 +47,7 @@ public class CommentService {
                 .is_deleted(dto.is_deleted())
                 .dislikeCount(dto.getDislikeCount())
                 .likeCount(dto.getLikeCount())
+                .is_reported(dto.is_reported())
                 .build();
 
         return entity;
@@ -65,6 +66,7 @@ public class CommentService {
                 .is_deleted(cmt.is_deleted())
                 .dislikeCount(cmt.getDislikeCount())
                 .likeCount(cmt.getLikeCount())
+                .is_reported(cmt.is_reported())
                 .build();
 
         return dto;

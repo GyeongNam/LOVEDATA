@@ -100,6 +100,10 @@ public class Location extends TimeEntity {
     @Builder.Default
     private boolean is_deleted = false;
 
+    @Column(name = "is_reported", nullable = false)
+    @Builder.Default
+    private boolean is_reported = false;
+
     // Todo 여기에 댓글 칼럼도 추가
 
     public void addLocTag(String str) {

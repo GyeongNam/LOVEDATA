@@ -40,6 +40,8 @@ public class CourseDTO {
     @Builder.Default
     private boolean is_deleted = false;
     @Builder.Default
+    private boolean is_reported = false;
+    @Builder.Default
     private LocalDateTime regDate = LocalDateTime.now();
     @Builder.Default
     private LocalDateTime modDate = LocalDateTime.now();

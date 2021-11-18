@@ -81,6 +81,7 @@ public class LocationService {
                 .thumbnail(dto.getThumbnail())
                 .viewCount(dto.getViewCount())
                 .is_deleted(dto.is_deleted())
+                .is_reported(dto.is_reported())
                 .build();
 
         return entity;
@@ -107,6 +108,7 @@ public class LocationService {
                 .thumbnail(entity.getThumbnail())
                 .viewCount(entity.getViewCount())
                 .is_deleted(entity.is_deleted())
+                .is_reported(entity.is_reported())
                 .build();
 
         // Image List 변환 및 정렬

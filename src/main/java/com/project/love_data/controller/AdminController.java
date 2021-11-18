@@ -1000,4 +1000,11 @@ public class AdminController {
 
         return null;
     }
+
+    @GetMapping("/report_center")
+    public String reportCenter(HttpServletRequest request,
+                               Model model) {
+
+        return "/admin/admin_report_center";
+    }
 }

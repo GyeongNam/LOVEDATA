@@ -35,18 +35,16 @@
 				<div class="card">
 					<div class="card-header" id="headingLoc">
 						<h2 class="mb-0">
-							<button class="btn btn-link btn-block loc_highlight-selected-nav-menu" type="button"
-									data-toggle="collapse"
-									data-target="#loc_collapse" aria-expanded="true" aria-controls="collapseOne">
+							<button class="btn btn-link btn-block loc_highlight-selected-nav-menu" type="button">
 								코스
 							</button>
 						</h2>
 					</div>
-					<div id="loc_collapse" class="collapse show" aria-labelledby="headingLoc" data-parent="#loc">
+					<div id="loc_collapse" class="show" aria-labelledby="headingLoc" data-parent="#loc">
 						<div class="card-body center-pill">
 							<p><a href="/service/cor_recommend" class="highlight-selected-text-menu">- 추천 코스</a></p>
 							<p><a href="/service/cor_registration" class="highlight-not-selected-text-menu">- 코스 등록</a></p>
-							<p><a href="" class="highlight-not-selected-text-menu">- 코스 편집</a></p>
+							<p><a href="/mypage_mycorse" class="highlight-not-selected-text-menu">- 코스 편집</a></p>
 						</div>
 					</div>
 				</div>

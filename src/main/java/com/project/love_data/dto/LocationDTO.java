@@ -48,8 +48,8 @@ public class LocationDTO {
     private String thumbnail = "";
     @Builder.Default
     private boolean is_deleted = false;
-
-    // Todo 여기에 댓글 칼럼도 추가
+    @Builder.Default
+    private boolean is_reported = false;
 
     public void addLocTag(String str) {
         LocationTag tag = null;
