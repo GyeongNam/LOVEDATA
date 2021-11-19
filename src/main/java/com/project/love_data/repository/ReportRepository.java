@@ -12,8 +12,8 @@ import java.util.*;
 
 public interface ReportRepository extends JpaRepository<Report, Long>,
         QuerydslPredicateExecutor<Report> {
-    @Query(value = "SELECT * FROM report r WHERE r.post_no = :post_no", nativeQuery = true)
-    Optional<List<Report>> findAllByPostNo(@Param("post_no") Long postNo);
+    @Query(value = "SELECT * FROM report r WHERE r.rc_no = :rc_no", nativeQuery = true)
+    Optional<List<Report>> findAllByRcNo(@Param("rc_no") Long rcNo);
 
     @Query(value = "SELECT * FROM report r WHERE r.user_no = :user_no", nativeQuery = true)
     Optional<List<Report>> findAllByUserNo(@Param("user_no") Long userNo);

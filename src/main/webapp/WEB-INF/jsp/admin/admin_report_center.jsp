@@ -1,3 +1,6 @@
+<%@ page import="com.project.love_data.model.service.ReportCluster" %>
+<%@ page import="java.util.*" %>
+<%@ page import="com.project.love_data.dto.ReportClusterDTO" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -16,6 +19,10 @@
 	<link rel="stylesheet" href="/css/service/loc.css">
 	<style>
         @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+        td{
+            vertical-align: middle;
+        }
 
         body {
             font-family: 'Jua', sans-serif;
@@ -71,27 +78,199 @@
 				</div>
 			</div>
 			<div class="row d-flex">
-				<button class="col-1 btn-primary" onclick="onClickDeleteImgBtn()">삭제</button>
 				<div class="row my-3">
 					<div class="d-flex justify-content-center align-items-md-center">
 						<table class="table text-center" id="reportClusterTable">
 							<thead>
 							<th scope="col">No</th>
 							<th scope="col">ID</th>
+							<th scope="col">Post ID</th>
 							<th scope="col">유저</th>
 							<th scope="col">타입</th>
-							<th scope="col">처리상태</th>
+							<th scope="col">
+								<div class="dropdown">
+								<button id="completeTypeDropDownBtn" class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									처리 중
+								</button>
+								<div class="dropdown-menu" aria-labelledby="completeTypeDropDownBtn">
+									<a class="dropdown-item" onclick="changeCompleteType('ALL')">전체 </a>
+									<a class="dropdown-item" onclick="changeCompleteType('PROGRESS')">처리 중 </a>
+									<a class="dropdown-item" onclick="changeCompleteType('COMPLETE')">완료 </a>
+								</div>
+							</div>
+							</th>
 							<th scope="col">신고수</th>
 							<th scope="col">관리</th>
 							</thead>
 							<tbody id="table">
+							<c:set var="reportClusterList" value="${clusterPageResultDTO.dtoList}"/>
+							<c:set var="pageNum" value="${param.page}"/>
+							<c:choose>
+								<c:when test="${!empty reportClusterList}">
+									<c:forEach var="i" begin="0" end="${reportClusterList.size() - 1}">
+										<tr id="row_${i}">
+											<td>
+												<c:choose>
+													<c:when test="${pageNum ne null}">
+														<%
+															int pageNum = Integer.parseInt(request.getParameter("page"));
+															int j = (int) pageContext.getAttribute("i");
+															int result = 0;
+															if (pageNum > 1) {
+																result = (pageNum - 1) * 10 + j + 1;
+															} else {
+																result = j + 1;
+															}
+															out.println(String.valueOf(result));
+														%>
+													</c:when>
+													<c:otherwise>
+														${i + 1}
+													</c:otherwise>
+												</c:choose>
+											</td>
+											<td>${reportClusterList.get(i).rcNo}</td>
+											<td><%
+												List<ReportClusterDTO> reportClusterList = (List<ReportClusterDTO>) pageContext.getAttribute("reportClusterList");
+												int i = (int) pageContext.getAttribute("i");
 
+                                                if (reportClusterList.get(i).getPostNo() == null) {
+                                                    out.println("삭제된 게시글");
+												} else {
+                                                    out.println(reportClusterList.get(i).getPostNo());
+												}
+											%></td>
+											<td>${clusterUserNickList.get(i)}</td>
+											<td><%
+                                                switch (reportClusterList.get(i).getPostType()) {
+													case "LOC" :
+                                                        out.println("장소");
+                                                        break;
+													case "COR" :
+														out.println("코스");
+                                                        break;
+													case "COM" :
+														out.println("댓글");
+                                                        break;
+													case "REV" :
+														out.println("리뷰");
+                                                        break;
+													default :
+														out.println("NULL");
+                                                        break;
+												}
+											%></td>
+											<td><%
+												if (reportClusterList.get(i).isRcComplete()) {
+													out.println("처리 완료");
+												} else {
+													out.println("진행 중");
+												}
+											%></td>
+											<td>${reportClusterList.get(i).repCount}</td>
+											<td><button class="btn btn-primary" onclick="openReportClusterDetailPopup(${reportClusterList.get(i).rcNo})">상세</button></td>
+										</tr>
+									</c:forEach>
+								</c:when>
+							</c:choose>
 							</tbody>
 						</table>
 					</div>
 				</div>
 			</div>
+
+			<%--	PageNumber	--%>
+			<c:set var="completeTypeParam" value="${param.completeType}"/>
+			<div class="container d-flex" id="">
+				<div class="col" id="page_number">
+					<nav aria-label="Page navigation example">
+						<ul class="pagination justify-content-center">
+							<c:if test="${clusterPageResultDTO.next eq true}">
+								<c:choose>
+									<c:when test="${completeTypeParam ne null}">
+										<li class="page-item">
+											<a class="page-link" href="/admin/report_center?completeType=${completeTypeParam}&page=${clusterPageResultDTO.start - 1}"
+											   aria-label="Previous">
+												<span aria-hidden="true">&laquo;</span>
+											</a>
+										</li>
+									</c:when>
+									<c:otherwise>
+										<li class="page-item">
+											<a class="page-link" href="/admin/report_center?page=${clusterPageResultDTO.start - 1}"
+											   aria-label="Previous">
+												<span aria-hidden="true">&laquo;</span>
+											</a>
+										</li>
+									</c:otherwise>
+								</c:choose>
+							</c:if>
+							<c:forEach var="j" begin="${clusterPageResultDTO.start}" end="${clusterPageResultDTO.end}">
+								<c:choose>
+									<c:when test="${clusterPageResultDTO.page eq j}">
+										<c:if test="${completeTypeParam ne null}">
+											<li class="page-item active">
+												<a class="page-link"
+												   href="/admin/report_center?completeType=${completeTypeParam}&page=${clusterPageResultDTO.pageList.get(j-1)}">
+														${clusterPageResultDTO.pageList.get(j-1)}
+												</a>
+											</li>
+										</c:if>
+										<c:if test="${completeTypeParam eq null}">
+											<li class="page-item active">
+												<a class="page-link"
+												   href="/admin/report_center?page=${clusterPageResultDTO.pageList.get(j-1)}">
+														${clusterPageResultDTO.pageList.get(j-1)}
+												</a>
+											</li>
+										</c:if>
+									</c:when>
+									<c:otherwise>
+										<c:if test="${completeTypeParam ne null}">
+											<li class="page-item">
+												<a class="page-link"
+												   href="/admin/report_center?completeType=${completeTypeParam}&page=${clusterPageResultDTO.pageList.get(j-1)}">
+														${clusterPageResultDTO.pageList.get(j-1)}
+												</a>
+											</li>
+										</c:if>
+										<c:if test="${completeTypeParam eq null}">
+											<li class="page-item">
+												<a class="page-link"
+												   href="/admin/report_center?page=${clusterPageResultDTO.pageList.get(j-1)}">
+														${clusterPageResultDTO.pageList.get(j-1)}
+												</a>
+											</li>
+										</c:if>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+							<c:if test="${clusterPageResultDTO.next eq true}">
+								<c:choose>
+									<c:when test="${completeTypeParam ne null}">
+										<li class="page-item">
+											<a class="page-link" href="/admin/report_center?completeType=${completeTypeParam}&page=${clusterPageResultDTO.end + 1}"
+											   aria-label="Previous">
+												<span aria-hidden="true">&raquo;</span>
+											</a>
+										</li>
+									</c:when>
+									<c:otherwise>
+										<li class="page-item">
+											<a class="page-link" href="/admin/report_center?page=${clusterPageResultDTO.end + 1}"
+											   aria-label="Previous">
+												<span aria-hidden="true">&raquo;</span>
+											</a>
+										</li>
+									</c:otherwise>
+								</c:choose>
+							</c:if>
+						</ul>
+					</nav>
+				</div>
+			</div>
 		</div>
+
 	</div>
 </body>
 <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -101,134 +280,89 @@
 <script defer>
 	function tableRowColor(row, type) {
         switch (type) {
-            case '장소' :
+            case '진행 중' :
                 row.style.background = '#ffdef2';
 				break;
-			case '코스' :
-                row.style.background = '#e2eeff';
-				break;
-			case '리뷰' :
+			case '처리 완료' :
 			default :
-                row.style.background = '#C3FFC3';
+                row.style.background = '#e2eeff';
+		}
+	}
+
+    function changeCompleteType(completeType) {
+        let url = new URL(window.location.href);
+
+        switch (completeType) {
+            case 'ALL' :
+                url.searchParams.set('completeType', 'ALL');
+                break;
+			case 'PROGRESS' :
+                url.searchParams.set('completeType', 'PROGRESS');
+				break;
+			case 'COMPLETE' :
+			default :
+                url.searchParams.set('completeType', 'COMPLETE');
+		}
+
+        location.href = url;
+	}
+</script>
+<script defer>
+	let urlList = [];
+    let aryLength = ${urlList.size()};
+
+    <c:choose>
+		<c:when test="${!empty urlList}">
+			<c:forEach var="i" begin="0" end="${urlList.size()-1}">
+			urlList.push('${urlList.get(i)}');
+			</c:forEach>
+
+			for (let i = 0; i < aryLength; i++) {
+				let row = document.getElementById('row_' + i);
+
+                // 상태 (5)로 테이블 색상 결정
+                tableRowColor(row, row.children.item(5).innerText);
+
+				if (urlList[i] != null && urlList[i] !== '') {
+                    for (let j = 0; j < row.childElementCount; j++) {
+                        let col = row.children.item(j);
+                        // 관리(7) 제외
+                        if (j == 7) {
+                            continue;
+                        }
+                        col.onclick = function() {
+                            window.location = urlList[i];
+                        }
+                        row.style.cursor = 'pointer';
+                    }
+				}
+			}
+		</c:when>
+	</c:choose>
+
+	let url = new URL(location.href);
+
+    if (url.searchParams.has("completeType")) {
+        let dropDown = document.getElementById("completeTypeDropDownBtn")
+        switch (url.searchParams.get("completeType")) {
+            case "ALL" :
+                dropDown.innerText = "전체 ";
+                break;
+			case "PROGRESS" :
+                dropDown.innerText = "처리 중 ";
+				break;
+			case "COMPLETE" :
+                dropDown.innerText = "처리 완료 ";
 		}
 	}
 </script>
 <script defer>
-	<%--let fileOriginURLList = [];--%>
-    <%--let aryLength = ${fileNameList.size()};--%>
+    function openReportClusterDetailPopup(rcNo) {
+        var pop = window.open("/admin/report_center/report_detail?rcNo=" + rcNo, "pop", "width=1200,height=600, scrollbars=yes, resizable=yes");
+    }
 
-    <%--<c:choose>--%>
-	<%--	<c:when test="${!empty fileNameList}">--%>
-	<%--		<c:forEach var="i" begin="0" end="${fileOriginURLList.size()-1}">--%>
-	<%--		fileOriginURLList.push('${fileOriginURLList.get(i)}');--%>
-	<%--		</c:forEach>--%>
-
-	<%--		for (let i = 0; i < aryLength; i++) {--%>
-	<%--			let row = document.getElementById('row_' + i);--%>
-	<%--			if (fileOriginURLList[i] != null) {--%>
-	<%--				// row.onclick = 'location.href=' + fileOriginURLList[i];--%>
-	<%--				for (let j = 0; j < row.childElementCount; j++) {--%>
-    <%--                    // 타입 (2)로 테이블 색상 결정--%>
-    <%--                    tableRowColor(row, row.children.item(2).innerText);--%>
-	<%--					// 파일명 (4), 선택(8) 제외--%>
-	<%--					let col = row.children.item(j);--%>
-	<%--					if (j == 4 || j == 8) {--%>
-	<%--						continue;--%>
-	<%--					}--%>
-
-	<%--					col.addEventListener("click", function() {--%>
-	<%--						location.href = fileOriginURLList[i];--%>
-    <%--                        col.style.cursor = 'pointer';--%>
-	<%--					})--%>
-	<%--				}--%>
-	<%--			}--%>
-	<%--		}--%>
-	<%--	</c:when>--%>
-	<%--</c:choose>--%>
-</script>
-<script defer>
-	function openPreviewFileImage(fileName, index) {
-        let filePath = "/image/upload/" + fileName;
-		let img = document.createElement("img");
-        img.id = 'previewImg';
-        img.src = filePath;
-        img.style.left = event.pageX;
-        img.style.top = event.pageY;
-        img.style.position = 'absolute';
-        img.style.zIndex = 10;
-        img.style.maxWidth = '500px';
-        img.style.maxHeight = '300px';
-        // img.style.border = '1px solid black';
-        // document.getElementById('row_' + index).appendChild(img);
-		document.getElementById('row_' + index).appendChild(img);
-	}
-
-    function closePreviewFileImage() {
-        let previewImg = document.getElementById('previewImg');
-        previewImg.remove();
-	}
-</script>
-<script defer>
-	let checkBoxList = [];
-    var token = document.querySelector("meta[name='_csrf']").getAttribute('content');
-    var header = document.querySelector("meta[name='_csrf_header']").getAttribute('content');
-
-	function onClickDeleteImgBtn() {
-        // console.log(document.querySelectorAll('input[type="checkbox"]:checked').length);
-        // console.log(document.querySelectorAll('input[type="checkbox"]:checked'));
-        // document.querySelectorAll('input[type="checkbox"]:checked').forEach(value => console.log(value.value));
-
-		if (!confirm('선택한 이미지를 삭제하시겠습니까?')){
-            return;
-		}
-
-		if (checkBoxList.length === 0) {
-            alert('선택된 이미지가 없습니다!');
-            return;
-		}
-
-        console.log(checkBoxList);
-
-        $.ajax({
-            type: "POST",
-            url: "/admin/del_upload_cache",
-            data: {
-                pathName : checkBoxList,
-				pathType : 'UPLOAD'
-			},
-            beforeSend: function (xhr) {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
-                xhr.setRequestHeader(header, token);
-            },
-            success: function (response) {
-                // do something ...
-                // console.log("선택된 이미지 삭제 성공");
-                // alert("선택된 이미지 삭제 성공");
-				let msg = '';
-				$(response).each(function(index, item) {
-                    console.log(index + '번째 파일 (' + checkBoxList[index] + ') 삭제 결과 : ' + item);
-                    msg += (index+1) + '번째 파일 (' + checkBoxList[index] + ') 삭제 \n';
-                    // if (item) {
-                    //     for (let i = 0; i < aryLength; i++) {
-					// 		if ($('row_' + i + '_filename').innerText === checkBoxList[index]) {
-                    //             console.log(true);
-                    //             let element = $('row_' + i);
-                    //             element.remove();
-					// 		}
-                    //     }
-					// }
-				})
-				alert(msg);
-				location.reload();
-            }, error: function (e) {
-                console.log("선택된 이미지 삭제 실패");
-                console.log(e);
-            }
-        });
-	}
-
-    function onChangeCheckBox(checkbox) {
-        checkBoxList.push(checkbox.value);
-        console.log(checkBoxList);
-	}
+    function reportClusterCallBack() {
+        location.reload();
+    }
 </script>
 </html>

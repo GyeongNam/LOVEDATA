@@ -18,8 +18,6 @@ public class ReportDTO extends TimeEntity {
     private Long repNo;
     private Long rcNo;
     private Long userNo;
-    private Long postNo;
-    private String postType;
     private String repType;
 
     @Builder.Default

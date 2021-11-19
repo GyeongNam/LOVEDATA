@@ -1,4 +1,4 @@
-package kr.iiac.bugs.web;
+package com.project.love_data.model.service;
 
 import org.springframework.web.multipart.MultipartFile;
 

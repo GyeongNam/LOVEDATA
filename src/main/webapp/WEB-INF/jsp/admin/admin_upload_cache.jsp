@@ -167,7 +167,7 @@
 	}
 </script>
 <script defer>
-	let fileOriginURLList = [];
+	let urlList = [];
     let aryLength = ${fileNameList.size()};
 
     <c:choose>
@@ -179,10 +179,11 @@
 			for (let i = 0; i < aryLength; i++) {
 				let row = document.getElementById('row_' + i);
 				if (fileOriginURLList[i] != null) {
-					// row.onclick = 'location.href=' + fileOriginURLList[i];
+					// row.onclick = 'location.href=' + urlList[i];
+                    // 타입 (2)로 테이블 색상 결정
+                    tableRowColor(row, row.children.item(2).innerText);
+
 					for (let j = 0; j < row.childElementCount; j++) {
-                        // 타입 (2)로 테이블 색상 결정
-                        tableRowColor(row, row.children.item(2).innerText);
 						// 파일명 (4), 선택(8) 제외
 						let col = row.children.item(j);
 						if (j == 4 || j == 8) {

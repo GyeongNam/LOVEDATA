@@ -1162,7 +1162,7 @@ public class ServiceCenterController {
     }
 
     @PostMapping(value ="/imgUpload")
-    public String imgUpload(HttpServletRequest req, kr.iiac.bugs.web.ImgVO imgVO){
+    public String imgUpload(HttpServletRequest req, ImgVO imgVO){
         String result="";
         try{
             if(imgVO.getFiledata() != null && imgVO.getFiledata().getOriginalFilename() != null){

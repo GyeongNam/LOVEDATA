@@ -24,4 +24,6 @@ public class ReportClusterDTO extends TimeEntity {
     private String rcStatus = "";
     @Builder.Default
     private boolean rcComplete = false;
+    @Builder.Default
+    private int repCount = 0;
 }

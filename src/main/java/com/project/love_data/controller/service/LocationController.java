@@ -164,10 +164,10 @@ public class LocationController {
             boolean bestCmtMatchFlag = false;
 
             if (isAdmin) {
-                resultCommentDTO = comService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION,
-                        CommentSortType.IDX_DES, CommentSearchType.All);
+                resultCommentDTO = comService.getCmtPage(pageRequestDTO, CommentSortType.IDX_DES,
+                        CommentSearchType.All);
             } else {
-                resultCommentDTO = comService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION);
+                resultCommentDTO = comService.getCmtPage(pageRequestDTO);
             }
             pageRequestDTO.setSize(3);
 
@@ -492,7 +492,11 @@ public class LocationController {
         PageResultDTO<LocationDTO, com.project.love_data.model.service.Location> resultDTO = locService.getList(pageRequestDTO);
 
         if (resultDTO.getTotalPage() < pageNum) {
-            model.addAttribute("isRequestPageNumberExceed", true);
+            if (resultDTO.getTotalPage() == 0) {
+                model.addAttribute("isEmptyResult", true);
+            } else {
+                model.addAttribute("isRequestPageNumberExceed", true);
+            }
         } else {
             model.addAttribute("isRequestPageNumberExceed", false);
         }

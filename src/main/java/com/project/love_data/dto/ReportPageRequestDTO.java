@@ -17,23 +17,20 @@ public class ReportPageRequestDTO {
     @Builder.Default
     private int page = 1;
     @Builder.Default
-    private int size = 10;
+    private int size = Integer.MAX_VALUE;
+    private Long rcNo;
     private Long repNo;
     private Long userNo;
-    private Long postNo;
-    private String postType;
     private String repType;
     private String result;
     @Builder.Default
-    private ReportPagePostType searchPostType = ReportPagePostType.ALL;
-    @Builder.Default
-    private Set<ReportPageSearchType> searchType = new HashSet<>();
-    @Builder.Default
-    private ReportPageCompleteType completeType = ReportPageCompleteType.ALL;
+    private ReportPageCompleteType completeType = ReportPageCompleteType.PROGRESS;
     @Builder.Default
     private ReportPageSortCriterion sortCriterion = ReportPageSortCriterion.DATE;
     @Builder.Default
-    private SortingOrder sortingOrder = SortingOrder.DES;
+    private ReportPageSearchType searchType = ReportPageSearchType.SEARCH;
+    @Builder.Default
+    private SortingOrder sortingOrder = SortingOrder.ASC;
 
 
     public ReportPageRequestDTO() {

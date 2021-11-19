@@ -14,6 +14,7 @@ import java.util.*;
 @Setter
 @Getter
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class Report extends TimeEntity {
@@ -21,7 +22,7 @@ public class Report extends TimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
-    private Long repNo;
+    private Long repNo = null;
 
     @Column(name = "rep_uuid", nullable = false)
     @Builder.Default
@@ -32,12 +33,6 @@ public class Report extends TimeEntity {
 
     @Column(name = "user_no", nullable = false)
     private Long userNo;
-
-    @Column(name = "post_no", nullable = false)
-    private Long postNo;
-
-    @Column(name = "post_type", nullable = false)
-    private String postType;
 
     @Column(name = "rep_type", nullable = false)
     private String repType;

@@ -64,16 +64,16 @@ public class ReportService {
 
         Report entity = Report.builder()
                 .userNo(Long.valueOf(reqParam.get("userNo")))
-                .postNo(Long.valueOf(reqParam.get("postNo")))
-                .postType(reqParam.get("postType"))
                 .repContent(reqParam.get("repContent"))
+                .rcNo(Long.valueOf(reqParam.get("rcNo")))
+                .repType(reqParam.get("repType"))
                 .build();
 
         // TODO rcNo 추가하기
 
         save(entity);
 
-        updatePostReportStatus(entity.getPostType(), entity.getPostNo());
+        updatePostReportStatus(reqParam.get("postType"), Long.valueOf(reqParam.get("postNo")));
 
         return entity;
     }
@@ -84,7 +84,6 @@ public class ReportService {
                 .rcNo(dto.getRcNo())
                 .repUuid(dto.getRepUuid())
                 .userNo(dto.getUserNo())
-                .postNo(dto.getPostNo())
                 .repType(dto.getRepType())
                 .repContent(dto.getRepContent())
                 .complete(dto.isComplete())
@@ -100,8 +99,6 @@ public class ReportService {
                 .rcNo(entity.getRcNo())
                 .repUuid(entity.getRepUuid())
                 .userNo(entity.getUserNo())
-                .postNo(entity.getPostNo())
-                .postType(entity.getPostType())
                 .repType(entity.getRepType())
                 .repContent(entity.getRepContent())
                 .complete(entity.isComplete())
@@ -141,16 +138,16 @@ public class ReportService {
         return item.orElse(null);
     }
 
-    public List<Report> findAllByPostNo(Long postNo) {
-        if (postNo == null) {
+    public List<Report> findAllByRcNo(Long rcNo) {
+        if (rcNo == null) {
             return null;
         }
 
-        if (postNo < 0) {
+        if (rcNo < 0) {
             return null;
         }
 
-        Optional<List<Report>> items = repository.findAllByPostNo(postNo);
+        Optional<List<Report>> items = repository.findAllByRcNo(rcNo);
 
         return items.orElse(null);
     }
@@ -196,77 +193,38 @@ public class ReportService {
         BooleanBuilder booleanBuilder = getSearch(requestDTO);
         Page<Report> result = repository.findAll(booleanBuilder, pageable);
 
-//        switch (requestDTO.getSearchType()){
-//            case USER:
-//                booleanBuilder =
-////                result = repository.findByAllUser_no(pageable);
-//                break;
-//            case TITLE:
-//                result = repository.findAll(pageable);
-//                break;
-//            case NONE:
-//            default:
-//                result = repository.findAll(pageable);
-//                break;
-//        }
-
         Function<Report, ReportDTO> fn = (entity -> entityToDto(entity));
 
         return new ReportPageResultDTO<>(result, fn);
     }
 
     public BooleanBuilder getSearch(ReportPageRequestDTO requestDTO) {
+        Long rcNo = requestDTO.getRcNo();
         Long userNo = requestDTO.getUserNo();
-        Long postNo = requestDTO.getPostNo();
-        String postType = requestDTO.getPostType();
         String repType = requestDTO.getRepType();
         String result = requestDTO.getResult();
         BooleanBuilder conditionBuilder = new BooleanBuilder();
         QReport qReport = QReport.report;
-
-        switch (requestDTO.getSearchPostType()) {
-            case LOC:
-            case COR:
-            case COM:
-            case REV:
-            case PROFILE_PIC:
-                conditionBuilder.and(qReport.postType.eq(postType));
-                break;
-            case ALL:
-            default:
-        }
-
-        for (ReportPageSearchType searchType : requestDTO.getSearchType()) {
-           switch (searchType) {
-               case POST:
-                   conditionBuilder.and(qReport.postNo.eq(postNo));
-                   break;
-               case USER:
-                   conditionBuilder.and(qReport.userNo.eq(userNo));
-                   break;
-               case REP_TYPE:
-                   conditionBuilder.and(qReport.repType.eq(repType));
-                   break;
-               case RESULT:
-                   conditionBuilder.and(qReport.result.eq(result));
-                   break;
-           }
-        }
 
         switch (requestDTO.getCompleteType()) {
             case COMPLETE:
                 conditionBuilder.and(qReport.complete.eq(true));
                 break;
             case PROGRESS:
-                conditionBuilder.and(qReport.complete.eq(false));
-                break;
             case ALL:
+            default:
+                conditionBuilder.and(qReport.complete.eq(false));
+        }
+
+        switch (requestDTO.getSearchType()) {
+            case SEARCH:
+                conditionBuilder.and(qReport.rcNo.eq(rcNo));
+            case NONE:
             default:
         }
 
         return conditionBuilder;
     }
-
 
     public void save(Report entity) {
         repository.save(entity);
@@ -305,7 +263,7 @@ public class ReportService {
     }
 
     private void updatePostReportStatus(String postType, Long postNo) {
-        List<Report> reportList = findAllByPostNo(postNo);
+        List<Report> reportList = findAllByRcNo(postNo);
 
         if (reportList.size() >= REPORT_STATUS_CHANGE_SIZE) {
             switch (postType) {

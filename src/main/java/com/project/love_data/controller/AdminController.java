@@ -54,6 +54,8 @@ public class AdminController {
     CourseImageService corImageService;
     @Autowired
     ReviewImageService revImageService;
+    @Autowired
+    ReportManageService reportManageService;
     FileSizeCalculator fileSizeCalculator = new FileSizeCalculator();
 
     List<String> tagList = new ArrayList<>();
@@ -1004,7 +1006,171 @@ public class AdminController {
     @GetMapping("/report_center")
     public String reportCenter(HttpServletRequest request,
                                Model model) {
+        List<String> userNickList = new ArrayList<>();
+        List<String> urlList = new ArrayList<>();
+        int page = 1;
+        ReportPageCompleteType completeType = null;
+        if (request.getParameter("completeType") == null) {
+            completeType = ReportPageCompleteType.PROGRESS;
+        } else {
+            switch (request.getParameter("completeType")) {
+                case "ALL" :
+                    completeType = ReportPageCompleteType.ALL;
+                    break;
+                case "PROGRESS" :
+                    completeType = ReportPageCompleteType.PROGRESS;
+                    break;
+                case "COMPLETE" :
+                default :
+                    completeType = ReportPageCompleteType.COMPLETE;
+            }
+        }
+        if (request.getParameter("page") != null) {
+            page = Integer.parseInt(request.getParameter("page"));
+        }
+
+        ReportClusterPageRequestDTO clusterPageRequestDTO = null;
+        switch (completeType) {
+            case ALL :
+                clusterPageRequestDTO = ReportClusterPageRequestDTO.builder()
+                        .completeType(ReportPageCompleteType.ALL)
+                        .page(page)
+                        .build();
+                break;
+            case COMPLETE :
+                clusterPageRequestDTO = ReportClusterPageRequestDTO.builder()
+                        .completeType(ReportPageCompleteType.COMPLETE)
+                        .page(page)
+                        .build();
+                break;
+            case PROGRESS :
+            default :
+                clusterPageRequestDTO = ReportClusterPageRequestDTO.builder()
+                        .page(page)
+                        .build();
+        }
+        ReportClusterPageResultDTO<ReportClusterDTO, ReportCluster> clusterPageResultDTO =
+                reportManageService.getReportClusterPage(clusterPageRequestDTO);
+
+        for (ReportClusterDTO reportClusterDTO : clusterPageResultDTO.getDtoList()) {
+            User user = null;
+            int pageNum = 1;
+            switch (reportClusterDTO.getPostType()) {
+                case "LOC" :
+                    Location locEntity = locService.selectLoc(reportClusterDTO.getPostNo());
+                    if (locEntity == null) {
+                        reportClusterDTO.setPostNo(null);
+                        userNickList.add("삭제된 유저");
+                        urlList.add(null);
+                    } else {
+                        user = userService.select(locEntity.getUser_no());
+                        if (user == null) {
+                            userNickList.add("삭제된 유저");
+                        } else {
+                            userNickList.add(user.getUser_nic());
+                        }
+                        urlList.add("/service/loc_detail?locNo=" + locEntity.getLoc_no());
+                    }
+                    break;
+                case "COR" :
+                    Course corEntity = corService.selectCor(reportClusterDTO.getPostNo());
+                    if (corEntity == null) {
+                        reportClusterDTO.setPostNo(null);
+                        userNickList.add("삭제된 유저");
+                        urlList.add(null);
+                    } else {
+                        user = userService.select(corEntity.getUser_no());
+                        if (user == null) {
+                            userNickList.add("삭제된 유저");
+                        } else {
+                            userNickList.add(user.getUser_nic());
+                        }
+                        urlList.add("/service/cor_detail?corNo=" + corEntity.getCor_no());
+                    }
+                    break;
+                case "COM" :
+                    Comment comEntity = comService.select(reportClusterDTO.getPostNo());
+                    if (comEntity == null) {
+                        reportClusterDTO.setPostNo(null);
+                        userNickList.add("삭제된 유저");
+                        urlList.add(null);
+                    } else {
+                        if (comEntity.getUser() == null) {
+                            userNickList.add("삭제된 유저");
+                        } else {
+                            userNickList.add(comEntity.getUser().getUser_nic());
+                        }
+                        pageNum = comService.getCommentCurrentPageNum(comEntity.getCmtNo());
+                        urlList.add("/service/loc_detail?locNo=" + comEntity.getLocation().getLoc_no() + "&page=" + pageNum + "&cmtNo=" + comEntity.getCmtNo());
+                    }
+                    break;
+                case "REV" :
+                    Review revEntity = reviewService.select(reportClusterDTO.getPostNo());
+                    if (revEntity == null) {
+                        reportClusterDTO.setPostNo(null);
+                        userNickList.add("삭제된 유저");
+                    } else {
+                        user = userService.select(revEntity.getUser_no());
+                        if (user == null) {
+                            userNickList.add("삭제된 유저");
+                        } else {
+                            userNickList.add(user.getUser_nic());
+                        }
+                        pageNum = reviewService.getReviewCurrentPageNum(revEntity.getRevNo());
+                        urlList.add("/service/cor_detail?corNo=" + revEntity.getCorNo() + "&page=" + pageNum + "&revNo=" + revEntity.getRevNo());
+                    }
+                    break;
+                default :
+                    urlList.add(null);
+                    userNickList.add("삭제된 유저");
+            }
+        }
+
+        model.addAttribute("clusterPageResultDTO", clusterPageResultDTO);
+        model.addAttribute("clusterUserNickList", userNickList);
+        model.addAttribute("urlList", urlList);
 
         return "/admin/admin_report_center";
+    }
+
+    @GetMapping("/report_center/report_detail")
+    public String reportDetail(HttpServletRequest request,
+                               Model model, @RequestParam Long rcNo){
+        ReportPageCompleteType completeType = ReportPageCompleteType.PROGRESS;
+        ReportPageRequestDTO pageRequestDTO = null;
+        ReportPageResultDTO<ReportDTO, Report> pageResultDTO = null;
+
+        if (request.getParameter("completeType") != null) {
+            switch (request.getParameter("completeType")) {
+                case "COMPLETE" :
+                    completeType = ReportPageCompleteType.COMPLETE;
+                case "PROGRESS" :
+                case "ALL" :
+                default:
+                    completeType = ReportPageCompleteType.PROGRESS;
+            }
+        }
+
+        switch (completeType) {
+            case COMPLETE:
+                pageRequestDTO = ReportPageRequestDTO.builder()
+                        .rcNo(rcNo)
+                        .completeType(ReportPageCompleteType.COMPLETE)
+                        .build();
+                break;
+            case PROGRESS:
+            case ALL:
+            default:
+                pageRequestDTO = ReportPageRequestDTO.builder()
+                        .rcNo(rcNo)
+                        .completeType(ReportPageCompleteType.PROGRESS)
+                        .build();
+        }
+
+        pageResultDTO = reportManageService.getReportPage(pageRequestDTO);
+
+        model.addAttribute("pageResultDTO", pageResultDTO);
+
+        return "/popup/reportClusterDetailPopup";
     }
 }

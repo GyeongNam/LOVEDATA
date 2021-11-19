@@ -642,7 +642,11 @@ public class CourseController {
         PageResultDTO<CourseDTO, Course> resultDTO = corService.getList(pageRequestDTO);
 
         if (resultDTO.getTotalPage() < pageNum) {
-            model.addAttribute("isRequestPageNumberExceed", true);
+            if (resultDTO.getTotalPage() == 0) {
+                model.addAttribute("isEmptyResult", true);
+            } else {
+                model.addAttribute("isRequestPageNumberExceed", true);
+            }
         } else {
             model.addAttribute("isRequestPageNumberExceed", false);
         }

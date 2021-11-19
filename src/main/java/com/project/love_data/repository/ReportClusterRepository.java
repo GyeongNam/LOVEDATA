@@ -13,28 +13,28 @@ import java.util.*;
 
 public interface ReportClusterRepository extends JpaRepository<ReportCluster, Long>,
         QuerydslPredicateExecutor<ReportCluster> {
-    @Query(value = "SELECT * FROM report_cluster rc WHERE r.post_no = :post_no", nativeQuery = true)
-    Optional<List<ReportCluster>> findAllByPostNo(@Param("post_no") Long postNo);
+    @Query(value = "SELECT * FROM report_cluster rc WHERE rc.post_no = :post_no AND rc.post_type = :post_type", nativeQuery = true)
+    Optional<ReportCluster> findByPostNoAndPostType(@Param("post_no") Long postNo, @Param("post_type") String postType);
 
-    @Query(value = "SELECT * FROM report_cluster rc WHERE r.user_no = :user_no", nativeQuery = true)
-    Optional<List<ReportCluster>> findAllByUserNo(@Param("user_no") Long userNo);
+    @Query(value = "SELECT * FROM report_cluster rc WHERE rc.rc_uuid = :rc_uuid", nativeQuery = true)
+    Optional<ReportCluster> findByRcUuid(@Param("rc_uuid") String rcUuid);
 
-    @Query(value = "SELECT * FROM report_cluster rc WHERE r.rep_uuid = :rep_uuid", nativeQuery = true)
-    Optional<ReportCluster> findByRepUuid(@Param("rep_uuid") String repUuid);
-
-    @Query(value = "SELECT * FROM report_cluster rc WHERE  r.post_type = :post_type", nativeQuery = true)
+    @Query(value = "SELECT * FROM report_cluster rc WHERE  rc.post_type = :post_type", nativeQuery = true)
     Optional<List<ReportCluster>> findAllByPostType(@Param("post_type") String postType);
 
-    @Query(value = "SELECT * FROM report_cluster rc WHERE  r.rep_type = :rep_type", nativeQuery = true)
-    Optional<List<ReportCluster>> findAllByRepType(@Param("rep_type") String repType);
+    @Query(value = "SELECT * FROM report_cluster rc WHERE  rc.rc_status = :rc_status", nativeQuery = true)
+    Optional<List<ReportCluster>> findAllByRcStatus(@Param("rc_status") String rcStatus);
+
+    @Query(value = "SELECT * FROM report_cluster rc WHERE rc.complete = :rc_complete", nativeQuery = true)
+    Optional<List<ReportCluster>> getAllByRcComplete(@Param("rc_complete") boolean rcComplete);
 
     @Modifying
-    @Query(value = "DELETE FROM report_cluster rc WHERE rep_no = :rep_no", nativeQuery = true)
+    @Query(value = "DELETE FROM report_cluster rc WHERE rc_no = :rc_no", nativeQuery = true)
     @Transactional
-    void deleteByRepNo(@Param("rep_no") Long repNo);
+    void deleteByRcNo(@Param("rc_no") Long rcNo);
 
     @Modifying
-    @Query(value = "DELETE FROM report_cluster rc WHERE rep_uuid = :rep_uuid", nativeQuery = true)
+    @Query(value = "DELETE FROM report_cluster rc WHERE rc_uuid = :rc_uuid", nativeQuery = true)
     @Transactional
-    void deleteByRepUuid(@Param("rep_uuid") String repUuid);
+    void deleteByRcUuid(@Param("rc_uuid") String rcUuid);
 }

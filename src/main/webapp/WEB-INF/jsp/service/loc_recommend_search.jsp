@@ -169,91 +169,95 @@
 				<%--		요청한 페이지 넘버가 최대 페이지 수를 넘어갈 경우		--%>
 				<c:when test="${isRequestPageNumberExceed eq true}">
 					<span>요청한 페이지 번호는 존재하지 않습니다.</span>
-					<%
-						if( true ) return;
-					%>
 				</c:when>
-				<c:when test="${result.end ne 0}">
-					<c:forEach var="i" begin="0" end="${result.dtoList.size()-1}">
-						<c:if test="${i eq 2}">
-							<div class="w-100"></div>
-						</c:if>
-						<div class="col-md-4" id="loc_${i}">
-							<div class="card mb-4 shadow-sm">
-								<c:url var="loc_detail" value="/service/loc_detail">
-									<c:param name="locNo" value="${result.dtoList.get(i).loc_no}"/>
-								</c:url>
-								<a class="container p-0 btn" href="${loc_detail}">
-									<c:set var="imgList" value="${result.dtoList.get(i).imgList}"></c:set>
-									<c:choose>
-										<c:when test="${!empty imgList}">
-									<img class="bd-placeholder-img card-img-top" width="100%" height="225"
-										 alt="${result.dtoList.get(i).loc_name}"
-										 src="${result.dtoList.get(i).thumbnail}"
-										 preserveAspectRatio="xMidYMid slice" focusable="false">
-										</c:when>
-										<c:otherwise>
-											<svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-												 xmlns="http://www.w3.org/2000/svg" role="img"
-												 aria-label="Placeholder: Thumbnail"
-												 preserveAspectRatio="xMidYMid slice" focusable="false">
-												<title>Placeholder</title>
-												<rect width="100%" height="100%" fill="#55595c"></rect>
-												<text x="40%" y="50%" fill="#eceeef"
-													  dy=".3em">${result.dtoList.get(i).loc_name}</text>
-											</svg>
-										</c:otherwise>
-									</c:choose>
-									<c:choose>
-										<c:when test="${result.dtoList.get(i)._deleted eq true}">
-											<div class="d-flex justify-content-end card-img-overlay" style="outline: dotted 3px red">
-												<img class="bd-placeholder-img" width="30" height="30"
-													 alt="삭제된 장소 아이콘"
-													 src="/image/icon/trash.png"
-													 preserveAspectRatio="xMidYMid slice" focusable="false">
-											</div>
-										</c:when>
-									</c:choose>
-								</a>
+				<c:when test="${isEmptyResult eq true}">
+					<span>결과가 없습니다.</span>
+				</c:when>
+				<c:otherwise>
+					<c:choose>
+						<c:when test="${result.end ne 0}">
+							<c:forEach var="i" begin="0" end="${result.dtoList.size()-1}">
+								<c:if test="${i eq 2}">
+									<div class="w-100"></div>
+								</c:if>
+								<div class="col-md-4" id="loc_${i}">
+									<div class="card mb-4 shadow-sm">
+										<c:url var="loc_detail" value="/service/loc_detail">
+											<c:param name="locNo" value="${result.dtoList.get(i).loc_no}"/>
+										</c:url>
+										<a class="container p-0 btn" href="${loc_detail}">
+											<c:set var="imgList" value="${result.dtoList.get(i).imgList}"></c:set>
+											<c:choose>
+												<c:when test="${!empty imgList}">
+													<img class="bd-placeholder-img card-img-top" width="100%" height="225"
+														 alt="${result.dtoList.get(i).loc_name}"
+														 src="${result.dtoList.get(i).thumbnail}"
+														 preserveAspectRatio="xMidYMid slice" focusable="false">
+												</c:when>
+												<c:otherwise>
+													<svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+														 xmlns="http://www.w3.org/2000/svg" role="img"
+														 aria-label="Placeholder: Thumbnail"
+														 preserveAspectRatio="xMidYMid slice" focusable="false">
+														<title>Placeholder</title>
+														<rect width="100%" height="100%" fill="#55595c"></rect>
+														<text x="40%" y="50%" fill="#eceeef"
+															  dy=".3em">${result.dtoList.get(i).loc_name}</text>
+													</svg>
+												</c:otherwise>
+											</c:choose>
+											<c:choose>
+												<c:when test="${result.dtoList.get(i)._deleted eq true}">
+													<div class="d-flex justify-content-end card-img-overlay" style="outline: dotted 3px red">
+														<img class="bd-placeholder-img" width="30" height="30"
+															 alt="삭제된 장소 아이콘"
+															 src="/image/icon/trash.png"
+															 preserveAspectRatio="xMidYMid slice" focusable="false">
+													</div>
+												</c:when>
+											</c:choose>
+										</a>
 
-								<div class="card-body p-2">
-									<div class="d-flex justify-content-between align-items-center p-1">
-										<div class="d-flex">
-											<a class="card-text loc_rec-locTitle" href="${loc_detail}"
-											   id="title_${i+0}">${result.dtoList.get(i).loc_name}</a>
-										</div>
-										<div class="d-flex align-items-center">
-											<img src="/image/icon/view.png" class="loc_icon" alt="조회수">
-											<span class="align-middle">${result.dtoList.get(i).viewCount}</span>
-											<img src="/image/icon/comment.png" class="loc_icon" alt="댓글">
-											<span class="align-middle">${result.dtoList.get(i).liveCmtCount}</span>
-											<sec:authorize access="isAuthenticated()">
-												<c:set var="user_no"><sec:authentication property="principal.user_no"></sec:authentication></c:set>
-												<img src="/image/icon/like/love_black.png" class="loc_icon" alt="찜하기"
-												 	onclick="onClickLike(this, ${user_no}, 'loc')">
-											</sec:authorize>
-											<sec:authorize access="isAnonymous()">
-												<c:set var="user_no" value="null"></c:set>
-												<img src="/image/icon/like/love_black.png" class="loc_icon" alt="찜하기">
-											</sec:authorize>
-											<span class="align-middle" id="loc_like_count" name="loc_like_count">${result.dtoList.get(i).likeCount}</span>
-											<span class="d-none">${result.dtoList.get(i).loc_no}</span>
-											<span class="d-none">${result.dtoList.get(i).loc_uuid}</span>
-											<sec:authorize access="isAuthenticated()">
-												<span class="d-none">${user_no}</span>
-											</sec:authorize>
-											<sec:authorize access="isAnonymous()">
-												<span class="d-none">-1</span>
-											</sec:authorize>
+										<div class="card-body p-2">
+											<div class="d-flex justify-content-between align-items-center p-1">
+												<div class="d-flex">
+													<a class="card-text loc_rec-locTitle" href="${loc_detail}"
+													   id="title_${i+0}">${result.dtoList.get(i).loc_name}</a>
+												</div>
+												<div class="d-flex align-items-center">
+													<img src="/image/icon/view.png" class="loc_icon" alt="조회수">
+													<span class="align-middle">${result.dtoList.get(i).viewCount}</span>
+													<img src="/image/icon/comment.png" class="loc_icon" alt="댓글">
+													<span class="align-middle">${result.dtoList.get(i).liveCmtCount}</span>
+													<sec:authorize access="isAuthenticated()">
+														<c:set var="user_no"><sec:authentication property="principal.user_no"></sec:authentication></c:set>
+														<img src="/image/icon/like/love_black.png" class="loc_icon" alt="찜하기"
+															 onclick="onClickLike(this, ${user_no}, 'loc')">
+													</sec:authorize>
+													<sec:authorize access="isAnonymous()">
+														<c:set var="user_no" value="null"></c:set>
+														<img src="/image/icon/like/love_black.png" class="loc_icon" alt="찜하기">
+													</sec:authorize>
+													<span class="align-middle" id="loc_like_count" name="loc_like_count">${result.dtoList.get(i).likeCount}</span>
+													<span class="d-none">${result.dtoList.get(i).loc_no}</span>
+													<span class="d-none">${result.dtoList.get(i).loc_uuid}</span>
+													<sec:authorize access="isAuthenticated()">
+														<span class="d-none">${user_no}</span>
+													</sec:authorize>
+													<sec:authorize access="isAnonymous()">
+														<span class="d-none">-1</span>
+													</sec:authorize>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-						</div>
-					</c:forEach>
-				</c:when>
-				<c:otherwise>
-					<h1 class="text-center">등록된 정보가 없습니다.</h1>
+							</c:forEach>
+						</c:when>
+						<c:otherwise>
+							<h1 class="text-center">등록된 정보가 없습니다.</h1>
+						</c:otherwise>
+					</c:choose>
 				</c:otherwise>
 			</c:choose>
 		</div>
