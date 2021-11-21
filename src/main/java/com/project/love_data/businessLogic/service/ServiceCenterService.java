@@ -114,7 +114,7 @@ public class ServiceCenterService {
     }
 
     public List<NoticeIMG> select_notiimg_num(String num){
-        Optional<List<NoticeIMG>> imglist = noticeIMGRepository.select_notiimg(num);
+        Optional<List<NoticeIMG>> imglist = noticeIMGRepository.select_notiimg_num(num);
         return imglist.orElse(new ArrayList<>());
     }
 

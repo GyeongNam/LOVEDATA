@@ -32,4 +32,12 @@ public class QuestionsImageService {
 
         return questionsImages.orElse(new ArrayList<>());
     }
+
+    public List<QuestionsImage> user_no_imgselect(String qu_no){
+        Optional<List<QuestionsImage>> questionsImages = questionsImageRepository.user_no_imgselect(qu_no);
+
+        return questionsImages.orElse(new ArrayList<>());
+    }
+
+
 }
