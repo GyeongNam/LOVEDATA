@@ -3,6 +3,8 @@ package com.project.love_data.controller;
 import com.project.love_data.businessLogic.service.*;
 import com.project.love_data.dto.CalenderDTO;
 import com.project.love_data.dto.UserDTO;
+import com.project.love_data.model.resource.QuestionsImage;
+import com.project.love_data.model.resource.ReviewImage;
 import com.project.love_data.model.service.*;
 import com.project.love_data.model.user.User;
 import com.project.love_data.repository.CalenderRepository;
@@ -36,8 +38,8 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static com.project.love_data.util.ConstantValues.MAX_UPLOAD_COUNT;
-import static com.project.love_data.util.ConstantValues.MIN_UPLOAD_COUNT;
+import static com.project.love_data.util.ConstantValues.*;
+import static com.project.love_data.util.ConstantValues.Linux_Image_Upload_Path;
 
 @Log4j2
 @Controller
@@ -65,6 +67,8 @@ public class UserController {
 	@Autowired
 	ReviewService reviewService;
 	@Autowired
+	ReviewImageService reviewImageService;
+	@Autowired
 	FileUploadService fileUploadService;
 	@Autowired
 	CommentService cmtService;
@@ -78,6 +82,8 @@ public class UserController {
 	UserRecentLocService userRecentLocService;
 	@Autowired
 	UserRecentCorService userRecentCorService;
+	@Autowired
+	QuestionsImageService questionsImageService;
 
 	@RequestMapping(value = "/signup_add", method = RequestMethod.POST)
 	public String signup(
@@ -825,11 +831,13 @@ public class UserController {
 	@PostMapping(value = "/lovedata_delete")
 	public String lovedata_delete(HttpServletRequest request){
 		String user_no = request.getParameter("user_no");
-		log.info("user_no:"+ user_no);
 		User user = userService.select(Long.parseLong(user_no));
 		List<Comment> comment = cmtService.findAllByUserNo(Long.parseLong(user_no));
 		List<Review> reviews = reviewService.findAllByUser_no(Long.parseLong(user_no));
+		List<ReviewImage> reviewImages = reviewImageService.getImage_UserNo(Long.parseLong(user_no));
 		List<Questions> questions = serviceCenterService.qu_findAllByUser_no(user_no);
+		List<QuestionsImage> questionsImages = questionsImageService.user_no_imgselect(user_no);
+
 		List<Calender> calenders = calenderService.Cal_select(user.getUser_email());
 		user.set_deleted(true);
 		user.setUser_Activation(false);
@@ -842,15 +850,69 @@ public class UserController {
 			reviews.get(i).set_deleted(true);
 			reviewService.update(reviews.get(i));
 		}
+		for(int i = 0; i<reviewImages.size(); i++){
+			reviewImages.get(i).set_deleted(true);
+			reviewImageService.update(reviewImages.get(i));
+
+			try {
+				// 기존 이미지 review -> upload
+				String imgpath;
+				if ("Windows_NT".equals(System.getenv().get("OS"))) {
+					String r = request.getSession().getServletContext().getRealPath("/");
+					int idx = r.indexOf("main");
+					imgpath = r.substring(0, idx) + "main/resources/static" + reviewImages.get(i).getImg_url();
+
+					File file = FileUtils.getFile(imgpath);
+					File fileToMove = FileUtils.getFile(r.substring(0, idx) + "main/resources/static/image/upload/REV^" + reviewImages.get(i).getImg_uuid());
+					FileUtils.moveFile(file, fileToMove);
+				} else {
+					imgpath = Linux_Image_Upload_Path + "review/" + reviewImages.get(i).getImg_uuid();
+
+					File file = FileUtils.getFile(imgpath);
+					File fileToMove = FileUtils.getFile(Linux_Image_Upload_Path + "upload/REV^" + reviewImages.get(i).getImg_uuid());
+					FileUtils.moveFile(file, fileToMove);
+				}
+
+			} catch(IOException e){
+				e.printStackTrace();
+			}
+		}
 		for(int i = 0; i<questions.size(); i++){
 			questions.get(i).setQu_activation(false);
 			serviceCenterService.qu_update(questions.get(i));
+		}
+		for(int i = 0; i<questionsImages.size(); i++){
+			questionsImages.get(i).setQu_img_Activation(false);
+			questionsImageService.update(questionsImages.get(i));
+
+			try {
+				// 기존 이미지 qna -> upload
+				String imgpath;
+				if ("Windows_NT".equals(System.getenv().get("OS"))) {
+					String r = request.getSession().getServletContext().getRealPath("/");
+					int idx = r.indexOf("main");
+					imgpath = r.substring(0, idx) + "main/resources/static/image/qna/" + questionsImages.get(i).getQu_img_url();
+
+					File file = FileUtils.getFile(imgpath);
+					File fileToMove = FileUtils.getFile(r.substring(0, idx) + "main/resources/static/image/upload/QNA^" + questionsImages.get(i).getQu_img_url());
+					FileUtils.moveFile(file, fileToMove);
+				} else {
+					imgpath = Linux_Image_Upload_Path + "qna/" + questionsImages.get(i).getQu_img_url();
+
+					File file = FileUtils.getFile(imgpath);
+					File fileToMove = FileUtils.getFile(Linux_Image_Upload_Path + "upload/QNA^" + questionsImages.get(i).getQu_img_url());
+					FileUtils.moveFile(file, fileToMove);
+				}
+
+			} catch(IOException e){
+				e.printStackTrace();
+			}
 		}
 		for(int i = 0; i<calenders.size(); i++){
 			calenders.get(i).setCal_Activation(false);
 			calenderService.update(calenders.get(i));
 		}
-		return "redirect:/";
+		return "redirect:/logout";
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")

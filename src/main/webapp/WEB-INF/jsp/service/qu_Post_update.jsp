@@ -97,7 +97,7 @@
                         <c:when test="${i < qu_img_size}">
                             <div class="card col-3 p-0 m-2">
                                     <%--											<button class="w-25" onclick="console.log('clicked!')"></button>--%>
-                                <img src="/image/upload/${qu_img[i].qu_img_url}" alt="" id="img_${(i + 1)}" class="visible bd-place card-img w-100 h-100">
+                                <img src="/image/qna/${qu_img[i].qu_img_url}" alt="" id="img_${(i + 1)}" class="visible bd-place card-img w-100 h-100">
                                 <div class="d-flex justify-content-center card-img-overlay visually-hidden" style="align-items: center;">
                                     <img class="btn btn-lg align-middle" onclick="onClickAddImage()" id="imgAdd_${(i + 1)}"
                                          src="/image/icon/black-24dp/2x/outline_add_black_24dp.png" style="height: 30%; z-index: 2">

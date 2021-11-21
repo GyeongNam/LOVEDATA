@@ -234,4 +234,10 @@ public class ReviewImageService {
 
         return entities;
     }
+
+    public List<ReviewImage> getImage_UserNo(Long user_no) {
+        Optional<List<ReviewImage>> item = repository.findAllLiveImageByUser_no(user_no);
+
+        return item.orElse(null);
+    }
 }

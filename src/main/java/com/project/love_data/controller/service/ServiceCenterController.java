@@ -463,11 +463,38 @@ public class ServiceCenterController {
     }
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(value = "/ServiceCenter/Notice_Delete")
-    public String Notice_Delete(Principal principal,HttpServletRequest request){
+    public String Notice_Delete(Principal principal,HttpServletRequest request) throws  IOException{
         String noti_no= request.getParameter("noti_no");
         Notice notice = serviceCenterService.noti_select_no(noti_no);
         notice.setNoti_activation(false);
         serviceCenterService.not_update(notice);
+
+        List<NoticeIMG> noticeIMGS = serviceCenterService.select_notiimg_num(noti_no);
+        log.info("노티 삭제 사진: "+noticeIMGS.size());
+        for( int i = 0; i < noticeIMGS.size() ; i++ )
+        {
+            try {
+                noticeIMGS.get(i).setNoti_activation(false);
+                serviceCenterService.notiimg_update(noticeIMGS.get(i));
+                if("Windows_NT".equals(System.getenv().get("OS"))) {
+                    String r = request.getSession().getServletContext().getRealPath("/");
+                    int idx = r.indexOf("main");
+                    String imgpath = r.substring(0, idx) + "main/resources/static/image/notice/" + noticeIMGS.get(i).getNotiimg_name();
+
+                    File file = FileUtils.getFile(imgpath);
+                    File fileToMove = FileUtils.getFile(r.substring(0, idx) + "main/resources/static/image/upload/" + noticeIMGS.get(i).getNotiimg_name());
+                    FileUtils.moveFile(file, fileToMove);
+                }else {
+                    String imgpath = Linux_Image_Upload_Path+"notice/" + noticeIMGS.get(i).getNotiimg_name();
+
+                    File file = FileUtils.getFile(imgpath);
+                    File fileToMove = FileUtils.getFile(Linux_Image_Upload_Path+"upload/" + noticeIMGS.get(i).getNotiimg_name());
+                    FileUtils.moveFile(file, fileToMove);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
 
         return "redirect:/ServiceCenter/Notice/1";
@@ -660,10 +687,11 @@ public class ServiceCenterController {
     }
 
     @PostMapping(value = "/ServiceCenter/Questions_Post_Update/update")
-    public String Post_update_update(@RequestParam("files") List<MultipartFile> fileList, HttpServletRequest request, Principal principal){
+    public String Post_update_update(@RequestParam("files") List<MultipartFile> fileList, HttpServletRequest request, Principal principal)throws IOException{
         List<String> filePath = null;
         Date today = new Date();
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
         // 업데이트시 기존 사진 아웃
         questionsImageRepository.qu_no_img_false(request.getParameter("qu_no"));
 
@@ -680,6 +708,7 @@ public class ServiceCenterController {
             List<QuestionsImage> questionsImage = questionsImageRepository.qu_name_imgselect(fileList.get(i).getOriginalFilename());
             if(questionsImage.size() > 0) {
                 log.info(i+" :존재함");
+                questions.setQu_activation(true);
                 questions.setQu_secret(secret);
                 questions.setQu_text(request.getParameter("info"));
                 questions.setQu_title(request.getParameter("title"));
@@ -693,6 +722,7 @@ public class ServiceCenterController {
             }
             else {
                 log.info(i+" :존재하지 않음");
+
                 List<MultipartFile> fileList2 = fileList.subList(i,i+1);
                 filePath = fileUploadService.execute(fileList2, UploadFileType.IMAGE, UploadFileCount.MULTIPLE,
                         0, 3, PathType.QNA, request);
@@ -712,6 +742,30 @@ public class ServiceCenterController {
                     questionsImageRepository.save(questionsImages);
                 }
             }
+        }
+        try {
+            // 기존 이미지 qna -> upload
+            List<QuestionsImage> questionsImage2 = questionsImageRepository.qu_no_img_out(request.getParameter("qu_no"));
+            for (int i = 0; i < questionsImage2.size(); i++) {
+                String imgpath;
+                if ("Windows_NT".equals(System.getenv().get("OS"))) {
+                    String r = request.getSession().getServletContext().getRealPath("/");
+                    int idx = r.indexOf("main");
+                    imgpath = r.substring(0, idx) + "main/resources/static/image/qna/" + questionsImage2.get(i).getQu_img_url();
+
+                    File file = FileUtils.getFile(imgpath);
+                    File fileToMove = FileUtils.getFile(r.substring(0, idx) + "main/resources/static/image/upload/QNA^" + questionsImage2.get(i).getQu_img_url());
+                    FileUtils.moveFile(file, fileToMove);
+                } else {
+                    imgpath = Linux_Image_Upload_Path + "qna/" + questionsImage2.get(i).getQu_img_url();
+
+                    File file = FileUtils.getFile(imgpath);
+                    File fileToMove = FileUtils.getFile(Linux_Image_Upload_Path + "upload/QNA^" + questionsImage2.get(i).getQu_img_url());
+                    FileUtils.moveFile(file, fileToMove);
+                }
+            }
+        } catch(IOException e){
+            e.printStackTrace();
         }
         return "redirect:/ServiceCenter/Questions_Post/"+request.getParameter("qu_no");
     }
@@ -1089,13 +1143,13 @@ public class ServiceCenterController {
                             String imgpath = r.substring(0, idx) + "main/resources/static/image/qna/" + questionsImage.get(i).getQu_img_url();
 
                             File file = FileUtils.getFile(imgpath);
-                            File fileToMove = FileUtils.getFile(r.substring(0, idx) + "main/resources/static/image/upload/" + questionsImage.get(i).getQu_img_url());
+                            File fileToMove = FileUtils.getFile(r.substring(0, idx) + "main/resources/static/image/upload/QNA^" + questionsImage.get(i).getQu_img_url());
                             FileUtils.moveFile(file, fileToMove);
                         }else {
                             String imgpath = Linux_Image_Upload_Path+"qna/" + questionsImage.get(i).getQu_img_url();
 
                             File file = FileUtils.getFile(imgpath);
-                            File fileToMove = FileUtils.getFile(Linux_Image_Upload_Path+"upload/" + questionsImage.get(i).getQu_img_url());
+                            File fileToMove = FileUtils.getFile(Linux_Image_Upload_Path+"upload/QNA^" + questionsImage.get(i).getQu_img_url());
                             FileUtils.moveFile(file, fileToMove);
                         }
                     } catch (IOException e) {
@@ -1182,7 +1236,7 @@ public class ServiceCenterController {
                 if(!file.exists()){
                     file.mkdirs();
                 }
-                String realName = UUID.randomUUID().toString() + imgVO.getFiledata().getOriginalFilename();
+                String realName ="NTC^" + UUID.randomUUID().toString() + imgVO.getFiledata().getOriginalFilename();
                 imgVO.getFiledata().transferTo(new File(path + realName));
                 result += "&bNewLine=true&sFileName="+imgVO.getFiledata().getOriginalFilename()+"&sFileURL=/resources/img/"+realName;
             }else{
@@ -1220,7 +1274,7 @@ public class ServiceCenterController {
                 file.mkdirs();
             }
 
-            String realName = UUID.randomUUID().toString() + "." +prifix;
+            String realName ="NTC^" +UUID.randomUUID().toString() + "." +prifix;
 
             InputStream is = req.getInputStream();
             OutputStream os = new FileOutputStream(new File(path + realName));
