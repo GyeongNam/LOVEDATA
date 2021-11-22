@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.io.*;
 import java.io.PrintWriter;
 import java.security.Principal;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -834,6 +835,88 @@ public class UserController {
 
 
 		return "admin/admin_user";
+	}
+	// 어드민 유저
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping(value = "/admin_user_detail/{num}")
+	public String admin_user_datail(@PathVariable("num") Long num, Model model) {
+		User user = userService.select(num);
+		List<Location> locationList = locService.findLocByUserNo(num);
+		List<Course> courseList = corService.findCorByUserNo(num);
+		List<Review> reviewList = reviewService.findAllByUser_no(num);
+		List<Comment> commentList = cmtService.findAllByUserNo(num);
+		List<UserSuspension> userSuspensionList = userService.su_findAllByUser_no(num);
+		// 리포트 신고 기록 추가
+
+		model.addAttribute("user" ,user);
+		model.addAttribute("loc" ,locationList);
+		model.addAttribute("cor" ,courseList);
+		model.addAttribute("rev" ,reviewList);
+		model.addAttribute("com" ,commentList);
+		model.addAttribute("us" ,userSuspensionList);
+
+		return "admin/admin_user_detail";
+	}
+	// 유저 정지
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PostMapping(value = "/admin/user_suspension")
+	public String user_suspension(HttpServletRequest request, Principal principal) {
+		long user_no = Long.parseLong(request.getParameter("user_no"));
+		User user = userService.select(user_no);
+		List<UserSuspension> userSuspensionList = userService.findStopByUser_no(user_no, "1");
+
+		Date today = new Date();
+		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+
+		java.util.Calendar cal = Calendar.getInstance();
+		cal.setTime(today);
+		cal.add(Calendar.DATE,Integer.parseInt(request.getParameter("stop_day")));
+
+		String progress;
+		if(userSuspensionList.size() > 0){
+			progress = "2";
+		}else {
+			progress = "1";
+		}
+
+		UserSuspension userSuspension = UserSuspension.builder()
+				.user_no(user_no)
+				.re_no(Long.parseLong("0"))
+				.re_content(request.getParameter("re_content"))
+		 		.start_day(format1.format(today))
+				.stop_day(request.getParameter("stop_day"))
+				.end_day(format1.format(cal.getTime()))
+				.progress(progress)
+				.build();
+		userService.su_update(userSuspension);
+
+		user.setUser_Activation(false);
+		userService.update(user);
+
+		return "redirect:/admin_user_detail/"+user_no;
+	}
+
+	// 정지 해제
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping(value = "/admin/user_release/{user_no}")
+	public String user_release(@PathVariable("user_no") Long user_no){
+		List<UserSuspension> StopList = userService.findStopByUser_no(user_no, "1");
+		List<UserSuspension> WaitingList = userService.findStopByUser_no(user_no, "2");
+		User user = userService.select(user_no);
+		for(int i = 0; i<StopList.size(); i++){
+			StopList.get(i).setProgress("0");
+			userService.su_update(StopList.get(i));
+		}
+
+		if(WaitingList.size()>0){
+			WaitingList.get(0).setProgress("1");
+			userService.su_update(WaitingList.get(0));
+		}else {
+			user.setUser_Activation(true);
+			userService.update(user);
+		}
+
+		return "redirect:/admin_user_detail/"+user_no;
 	}
 
 	//alert 창 설정 class

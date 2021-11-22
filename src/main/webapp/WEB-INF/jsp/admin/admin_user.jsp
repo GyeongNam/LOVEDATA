@@ -23,7 +23,7 @@
             vertical-align : middle;
         }
     </style>
-    <title>Admin Dashboard</title>
+    <title>Admin User</title>
 </head>
 <%@ include file="../layout/header.jsp" %>
 <body class="bg-light">
@@ -82,7 +82,7 @@
                         <div class="col-12 d-flex justify-content-center align-items-md-center">
                             <table class="table text-center" id="searchResultTable">
                                 <thead>
-                                <th scope="col">#</th>
+                                <th scope="col">No</th>
                                 <th scope="col">유저 번호</th>
                                 <th scope="col">유저 닉네임</th>
                                 <th scope="col">유저 이름</th>
@@ -106,7 +106,7 @@
                                             <td>정지</td>
                                             <td>???</td>
                                             <td>${user.social_info}</td>
-                                            <td><button onclick="location.href='#'"class="btn btn-primary mx-2">관리</button></td>
+                                            <td><button onclick="location.href='/admin_user_detail/${user.user_no}'"class="btn btn-primary mx-2">관리</button></td>
                                         </tr>
                                         </c:when>
                                         <c:when test="${user.user_Activation eq true}">
@@ -119,7 +119,7 @@
                                                 <td>활동</td>
                                                 <td>???</td>
                                                 <td>${user.social_info}</td>
-                                                <td><button onclick="location.href='#'"  class="btn btn-primary mx-2">관리</button></td>
+                                                <td><button onclick="location.href='/admin_user_detail/${user.user_no}'"  class="btn btn-primary mx-2">관리</button></td>
                                             </tr>
                                         </c:when>
                                     </c:choose>

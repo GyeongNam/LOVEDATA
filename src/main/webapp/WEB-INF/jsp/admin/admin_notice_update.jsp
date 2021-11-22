@@ -25,7 +25,7 @@
             font-family: 'Jua', sans-serif;
         }
     </style>
-    <title>Admin Dashboard</title>
+    <title>Admin Notice</title>
 </head>
 <%@ include file="../layout/header.jsp" %>
 <body class="bg-light">
