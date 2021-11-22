@@ -30,6 +30,7 @@ public class CourseService {
     private final CourseImageService imgService;
     private final ReviewService revService;
     private final CorLocMapperService corLocMapperService;
+    private final DeletedImageInfoService deletedImageInfoService;
 
     public Course update(Map<String, String> reqParam, List<String> tagList, List<String> filePath) {
         CourseDTO dto = updateCourseDto(reqParam, tagList);
@@ -159,6 +160,7 @@ public class CourseService {
                 .viewCount(dto.getViewCount())
                 .is_deleted(dto.is_deleted())
                 .accommodations_info(dto.getAccommodations_info())
+                .is_reported(dto.is_reported())
                 .build();
 
         return entity;
@@ -184,6 +186,7 @@ public class CourseService {
                 .modDate(entity.getModDate())
                 .regDate(entity.getRegDate())
                 .accommodations_info(entity.getAccommodations_info())
+                .is_reported(entity.is_reported())
                 .build();
 
         return dto;
@@ -383,52 +386,60 @@ public class CourseService {
         return repository.save(cor);
     }
 
-    public void permaDelete(Course cor) {
-        List<CourseImage> list = new ArrayList<CourseImage>();
-        list = imgService.getAllImagesByCorNo(cor.getCor_no());
-        // Todo 리뷰 항목도 지워지도록 리뷰 리포지토리 추가후 추가작업 진행하기
-//        Set<Comment> cmtSet = cor.getCmtSet();
-
-        for (CourseImage CourseImage : list) {
-            CourseImage.setCor_no(null);
-
-            imgService.update(CourseImage);
-
-            imgService.permaDelete(CourseImage.getImg_uuid());
-        }
-
-//        for (Comment cmt : cmtSet) {
-//            revService.permaDelete(cmt);
+    public boolean permaDelete(Long corNo) {
+//        List<CourseImage> list = new ArrayList<CourseImage>();
+//        list = imgService.getAllImagesByCorNo(cor.getCor_no());
+//
+//        for (CourseImage CourseImage : list) {
+//            CourseImage.setCor_no(null);
+//
+//            imgService.update(CourseImage);
+//
+//            imgService.permaDelete(CourseImage.getImg_uuid());
 //        }
 //
-//        cor.setImgSet(null);
-//
-//        update(cor);
+//        repository.deleteByCor_uuid(cor.getCor_uuid());
 
-        repository.deleteByCor_uuid(cor.getCor_uuid());
+        Course corEntity = selectCor(corNo);
+
+        if (corEntity == null) {
+            return false;
+        }
+
+        List<CourseImage> list = new ArrayList<CourseImage>();
+        list = imgService.getLiveImagesByCorNo(corNo);
+
+        for (CourseImage courseImage : list) {
+            imgService.delete(courseImage.getImg_no());
+            if (imgService.getAllImage(courseImage.getImg_no()).is_deleted()) {
+                deletedImageInfoService.register(courseImage.getImg_no(), "COR_IMG",  courseImage.getUser_no());
+                imgService.permaDelete(courseImage.getImg_uuid());
+            } else {
+                log.warn("ERROR During delete");
+                log.warn(courseImage);
+                continue;
+            }
+        }
+
+        List<CorLocMapper> corLocMapperList = corLocMapperService.getLocationsByCorNo(corEntity.getCor_no());
+
+        for (CorLocMapper mapper : corLocMapperList) {
+            corLocMapperService.permaDelete(mapper.getClm_No());
+        }
+
+        repository.deleteByCor_uuid(corEntity.getCor_uuid());
+
+        return true;
     }
 
     public boolean delete(Long corNo) {
         Course cor = selectCor(corNo);
 
         if (!cor.is_deleted()) {
-            boolean isCourseDelete = true;
-            List<CourseImage> list = new ArrayList<CourseImage>();
-            list = imgService.getLiveImagesByCorNo(cor.getCor_no());
-
-            for (CourseImage CourseImage : list) {
-                imgService.delete(CourseImage.getImg_no());
-                if (!imgService.getLiveImage(CourseImage.getImg_no()).is_deleted()) {
-                    isCourseDelete = false;
-                    break;
-                }
-            }
-
-            if (isCourseDelete) {
-                disableCourse(cor);
-                return true;
-            }
+            disableCourse(cor);
+            return true;
         }
+
         return false;
     }
 
@@ -436,27 +447,8 @@ public class CourseService {
         Course cor = selectCor(uuid);
 
         if (!cor.is_deleted()) {
-            boolean isCourseDelete = true;
-            List<CourseImage> list = new ArrayList<CourseImage>();
-            List<CourseImage> finishedList = new ArrayList<>();
-            list = imgService.getLiveImagesByCorNo(cor.getCor_no());
-
-            for (CourseImage CourseImage : list) {
-                imgService.delete(CourseImage.getImg_no());
-                if (!imgService.getLiveImage(CourseImage.getImg_no()).is_deleted()) {
-                    isCourseDelete = false;
-                    for (CourseImage courseImage : finishedList) {
-                        imgService.rollback(courseImage.getImg_no());
-                    }
-                    break;
-                }
-                finishedList.add(CourseImage);
-            }
-
-            if (isCourseDelete) {
-                disableCourse(cor);
-                return true;
-            }
+            disableCourse(cor);
+            return true;
         }
         return false;
     }
@@ -465,31 +457,33 @@ public class CourseService {
         Course cor = selectCor(corNo);
 
         if (cor.is_deleted()){
-            boolean isCourseRollback = true;
-            List<CourseImage> list = new ArrayList<CourseImage>();
-            List<CourseImage> finishedList = new ArrayList<>();
-            list = imgService.getLastDeletedCourseImageList(corNo);
-
-            if (list == null) {
-                return false;
-            }
-
-            for (CourseImage CourseImage : list) {
-                imgService.rollback(CourseImage.getImg_no());
-                if (imgService.getLiveImage(CourseImage.getImg_no()).is_deleted()) {
-                    isCourseRollback = false;
-                    for (CourseImage courseImage : finishedList) {
-                        imgService.delete(courseImage.getImg_no());
-                    }
-                    break;
-                }
-                finishedList.add(CourseImage);
-            }
-
-            if (isCourseRollback) {
-                enableCourse(cor);
-                return true;
-            }
+//            boolean isCourseRollback = true;
+//            List<CourseImage> list = new ArrayList<CourseImage>();
+//            List<CourseImage> finishedList = new ArrayList<>();
+//            list = imgService.getLastDeletedCourseImageList(corNo);
+//
+//            if (list == null) {
+//                return false;
+//            }
+//
+//            for (CourseImage CourseImage : list) {
+//                imgService.rollback(CourseImage.getImg_no());
+//                if (imgService.getAllImage(CourseImage.getImg_no()).is_deleted()) {
+//                    isCourseRollback = false;
+//                    for (CourseImage courseImage : finishedList) {
+//                        imgService.delete(courseImage.getImg_no());
+//                    }
+//                    break;
+//                }
+//                finishedList.add(CourseImage);
+//            }
+//
+//            if (isCourseRollback) {
+//                enableCourse(cor);
+//                return true;
+//            }
+            enableCourse(cor);
+            return true;
         }
         return false;
     }
@@ -498,31 +492,33 @@ public class CourseService {
         Course cor = selectCor(uuid);
 
         if (cor.is_deleted()){
-            boolean isCourseRollback = true;
-            List<CourseImage> list = new ArrayList<CourseImage>();
-            List<CourseImage> finishedList = new ArrayList<>();
-            list = imgService.getLastDeletedCourseImageList(cor.getCor_no());
-
-            if (list == null) {
-                return false;
-            }
-
-            for (CourseImage CourseImage : list) {
-                imgService.rollback(CourseImage.getImg_no());
-                if (imgService.getLiveImage(CourseImage.getImg_no()).is_deleted()) {
-                    isCourseRollback = false;
-                    for (CourseImage courseImage : finishedList) {
-                        imgService.delete(courseImage.getImg_no());
-                    }
-                    break;
-                }
-                finishedList.add(CourseImage);
-            }
-
-            if (isCourseRollback) {
-                enableCourse(cor);
-                return true;
-            }
+//            boolean isCourseRollback = true;
+//            List<CourseImage> list = new ArrayList<CourseImage>();
+//            List<CourseImage> finishedList = new ArrayList<>();
+//            list = imgService.getLastDeletedCourseImageList(cor.getCor_no());
+//
+//            if (list == null) {
+//                return false;
+//            }
+//
+//            for (CourseImage CourseImage : list) {
+//                imgService.rollback(CourseImage.getImg_no());
+//                if (imgService.getAllImage(CourseImage.getImg_no()).is_deleted()) {
+//                    isCourseRollback = false;
+//                    for (CourseImage courseImage : finishedList) {
+//                        imgService.delete(courseImage.getImg_no());
+//                    }
+//                    break;
+//                }
+//                finishedList.add(CourseImage);
+//            }
+//
+//            if (isCourseRollback) {
+//                enableCourse(cor);
+//                return true;
+//            }
+            enableCourse(cor);
+            return true;
         }
         return false;
     }
@@ -650,7 +646,7 @@ public class CourseService {
             return null;
         }
 
-        if (dateDuration <= 0) {
+        if (dateDuration < 0) {
 //            log.info("Date duration is below 0. Please input value above 1");
             return null;
         }

@@ -51,7 +51,7 @@ public interface CourseImageRepository extends JpaRepository<CourseImage, Long> 
     Optional<List<CourseImage>> findLastDeletedCourseImagesByCorNo(@Param("cor_no") Long cor_no);
 
     @Modifying
-    @Query(value = "DELETE FROM cor_image  WHERE img_uuid = :img_uuid", nativeQuery = true)
+    @Query(value = "DELETE FROM cor_image WHERE img_uuid = :img_uuid", nativeQuery = true)
     @Transactional
     void deleteByImg_uuid(@Param("img_uuid") String img_uuid);
 }

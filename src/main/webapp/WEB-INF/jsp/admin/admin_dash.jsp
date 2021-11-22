@@ -57,7 +57,7 @@
 								<p><a href="/admin/upload_cache" class="highlight-not-selected-text-menu">upload 파일 캐시 삭제</a></p>
 <%--								<p><a href="/admin/loc_recommend" class="highlight-not-selected-text-menu">- 추천 장소(어드민)</a></p>--%>
 <%--								<p><a href="/admin/cor_recommend" class="highlight-not-selected-text-menu">- 추천 코스(어드민)</a></p>--%>
-								<p class="mb-0"><a href="" class="highlight-not-selected-text-menu">신고 센터</a></p>
+								<p class="mb-0"><a href="/admin/report_center" class="highlight-not-selected-text-menu">신고 센터</a></p>
 							</div>
 						</div>
 					</div>
@@ -70,21 +70,9 @@
 			<div class="row justify-content-between align-items-center mb-5">
 				<div class="col flex-shrink-0 mb-5 mb-md-0">
 					<h1 class="display-4 mb-0">어드민 대시보드</h1>
-<%--					<div class="text-muted">Sales overview &amp; summary</div>--%>
 				</div>
 				<div class="col-12 col-md-auto">
 					<div class="d-flex flex-column flex-sm-row gap-3">
-<%--						<mwc-select class="mw-50 mb-2 mb-md-0" outlined="" label="View by">--%>
-<%--							<mwc-list-item selected="" value="0" mwc-list-item="" tabindex="0" aria-disabled="false" role="option" aria-selected="true">Order type</mwc-list-item>--%>
-<%--							<mwc-list-item value="1" mwc-list-item="" tabindex="-1" aria-disabled="false" role="option">Segment</mwc-list-item>--%>
-<%--							<mwc-list-item value="2" mwc-list-item="" tabindex="-1" aria-disabled="false" role="option">Customer</mwc-list-item>--%>
-<%--						</mwc-select>--%>
-<%--						<mwc-select class="mw-50" outlined="" label="Sales from">--%>
-<%--							<mwc-list-item value="0" mwc-list-item="" tabindex="0" aria-disabled="false" role="option">Last 7 days</mwc-list-item>--%>
-<%--							<mwc-list-item value="1" mwc-list-item="" tabindex="-1" aria-disabled="false" role="option">Last 30 days</mwc-list-item>--%>
-<%--							<mwc-list-item value="2" mwc-list-item="" tabindex="-1" aria-disabled="false" role="option">Last month</mwc-list-item>--%>
-<%--							<mwc-list-item selected="" value="3" mwc-list-item="" tabindex="-1" aria-disabled="false" role="option" aria-selected="true">Last year</mwc-list-item>--%>
-<%--						</mwc-select>--%>
 					</div>
 				</div>
 			</div>
@@ -119,7 +107,7 @@
 							<div class="card-text">
 								<div class="row d-inline-flex align-items-center">
 									<div class="h5">오늘 하루 신고 수</div>
-									<span>100</span>
+									<span>${todayReportCount}</span>
 								</div>
 							</div>
 						</div>
@@ -155,7 +143,7 @@
 							<div class="col-12 d-flex justify-content-center align-items-md-center">
 								<table class="table text-center" id="recentLocCorTable">
 									<thead>
-									<th scope="col">#</th>
+									<th scope="col">No</th>
 									<th scope="col">ID</th>
 									<th scope="col">작성자</th>
 									<th scope="col">제목</th>
@@ -190,7 +178,7 @@
 															<td>장소</td>
 															<td>${recentLocList.get(recentLocCorListIndex.get(i)).likeCount}</td>
 <%--															Todo 추후 신고 추가되면 추가하기--%>
-															<td>Null</td>
+															<td>${recentLocReportCountList.get(recentLocCorListIndex.get(i))}</td>
 															<td>${recentLocList.get(recentLocCorListIndex.get(i)).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}</td>
 														</tr>
 													</c:when>
@@ -204,7 +192,7 @@
 															<td>코스</td>
 															<td>${recentCorList.get(recentLocCorListIndex.get(i)).likeCount}</td>
 <%--															Todo 추후 신고 추가되면 추가하기--%>
-															<td>Null</td>
+															<td>${recentCorReportCountList.get(recentLocCorListIndex.get(i))}</td>
 															<td>${recentCorList.get(recentLocCorListIndex.get(i)).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}</td>
 														</tr>
 													</c:when>
@@ -225,7 +213,7 @@
 							<div class="col-12 d-flex justify-content-center align-items-md-center">
 								<table class="table text-center" id="hotLocCorTable">
 									<thead>
-									<th scope="col">#</th>
+									<th scope="col">No</th>
 									<th scope="col">ID</th>
 									<th scope="col">작성자</th>
 									<th scope="col">제목</th>
@@ -260,7 +248,7 @@
 															<td>장소</td>
 															<td>${hotLocList.get(hotLocCorListIndex.get(i)).likeCount}</td>
 <%--															Todo 추후 신고 추가되면 추가하기--%>
-															<td>Null</td>
+															<td>${hotLocReportCountList.get(hotLocCorListIndex.get(i))}</td>
 															<td>${hotLocList.get(hotLocCorListIndex.get(i)).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}</td>
 														</tr>
 													</c:when>
@@ -274,7 +262,7 @@
 															<td>코스</td>
 															<td>${hotCorList.get(hotLocCorListIndex.get(i)).likeCount}</td>
 <%--													Todo 추후 신고 추가되면 추가하기		--%>
-															<td>Null</td>
+															<td>${hotCorReportCountList.get(hotLocCorListIndex.get(i))}</td>
 															<td>${hotCorList.get(hotLocCorListIndex.get(i)).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}</td>
 														</tr>
 													</c:when>
@@ -295,7 +283,7 @@
 							<div class="col-12 d-flex justify-content-center align-items-md-center">
 								<table class="table text-center" id="recentComRevTable">
 									<thead>
-									<th scope="col">#</th>
+									<th scope="col">No</th>
 									<th scope="col">ID</th>
 									<th scope="col">작성자</th>
 									<th scope="col">
@@ -330,7 +318,7 @@
 															<td>댓글</td>
 															<td>${recentComList.get(recentComRevListIndex.get(i)).likeCount}</td>
 																<%--															Todo 추후 신고 추가되면 추가하기--%>
-															<td>Null</td>
+															<td>${recentComReportCountList.get(recentComRevListIndex.get(i))}</td>
 															<td>${recentComList.get(recentComRevListIndex.get(i)).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}</td>
 														</tr>
 													</c:when>
@@ -345,7 +333,7 @@
 															<td>리뷰</td>
 															<td>${recentRevList.get(recentComRevListIndex.get(i)).rev_like}</td>
 																<%--															Todo 추후 신고 추가되면 추가하기--%>
-															<td>Null</td>
+															<td>${recentRevReportCountList.get(recentComRevListIndex.get(i))}</td>
 															<td>${recentRevList.get(recentComRevListIndex.get(i)).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}</td>
 														</tr>
 													</c:when>
@@ -366,7 +354,7 @@
 							<div class="col-12 d-flex justify-content-center align-items-md-center">
 								<table class="table text-center" id="hotComRevTable">
 									<thead>
-									<th scope="col">#</th>
+									<th scope="col">No</th>
 									<th scope="col">ID</th>
 									<th scope="col">작성자</th>
 									<th scope="col">
@@ -401,7 +389,7 @@
 															<td>댓글</td>
 															<td>${hotComList.get(hotComRevListIndex.get(i)).likeCount}</td>
 																<%--															Todo 추후 신고 추가되면 추가하기--%>
-															<td>Null</td>
+															<td>${hotComReportCountList.get(hotComRevListIndex.get(i))}</td>
 															<td>${hotComList.get(hotComRevListIndex.get(i)).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}</td>
 														</tr>
 													</c:when>
@@ -415,7 +403,7 @@
 															<td>리뷰</td>
 															<td>${hotRevList.get(hotComRevListIndex.get(i)).rev_like}</td>
 																<%--															Todo 추후 신고 추가되면 추가하기--%>
-															<td>Null</td>
+															<td>${hotRevReportCountList.get(hotComRevListIndex.get(i))}</td>
 															<td>${hotRevList.get(hotComRevListIndex.get(i)).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}</td>
 														</tr>
 													</c:when>
@@ -478,7 +466,7 @@
 						tempHolder.push('장소');
 						tempHolder.push('${recentLocList.get(recentLocCorListIndex.get(i)).likeCount}');
 						// TODO 신고수 (추후 값 추가되면 그 때 넣기)
-						tempHolder.push('Null');
+						tempHolder.push('${recentLocReportCountList.get(recentLocCorListIndex.get(i))}');
 						tempHolder.push('${recentLocList.get(recentLocCorListIndex.get(i)).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}');
                         recentTotalLocCorHolder.push(tempHolder);
                         tempHolder = [];
@@ -491,7 +479,7 @@
 						tempHolder.push('코스');
 						tempHolder.push('${recentCorList.get(recentLocCorListIndex.get(i)).likeCount}');
 						// TODO 신고수 (추후 값 추가되면 그 때 넣기)
-						tempHolder.push('Null');
+						tempHolder.push('${recentCorReportCountList.get(recentLocCorListIndex.get(i))}');
 						tempHolder.push('${recentCorList.get(recentLocCorListIndex.get(i)).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}');
                         recentTotalLocCorHolder.push(tempHolder);
                         tempHolder = [];
@@ -510,7 +498,7 @@
 				tempHolder.push('장소');
 				tempHolder.push('${recentLocList.get(i).likeCount}');
 				// TODO 신고수 (추후 값 추가되면 그 때 넣기)
-				tempHolder.push('Null');
+				tempHolder.push('${recentLocReportCountList.get(i)}');
 				tempHolder.push('${recentLocList.get(i).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}');
 				recentLocHolder.push(tempHolder);
 				tempHolder = [];
@@ -526,7 +514,7 @@
 				tempHolder.push('코스');
 				tempHolder.push('${recentCorList.get(i).likeCount}');
 				// TODO 신고수 (추후 값 추가되면 그 때 넣기)
-				tempHolder.push('Null');
+				tempHolder.push('${recentCorReportCountList.get(i)}');
 				tempHolder.push('${recentCorList.get(i).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}');
 				recentCorHolder.push(tempHolder);
 				tempHolder = [];
@@ -544,7 +532,7 @@
 						tempHolder.push('장소');
 						tempHolder.push('${hotLocList.get(hotLocCorListIndex.get(i)).likeCount}');
 						// TODO 신고수 (추후 값 추가되면 그 때 넣기)
-						tempHolder.push('Null');
+						tempHolder.push('${hotLocReportCountList.get(hotLocCorListIndex.get(i))}');
 						tempHolder.push('${hotLocList.get(hotLocCorListIndex.get(i)).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}');
 						hotTotalHolder.push(tempHolder);
 						tempHolder = [];
@@ -557,7 +545,7 @@
 						tempHolder.push('코스');
 						tempHolder.push('${hotCorList.get(hotLocCorListIndex.get(i)).likeCount}');
 						// TODO 신고수 (추후 값 추가되면 그 때 넣기)
-						tempHolder.push('Null');
+						tempHolder.push('${hotCorReportCountList.get(hotLocCorListIndex.get(i))}');
 						tempHolder.push('${hotCorList.get(hotLocCorListIndex.get(i)).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}');
 						hotTotalHolder.push(tempHolder);
 						tempHolder = [];
@@ -576,8 +564,8 @@
 				tempHolder.push('장소');
 				tempHolder.push('${hotLocList.get(i).likeCount}');
 				// TODO 신고수 (추후 값 추가되면 그 때 넣기)
-				tempHolder.push('Null');
-				tempHolder.push('${hotLocList.get(i).regDate}');
+				tempHolder.push('${hotLocReportCountList.get(i)}');
+				tempHolder.push('${hotLocList.get(i).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}');
 				hotLocHolder.push(tempHolder);
 				tempHolder = [];
 			</c:forEach>
@@ -592,8 +580,8 @@
 			tempHolder.push('코스');
 			tempHolder.push('${hotCorList.get(i).likeCount}');
 			// TODO 신고수 (추후 값 추가되면 그 때 넣기)
-			tempHolder.push('Null');
-			tempHolder.push('${hotCorList.get(i).regDate}');
+			tempHolder.push('${hotCorReportCountList.get(i)}');
+			tempHolder.push('${hotCorList.get(i).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}');
 			hotCorHolder.push(tempHolder);
 			tempHolder = [];
 			</c:forEach>
@@ -628,7 +616,7 @@
 						tempHolder.push('댓글');
 						tempHolder.push('${recentComList.get(recentComRevListIndex.get(i)).likeCount}');
 						// TODO 신고수 (추후 값 추가되면 그 때 넣기)
-						tempHolder.push('Null');
+						tempHolder.push('${recentComReportCountList.get(recentComRevListIndex.get(i))}');
 						tempHolder.push('${recentComList.get(recentComRevListIndex.get(i)).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}');
                         tempHolder.push('${recentComList.get(recentComRevListIndex.get(i)).location.loc_no}');
 						recentTotalComRevHolder.push(tempHolder);
@@ -641,7 +629,7 @@
 						tempHolder.push('리뷰');
 						tempHolder.push('${recentRevList.get(recentComRevListIndex.get(i)).rev_like}');
 						// TODO 신고수 (추후 값 추가되면 그 때 넣기)
-						tempHolder.push('Null');
+						tempHolder.push('${recentRevReportCountList.get(recentComRevListIndex.get(i))}');
 						tempHolder.push('${recentRevList.get(recentComRevListIndex.get(i)).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}');
                         tempHolder.push('${recentRevList.get(recentComRevListIndex.get(i)).corNo}');
 						recentTotalComRevHolder.push(tempHolder);
@@ -661,7 +649,7 @@
 				tempHolder.push('댓글');
 				tempHolder.push('${recentComList.get(i).likeCount}');
 				// TODO 신고수 (추후 값 추가되면 그 때 넣기)
-				tempHolder.push('Null');
+				tempHolder.push('${recentComReportCountList.get(i)}');
 				tempHolder.push('${recentComList.get(i).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}');
     			tempHolder.push('${recentComList.get(recentComRevListIndex.get(i)).location.loc_no}');
 				recentComHolder.push(tempHolder);
@@ -677,7 +665,7 @@
 				tempHolder.push('리뷰');
 				tempHolder.push('${recentRevList.get(i).rev_like}');
 				// TODO 신고수 (추후 값 추가되면 그 때 넣기)
-				tempHolder.push('Null');
+				tempHolder.push('${recentRevReportCountList.get(i)}');
 				tempHolder.push('${recentRevList.get(i).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}');
     			tempHolder.push('${recentRevList.get(recentComRevListIndex.get(i)).corNo}');
 				recentRevHolder.push(tempHolder);
@@ -696,7 +684,7 @@
 						tempHolder.push('댓글');
 						tempHolder.push('${hotComList.get(hotComRevListIndex.get(i)).likeCount}');
 						// TODO 신고수 (추후 값 추가되면 그 때 넣기)
-						tempHolder.push('Null');
+						tempHolder.push('${hotComReportCountList.get(hotComRevListIndex.get(i))}');
 						tempHolder.push('${hotComList.get(hotComRevListIndex.get(i)).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}');
     					tempHolder.push('${hotComList.get(hotComRevListIndex.get(i)).location.loc_no}');
 						hotTotalComRevHolder.push(tempHolder);
@@ -709,7 +697,7 @@
 						tempHolder.push('리뷰');
 						tempHolder.push('${hotRevList.get(hotComRevListIndex.get(i)).rev_like}');
 						// TODO 신고수 (추후 값 추가되면 그 때 넣기)
-						tempHolder.push('Null');
+						tempHolder.push('${hotRevReportCountList.get(hotComRevListIndex.get(i))}');
 						tempHolder.push('${hotRevList.get(hotComRevListIndex.get(i)).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}');
     					tempHolder.push('${hotRevList.get(hotComRevListIndex.get(i)).corNo}');
 						hotTotalComRevHolder.push(tempHolder);
@@ -729,7 +717,7 @@
 				tempHolder.push('댓글');
 				tempHolder.push('${hotComList.get(i).likeCount}');
 				// TODO 신고수 (추후 값 추가되면 그 때 넣기)
-				tempHolder.push('Null');
+				tempHolder.push('${hotComReportCountList.get(i)}');
 				tempHolder.push('${hotComList.get(i).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}');
     			tempHolder.push('${hotComList.get(hotComRevListIndex.get(i)).location.loc_no}');
 				hotComHolder.push(tempHolder);
@@ -745,7 +733,7 @@
 				tempHolder.push('리뷰');
 				tempHolder.push('${hotRevList.get(i).rev_like}');
 				// TODO 신고수 (추후 값 추가되면 그 때 넣기)
-				tempHolder.push('Null');
+				tempHolder.push('${hotRevReportCountList.get(i)}');
 				tempHolder.push('${hotRevList.get(i).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}');
     			tempHolder.push('${hotRevList.get(hotComRevListIndex.get(i)).corNo}');
 				hotRevHolder.push(tempHolder);
@@ -996,14 +984,14 @@
                     window.location = '/service/loc_detail?locNo=' + recentTotalComRevHolder[i][6]
 						+ "&page=" + recentComRevPageNumHolder[i] + "&cmtNo=" + recentTotalComRevHolder[i][0];
                 }
-                rows[i].style.background = "#ffdef2";
+                rows[i].style.background = "#fcf4dd";
             }
             else if (recentComRevTotalType[i] === 'Rev') {
                 rows[i].onclick = function() {
                     window.location = '/service/cor_detail?corNo=' + recentTotalComRevHolder[i][6]
                         + "&page=" + recentComRevPageNumHolder[i] + "&revNo=" + recentTotalComRevHolder[i][0];
                 }
-                rows[i].style.background = "#e2eeff";
+                rows[i].style.background = "#C3FFC3";
             }
             rows[i].style.cursor = "hand";
 
@@ -1037,7 +1025,7 @@
                 window.location = '/service/loc_detail?locNo=' + recentComHolder[i][6]
                     + "&page=" + recentComRevPageNumHolder[i] + "&cmtNo=" + recentComHolder[i][0];
             }
-            rows[i].style.background = "#ffdef2";
+            rows[i].style.background = "#fcf4dd";
             rows[i].style.cursor = "hand";
 
             cells[i][0].innerHTML = i+1;
@@ -1070,7 +1058,7 @@
                 window.location = '/service/cor_detail?corNo=' + recentRevHolder[i][6]
                     + "&page=" + recentComRevPageNumHolder[i] + "&revNo=" + recentRevHolder[i][0];
             }
-            rows[i].style.background = "#e2eeff";
+            rows[i].style.background = "#C3FFC3";
             rows[i].style.cursor = "hand";
 
             cells[i][0].innerHTML = i+1;
@@ -1110,14 +1098,14 @@
                     window.location = '/service/loc_detail?locNo=' + hotTotalComRevHolder[i][6]
                         + "&page=" + hotComRevPageNumHolder[i] + "&cmtNo=" + hotTotalComRevHolder[i][0];
                 }
-                rows[i].style.background = "#ffdef2";
+                rows[i].style.background = "#fcf4dd";
             }
-            else if (hotComRevTotalType[i] === 'Cor') {
+            else if (hotComRevTotalType[i] === 'Rev') {
                 rows[i].onclick = function() {
                     window.location = '/service/cor_detail?corNo=' + hotTotalComRevHolder[i][6]
                         + "&page=" + hotComRevPageNumHolder[i] + "&revNo=" + hotTotalComRevHolder[i][0];
                 }
-                rows[i].style.background = "#e2eeff";
+                rows[i].style.background = "#C3FFC3";
             }
             rows[i].style.cursor = "hand";
 
@@ -1151,7 +1139,7 @@
                 window.location = '/service/loc_detail?locNo=' + hotComHolder[i][6]
                     + "&page=" + hotComRevPageNumHolder[i] + "&cmtNo=" + hotComHolder[i][0];
             }
-            rows[i].style.background = "#ffdef2";
+            rows[i].style.background = "#fcf4dd";
             rows[i].style.cursor = "hand";
 
             cells[i][0].innerHTML = i+1;
@@ -1184,7 +1172,7 @@
                 window.location = '/service/cor_detail?corNo=' + hotRevHolder[i][6]
                     + "&page=" + hotComRevPageNumHolder[i] + "&revNo=" + hotRevHolder[i][0];
             }
-            rows[i].style.background = "#e2eeff";
+            rows[i].style.background = "#C3FFC3";
             rows[i].style.cursor = "hand";
 
             cells[i][0].innerHTML = i+1;

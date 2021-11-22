@@ -57,7 +57,7 @@ public class CommentController {
         pageRequestDTO.setSize(MAX_COM_COUNT);
         PageResultDTO<CommentDTO, Comment> resultCommentDTO
 //                    = comService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION, CommentSortType.IDX_ASC);
-                = cmtService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION);
+                = cmtService.getCmtPage(pageRequestDTO);
 
         model.addAttribute("dto", dto);
         model.addAttribute("resComDTO", resultCommentDTO);
@@ -107,7 +107,7 @@ public class CommentController {
         pageRequestDTO.setSize(MAX_COM_COUNT);
         PageResultDTO<CommentDTO, Comment> resultCommentDTO
 //                    = comService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION, CommentSortType.IDX_ASC);
-                = cmtService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION);
+                = cmtService.getCmtPage(pageRequestDTO);
 
         model.addAttribute("dto", dto);
         model.addAttribute("resComDTO", resultCommentDTO);
@@ -154,7 +154,7 @@ public class CommentController {
         pageRequestDTO.setSize(MAX_COM_COUNT);
         PageResultDTO<CommentDTO, Comment> resultCommentDTO
 //                    = comService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION, CommentSortType.IDX_ASC);
-                = cmtService.getCmtPage(pageRequestDTO, CommentPageType.LOCATION);
+                = cmtService.getCmtPage(pageRequestDTO);
 
         model.addAttribute("dto", dto);
         model.addAttribute("resComDTO", resultCommentDTO);

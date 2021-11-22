@@ -47,6 +47,7 @@ public class CommentService {
                 .is_deleted(dto.is_deleted())
                 .dislikeCount(dto.getDislikeCount())
                 .likeCount(dto.getLikeCount())
+                .is_reported(dto.is_reported())
                 .build();
 
         return entity;
@@ -65,6 +66,7 @@ public class CommentService {
                 .is_deleted(cmt.is_deleted())
                 .dislikeCount(cmt.getDislikeCount())
                 .likeCount(cmt.getLikeCount())
+                .is_reported(cmt.is_reported())
                 .build();
 
         return dto;
@@ -95,14 +97,12 @@ public class CommentService {
         return null;
     }
 
-    public PageResultDTO<CommentDTO, Comment> getCmtPage(PageRequestDTO requestDTO,
-                                                         CommentPageType commentType) {
-       return getCmtPage(requestDTO, commentType,
+    public PageResultDTO<CommentDTO, Comment> getCmtPage(PageRequestDTO requestDTO) {
+       return getCmtPage(requestDTO,
                CommentSortType.IDX_DES, CommentSearchType.Live);
     }
 
     public PageResultDTO<CommentDTO, Comment> getCmtPage(PageRequestDTO requestDTO,
-                                                         CommentPageType commentType,
                                                          CommentSortType commentSortType,
                                                          CommentSearchType commentSearchType) {
         Pageable pageable;
@@ -131,16 +131,7 @@ public class CommentService {
         }
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
-
-        switch (commentType) {
-            case LOCATION:
-                booleanBuilder = getCmtPage_Loc(requestDTO, commentSearchType);
-                break;
-            case ALL:
-            default:
-//                booleanBuilder = null;
-                break;
-        }
+        booleanBuilder = getCmtPage_Loc(requestDTO, commentSearchType);
 
         Page<Comment> result = null;
         if (booleanBuilder.hasValue()) {
@@ -499,7 +490,7 @@ public class CommentService {
             return null;
         }
 
-        if (dateDuration <= 0) {
+        if (dateDuration < 0) {
 //            log.info("Date duration is below 0. Please input value above 1");
             return null;
         }
@@ -535,7 +526,7 @@ public class CommentService {
                 .locNo(entity.getLocation().getLoc_no())
                 .size(MAX_COM_COUNT)
                 .build();
-        PageResultDTO<CommentDTO, Comment> pageResultDTO = getCmtPage(pageRequestDTO, CommentPageType.LOCATION,
+        PageResultDTO<CommentDTO, Comment> pageResultDTO = getCmtPage(pageRequestDTO,
                 CommentSortType.IDX_DES, CommentSearchType.All);
 
         int pagEnd = pageResultDTO.getEnd();
@@ -545,7 +536,7 @@ public class CommentService {
         for (int i = 1; i <= pagEnd; i++) {
             if (i != 1) {
                 pageRequestDTO.setPage(i);
-                pageResultDTO = getCmtPage(pageRequestDTO, CommentPageType.LOCATION,
+                pageResultDTO = getCmtPage(pageRequestDTO,
                         CommentSortType.IDX_DES, CommentSearchType.All);
             }
 

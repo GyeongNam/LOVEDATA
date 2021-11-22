@@ -137,6 +137,8 @@ public class ReviewImageService {
     }
 
     private ReviewImage disable(ReviewImage img) {
+        img.set_deleted(true);
+        update(img);
         String extension = pathChangeService.getFileExtension(img.getImg_url());
         if (pathChangeService.execute(img.getImg_uuid(), FileAction.DELETE,
                 PathType.REV, FileExtension.valueOf(extension.toUpperCase(Locale.ROOT)))){

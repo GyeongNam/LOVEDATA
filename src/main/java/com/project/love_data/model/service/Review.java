@@ -40,7 +40,7 @@ public class Review extends TimeEntity {
 
     @Column(name = "is_reported", nullable = false)
     @Builder.Default
-    private Long reported_count = 0L;
+    private boolean is_reported = false;
 
     @Column(name = "sc_total", nullable = false)
     @Builder.Default
@@ -79,10 +79,6 @@ public class Review extends TimeEntity {
     @Column(name = "rev_dislike", nullable = false)
     @Builder.Default
     private int rev_dislike = 0;
-
-    @Column(name = "view_count", nullable = false)
-    @Builder.Default
-    private Long view_count = 0L;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Cascade(value = org.hibernate.annotations.CascadeType.ALL)

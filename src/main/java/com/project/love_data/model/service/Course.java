@@ -83,4 +83,8 @@ public class Course extends TimeEntity {
     @Column(name = "is_deleted", nullable = false)
     @Builder.Default
     private boolean is_deleted = false;
+
+    @Column(name = "is_reported", nullable = false)
+    @Builder.Default
+    private boolean is_reported = false;
 }

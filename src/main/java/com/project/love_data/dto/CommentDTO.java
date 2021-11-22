@@ -20,6 +20,8 @@ public class CommentDTO {
     private Long cmtNo;
     @Builder.Default
     private boolean is_deleted = false;
+    @Builder.Default
+    private boolean is_reported = false;
     @ToString.Exclude
     private Location location;
     private String cmtContent;

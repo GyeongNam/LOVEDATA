@@ -37,15 +37,13 @@ public class ReviewDTO {
     @Builder.Default
     private boolean is_modified = false;
     @Builder.Default
-    private Long reported_count = 0L;
+    private boolean is_reported = false;
     @Builder.Default
     private String revUuid = UUID.randomUUID().toString();
     @Builder.Default
     private int rev_like = 0;
     @Builder.Default
     private int rev_dislike = 0;
-    @Builder.Default
-    private Long view_count = 0L;
     @Builder.Default
     private LocalDateTime regDate = LocalDateTime.now();
     @Builder.Default

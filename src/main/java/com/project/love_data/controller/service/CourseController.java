@@ -105,12 +105,6 @@ public class CourseController {
         if (tagList.isEmpty()) {
             log.warn("No Location Tag Found (Must add tag before submit location)");
             return "redirect:/service/cor_recommend";
-        } else {
-            log.info("tagList : " + tagList);
-        }
-
-        for (String s : request.getParameterMap().keySet()) {
-            log.info(s + "\t:\t" + Arrays.toString(request.getParameterMap().get(s)));
         }
 
         for (int i = 1; i <= Integer.parseInt(reqParam.get("location_length")); i++) {
@@ -120,10 +114,6 @@ public class CourseController {
 //            reqParam.put("loc_addr_" + i, request.getParameter("loc_addr_" + i));
 //            reqParam.put("loc_tel_" + i, request.getParameter("loc_tel_" + i));
 //            reqParam.put("loc_info_" + i, request.getParameter("loc_info_" + i));
-        }
-
-        for (String s : reqParam.keySet()) {
-            log.info(s + "\t:\t" + reqParam.get(s));
         }
 
         filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE, UploadFileCount.MULTIPLE,
@@ -380,6 +370,12 @@ public class CourseController {
                 courseImageList = (ArrayList<CourseImage>) courseImageService.getLiveImagesByCorNo(dto.getCor_no());
             }
 
+            User userEntity = userService.select(dto.getUser_no());
+            UserDTO userDTO = null;
+            if (userEntity != null) {
+                userDTO = userService.entityToDto(userEntity);
+            }
+
             model.addAttribute("dto", dto);
             model.addAttribute("resRevDTO", resultReviewDTO);
             model.addAttribute("ImageList", courseImageList);
@@ -395,6 +391,7 @@ public class CourseController {
             model.addAttribute("bestRevIndexList", bestRevIndexList);
             model.addAttribute("bestRevUserPicList", bestRevUserPicList);
             model.addAttribute("revIndexList", revIndexList);
+            model.addAttribute("userDTO", userDTO);
 
             return "/service/cor_detail";
         }
@@ -545,12 +542,6 @@ public class CourseController {
         if (tagList.isEmpty()) {
             log.warn("No Location Tag Found (Must add tag before submit location)");
             return "redirect:/service/cor_recommend";
-        } else {
-            log.info("tagList : " + tagList);
-        }
-
-        for (String s : request.getParameterMap().keySet()) {
-            log.info(s + "\t:\t" + Arrays.toString(request.getParameterMap().get(s)));
         }
 
         for (int i = 1; i <= Integer.parseInt(reqParam.get("location_length")); i++) {
@@ -560,10 +551,6 @@ public class CourseController {
 //            reqParam.put("loc_addr_" + i, request.getParameter("loc_addr_" + i));
 //            reqParam.put("loc_tel_" + i, request.getParameter("loc_tel_" + i));
 //            reqParam.put("loc_info_" + i, request.getParameter("loc_info_" + i));
-        }
-
-        for (String s : reqParam.keySet()) {
-            log.info(s + "\t:\t" + reqParam.get(s));
         }
 
         filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE, UploadFileCount.MULTIPLE,
@@ -662,7 +649,11 @@ public class CourseController {
         PageResultDTO<CourseDTO, Course> resultDTO = corService.getList(pageRequestDTO);
 
         if (resultDTO.getTotalPage() < pageNum) {
-            model.addAttribute("isRequestPageNumberExceed", true);
+            if (resultDTO.getTotalPage() == 0) {
+                model.addAttribute("isEmptyResult", true);
+            } else {
+                model.addAttribute("isRequestPageNumberExceed", true);
+            }
         } else {
             model.addAttribute("isRequestPageNumberExceed", false);
         }
@@ -733,6 +724,36 @@ public class CourseController {
             return "/alert/alert";
         }
         corService.updateThumbnail(entity.getCor_no());
+
+        return "redirect:/service/cor_recommend";
+    }
+
+    @PostMapping("/service/cor_perma_delete")
+    public String corPermaDelete(HttpServletRequest request,
+                            RedirectAttributes redirectAttributes,
+                            Model model,
+                            Authentication authentication, Long corNo) {
+        if (authentication == null) {
+            return "redirect:/service/cor_recommend";
+        }
+
+        Course entity = corService.selectCor(corNo);
+
+        if (entity == null) {
+            return "redirect:/service/cor_recommend";
+        }
+
+        AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
+        Long user_no = authUserModel.getUser_no();
+        Set<GrantedAuthority> authorities = (Set<GrantedAuthority>) authUserModel.getAuthorities();
+
+        if (!request.isUserInRole("ROLE_ADMIN")) {
+            log.warn("장소 삭제를 요청한 유저가 어드민 권한이 없습니다");
+            return "redirect:/service/cor_recommend";
+        }
+
+        corService.delete(entity.getCor_no());
+        corService.permaDelete(entity.getCor_no());
 
         return "redirect:/service/cor_recommend";
     }

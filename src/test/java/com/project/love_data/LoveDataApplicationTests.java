@@ -75,4 +75,11 @@ class LoveDataApplicationTests {
 			System.out.print(integer);
 		}
 	}
+
+	@Test
+	public void koreanVariableTest() {
+		String 한글 = "안녕하세요";
+
+		System.out.println(한글);
+	}
 }

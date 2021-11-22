@@ -55,7 +55,7 @@
 								<p><a href="/admin/upload_cache" class="highlight-selected-text-menu">upload 파일 캐시 삭제</a></p>
 <%--								<p><a href="/admin/loc_recommend" class="highlight-not-selected-text-menu">- 추천 장소(어드민)</a></p>--%>
 <%--								<p><a href="/admin/cor_recommend" class="highlight-not-selected-text-menu">- 추천 코스(어드민)</a></p>--%>
-								<p class="mb-0"><a href="" class="highlight-not-selected-text-menu">신고 센터</a></p>
+								<p class="mb-0"><a href="/admin/report_center" class="highlight-not-selected-text-menu">신고 센터</a></p>
 							</div>
 						</div>
 					</div>
@@ -77,7 +77,7 @@
 					<div class="d-flex justify-content-center align-items-md-center">
 						<table class="table text-center" id="recentLocCorTable">
 							<thead>
-							<th scope="col">#</th>
+							<th scope="col">No</th>
 							<th scope="col">ID</th>
 							<th scope="col">타입</th>
 							<th scope="col">업로드 유저</th>
@@ -167,7 +167,7 @@
 	}
 </script>
 <script defer>
-	let fileOriginURLList = [];
+	let urlList = [];
     let aryLength = ${fileNameList.size()};
 
     <c:choose>
@@ -179,10 +179,11 @@
 			for (let i = 0; i < aryLength; i++) {
 				let row = document.getElementById('row_' + i);
 				if (fileOriginURLList[i] != null) {
-					// row.onclick = 'location.href=' + fileOriginURLList[i];
+					// row.onclick = 'location.href=' + urlList[i];
+                    // 타입 (2)로 테이블 색상 결정
+                    tableRowColor(row, row.children.item(2).innerText);
+
 					for (let j = 0; j < row.childElementCount; j++) {
-                        // 타입 (2)로 테이블 색상 결정
-                        tableRowColor(row, row.children.item(2).innerText);
 						// 파일명 (4), 선택(8) 제외
 						let col = row.children.item(j);
 						if (j == 4 || j == 8) {

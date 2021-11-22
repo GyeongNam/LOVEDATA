@@ -35,18 +35,16 @@
 				<div class="card">
 					<div class="card-header" id="headingLoc">
 						<h2 class="mb-0">
-							<button class="btn btn-link btn-block loc_highlight-selected-nav-menu" type="button"
-									data-toggle="collapse"
-									data-target="#loc_collapse" aria-expanded="true" aria-controls="collapseOne">
+							<button class="btn btn-link btn-block loc_highlight-selected-nav-menu" type="button">
 								코스
 							</button>
 						</h2>
 					</div>
-					<div id="loc_collapse" class="collapse show" aria-labelledby="headingLoc" data-parent="#loc">
+					<div id="loc_collapse" class="show" aria-labelledby="headingLoc" data-parent="#loc">
 						<div class="card-body center-pill">
 							<p><a href="/service/cor_recommend" class="highlight-selected-text-menu">- 추천 코스</a></p>
 							<p><a href="/service/cor_registration" class="highlight-not-selected-text-menu">- 코스 등록</a></p>
-							<p><a href="" class="highlight-not-selected-text-menu">- 코스 편집</a></p>
+							<p><a href="/mypage_mycorse" class="highlight-not-selected-text-menu">- 코스 편집</a></p>
 						</div>
 					</div>
 				</div>
@@ -166,89 +164,93 @@
 <%--		요청한 페이지 넘버가 최대 페이지 수를 넘어갈 경우		--%>
 				<c:when test="${isRequestPageNumberExceed eq true}">
 					<span>요청한 페이지 번호는 존재하지 않습니다.</span>
-					<%
-						if( true ) return;
-					%>
 				</c:when>
-				<c:when test="${result.end ne 0}">
-					<c:forEach var="i" begin="0" end="${result.dtoList.size()-1}">
-						<c:if test="${i eq 2}">
-							<div class="w-100"></div>
-						</c:if>
-						<div class="col-md-4" id="loc_${i}">
-							<div class="card mb-4 shadow-sm">
-								<c:url var="cor_detail" value="/service/cor_detail">
-									<c:param name="corNo" value="${result.dtoList.get(i).cor_no}"/>
-								</c:url>
-								<a class="container p-0 btn" href="${cor_detail}">
-									<c:set var="cor_thumbnail" value="${result.dtoList.get(i).thumbnail}"></c:set>
-									<c:choose>
-										<c:when test="${cor_thumbnail ne ''}">
-											<img class="bd-placeholder-img card-img-top" width="100%" height="225"
-												 alt="${result.dtoList.get(i).cor_name}"
-												 src="${result.dtoList.get(i).thumbnail}"
-												 preserveAspectRatio="xMidYMid slice" focusable="false">
-										</c:when>
-										<c:otherwise>
-											<svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-												 xmlns="http://www.w3.org/2000/svg" role="img"
-												 aria-label="Placeholder: Thumbnail"
-												 preserveAspectRatio="xMidYMid slice" focusable="false">
-												<title>Placeholder</title>
-												<rect width="100%" height="100%" fill="#55595c"></rect>
-												<text x="40%" y="50%" fill="#eceeef"
-													  dy=".3em">${result.dtoList.get(i).cor_name}</text>
-											</svg>
-										</c:otherwise>
-									</c:choose>
-								</a>
+				<c:when test="${isEmptyResult eq true}">
+					<span>결과가 없습니다.</span>
+				</c:when>
+				<c:otherwise>
+					<c:choose>
+						<c:when test="${result.end ne 0}">
+							<c:forEach var="i" begin="0" end="${result.dtoList.size()-1}">
+								<c:if test="${i eq 2}">
+									<div class="w-100"></div>
+								</c:if>
+								<div class="col-md-4" id="loc_${i}">
+									<div class="card mb-4 shadow-sm">
+										<c:url var="cor_detail" value="/service/cor_detail">
+											<c:param name="corNo" value="${result.dtoList.get(i).cor_no}"/>
+										</c:url>
+										<a class="container p-0 btn" href="${cor_detail}">
+											<c:set var="cor_thumbnail" value="${result.dtoList.get(i).thumbnail}"></c:set>
+											<c:choose>
+												<c:when test="${cor_thumbnail ne ''}">
+													<img class="bd-placeholder-img card-img-top" width="100%" height="225"
+														 alt="${result.dtoList.get(i).cor_name}"
+														 src="${result.dtoList.get(i).thumbnail}"
+														 preserveAspectRatio="xMidYMid slice" focusable="false">
+												</c:when>
+												<c:otherwise>
+													<svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+														 xmlns="http://www.w3.org/2000/svg" role="img"
+														 aria-label="Placeholder: Thumbnail"
+														 preserveAspectRatio="xMidYMid slice" focusable="false">
+														<title>Placeholder</title>
+														<rect width="100%" height="100%" fill="#55595c"></rect>
+														<text x="40%" y="50%" fill="#eceeef"
+															  dy=".3em">${result.dtoList.get(i).cor_name}</text>
+													</svg>
+												</c:otherwise>
+											</c:choose>
+										</a>
 
-								<div class="card-body p-2">
-									<div class="d-flex justify-content-between align-items-center p-1">
-										<div class="d-flex">
-											<a class="card-text loc_rec-locTitle" href="${cor_detail}"
-											   id="title_${i+0}">${result.dtoList.get(i).cor_name}</a>
-										</div>
-										<div class="d-flex align-items-center">
-											<img src="/image/icon/view.png" class="loc_icon" alt="조회수">
-											<span class="align-middle">${result.dtoList.get(i).viewCount}</span>
-											<img src="/image/icon/comment.png" class="loc_icon" alt="댓글">
-											<span class="align-middle">${liveRevCountList.get(i)}</span>
-											<sec:authorize access="isAuthenticated()">
-												<%--												Todo 코스 찜하기 리스트 컨트롤러 수정후 jsp도 수정하기--%>
-												<c:choose>
-													<c:when test="${isLikedList.get(i) eq true}">
-														<img src="/image/icon/like/love_color.png" class="loc_icon" alt="찜하기"
-															 onclick="onClickLike(this, <sec:authentication property="principal.user_no"/>,'cor')">
-													</c:when>
-													<c:otherwise>
-														<img src="/image/icon/like/love_black.png" class="loc_icon" alt="찜하기"
-															 onclick="onClickLike(this, <sec:authentication property="principal.user_no"/>, 'cor')">
-													</c:otherwise>
-												</c:choose>
-											</sec:authorize>
-											<sec:authorize access="isAnonymous()">
-												<img src="/image/icon/like/love_black.png" class="loc_icon" alt="찜하기">
-											</sec:authorize>
-											<span class="align-middle" id="loc_like_count" name="loc_like_count">${result.dtoList.get(i).likeCount}</span>
-											<span class="d-none">${result.dtoList.get(i).cor_no}</span>
-											<span class="d-none">${result.dtoList.get(i).cor_uuid}</span>
-												<%--											<sec:authorize access="isAuthenticated()">--%>
-												<%--												<c:set var="user_no"><sec:authentication property="principal.user_no"></sec:authentication></c:set>--%>
-												<%--												<span class="d-none">${user_no}</span>--%>
-												<%--											</sec:authorize>--%>
-												<%--											<sec:authorize access="isAnonymous()">--%>
-												<%--												<span class="d-none">-1</span>--%>
-												<%--											</sec:authorize>--%>
+										<div class="card-body p-2">
+											<div class="d-flex justify-content-between align-items-center p-1">
+												<div class="d-flex">
+													<a class="card-text loc_rec-locTitle" href="${cor_detail}"
+													   id="title_${i+0}">${result.dtoList.get(i).cor_name}</a>
+												</div>
+												<div class="d-flex align-items-center">
+													<img src="/image/icon/view.png" class="loc_icon" alt="조회수">
+													<span class="align-middle">${result.dtoList.get(i).viewCount}</span>
+													<img src="/image/icon/comment.png" class="loc_icon" alt="댓글">
+													<span class="align-middle">${liveRevCountList.get(i)}</span>
+													<sec:authorize access="isAuthenticated()">
+														<%--												Todo 코스 찜하기 리스트 컨트롤러 수정후 jsp도 수정하기--%>
+														<c:choose>
+															<c:when test="${isLikedList.get(i) eq true}">
+																<img src="/image/icon/like/love_color.png" class="loc_icon" alt="찜하기"
+																	 onclick="onClickLike(this, <sec:authentication property="principal.user_no"/>,'cor')">
+															</c:when>
+															<c:otherwise>
+																<img src="/image/icon/like/love_black.png" class="loc_icon" alt="찜하기"
+																	 onclick="onClickLike(this, <sec:authentication property="principal.user_no"/>, 'cor')">
+															</c:otherwise>
+														</c:choose>
+													</sec:authorize>
+													<sec:authorize access="isAnonymous()">
+														<img src="/image/icon/like/love_black.png" class="loc_icon" alt="찜하기">
+													</sec:authorize>
+													<span class="align-middle" id="loc_like_count" name="loc_like_count">${result.dtoList.get(i).likeCount}</span>
+													<span class="d-none">${result.dtoList.get(i).cor_no}</span>
+													<span class="d-none">${result.dtoList.get(i).cor_uuid}</span>
+														<%--											<sec:authorize access="isAuthenticated()">--%>
+														<%--												<c:set var="user_no"><sec:authentication property="principal.user_no"></sec:authentication></c:set>--%>
+														<%--												<span class="d-none">${user_no}</span>--%>
+														<%--											</sec:authorize>--%>
+														<%--											<sec:authorize access="isAnonymous()">--%>
+														<%--												<span class="d-none">-1</span>--%>
+														<%--											</sec:authorize>--%>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-						</div>
-					</c:forEach>
-				</c:when>
-				<c:otherwise>
-					<h1 class="text-center">등록된 정보가 없습니다.</h1>
+							</c:forEach>
+						</c:when>
+						<c:otherwise>
+							<h1 class="text-center">등록된 정보가 없습니다.</h1>
+						</c:otherwise>
+					</c:choose>
 				</c:otherwise>
 			</c:choose>
 

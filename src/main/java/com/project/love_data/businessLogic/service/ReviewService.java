@@ -31,6 +31,7 @@ public class ReviewService {
     private final CourseRepository corRepository;
     private final UserRepository userRepository;
     private final ReviewImageService revImgService;
+    private final DeletedImageInfoService deletedImageInfoService;
 
     public Review dtoToEntity(ReviewDTO dto) {
         Review entity = Review.builder()
@@ -45,8 +46,7 @@ public class ReviewService {
                 .user_nickname(dto.getUserNickname())
                 .rev_like(dto.getRev_like())
                 .rev_dislike(dto.getRev_dislike())
-                .view_count(dto.getView_count())
-                .reported_count(dto.getReported_count())
+                .is_reported(dto.is_reported())
                 .sc_loc(dto.getSc_loc())
                 .sc_move(dto.getSc_move())
                 .sc_revisit(dto.getSc_revisit())
@@ -67,11 +67,10 @@ public class ReviewService {
                 .revUuid(entity.getRevUuid())
                 .userNo(entity.getUser_no())
                 .revNo(entity.getRevNo())
-                .reported_count(entity.getReported_count())
+                .is_reported(entity.is_reported())
                 .userNickname(entity.getUser_nickname())
                 .rev_like(entity.getRev_like())
                 .rev_dislike(entity.getRev_dislike())
-                .view_count(entity.getView_count())
                 .sc_loc(entity.getSc_loc())
                 .sc_move(entity.getSc_move())
                 .sc_revisit(entity.getSc_revisit())
@@ -240,24 +239,27 @@ public class ReviewService {
         Review rev = select(revNo);
 
         if (!rev.is_deleted()) {
-            List<ReviewImage> list = revImgService.getAllLiveImageByRevNo(revNo);
-            List<ReviewImage> finishedList = new ArrayList<>();
-            boolean isRevImageDeleted = true;
+//            List<ReviewImage> list = revImgService.getAllLiveImageByRevNo(revNo);
+//            List<ReviewImage> finishedList = new ArrayList<>();
+//            boolean isRevImageDeleted = true;
+//
+//            for (ReviewImage reviewImage : list) {
+//                revImgService.delete(reviewImage.getImg_no());
+//                if (!revImgService.getImage(reviewImage.getImg_no()).is_deleted()) {
+//                    for (ReviewImage image : finishedList) {
+//                        revImgService.rollback(image.getImg_no());
+//                    }
+//                    isRevImageDeleted = false;
+//                }
+//            }
+//
+//            if (isRevImageDeleted) {
+//                disable(rev);
+//                return true;
+//            }
 
-            for (ReviewImage reviewImage : list) {
-                revImgService.delete(reviewImage.getImg_no());
-                if (!revImgService.getImage(reviewImage.getImg_no()).is_deleted()) {
-                    for (ReviewImage image : finishedList) {
-                        revImgService.rollback(image.getImg_no());
-                    }
-                    isRevImageDeleted = false;
-                }
-            }
-
-            if (isRevImageDeleted) {
-                disable(rev);
-                return true;
-            }
+            disable(rev);
+            return true;
         }
 
         return false;
@@ -267,35 +269,48 @@ public class ReviewService {
         Review rev = select(uuid);
 
         if (!rev.is_deleted()) {
-            List<ReviewImage> list = revImgService.getAllLiveImageByRevNo(rev.getRevNo());
-            List<ReviewImage> finishedList = new ArrayList<>();
-            boolean isRevImageDeleted = true;
+//            List<ReviewImage> list = revImgService.getAllLiveImageByRevNo(rev.getRevNo());
+//            List<ReviewImage> finishedList = new ArrayList<>();
+//            boolean isRevImageDeleted = true;
+//
+//            for (ReviewImage reviewImage : list) {
+//                revImgService.delete(reviewImage.getImg_no());
+//                if (!revImgService.getImage(reviewImage.getImg_no()).is_deleted()) {
+//                    for (ReviewImage image : finishedList) {
+//                        revImgService.rollback(image.getImg_no());
+//                    }
+//                    isRevImageDeleted = false;
+//                }
+//            }
+//
+//            if (isRevImageDeleted) {
+//                disable(rev);
+//                return true;
+//            }
 
-            for (ReviewImage reviewImage : list) {
-                revImgService.delete(reviewImage.getImg_no());
-                if (!revImgService.getImage(reviewImage.getImg_no()).is_deleted()) {
-                    for (ReviewImage image : finishedList) {
-                        revImgService.rollback(image.getImg_no());
-                    }
-                    isRevImageDeleted = false;
-                }
-            }
-
-            if (isRevImageDeleted) {
-                disable(rev);
-                return true;
-            }
+            disable(rev);
+            return true;
         }
 
         return false;
     }
 
     public void permaDelete(Review rev) {
-        // Todo 기존에 있던 리뷰 index 하나씩 앞으로 당기기
-        PageRequestDTO requestDTO = PageRequestDTO.builder()
-                .size(Integer.MAX_VALUE)
-                .sortingOrder(SortingOrder.ASC).build();
-        PageResultDTO<ReviewDTO, Review> revResultList = getRevPage(requestDTO, SortingOrder.ASC, ReviewSearchType.Live);
+        if(rev == null) {
+            return;
+        }
+
+        List<ReviewImage> list = revImgService.getAllLiveImageByRevNo(rev.getRevNo());
+
+        if (list != null) {
+            for (ReviewImage reviewImage : list) {
+                revImgService.delete(reviewImage.getImg_no());
+                if (revImgService.getImage(reviewImage.getImg_no()).is_deleted()) {
+                    deletedImageInfoService.register(reviewImage.getImg_no(), "REV_IMG", reviewImage.getUser_no());
+                    revImgService.permaDelete(reviewImage.getImg_uuid());
+                }
+            }
+        }
 
         repository.deleteByRev_no(rev.getRevNo());
     }
@@ -304,24 +319,27 @@ public class ReviewService {
         Review rev = select(revNo);
 
         if (rev.is_deleted()) {
-            List<ReviewImage> list = revImgService.getLastDeletedImageByRevNo(revNo);
-            List<ReviewImage> finishedList = new ArrayList<>();
-            boolean isRevImageRollback = true;
+//            List<ReviewImage> list = revImgService.getLastDeletedImageByRevNo(revNo);
+//            List<ReviewImage> finishedList = new ArrayList<>();
+//            boolean isRevImageRollback = true;
+//
+//            for (ReviewImage reviewImage : list) {
+//                revImgService.rollback(reviewImage.getImg_no());
+//                if (!revImgService.getImage(reviewImage.getImg_no()).is_deleted()) {
+//                    for (ReviewImage image : finishedList) {
+//                        revImgService.delete(image.getImg_no());
+//                    }
+//                    isRevImageRollback = false;
+//                }
+//            }
+//
+//            if (isRevImageRollback) {
+//                enable(rev);
+//                return true;
+//            }
 
-            for (ReviewImage reviewImage : list) {
-                revImgService.rollback(reviewImage.getImg_no());
-                if (!revImgService.getImage(reviewImage.getImg_no()).is_deleted()) {
-                    for (ReviewImage image : finishedList) {
-                        revImgService.delete(image.getImg_no());
-                    }
-                    isRevImageRollback = false;
-                }
-            }
-
-            if (isRevImageRollback) {
-                enable(rev);
-                return true;
-            }
+            enable(rev);
+            return true;
         }
 
         return false;
@@ -467,7 +485,7 @@ public class ReviewService {
             return null;
         }
 
-        if (dateDuration <= 0) {
+        if (dateDuration < 0) {
 //            log.info("Date duration is below 0. Please input value above 1");
             return null;
         }
