@@ -49,7 +49,7 @@
 							</p>
 							<p><a href="/service/loc_registration" class="highlight-selected-text-menu">- 장소 등록</a>
 							</p>
-							<p><a href="/mypage_myplace" class="highlight-not-selected-text-menu">- 장소 편집</a></p>
+							<p><a href="/mypage_myplace/1" class="highlight-not-selected-text-menu">- 장소 편집</a></p>
 						</div>
 					</div>
 				</div>

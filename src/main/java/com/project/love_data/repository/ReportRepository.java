@@ -31,6 +31,9 @@ public interface ReportRepository extends JpaRepository<Report, Long>,
     @Query(value = "SELECT r.rep_type FROM report r WHERE  r.rc_no = :rc_no", nativeQuery = true)
     Optional<List<String>> findRepTypesByRcNo(@Param("rc_no") Long rcNo);
 
+    @Query(value = "SELECT * FROM report r WHERE r.rc_no = :rc_no AND r.is_complete = :complete", nativeQuery = true)
+    Optional<List<Report>> findAllByRcNoAndComplete(@Param("rc_no") Long rcNo, @Param("complete") boolean complete);
+
     // 어드민 대쉬보드 최근 신고
     @Query(value = "SELECT * FROM report r WHERE datediff(now(), r.regdate) <= :date ORDER BY r.regdate", nativeQuery = true)
     Optional<List<Report>> getRecentReportsByDateDuration(@Param("date") int dateDuration);

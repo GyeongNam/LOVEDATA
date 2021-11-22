@@ -44,7 +44,7 @@
 						<div class="card-body center-pill">
 							<p><a href="/service/cor_recommend" class="highlight-selected-text-menu">- 추천 코스</a></p>
 							<p><a href="/service/cor_registration" class="highlight-not-selected-text-menu">- 코스 등록</a></p>
-							<p><a href="/mypage_mycorse" class="highlight-not-selected-text-menu">- 코스 편집</a></p>
+							<p><a href="/mypage_mycorse/1" class="highlight-not-selected-text-menu">- 코스 편집</a></p>
 						</div>
 					</div>
 				</div>

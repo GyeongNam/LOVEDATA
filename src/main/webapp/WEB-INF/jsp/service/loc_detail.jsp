@@ -132,7 +132,7 @@
 							<p><a href="/service/loc_recommend" class="highlight-selected-text-menu">- 추천 장소</a></p>
 							<p><a href="/service/loc_registration" class="highlight-not-selected-text-menu">- 장소
 								등록</a></p>
-							<p><a href="/mypage_myplace" class="highlight-not-selected-text-menu">- 장소 편집</a></p>
+							<p><a href="/mypage_myplace/1" class="highlight-not-selected-text-menu">- 장소 편집</a></p>
 						</div>
 					</div>
 				</div>
@@ -279,7 +279,7 @@
 					<button class="btn btn-outline-danger col-3" style="max-height: 56px;" onclick="location.href='/service/loc_edit?locNo=${dto.loc_no}'">수정</button>
 					<sec:authorize access="isAuthenticated()">
 						<button class="btn btn-outline-danger col-3" style="max-height: 56px" data-bs-toggle="modal" data-bs-target="#exampleModal"
-								onclick="openReportModal('${dto.loc_name}', '${userNick}', 'LOC')">신고</button>
+								onclick="openReportModal('${dto.loc_name}', '${userNick}', 'LOC', '${dto.loc_no}')">신고</button>
 <%--						<span><sec:authentication property="principal.user_no"></sec:authentication></span>--%>
 					<c:set var="currUserNo"><sec:authentication property="principal.user_no"></sec:authentication></c:set>
 					<c:choose>
@@ -536,8 +536,10 @@
 																	</div>
 																</c:when>
 																<c:otherwise>
-																	<button class="btn btn-outline-danger col-1" style="max-height: 56px" data-bs-toggle="modal" data-bs-target="#exampleModal"
-																			onclick="openReportModal('${cmtDTO.get(c).cmtContent}', '${cmtDTO.get(c).user.user_nic}', 'COM')">신고</button>
+																	<button class="btn btn-outline-danger col-2" style="max-height: 56px" data-bs-toggle="modal" data-bs-target="#exampleModal"
+																			onclick="openReportModal('${cmtDTO.get(c).cmtContent}', '${cmtDTO.get(c).user.user_nic}', 'COM', '${cmtDTO.get(c).cmtNo}')">댓글 신고</button>
+																	<button class="btn btn-outline-danger col-2" style="max-height: 56px" data-bs-toggle="modal" data-bs-target="#exampleModal"
+																			onclick="openReportModal('', '${cmtDTO.get(c).user.user_nic}', 'PROFILE_PIC', '${cmtDTO.get(c).user.user_no}')">프로필 신고</button>
 																</c:otherwise>
 															</c:choose>
 														</sec:authorize>
@@ -919,7 +921,6 @@
             reportContent = '';
         }
 
-        let postNo = Number.parseInt('${dto.loc_no}');
         let userNo = null;
 
         <sec:authorize access="isAuthenticated()">
@@ -963,13 +964,14 @@
         });
     }
 
-    function openReportModal(name, username, postTypeValue) {
+    function openReportModal(name, username, postTypeValue, postNoValue) {
         let repPostName = document.getElementById("repPostName");
         let userNick = document.getElementById("userNick");
 
         repPostName.innerText = "제목 : " + name;
         userNick.innerText = "작성자 : " + username;
         postType = postTypeValue;
+        postNo = postNoValue
     }
 </script>
 </body>

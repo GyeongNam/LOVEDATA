@@ -129,7 +129,7 @@
 						<div class="card-body center-pill">
 							<p><a href="/service/cor_recommend" class="highlight-selected-text-menu">- 추천 코스</a></p>
 							<p><a href="/service/cor_registration" class="highlight-not-selected-text-menu">- 코스 등록</a></p>
-							<p><a href="/mypage_mycorse" class="highlight-not-selected-text-menu">- 코스 편집</a></p>
+							<p><a href="/mypage_mycorse/1" class="highlight-not-selected-text-menu">- 코스 편집</a></p>
 						</div>
 					</div>
 				</div>
@@ -290,7 +290,7 @@
 					<button class="btn btn-outline-danger col-3" style="max-height: 56px;" onclick="location.href='/service/cor_edit?corNo=${dto.cor_no}'">수정</button>
 					<!-- Button trigger modal -->
 					<button class="btn btn-outline-danger col-3" style="max-height: 56px" data-bs-toggle="modal" data-bs-target="#exampleModal"
-							onclick="openReportModal('${dto.cor_name}', '${userNick}', 'COR')">신고</button>
+							onclick="openReportModal('${dto.cor_name}', '${userNick}', 'COR', '${dto.cor_no}')">신고</button>
 					<button class="btn btn-outline-danger col-3" style="max-height: 56px" onclick="openReviewRegisterPopup()">리뷰 팝업 열기</button>
 				</div>
 				<sec:authorize access="isAuthenticated()">
@@ -705,8 +705,19 @@
 																			</div>
 																		</c:when>
 																		<c:otherwise>
-																			<button class="btn btn-outline-danger col-1" style="max-height: 56px" data-bs-toggle="modal" data-bs-target="#exampleModal"
-																					onclick="openReportModal('${revDTO.get(c).revContent}', '${revDTO.get(c).userNickname}', 'REV')">신고</button>
+																			<button class="btn btn-outline-danger col-2" style="max-height: 56px" data-bs-toggle="modal" data-bs-target="#exampleModal"
+																					onclick="openReportModal('${revDTO.get(c).revContent}', '${revDTO.get(c).userNickname}', 'REV', '${revDTO.get(c).revNo}')">리뷰 신고</button>
+																			<button class="btn btn-outline-danger col-2" style="max-height: 56px" data-bs-toggle="modal" data-bs-target="#exampleModal"
+																					onclick="openReportModal('', '${revDTO.get(c).userNickname}', 'PROFILE_PIC', '${revDTO.get(c).userNo}')">프로필 신고</button>
+<%--																			<div class="dropdown col-1">--%>
+<%--																				<button class="btn btn-outline-danger dropdown-toggle" type="button" id="dropdownReportMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--%>
+<%--																					신고--%>
+<%--																				</button>--%>
+<%--																				<div class="dropdown-menu" aria-labelledby="dropdownReportMenuButton">--%>
+<%--																					<a class="dropdown-item" onclick="openReportModal('${revDTO.get(c).revContent}', '${revDTO.get(c).userNickname}', 'REV', '${revDTO.get(c).revNo}')">리뷰 신고</a>--%>
+<%--																					<a class="dropdown-item" onclick="openReportModal('${revDTO.get(c).revContent}', '${revDTO.get(c).userNickname}', 'REV', '${revDTO.get(c).revNo}')">프로필 신고</a>--%>
+<%--																				</div>--%>
+<%--																			</div>--%>
 																		</c:otherwise>
 																	</c:choose>
 																</sec:authorize>
@@ -855,6 +866,9 @@
 <%-- https://song8420.tistory.com/236 --%>
 <%--<script defer src="https://code.jquery.com/jquery-3.5.1.slim.min.js"--%>
 <%--		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"--%>
+<%--		crossorigin="anonymous"></script>--%>
+<%--<script defer src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"--%>
+<%--		integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"--%>
 <%--		crossorigin="anonymous"></script>--%>
 <script defer src="/js/bootstrap.js"></script>
 <script defer src="/js/loc_detail.js"></script>
@@ -1380,6 +1394,7 @@
 </script>
 <script>
 	let postType;
+    let postNo;
 
     function onClickRemoveCourse() {
         if (!window.confirm("코스를 삭제하시겠습니까?")) {
@@ -1444,7 +1459,6 @@
             reportContent = '';
 		}
 
-		let postNo = Number.parseInt('${dto.cor_no}');
 		let userNo = null;
 
 		<sec:authorize access="isAuthenticated()">
@@ -1488,13 +1502,14 @@
         });
 	}
 
-    function openReportModal(name, username, postTypeValue) {
+    function openReportModal(name, username, postTypeValue, postNoValue) {
         let repPostName = document.getElementById("repPostName");
         let userNick = document.getElementById("userNick");
 
         repPostName.innerText = "제목 : " + name;
         userNick.innerText = "작성자 : " + username;
         postType = postTypeValue;
+        postNo = postNoValue;
 	}
 </script>
 </body>

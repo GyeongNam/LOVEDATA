@@ -22,16 +22,13 @@ public class ReportManageService {
     ReportClusterService rcService;
 
     public Report registerReport(Map<String, String> reqParam) {
-        ReportCluster rcEntity = rcService.selectByPostNoPostType(Long.valueOf(reqParam.get("postNo")),
-                reqParam.get("postType"));
+        ReportCluster rcEntity = rcService.register(reqParam);
 
         if (rcEntity == null) {
-            rcEntity = rcService.register(reqParam);
-            if (rcEntity == null) {
-                log.warn("Error Occurs during registering ReportCluster");
-                return null;
-            }
+            log.warn("Error Occurs during registering ReportCluster");
+            return null;
         }
+
         reqParam.put("rcNo", String.valueOf(rcEntity.getRcNo()));
 
         return repService.register(reqParam);
@@ -108,8 +105,8 @@ public class ReportManageService {
         return repService.recentReportCount(dateDuration);
     }
 
-    public Integer reportCount(Long rcNo) {
-        return repService.reportCount(rcNo);
+    public Integer reportCount(Long rcNo, Boolean complete) {
+        return repService.reportCount(rcNo, complete);
     }
 
     public Long getRcNo(Long postNo, String postType) {
@@ -131,7 +128,7 @@ public class ReportManageService {
             return false;
         }
 
-        Integer count = reportCount(rcNo);
+        Integer count = reportCount(rcNo, false);
 
         if (count == null) {
             return false;

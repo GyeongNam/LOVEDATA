@@ -398,7 +398,7 @@ public class AdminController {
             } else {
                 recentLocUserNicList.add(user.getUser_nic());
             }
-            recentLocReportCountList.add(reportManageService.reportCount(reportManageService.getRcNo(entity.getLoc_no(), "LOC")));
+            recentLocReportCountList.add(reportManageService.reportCount(reportManageService.getRcNo(entity.getLoc_no(), "LOC"), null));
         }
 
         tempLocationList.clear();
@@ -411,7 +411,7 @@ public class AdminController {
             } else {
                 hotLocUserNicList.add(user.getUser_nic());
             }
-            hotLocReportCountList.add(reportManageService.reportCount(reportManageService.getRcNo(entity.getLoc_no(), "LOC")));
+            hotLocReportCountList.add(reportManageService.reportCount(reportManageService.getRcNo(entity.getLoc_no(), "LOC"), null));
         }
 
         tempCourseList = corService.recentCourseList(size, dateDuration);
@@ -423,7 +423,7 @@ public class AdminController {
             } else {
                 recentCorUserNicList.add(user.getUser_nic());
             }
-            recentCorReportCountList.add(reportManageService.reportCount(reportManageService.getRcNo(entity.getCor_no(), "COR")));
+            recentCorReportCountList.add(reportManageService.reportCount(reportManageService.getRcNo(entity.getCor_no(), "COR"), null));
         }
 
         tempCourseList.clear();
@@ -436,7 +436,7 @@ public class AdminController {
             } else {
                 hotCorUserNicList.add(user.getUser_nic());
             }
-            hotCorReportCountList.add(reportManageService.reportCount(reportManageService.getRcNo(entity.getCor_no(), "COR")));
+            hotCorReportCountList.add(reportManageService.reportCount(reportManageService.getRcNo(entity.getCor_no(), "COR"), null));
         }
 
         int x = 0;
@@ -607,7 +607,7 @@ public class AdminController {
             } else {
                 recentComUserNicList.add(user.getUser_nic());
             }
-            recentComReportCountList.add(reportManageService.reportCount(reportManageService.getRcNo(entity.getCmtNo(), "COM")));
+            recentComReportCountList.add(reportManageService.reportCount(reportManageService.getRcNo(entity.getCmtNo(), "COM"), null));
         }
 
         tempCommentList.clear();
@@ -620,7 +620,7 @@ public class AdminController {
             } else {
                 hotComUserNicList.add(user.getUser_nic());
             }
-            hotComReportCountList.add(reportManageService.reportCount(reportManageService.getRcNo(entity.getCmtNo(), "COM")));
+            hotComReportCountList.add(reportManageService.reportCount(reportManageService.getRcNo(entity.getCmtNo(), "COM"), null));
         }
 
         tempReviewList = reviewService.recentReviewList(size, dateDuration);
@@ -632,7 +632,7 @@ public class AdminController {
             } else {
                 recentRevUserNicList.add(user.getUser_nic());
             }
-            recentRevReportCountList.add(reportManageService.reportCount(reportManageService.getRcNo(entity.getRevNo(), "REV")));
+            recentRevReportCountList.add(reportManageService.reportCount(reportManageService.getRcNo(entity.getRevNo(), "REV"), null));
         }
 
         tempReviewList.clear();
@@ -645,7 +645,7 @@ public class AdminController {
             } else {
                 hotRevUserNicList.add(user.getUser_nic());
             }
-            hotRevReportCountList.add(reportManageService.reportCount(reportManageService.getRcNo(entity.getRevNo(), "REV")));
+            hotRevReportCountList.add(reportManageService.reportCount(reportManageService.getRcNo(entity.getRevNo(), "REV"), null));
         }
 
         x = 0;

@@ -2,6 +2,7 @@ package com.project.love_data.businessLogic.service;
 
 import com.project.love_data.dto.*;
 import com.project.love_data.model.service.*;
+import com.project.love_data.model.user.User;
 import com.project.love_data.repository.*;
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,8 @@ public class ReportService {
     CommentRepository comRepository;
     @Autowired
     ReviewRepository revRepository;
+    @Autowired
+    UserRepository userRepository;
     static final int REPORT_STATUS_CHANGE_SIZE = 5;
 
     public Report register(Map<String, String> reqParam) {
@@ -55,6 +58,12 @@ public class ReportService {
             case "REV":
                 Optional<Review> revItem = revRepository.findById(Long.valueOf(reqParam.get("postNo")));
                 if (!revItem.isPresent()) {
+                    return null;
+                }
+                break;
+            case "PROFILE_PIC":
+                Optional<User> userItem = userRepository.findById(Long.valueOf(reqParam.get("postNo")));
+                if (!userItem.isPresent()){
                     return null;
                 }
                 break;
@@ -420,7 +429,7 @@ public class ReportService {
         return null;
     }
 
-    public Integer reportCount (Long rcNo) {
+    public Integer reportCount (Long rcNo, Boolean complete) {
         if (rcNo == null) {
             return 0;
         }
@@ -429,7 +438,13 @@ public class ReportService {
             return 0;
         }
 
-        Optional<List<Report>> items = repository.findAllByRcNo(rcNo);
+        Optional<List<Report>> items = null;
+
+        if (complete == null) {
+            items = repository.findAllByRcNo(rcNo);
+        } else {
+            items = repository.findAllByRcNoAndComplete(rcNo, complete);
+        }
 
         if (items.isPresent()) {
             return items.get().size();
