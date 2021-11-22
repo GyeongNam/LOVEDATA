@@ -15,7 +15,7 @@ public class CourseImageService {
     private final CourseImageRepository repository;
     private final FilePathChangeService pathChangeService;
 
-    public CourseImage getLiveImage(Long imgId) {
+    public CourseImage getAllImage(Long imgId) {
         Optional<CourseImage> item = repository.findById(imgId);
 
         return item.orElse(null);
@@ -115,7 +115,7 @@ public class CourseImageService {
             update(img);
         }
 
-        return getLiveImage(img.getImg_no());
+        return getAllImage(img.getImg_no());
     }
 
     private CourseImage enable(CourseImage img) {
@@ -127,11 +127,11 @@ public class CourseImageService {
             update(img);
         }
 
-        return getLiveImage(img.getImg_no());
+        return getAllImage(img.getImg_no());
     }
 
     public void delete(Long imgNo) {
-        CourseImage img = getLiveImage(imgNo);
+        CourseImage img = getAllImage(imgNo);
 
         if (!img.is_deleted()) {
             disable(img);
@@ -147,7 +147,7 @@ public class CourseImageService {
     }
 
     public void rollback(Long imgNo) {
-        CourseImage img = getLiveImage(imgNo);
+        CourseImage img = getAllImage(imgNo);
 
         if (img.is_deleted()) {
             enable(img);

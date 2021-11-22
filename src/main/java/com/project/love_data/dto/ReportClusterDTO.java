@@ -21,7 +21,7 @@ public class ReportClusterDTO extends TimeEntity {
     @Builder.Default
     private String rcUuid = UUID.randomUUID().toString();
     @Builder.Default
-    private String rcStatus = "";
+    private String rcResult = "";
     @Builder.Default
     private boolean rcComplete = false;
     @Builder.Default

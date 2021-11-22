@@ -45,8 +45,6 @@ public class ReviewDTO {
     @Builder.Default
     private int rev_dislike = 0;
     @Builder.Default
-    private Long view_count = 0L;
-    @Builder.Default
     private LocalDateTime regDate = LocalDateTime.now();
     @Builder.Default
     private LocalDateTime modDate = LocalDateTime.now();

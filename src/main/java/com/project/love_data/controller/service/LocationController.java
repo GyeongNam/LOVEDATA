@@ -278,6 +278,12 @@ public class LocationController {
                 model.addAttribute("isLiked", false);
             }
 
+            User userEntity = userService.select(dto.getUser_no());
+            UserDTO userDTO = null;
+            if (userEntity != null) {
+                userDTO = userService.entityToDto(userEntity);
+            }
+
             model.addAttribute("dto", dto);
             model.addAttribute("resComDTO", resultCommentDTO);
             model.addAttribute("cmtLikeList", cmtLikeList);
@@ -287,6 +293,7 @@ public class LocationController {
             model.addAttribute("bestCmtDislikeList", bestCmtDislikeList);
             model.addAttribute("bestCmtIndexList", bestCmtIndexList);
             model.addAttribute("cmtIndexList", cmtIndexList);
+            model.addAttribute("userDTO", userDTO);
 
             return "/service/loc_detail";
         }
@@ -547,6 +554,37 @@ public class LocationController {
             model.addAttribute("redirectURL", "/service/loc_recommend");
             return "/alert/alert";
         }
+
+        return "redirect:/service/loc_recommend";
+    }
+
+    @PostMapping("/service/loc_perma_delete")
+    public String locPermaDelete(HttpServletRequest request,
+                            HttpServletResponse response,
+                            RedirectAttributes redirectAttributes,
+                            Model model,
+                            Authentication authentication, Long locNo) {
+        if (authentication == null) {
+            return "redirect:/service/loc_recommend";
+        }
+
+        Location entity = locService.selectLoc(locNo);
+
+        if (entity == null) {
+            return "redirect:/service/loc_recommend";
+        }
+
+        AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
+        Long user_no = authUserModel.getUser_no();
+        Set<GrantedAuthority> authorities = (Set<GrantedAuthority>) authUserModel.getAuthorities();
+
+        if (!request.isUserInRole("ROLE_ADMIN")) {
+            log.warn("장소 삭제를 요청한 유저가 어드민 권한이 없습니다");
+            return "redirect:/service/loc_recommend";
+        }
+
+        locService.delete(entity.getLoc_no());
+        locService.permaDelete(entity);
 
         return "redirect:/service/loc_recommend";
     }

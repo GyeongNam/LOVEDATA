@@ -1,5 +1,6 @@
 package com.project.love_data.repository;
 
+import com.project.love_data.model.service.Comment;
 import com.project.love_data.model.service.Report;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -26,6 +27,13 @@ public interface ReportRepository extends JpaRepository<Report, Long>,
 
     @Query(value = "SELECT * FROM report r WHERE  r.rep_type = :rep_type", nativeQuery = true)
     Optional<List<Report>> findAllByRepType(@Param("rep_type") String repType);
+
+    @Query(value = "SELECT r.rep_type FROM report r WHERE  r.rc_no = :rc_no", nativeQuery = true)
+    Optional<List<String>> findRepTypesByRcNo(@Param("rc_no") Long rcNo);
+
+    // 어드민 대쉬보드 최근 신고
+    @Query(value = "SELECT * FROM report r WHERE datediff(now(), r.regdate) <= :date ORDER BY r.regdate", nativeQuery = true)
+    Optional<List<Report>> getRecentReportsByDateDuration(@Param("date") int dateDuration);
 
     @Modifying
     @Query(value = "DELETE FROM report WHERE rep_no = :rep_no", nativeQuery = true)

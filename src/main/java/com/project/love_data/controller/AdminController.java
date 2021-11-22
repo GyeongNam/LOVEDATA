@@ -23,8 +23,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static com.project.love_data.util.ConstantValues.MAX_COR_LIST_SIZE;
-import static com.project.love_data.util.ConstantValues.MAX_LOC_LIST_SIZE;
+import static com.project.love_data.util.ConstantValues.*;
 
 @Log4j2
 @Controller
@@ -384,6 +383,11 @@ public class AdminController {
         List<String> recentCorUserNicList = new ArrayList<>();
         List<String> hotCorUserNicList = new ArrayList<>();
 
+        List<Integer> recentLocReportCountList = new ArrayList<>();
+        List<Integer> hotLocReportCountList = new ArrayList<>();
+        List<Integer> recentCorReportCountList = new ArrayList<>();
+        List<Integer> hotCorReportCountList = new ArrayList<>();
+
         // dateDuration 만큼의 일수 차이가 나고 size 만큼의 양을 가진  locationDTOList
         tempLocationList = locService.recentLocationList(size, dateDuration);
         for (Location entity : tempLocationList) {
@@ -394,6 +398,7 @@ public class AdminController {
             } else {
                 recentLocUserNicList.add(user.getUser_nic());
             }
+            recentLocReportCountList.add(reportManageService.reportCount(reportManageService.getRcNo(entity.getLoc_no(), "LOC")));
         }
 
         tempLocationList.clear();
@@ -406,6 +411,7 @@ public class AdminController {
             } else {
                 hotLocUserNicList.add(user.getUser_nic());
             }
+            hotLocReportCountList.add(reportManageService.reportCount(reportManageService.getRcNo(entity.getLoc_no(), "LOC")));
         }
 
         tempCourseList = corService.recentCourseList(size, dateDuration);
@@ -417,6 +423,7 @@ public class AdminController {
             } else {
                 recentCorUserNicList.add(user.getUser_nic());
             }
+            recentCorReportCountList.add(reportManageService.reportCount(reportManageService.getRcNo(entity.getCor_no(), "COR")));
         }
 
         tempCourseList.clear();
@@ -429,6 +436,7 @@ public class AdminController {
             } else {
                 hotCorUserNicList.add(user.getUser_nic());
             }
+            hotCorReportCountList.add(reportManageService.reportCount(reportManageService.getRcNo(entity.getCor_no(), "COR")));
         }
 
         int x = 0;
@@ -567,6 +575,7 @@ public class AdminController {
         model.addAttribute("hotLocCorListIndex", hotLocCorListIndex);
         model.addAttribute("hotLocCorTypeList", hotLocCorTypeList);
 
+
         List<Comment> tempCommentList = new ArrayList<>();
         List<CommentDTO> recentCommentList = new ArrayList<>();
         List<CommentDTO> hotCommentList = new ArrayList<>();
@@ -583,6 +592,11 @@ public class AdminController {
         List<String> recentRevUserNicList = new ArrayList<>();
         List<String> hotRevUserNicList = new ArrayList<>();
 
+        List<Integer> recentComReportCountList = new ArrayList<>();
+        List<Integer> hotComReportCountList = new ArrayList<>();
+        List<Integer> recentRevReportCountList = new ArrayList<>();
+        List<Integer> hotRevReportCountList = new ArrayList<>();
+
         // dateDuration 만큼의 일수 차이가 나고 size 만큼의 양을 가진  commentDTOList
         tempCommentList = comService.recentCommentList(size, dateDuration);
         for (Comment entity : tempCommentList) {
@@ -593,6 +607,7 @@ public class AdminController {
             } else {
                 recentComUserNicList.add(user.getUser_nic());
             }
+            recentComReportCountList.add(reportManageService.reportCount(reportManageService.getRcNo(entity.getCmtNo(), "COM")));
         }
 
         tempCommentList.clear();
@@ -605,6 +620,7 @@ public class AdminController {
             } else {
                 hotComUserNicList.add(user.getUser_nic());
             }
+            hotComReportCountList.add(reportManageService.reportCount(reportManageService.getRcNo(entity.getCmtNo(), "COM")));
         }
 
         tempReviewList = reviewService.recentReviewList(size, dateDuration);
@@ -616,6 +632,7 @@ public class AdminController {
             } else {
                 recentRevUserNicList.add(user.getUser_nic());
             }
+            recentRevReportCountList.add(reportManageService.reportCount(reportManageService.getRcNo(entity.getRevNo(), "REV")));
         }
 
         tempReviewList.clear();
@@ -628,6 +645,7 @@ public class AdminController {
             } else {
                 hotRevUserNicList.add(user.getUser_nic());
             }
+            hotRevReportCountList.add(reportManageService.reportCount(reportManageService.getRcNo(entity.getRevNo(), "REV")));
         }
 
         x = 0;
@@ -766,6 +784,17 @@ public class AdminController {
         model.addAttribute("hotComRevListIndex", hotComRevListIndex);
         model.addAttribute("hotComRevTypeList", hotComRevTypeList);
 
+        model.addAttribute("recentLocReportCountList", recentLocReportCountList);
+        model.addAttribute("hotLocReportCountList", hotLocReportCountList);
+        model.addAttribute("recentCorReportCountList", recentCorReportCountList);
+        model.addAttribute("hotCorReportCountList", hotCorReportCountList);
+
+        model.addAttribute("recentComReportCountList", recentComReportCountList);
+        model.addAttribute("hotComReportCountList", hotComReportCountList);
+        model.addAttribute("recentRevReportCountList", recentRevReportCountList);
+        model.addAttribute("hotRevReportCountList", hotRevReportCountList);
+
+
         tempLocationList.clear();
         tempCourseList.clear();
         tempCommentList.clear();
@@ -797,6 +826,7 @@ public class AdminController {
 
         model.addAttribute("todayLocCorCount", todayLocCorCount);
         model.addAttribute("todayComRevCount", todayComRevCount);
+        model.addAttribute("todayReportCount", reportManageService.recentReportCount(1));
 
         List<Integer> recentComRevPageNum = new ArrayList<>();
         List<Integer> hotComRevPageNum = new ArrayList<>();
@@ -1137,6 +1167,9 @@ public class AdminController {
     public String reportDetail(HttpServletRequest request,
                                Model model, @RequestParam Long rcNo){
         ReportPageCompleteType completeType = ReportPageCompleteType.PROGRESS;
+        String repType = null;
+        List<String> repTypeList = new ArrayList<>();
+        List<String> resultDTORepTypeKRList = new ArrayList<>();
         ReportPageRequestDTO pageRequestDTO = null;
         ReportPageResultDTO<ReportDTO, Report> pageResultDTO = null;
 
@@ -1144,33 +1177,78 @@ public class AdminController {
             switch (request.getParameter("completeType")) {
                 case "COMPLETE" :
                     completeType = ReportPageCompleteType.COMPLETE;
-                case "PROGRESS" :
+                    break;
                 case "ALL" :
+                    completeType = ReportPageCompleteType.ALL;
+                    break;
+                case "PROGRESS" :
                 default:
                     completeType = ReportPageCompleteType.PROGRESS;
             }
+        }
+
+        if (request.getParameter("repType") != null) {
+            repType = reportTypeMapKR2EN.get(request.getParameter("repType"));
+//            repType = ReportType.valueOf(request.getParameter("repType")).toString();
         }
 
         switch (completeType) {
             case COMPLETE:
                 pageRequestDTO = ReportPageRequestDTO.builder()
                         .rcNo(rcNo)
+                        .repType(repType)
                         .completeType(ReportPageCompleteType.COMPLETE)
                         .build();
                 break;
-            case PROGRESS:
             case ALL:
+                pageRequestDTO = ReportPageRequestDTO.builder()
+                        .rcNo(rcNo)
+                        .repType(repType)
+                        .completeType(ReportPageCompleteType.ALL)
+                        .build();
+                break;
+            case PROGRESS:
             default:
                 pageRequestDTO = ReportPageRequestDTO.builder()
                         .rcNo(rcNo)
+                        .repType(repType)
                         .completeType(ReportPageCompleteType.PROGRESS)
                         .build();
         }
 
         pageResultDTO = reportManageService.getReportPage(pageRequestDTO);
+        repTypeList = reportManageService.getKRReportTypeList(rcNo);
+
+        for (ReportDTO reportDTO : pageResultDTO.getDtoList()) {
+            resultDTORepTypeKRList.add(reportTypeMapEN2KR.get(reportDTO.getRepType()));
+        }
 
         model.addAttribute("pageResultDTO", pageResultDTO);
+        model.addAttribute("repTypeList", repTypeList);
+        model.addAttribute("resultDTORepTypeKRList", resultDTORepTypeKRList);
 
         return "/popup/reportClusterDetailPopup";
+    }
+
+    @PostMapping("/report_center/report_process")
+    @ResponseBody
+    public boolean processReport(HttpServletRequest request, Model model,
+                                 @RequestParam("rcNoList[]") Long[] rcNoList,
+                                 @RequestParam String result) {
+        if (rcNoList == null) {
+            log.warn("rcNoList is null");
+            return false;
+        }
+
+        if (rcNoList.length == 0) {
+            log.warn("rcNoList is empty");
+            return false;
+        }
+
+        if (!reportManageService.processReport(Arrays.asList(rcNoList), result)) {
+            return false;
+        }
+
+        return true;
     }
 }

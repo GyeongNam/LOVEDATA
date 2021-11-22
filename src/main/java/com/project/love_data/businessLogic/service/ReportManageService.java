@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+import static com.project.love_data.util.ConstantValues.reportTypeMapEN2KR;
+
 @Service
 @Log4j2
 @RequiredArgsConstructor
@@ -45,8 +47,96 @@ public class ReportManageService {
         return repService.getList(pageRequestDTO);
     }
 
-    // 주어진 명령(삭제 혹은 무시)에 따라 신고를 처리하는 메소드
-    public void handleReport() {
+    public List<String> getENReportTypeList(Long rcNo) {
+        return repService.getReportTypesByRcNo(rcNo);
+    }
 
+    public List<String> getKRReportTypeList(Long rcNo) {
+        List<String> holder = repService.getReportTypesByRcNo(rcNo);
+        List<String> result = new ArrayList<>();
+
+        for (String s : holder) {
+            result.add(reportTypeMapEN2KR.get(s));
+        }
+
+        return result;
+    }
+
+    public Report getReportByRepNo(Long repNo) {
+        return repService.select(repNo);
+    }
+
+    public List<Report> getReportsByUserNo(Long userNo) {
+        return repService.findAllByUserNo(userNo);
+    }
+
+    public ReportCluster getReportClusterByRcNo(Long rcNo) {
+        return rcService.select(rcNo);
+    }
+
+    // 주어진 명령(삭제 혹은 무시)에 따라 신고를 처리하는 메소드
+    public boolean processReport(List<Long> rcNoList, String result) {
+        List<Long> completeList = new ArrayList<>();
+        boolean isError = false;
+
+        for (Long rcNo : rcNoList) {
+            if (!repService.processReport(rcNo, result)) {
+                log.warn("Error occurs during process report");
+                isError = true;
+                break;
+            } else {
+                completeList.add(rcNo);
+            }
+        }
+
+        if (isError) {
+            for (Long rcNo : completeList) {
+                if (!repService.undoReport(rcNo)){
+                    log.warn("Error occurs during undo process report");
+                    return false;
+                }
+            }
+            return false;
+        }
+
+        //Todo 처리된 신고 수 만큼 ReportCluster에 있는 reportCount 감소시키는 메소드 만들기
+
+        return true;
+    }
+
+    public Integer recentReportCount(int dateDuration) {
+        return repService.recentReportCount(dateDuration);
+    }
+
+    public Integer reportCount(Long rcNo) {
+        return repService.reportCount(rcNo);
+    }
+
+    public Long getRcNo(Long postNo, String postType) {
+        ReportCluster rcEntity = rcService.selectByPostNoPostType(postNo, postType);
+
+        if (rcEntity == null) {
+            return null;
+        }
+
+        return rcEntity.getRcNo();
+    }
+
+    public boolean syncReportClusterRepCount(Long rcNo) {
+        if (rcNo == null) {
+            return false;
+        }
+
+        if (rcNo < 0) {
+            return false;
+        }
+
+        Integer count = reportCount(rcNo);
+
+        if (count == null) {
+            return false;
+        }
+
+        return rcService.setRepCount(rcNo, count);
     }
 }

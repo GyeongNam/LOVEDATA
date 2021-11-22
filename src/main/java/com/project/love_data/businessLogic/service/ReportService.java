@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Function;
 
@@ -210,8 +211,9 @@ public class ReportService {
             case COMPLETE:
                 conditionBuilder.and(qReport.complete.eq(true));
                 break;
-            case PROGRESS:
             case ALL:
+                break;
+            case PROGRESS:
             default:
                 conditionBuilder.and(qReport.complete.eq(false));
         }
@@ -221,6 +223,14 @@ public class ReportService {
                 conditionBuilder.and(qReport.rcNo.eq(rcNo));
             case NONE:
             default:
+        }
+
+        if (repType != null && !repType.equals("ALL")) {
+            conditionBuilder.and(qReport.repType.eq(repType));
+        }
+
+        if (result != null) {
+            conditionBuilder.and(qReport.result.eq(result));
         }
 
         return conditionBuilder;
@@ -309,5 +319,122 @@ public class ReportService {
                     break;
             }
         }
+    }
+
+    public List<String> getReportTypesByRcNo(Long rcNo) {
+        if (rcNo == null) {
+            return null;
+        }
+
+        if (rcNo < 0) {
+            return null;
+        }
+
+        Optional<List<String>> items = repository.findRepTypesByRcNo(rcNo);
+        List<String> result = new ArrayList<>();
+
+        if (items.isPresent()) {
+            List<String> item = items.get();
+
+            for (String s : item) {
+                if (!result.contains(s)) {
+                    result.add(s);
+                }
+            }
+
+            return result;
+        }
+
+        return null;
+    }
+
+    public boolean processReport(Long repNo, String result) {
+        if (repNo == null) {
+            return false;
+        }
+
+        if (repNo < 0) {
+            return false;
+        }
+
+        Report repEntity = select(repNo);
+
+        repEntity.setResult(result);
+        repEntity.setComplete(true);
+
+        save(repEntity);
+
+        repEntity = select(repNo);
+
+        if (!repEntity.getResult().equals(result)) {
+            return false;
+        }
+
+        if (!repEntity.isComplete()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean undoReport(Long repNo) {
+        if (repNo == null) {
+            return false;
+        }
+
+        if (repNo < 0) {
+            return false;
+        }
+
+        Report repEntity = select(repNo);
+
+        repEntity.setResult(null);
+        repEntity.setComplete(false);
+
+        save(repEntity);
+
+        repEntity = select(repNo);
+
+        if (repEntity.getResult() != null) {
+            return false;
+        }
+
+        if (repEntity.isComplete()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public Integer recentReportCount(int dateDuration) {
+        if (dateDuration < 0) {
+            return null;
+        }
+
+       Optional<List<Report>> items = repository.getRecentReportsByDateDuration(dateDuration);
+
+        if (items.isPresent()) {
+            return items.get().size();
+        }
+
+        return null;
+    }
+
+    public Integer reportCount (Long rcNo) {
+        if (rcNo == null) {
+            return 0;
+        }
+
+        if (rcNo < 0) {
+            return 0;
+        }
+
+        Optional<List<Report>> items = repository.findAllByRcNo(rcNo);
+
+        if (items.isPresent()) {
+            return items.get().size();
+        }
+
+        return 0;
     }
 }

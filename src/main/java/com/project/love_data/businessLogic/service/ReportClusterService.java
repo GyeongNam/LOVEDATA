@@ -48,7 +48,7 @@ public class ReportClusterService {
                 .rcUuid(dto.getRcUuid())
                 .postNo(dto.getPostNo())
                 .postType(dto.getPostType())
-                .rcStatus(dto.getRcStatus())
+                .rcResult(dto.getRcResult())
                 .rcComplete(dto.isRcComplete())
                 .repCount(dto.getRepCount())
                 .build();
@@ -62,7 +62,7 @@ public class ReportClusterService {
                 .rcUuid(entity.getRcUuid())
                 .postNo(entity.getPostNo())
                 .postType(entity.getPostType())
-                .rcStatus(entity.getRcStatus())
+                .rcResult(entity.getRcResult())
                 .rcComplete(entity.isRcComplete())
                 .repCount(entity.getRepCount())
                 .build();
@@ -205,5 +205,31 @@ public class ReportClusterService {
         Optional<ReportCluster> item = repository.findByRcUuid(rcUuid);
 
         return !item.isPresent();
+    }
+
+    public boolean setRepCount(Long rcNo, Integer repCount) {
+        if (rcNo == null || repCount == null) {
+            return false;
+        }
+
+        if (rcNo < 0 || repCount < 0) {
+            return false;
+        }
+
+        Optional<ReportCluster> item = repository.findById(rcNo);
+        if (item.isPresent()) {
+            ReportCluster rcEntity = item.get();
+            rcEntity.setRepCount(repCount);
+
+            save(rcEntity);
+
+            item = repository.findById(rcNo);
+
+            if (item.get().getRepCount() == repCount) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

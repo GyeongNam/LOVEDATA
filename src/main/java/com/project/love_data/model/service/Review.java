@@ -80,10 +80,6 @@ public class Review extends TimeEntity {
     @Builder.Default
     private int rev_dislike = 0;
 
-    @Column(name = "view_count", nullable = false)
-    @Builder.Default
-    private Long view_count = 0L;
-
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
     @Column(length = 60, nullable = false)

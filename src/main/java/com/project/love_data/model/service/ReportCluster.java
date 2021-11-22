@@ -34,9 +34,9 @@ public class ReportCluster extends TimeEntity {
     @Builder.Default
     private String rcUuid = UUID.randomUUID().toString();
 
-    @Column(name = "rc_status", nullable = false)
+    @Column(name = "rc_result", nullable = false)
     @Builder.Default
-    private String rcStatus = "";
+    private String rcResult = "";
 
     @Column(name = "rc_complete", nullable = false)
     @Builder.Default

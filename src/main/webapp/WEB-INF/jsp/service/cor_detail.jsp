@@ -38,76 +38,80 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+					<h5 class="modal-title" id="exampleModalLabel">신고하기</h5>
 					<button class="btn-close" type="button" class="close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div class="row">
-						<div class="col d-flex justify-content-center align-items-md-center" id="searchResultArea">
-							<table>
-								<tbody id="tableBody">
-<%--								<tr onclick="location.href='/'" style="cursor:hand">--%>
-								<tr>
-									<td>1</td>
-									<td>광화문</td>
-								</tr>
-								<tr>
-									<td>내용</td>
-									<td><textarea rows="3" cols="30"></textarea></td>
-								</tr>
-								<tr>
-									<td>별점</td>
-									<td>별점 등록</td>
-								</tr>
-								<tr>
-									<td>이미지</td>
-									<td>
-										<div id="canvas_rev" class="row flex-nowrap mx-0 my-3"
-											 style="overflow-x: scroll; /*outline: blue thick solid;*/">
-											<input id="imgInput" name="files" type="file"  minlength="1" maxlength="3" multiple
-												   accept="image/*" onchange="readImage()">
-											<c:forEach var="i" begin="1" end="3">
-												<div class="card p-0 m-2 visually-hidden">
-													<img src="/image/icon/480px-Solid_white.png" alt="" id="img_${i}"
-														 class="visible bd-place card-img"
-														 style="height: 244px; width: 100%; outline: none">
-													<div class="d-flex justify-content-center card-img-overlay"
-														 style="align-items: center">
-														<img class="btn btn-lg align-middle" onclick="onClickAddImage()"
-															 id="imgAdd_${i}"
-															 src="/image/icon/black-24dp/2x/outline_add_black_24dp.png"
-															 style="height: 30%; z-index: 2">
-													</div>
-													<div class="d-flex justify-content-end card-img-overlay p-0 visually-hidden"
-														 style="align-items: flex-start">
-														<img class="btn btn-lg align-middle p-0" id="imgDel_${i}"
-															 onclick="deleteImage(this)"
-															 src="/image/icon/black-24dp/2x/outline_clear_black_24dp.png"
-															 style="z-index: 2">
-													</div>
-													<div class="d-flex justify-content-center card-img-overlay p-0 visually-hidden"
-														 style="align-items: center">
-														<img class="w-100 h-100" id="imgSel_${i}" onclick="onSelectImage(${i})"
-															 src="/image/icon/480px-Solid_white.png"
-															 style="opacity : 0.0; z-index: 1;">
-													</div>
-												</div>
-											</c:forEach>
-										</div>
-									</td>
-								</tr>
-								</tbody>
-							</table>
+						<span id="repPostName">제 목 : 내용</span>
+						<span id="userNick">작성자 : 닉네임</span>
+						<hr class="mt-2 mb-2">
+						<span> 사유 선택 : </span>
+						<form name="repTypeForm" id="repTypeForm" class="mb-0" onchange="(function onChangeRepTypeForm() {
+							let repContentRow = document.getElementById('repContentRow');
+                            let repContentHr = document.getElementById('repContentHr');
+
+							if (document.querySelector('input[name=\'report\']:checked').value === 'ETC') {
+								repContentRow.classList.replace('visually-hidden', 'visible');
+                                repContentHr.classList.replace('visually-hidden', 'visible');
+							} else {
+								repContentRow.classList.replace('visible', 'visually-hidden');
+                                repContentHr.classList.replace('visible', 'visually-hidden');
+							}
+							})()">
+							<div class="row">
+								<div class="col">
+									<input type="radio" name="report" value="ADVERTISE">
+									<label>광고성 게시물</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col">
+									<input type="radio" name="report" value="PORNOGRAPHY">
+									<label>청소년 유해물 혹은 음란물이 포함된 게시물</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col">
+									<input type="radio" name="report" value="ILLEGAL">
+									<label>불법 정보가 포함된 게시물</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col">
+									<input type="radio" name="report" value="INSULT">
+									<label>욕설 혹은 혐오발언 게시물</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col">
+									<input type="radio" name="report" value="PERSONAL_INFO">
+									<label>개인정보가 노출된 게시물</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col">
+									<input type="radio" name="report" value="ETC">
+									<label>기타</label>
+								</div>
+							</div>
+						</form>
+						<hr id="repContentHr" class="mt-2 mb-2 visually-hidden">
+						<div id="repContentRow" class="row visually-hidden">
+							<div class="col">
+								<textarea id="repContent" cols="54" rows="5" maxlength="300" name="repContent"></textarea>
+							</div>
 						</div>
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+					<button type="button" class="btn btn-primary" onclick="reportSubmit()">신고하기</button>
 				</div>
 			</div>
 		</div>
 	</div>
+
 	<div class="col-2" id="sidebar">
 		<ul class="nav nav-pills flex-column col-2 position-fixed" style="top: 40%">
 			<div class="accordion text-center" id="loc">
@@ -154,6 +158,14 @@
 				%>
 			</sec:authorize>
 		</c:when>
+	</c:choose>
+	<c:choose>
+		<c:when test="${userDTO eq null}">
+			<c:set var="userNick" value="삭제된 유저"/>
+		</c:when>
+		<c:otherwise>
+			<c:set var="userNick" value="${userDTO.user_nic}"/>
+		</c:otherwise>
 	</c:choose>
 	<div class="container m-5" id="display_center" style="margin-right: 30px; margin-top: 30px">
 		<div class="row justify-content-md-center">
@@ -245,6 +257,9 @@
 					<div class="row d-flex">
 						<h5>등록일 : ${dto.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</h5>
 					</div>
+					<div class="row d-flex">
+						<h5>작성자 : ${userNick}</h5>
+					</div>
 				</div>
 				<div class="row d-flex">
 				</div>
@@ -274,7 +289,8 @@
 					<button class="btn btn-outline-danger col-3" style="max-height: 56px" onclick="copyURL()">공유</button>
 					<button class="btn btn-outline-danger col-3" style="max-height: 56px;" onclick="location.href='/service/cor_edit?corNo=${dto.cor_no}'">수정</button>
 					<!-- Button trigger modal -->
-					<button class="btn btn-outline-danger col-3" style="max-height: 56px" data-bs-toggle="modal" data-bs-target="#exampleModal">모달창 열기</button>
+					<button class="btn btn-outline-danger col-3" style="max-height: 56px" data-bs-toggle="modal" data-bs-target="#exampleModal"
+							onclick="openReportModal('${dto.cor_name}', '${userNick}', 'COR')">신고</button>
 					<button class="btn btn-outline-danger col-3" style="max-height: 56px" onclick="openReviewRegisterPopup()">리뷰 팝업 열기</button>
 				</div>
 				<sec:authorize access="isAuthenticated()">
@@ -287,6 +303,7 @@
 									 onclick="onClickRemoveCourse()">
 								<img src="/image/icon/rollback.png" class="loc_icon_big me-2" alt="코스 복원"
 									 onclick="onClickRollbackCourse()">
+								<Button class="btn btn-primary" onclick="onClickPermaDeleteCourse()">영구삭제</Button>
 							</sec:authorize>
 							<sec:authorize access="hasRole('USER') && !hasRole('ADMIN')">
 								<img src="/image/icon/trash.png" class="loc_icon_big me-2" alt="코스 삭제"
@@ -299,6 +316,7 @@
 									 onclick="onClickRemoveCourse()">
 								<img src="/image/icon/rollback.png" class="loc_icon_big me-2" alt="코스 복원"
 									 onclick="onClickRollbackCourse()">
+								<Button class="btn btn-primary" onclick="onClickPermaDeleteCourse()">영구삭제</Button>
 							</sec:authorize>
 						</c:otherwise>
 					</c:choose>
@@ -686,6 +704,10 @@
 																				</c:choose>
 																			</div>
 																		</c:when>
+																		<c:otherwise>
+																			<button class="btn btn-outline-danger col-1" style="max-height: 56px" data-bs-toggle="modal" data-bs-target="#exampleModal"
+																					onclick="openReportModal('${revDTO.get(c).revContent}', '${revDTO.get(c).userNickname}', 'REV')">신고</button>
+																		</c:otherwise>
 																	</c:choose>
 																</sec:authorize>
 															</div>
@@ -1357,6 +1379,8 @@
     }
 </script>
 <script>
+	let postType;
+
     function onClickRemoveCourse() {
         if (!window.confirm("코스를 삭제하시겠습니까?")) {
             return;
@@ -1371,6 +1395,25 @@
         form = document.createElement("form");
         form.method = "post";
         form.action= "/service/cor_delete" + param;
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    function onClickPermaDeleteCourse() {
+        if (!window.confirm("코스를 영구삭제하시겠습니까?")) {
+            return;
+        }
+
+        let param = location.search;
+
+        console.log(param);
+        console.log('/service/cor_perma_delete' + param);
+
+        let form;
+        form = document.createElement("form");
+        form.method = "post";
+        form.action= "/service/cor_perma_delete" + param;
 
         document.body.appendChild(form);
         form.submit();
@@ -1392,6 +1435,67 @@
         document.body.appendChild(form);
         form.submit();
     }
+
+    function reportSubmit() {
+        let reportType = document.querySelector('input[name="report"]:checked').value;
+        let reportContent = document.getElementById("repContent").value;
+
+        if (reportType !== 'ETC') {
+            reportContent = '';
+		}
+
+		let postNo = Number.parseInt('${dto.cor_no}');
+		let userNo = null;
+
+		<sec:authorize access="isAuthenticated()">
+			userNo = Number.parseInt('<sec:authentication property="principal.user_no"/>');
+		</sec:authorize>
+
+		if (userNo === null) {
+            alert('신고하기 위해서는 로그인을 해야합니다.');
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/rest/report_reg",
+            data: {
+                repType : reportType,
+				repContent : reportContent,
+				postNo : postNo,
+				postType : postType,
+				userNo : userNo
+            },
+            beforeSend: function (xhr) {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                xhr.setRequestHeader(header, token);
+            },
+            success: function (response) {
+                if ("Found report in same post : You can only report once per post" === response){
+                    alert("게시글에 대한 신고는 한번만 가능합니다.");
+                }
+
+                if ("Fail" === response){
+                    alert("신고과정에 문제가 발생하였습니다.");
+				}
+
+                if ("Report Successful" === response){
+                    alert("정상적으로 신고처리 되었습니다.");
+				}
+            }, error: function (e) {
+                alert("신고 과정에 오류 발생");
+                console.log(e);
+            }
+        });
+	}
+
+    function openReportModal(name, username, postTypeValue) {
+        let repPostName = document.getElementById("repPostName");
+        let userNick = document.getElementById("userNick");
+
+        repPostName.innerText = "제목 : " + name;
+        userNick.innerText = "작성자 : " + username;
+        postType = postTypeValue;
+	}
 </script>
 </body>
 <%--<%@ include file="../layout/footer.jsp" %>--%>

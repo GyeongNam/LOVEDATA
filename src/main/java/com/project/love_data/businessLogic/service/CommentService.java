@@ -490,7 +490,7 @@ public class CommentService {
             return null;
         }
 
-        if (dateDuration <= 0) {
+        if (dateDuration < 0) {
 //            log.info("Date duration is below 0. Please input value above 1");
             return null;
         }

@@ -36,6 +36,85 @@
 <body>
 
 <div class="container-fluid d-flex" style="padding-top: 100px">
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">신고하기</h5>
+					<button class="btn-close" type="button" class="close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<span id="repPostName">제 목 : 내용</span>
+						<span id="userNick">작성자 : 닉네임</span>
+						<hr class="mt-2 mb-2">
+						<span> 사유 선택 : </span>
+						<form name="repTypeForm" id="repTypeForm" class="mb-0" onchange="(function onChangeRepTypeForm() {
+							let repContentRow = document.getElementById('repContentRow');
+                            let repContentHr = document.getElementById('repContentHr');
+
+							if (document.querySelector('input[name=\'report\']:checked').value === 'ETC') {
+								repContentRow.classList.replace('visually-hidden', 'visible');
+                                repContentHr.classList.replace('visually-hidden', 'visible');
+							} else {
+								repContentRow.classList.replace('visible', 'visually-hidden');
+                                repContentHr.classList.replace('visible', 'visually-hidden');
+							}
+							})()">
+							<div class="row">
+								<div class="col">
+									<input type="radio" name="report" value="ADVERTISE">
+									<label>광고성 게시물</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col">
+									<input type="radio" name="report" value="PORNOGRAPHY">
+									<label>청소년 유해물 혹은 음란물이 포함된 게시물</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col">
+									<input type="radio" name="report" value="ILLEGAL">
+									<label>불법 정보가 포함된 게시물</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col">
+									<input type="radio" name="report" value="INSULT">
+									<label>욕설 혹은 혐오발언 게시물</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col">
+									<input type="radio" name="report" value="PERSONAL_INFO">
+									<label>개인정보가 노출된 게시물</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col">
+									<input type="radio" name="report" value="ETC">
+									<label>기타</label>
+								</div>
+							</div>
+						</form>
+						<hr id="repContentHr" class="mt-2 mb-2 visually-hidden">
+						<div id="repContentRow" class="row visually-hidden">
+							<div class="col">
+								<textarea id="repContent" cols="54" rows="5" maxlength="300" name="repContent"></textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+					<button type="button" class="btn btn-primary" onclick="reportSubmit()">신고하기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<div class="col-2" id="sidebar">
 		<ul class="nav nav-pills flex-column col-2 position-fixed" style="top: 40%">
 			<div class="accordion text-center" id="loc">
@@ -82,6 +161,14 @@
 				%>
 			</sec:authorize>
 		</c:when>
+	</c:choose>
+	<c:choose>
+		<c:when test="${userDTO eq null}">
+			<c:set var="userNick" value="삭제된 유저"/>
+		</c:when>
+		<c:otherwise>
+			<c:set var="userNick" value="${userDTO.user_nic}"/>
+		</c:otherwise>
 	</c:choose>
 	<div class="container m-5" id="display_center" style="margin-right: 30px; margin-top: 30px">
 		<div class="row justify-content-md-center">
@@ -152,14 +239,14 @@
 					<div class="row d-flex">
 						<h5>해시태그 : ${dto.tagSet}</h5>
 					</div>
-<%--					<div class="row d-flex">--%>
-<%--						<h5 class="text-truncate">설명 : ${dto.info}</h5>--%>
-<%--					</div>--%>
 					<div class="row d-flex">
 						<h5>등록일 : ${dto.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</h5>
 					</div>
 					<div class="row d-flex">
 						<h5>연락처 : ${dto.tel}</h5>
+					</div>
+					<div class="row d-flex">
+						<h5>작성자 : ${userNick}</h5>
 					</div>
 				</div>
 				<div class="row d-flex">
@@ -191,6 +278,8 @@
 					<button class="btn btn-outline-danger col-3" style="max-height: 56px" onclick="copyURL()">공유</button>
 					<button class="btn btn-outline-danger col-3" style="max-height: 56px;" onclick="location.href='/service/loc_edit?locNo=${dto.loc_no}'">수정</button>
 					<sec:authorize access="isAuthenticated()">
+						<button class="btn btn-outline-danger col-3" style="max-height: 56px" data-bs-toggle="modal" data-bs-target="#exampleModal"
+								onclick="openReportModal('${dto.loc_name}', '${userNick}', 'LOC')">신고</button>
 <%--						<span><sec:authentication property="principal.user_no"></sec:authentication></span>--%>
 					<c:set var="currUserNo"><sec:authentication property="principal.user_no"></sec:authentication></c:set>
 					<c:choose>
@@ -200,8 +289,9 @@
 									 onclick="onClickRemoveLocation()">
 								<img src="/image/icon/rollback.png" class="loc_icon_big me-2" alt="장소 복원"
 									 onclick="onClickRollbackLocation()">
+								<button class="btn btn-primary" onclick="onClickPermaDeleteLocation()">영구삭제</button>
 							</sec:authorize>
-							<sec:authorize access="hasRole('USER') && !hasRole('USER')">
+							<sec:authorize access="hasRole('USER') && !hasRole('ADMIN')">
 								<img src="/image/icon/trash.png" class="loc_icon_big me-2" alt="장소 삭제"
 									 onclick="onClickRemoveLocation()">
 							</sec:authorize>
@@ -212,6 +302,7 @@
 									 onclick="onClickRemoveLocation()">
 								<img src="/image/icon/rollback.png" class="loc_icon_big me-2" alt="장소 복원"
 									 onclick="onClickRollbackLocation()">
+								<button class="btn btn-primary" onclick="onClickPermaDeleteLocation()">영구삭제</button>
 							</sec:authorize>
 						</c:otherwise>
 					</c:choose>
@@ -438,12 +529,16 @@
 															</div>
 															<c:choose>
 																<c:when test="${user_no eq cmtDTO.get(c).user.user_no}">
-<%--																	<span class="d-none visually-hidden" id="cmt_user_email_${c}">${cmtDTO.get(c).user.user_email}</span>--%>
+																	<span class="d-none visually-hidden" id="cmt_user_email_${c}">${cmtDTO.get(c).user.user_email}</span>
 																	<div class="d-flex col justify-content-end align-items-center">
 																		<button class="btn btn-primary" onclick="openCmtEditMenu(${c})">수정</button>
 																		<button class="btn btn-primary ms-2" onclick="onClickDeleteComment(${c})">삭제</button>
 																	</div>
 																</c:when>
+																<c:otherwise>
+																	<button class="btn btn-outline-danger col-1" style="max-height: 56px" data-bs-toggle="modal" data-bs-target="#exampleModal"
+																			onclick="openReportModal('${cmtDTO.get(c).cmtContent}', '${cmtDTO.get(c).user.user_nic}', 'COM')">신고</button>
+																</c:otherwise>
 															</c:choose>
 														</sec:authorize>
 													</div>
@@ -779,6 +874,25 @@
         form.submit();
 	}
 
+    function onClickPermaDeleteLocation() {
+        if (!window.confirm("장소를 영구삭제하시겠습니까?")) {
+            return;
+        }
+
+        let param = location.search;
+
+        console.log(param);
+        console.log('/service/loc_perma_delete' + param);
+
+        let form;
+        form = document.createElement("form");
+        form.method = "post";
+        form.action= "/service/loc_perma_delete" + param;
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+
     function onClickRollbackLocation() {
         alert('장소를 복원하시겠습니까?');
 
@@ -794,6 +908,68 @@
 
         document.body.appendChild(form);
         form.submit();
+    }
+</script>
+<script defer>
+    function reportSubmit() {
+        let reportType = document.querySelector('input[name="report"]:checked').value;
+        let reportContent = document.getElementById("repContent").value;
+
+        if (reportType !== 'ETC') {
+            reportContent = '';
+        }
+
+        let postNo = Number.parseInt('${dto.loc_no}');
+        let userNo = null;
+
+        <sec:authorize access="isAuthenticated()">
+        	userNo = Number.parseInt('<sec:authentication property="principal.user_no"/>');
+        </sec:authorize>
+
+        if (userNo === null) {
+            alert('신고하기 위해서는 로그인을 해야합니다.');
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/rest/report_reg",
+            data: {
+                repType : reportType,
+                repContent : reportContent,
+                postNo : postNo,
+                postType : postType,
+                userNo : userNo
+            },
+            beforeSend: function (xhr) {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                xhr.setRequestHeader(header, token);
+            },
+            success: function (response) {
+                if ("Found report in same post : You can only report once per post" === response){
+                    alert("게시글에 대한 신고는 한번만 가능합니다.");
+				}
+
+                if ("Fail" === response){
+                    alert("신고과정에 문제가 발생하였습니다.");
+                }
+
+                if ("Report Successful" === response){
+                    alert("정상적으로 신고처리 되었습니다.");
+                }
+            }, error: function (e) {
+                alert("신고 과정에 오류 발생");
+                console.log(e);
+            }
+        });
+    }
+
+    function openReportModal(name, username, postTypeValue) {
+        let repPostName = document.getElementById("repPostName");
+        let userNick = document.getElementById("userNick");
+
+        repPostName.innerText = "제목 : " + name;
+        userNick.innerText = "작성자 : " + username;
+        postType = postTypeValue;
     }
 </script>
 </body>

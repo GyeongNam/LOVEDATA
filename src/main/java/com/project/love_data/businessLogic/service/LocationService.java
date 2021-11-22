@@ -30,6 +30,7 @@ public class LocationService {
     private final LocationImageService imgService;
     private final CommentService cmtService;
     private final CommentRepository cmtRepository;
+    private final DeletedImageInfoService deletedImageInfoService;
 
     public Location register(Map<String, String> reqParam, List<String> tagList, List<String> filePath) {
         LocationDTO dto = getLocationDto(reqParam, tagList);
@@ -434,21 +435,25 @@ public class LocationService {
         List<LocationImage> list = new ArrayList<LocationImage>(loc.getImgSet());
         Set<Comment> cmtSet = loc.getCmtSet();
 
-        for (LocationImage locationImage : list) {
-            locationImage.setLocation(null);
-
-            imgService.update(locationImage);
-
-            imgService.permaDelete(locationImage.getImg_uuid());
-        }
-
-        for (Comment cmt : cmtSet) {
-            cmtService.permaDelete(cmt);
+        if (list != null) {
+            for (LocationImage locationImage : list) {
+                imgService.delete(locationImage.getImg_no());
+                if (imgService.getImage(locationImage.getImg_no()).is_deleted()) {
+                    deletedImageInfoService.register(locationImage.getImg_no(), "LOC_IMG", locationImage.getUser_no());
+                    imgService.permaDelete(locationImage.getImg_uuid());
+                }
+            }
         }
 
         loc.setImgSet(null);
 
         update(loc);
+
+        if (cmtSet != null && !cmtSet.isEmpty()) {
+            for (Comment cmt : cmtSet) {
+                cmtService.permaDelete(cmt);
+            }
+        }
 
         repository.deleteByLoc_uuid(loc.getLoc_uuid());
     }
@@ -457,24 +462,26 @@ public class LocationService {
         Location loc = selectLoc(locNo);
 
         if (!loc.is_deleted()) {
-            boolean isLocImageDeleted = true;
-            List<LocationImage> finishedList = new ArrayList<>();
-            for (LocationImage locationImage : loc.getImgSet()) {
-                imgService.delete(locationImage.getImg_no());
-                if (!imgService.getImage(locationImage.getImg_no()).is_deleted()) {
-                    isLocImageDeleted = false;
-                    for (LocationImage image : finishedList) {
-                        imgService.rollback(image.getImg_no());
-                    }
-                    break;
-                }
-                finishedList.add(locationImage);
-            }
-
-            if (isLocImageDeleted) {
-                disableLocation(loc);
-                return true;
-            }
+//            boolean isLocImageDeleted = true;
+//            List<LocationImage> finishedList = new ArrayList<>();
+//            for (LocationImage locationImage : loc.getImgSet()) {
+//                imgService.delete(locationImage.getImg_no());
+//                if (!imgService.getImage(locationImage.getImg_no()).is_deleted()) {
+//                    isLocImageDeleted = false;
+//                    for (LocationImage image : finishedList) {
+//                        imgService.rollback(image.getImg_no());
+//                    }
+//                    break;
+//                }
+//                finishedList.add(locationImage);
+//            }
+//
+//            if (isLocImageDeleted) {
+//                disableLocation(loc);
+//                return true;
+//            }
+            disableLocation(loc);
+            return true;
         }
 
         return false;
@@ -484,24 +491,27 @@ public class LocationService {
         Location loc = selectLoc(uuid);
 
         if (!loc.is_deleted()) {
-            boolean isLocImageDeleted = true;
-            List<LocationImage> finishedList = new ArrayList<>();
-            for (LocationImage locationImage : loc.getImgSet()) {
-                imgService.delete(locationImage.getImg_no());
-                if (imgService.getImage(locationImage.getImg_no()).is_deleted() != true) {
-                    isLocImageDeleted = false;
-                    for (LocationImage image : finishedList) {
-                        imgService.rollback(image.getImg_no());
-                    }
-                    break;
-                }
-                finishedList.add(locationImage);
-            }
+//            boolean isLocImageDeleted = true;
+//            List<LocationImage> finishedList = new ArrayList<>();
+//            for (LocationImage locationImage : loc.getImgSet()) {
+//                imgService.delete(locationImage.getImg_no());
+//                if (imgService.getImage(locationImage.getImg_no()).is_deleted() != true) {
+//                    isLocImageDeleted = false;
+//                    for (LocationImage image : finishedList) {
+//                        imgService.rollback(image.getImg_no());
+//                    }
+//                    break;
+//                }
+//                finishedList.add(locationImage);
+//            }
+//
+//            if (isLocImageDeleted) {
+//                disableLocation(loc);
+//                return true;
+//            }
 
-            if (isLocImageDeleted) {
-                disableLocation(loc);
-                return true;
-            }
+            disableLocation(loc);
+            return true;
         }
 
         return false;
@@ -511,25 +521,28 @@ public class LocationService {
         Location loc = selectLoc(locNo);
 
         if (loc.is_deleted()) {
-            boolean isLocImageDeleted = false;
-            List<LocationImage> locImageList = imgService.getLastDeletedImageList(locNo);
-            List<LocationImage> finishedList = new ArrayList<>();
-            for (LocationImage image : locImageList) {
-                imgService.rollback(image.getImg_no());
-                if (imgService.getImage(image.getImg_no()).is_deleted()) {
-                    isLocImageDeleted = true;
-                    for (LocationImage locationImage : finishedList) {
-                        imgService.delete(locationImage.getImg_no());
-                    }
-                    break;
-                }
-                finishedList.add(image);
-            }
+//            boolean isLocImageDeleted = false;
+//            List<LocationImage> locImageList = imgService.getLastDeletedImageList(locNo);
+//            List<LocationImage> finishedList = new ArrayList<>();
+//            for (LocationImage image : locImageList) {
+//                imgService.rollback(image.getImg_no());
+//                if (imgService.getImage(image.getImg_no()).is_deleted()) {
+//                    isLocImageDeleted = true;
+//                    for (LocationImage locationImage : finishedList) {
+//                        imgService.delete(locationImage.getImg_no());
+//                    }
+//                    break;
+//                }
+//                finishedList.add(image);
+//            }
+//
+//            if (!isLocImageDeleted) {
+//                loc = enableLocation(loc);
+//                return true;
+//            }
 
-            if (!isLocImageDeleted) {
-                loc = enableLocation(loc);
-                return true;
-            }
+            enableLocation(loc);
+            return true;
         }
 
         return false;
@@ -539,25 +552,28 @@ public class LocationService {
         Location loc = selectLoc(uuid);
 
         if (loc.is_deleted()) {
-            boolean isLocImageDeleted = false;
-            List<LocationImage> locImageList = imgService.getLastDeletedImageList(loc.getLoc_no());
-            List<LocationImage> finishedList = new ArrayList<>();
-            for (LocationImage image : locImageList) {
-                imgService.rollback(image.getImg_no());
-                if (imgService.getImage(image.getImg_no()).is_deleted()) {
-                    isLocImageDeleted = true;
-                    for (LocationImage locationImage : finishedList) {
-                        imgService.delete(locationImage.getImg_no());
-                    }
-                    break;
-                }
-                finishedList.add(image);
-            }
+//            boolean isLocImageDeleted = false;
+//            List<LocationImage> locImageList = imgService.getLastDeletedImageList(loc.getLoc_no());
+//            List<LocationImage> finishedList = new ArrayList<>();
+//            for (LocationImage image : locImageList) {
+//                imgService.rollback(image.getImg_no());
+//                if (imgService.getImage(image.getImg_no()).is_deleted()) {
+//                    isLocImageDeleted = true;
+//                    for (LocationImage locationImage : finishedList) {
+//                        imgService.delete(locationImage.getImg_no());
+//                    }
+//                    break;
+//                }
+//                finishedList.add(image);
+//            }
+//
+//            if (!isLocImageDeleted) {
+//                loc = enableLocation(loc);
+//                return true;
+//            }
 
-            if (!isLocImageDeleted) {
-                loc = enableLocation(loc);
-                return true;
-            }
+            enableLocation(loc);
+            return true;
         }
 
         return false;
@@ -719,7 +735,7 @@ public class LocationService {
             return null;
         }
 
-        if (dateDuration <= 0) {
+        if (dateDuration < 0) {
 //            log.info("Date duration is below 0. Please input value above 1");
             return null;
         }

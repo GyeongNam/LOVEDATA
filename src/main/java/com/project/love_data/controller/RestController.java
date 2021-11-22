@@ -11,6 +11,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,6 +44,8 @@ public class RestController {
     UserLikeRevService userLikeRevService;
     @Autowired
     UserDislikeRevService userDislikeRevService;
+    @Autowired
+    ReportManageService reportManageService;
     DefaultLocalDateTimeFormatter defaultDateTimeFormatter = new DefaultLocalDateTimeFormatter();
 
     @PostMapping("/authenticationCheck")
@@ -742,5 +745,47 @@ public class RestController {
         }
 
         return false;
+    }
+
+    @PostMapping("/report_reg")
+    @ResponseBody
+    public String regReport(HttpServletRequest request, Model model,
+                             @RequestParam("repType")String repType,
+                             @RequestParam("repContent")String repContent,
+                             @RequestParam("postNo")Long postNo,
+                             @RequestParam("postType")String postTye,
+                             @RequestParam("userNo")Long userNo) {
+        Map<String, String> reqParam = new HashMap<>();
+        reqParam.put("repType", repType);
+        reqParam.put("repContent", repContent);
+        reqParam.put("postNo", String.valueOf(postNo));
+        reqParam.put("postType", postTye);
+        reqParam.put("userNo", String.valueOf(userNo));
+
+//        // 기존의 신고내역 확인
+//        List<Report> reportList = reportManageService.getReportsByUserNo(userNo);
+//        if (reportList != null) {
+//            for (Report report : reportList) {
+//                ReportCluster rcEntity = reportManageService.getReportClusterByRcNo(report.getRcNo());
+//                if (rcEntity != null && rcEntity.getPostNo().equals(postNo) && rcEntity.getPostType().equals(postTye)) {
+////                    log.info("기존의 신고 검색됨! 신고 접수가 취소됨");
+//                    return "Found report in same post : You can only report once per post";
+//                }
+//            }
+//        }
+
+        Report repEntity = reportManageService.registerReport(reqParam);
+
+        if (repEntity == null) {
+//            log.warn("신고가 정상적으로 처리되지 않았습니다.");
+            return "Fail";
+        }
+
+        if (!reportManageService.syncReportClusterRepCount(repEntity.getRcNo())){
+            log.warn("Sync Report Count Fail");
+            return "Sync Report Count Fail";
+        }
+
+        return "Report Successful";
     }
 }
