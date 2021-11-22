@@ -3,9 +3,11 @@ package com.project.love_data.businessLogic.service;
 import com.project.love_data.dto.UserDTO;
 import com.project.love_data.model.service.Comment;
 import com.project.love_data.model.service.Notice;
+import com.project.love_data.model.service.UserSuspension;
 import com.project.love_data.model.user.User;
 import com.project.love_data.repository.LocationRepository;
 import com.project.love_data.repository.UserRepository;
+import com.project.love_data.repository.UserSuspensionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,8 @@ public class UserService {
     UserRecentLocService recentLocService;
     @Autowired
     LocationRepository locationRepository;
+    @Autowired
+    UserSuspensionRepository usRepository;
 
     public User dtoToEntity(UserDTO dto){
         User entity = User.builder()
@@ -108,6 +112,9 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public void su_update(UserSuspension user){ usRepository.save(user);
+    }
+
     public void delete(User user) {
         userRepository.delete(user);
     }
@@ -156,6 +163,14 @@ public class UserService {
         }
     }
 
+    public List<UserSuspension> su_findAllByUser_no(Long user_no) {
+        Optional<List<UserSuspension>> userSuspensions = usRepository.findAllByUser_no(user_no);
+        return userSuspensions.orElse(new ArrayList<>());
+    }
+    public List<UserSuspension> findStopByUser_no (Long user_no, String progress){
+    Optional<List<UserSuspension>> userSuspensions = usRepository.findStopByUser_no(user_no, progress);
+        return userSuspensions.orElse(new ArrayList<>());
+    }
 //    public LocationDTO LocDTO(Long loc_no) {
 //        Optional<Location> item = LocationRepository.findByAllUser_no(loc_no);
 //
