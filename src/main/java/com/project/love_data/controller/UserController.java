@@ -1,5 +1,6 @@
 package com.project.love_data.controller;
 
+import com.project.love_data.businessLogic.MailService;
 import com.project.love_data.businessLogic.service.*;
 import com.project.love_data.dto.CalenderDTO;
 import com.project.love_data.dto.UserDTO;
@@ -57,6 +58,8 @@ public class UserController {
 	@Autowired
 	private ReviewRepository reviewRepository;
 	@Autowired
+	private MailService mailService;
+	@Autowired
 	UserService userService;
 	@Autowired
 	CalenderService calenderService;
@@ -84,6 +87,7 @@ public class UserController {
 	UserRecentCorService userRecentCorService;
 	@Autowired
 	QuestionsImageService questionsImageService;
+
 
 	@RequestMapping(value = "/signup_add", method = RequestMethod.POST)
 	public String signup(
@@ -176,7 +180,50 @@ public class UserController {
 		log.info("num:" + num);
 		map.put("msg", "성공");
 		map.put("num", num);
-//		smsService.sendSMS(data.get("phones"), num);
+		smsService.sendSMS(data.get("phones"), num);
+		return map;
+	}
+
+	//2021-11-24
+	@ResponseBody
+	@PostMapping(value = "/admin_send_sms")
+	public Map<String, String> adminsms(
+			@RequestParam("list[]") String[] list,
+			@RequestParam("smscontent")String smscontent) {
+		Map<String, String> map = new HashMap<String, String>();
+		for(int i = 0 ; i< list.length; i++){
+			if(!list[i].equals("on")) {
+				User user = userService.select(Long.parseLong(list[i]));
+				if (user != null) {
+					smsService.managersendSMS(user.getUser_phone(), smscontent);
+				}
+			}
+		}
+
+//		log.info("list : "+ list.length);
+//		log.info("smstestcontent: "+ smscontent);
+		map.put("msg", "sms 성공");
+		return map;
+	}
+	//email
+	@ResponseBody
+	@PostMapping(value = "/admin_send_email")
+	public Map<String, String> adminemail(
+			@RequestParam("list[]") String[] list,
+			@RequestParam("smscontent")String smscontent) {
+		Map<String, String> map = new HashMap<String, String>();
+		for(int i = 0 ; i< list.length; i++){
+			if(!list[i].equals("on")){
+				User user = userService.select(Long.parseLong(list[i]));
+				if(user != null) {
+					mailService.adminmailSend(user.getUser_email(), smscontent);
+				}
+			}
+		}
+
+//		log.info("list : "+ list.length);
+//		log.info("smstestcontent: "+ smscontent);
+		map.put("msg", "이메일 성공");
 		return map;
 	}
 

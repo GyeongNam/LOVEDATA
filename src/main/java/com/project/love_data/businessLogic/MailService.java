@@ -27,6 +27,18 @@ public class MailService {
         mailSender.send(message);
     }
 
+    public void adminmailSend(String mail, String admessage) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(mail);
+        message.setFrom("12qwqq@gmail.com");
+        message.setSubject("LOVEDATA 안내 메일입니다.");
+        message.setText(
+                "LOVEDATA 에서 회원들에게 전송된 이메일입니다.\n"+ admessage);
+//        message.setText("http://localhost:8080/NewPassword");
+
+        mailSender.send(message);
+    }
+
     public String getRandomStr(int size) {
         if(size > 0) {
             char[] tmp = new char[size];

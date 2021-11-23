@@ -11,6 +11,9 @@
     <meta name="_csrf" content="${_csrf.token}">
     <meta name="_csrf_header" content="${_csrf.headerName}">
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href=" https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href=" https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css"/>
+    <link rel="stylesheet" href=" https://cdn.datatables.net/rowgroup/1.1.4/css/rowGroup.bootstrap5.min.css"/>
     <link rel="stylesheet" href="/css/service/loc.css">
     <link rel="stylesheet" href="/css/ServiceCenter.css" >
     <link rel="stylesheet" href="/css/admin_sendMaessage_user.css">
@@ -68,20 +71,20 @@
                 <div class="tab-pane fade show active" id="recent-post" role="tabpanel" aria-labelledby="recent-post-tab">
                     <h3>메세지 발송</h3>
                     <div class="row my-3">
-                            <div class="collapse navbar-collapse d-flex justify-content-end" id="bs-example-navbar-collapse-1">
+<%--                            <div class="collapse navbar-collapse d-flex justify-content-end" id="bs-example-navbar-collapse-1">--%>
 
-                                    <ul class="navbar-nav"></ul>
-                                    <select class="select2-dropdown mx-2" id="Notice_select">
-                                        <option value="1" selected>유저 이름</option>
-                                        <option value="2">유저 닉네임</option>
-                                    </select>
-                                    <input type="text" class="input-box mx-2" placeholder="검색" id="keyword" name="keyword"/>
-                                    <button class="btn btn-primary mx-2" type="button" id="searchBtn" onclick="SMSUsearch()">Search</button>
+<%--                                    <ul class="navbar-nav"></ul>--%>
+<%--                                    <select class="select2-dropdown mx-2" id="Notice_select">--%>
+<%--                                        <option value="1" selected>유저 이름</option>--%>
+<%--                                        <option value="2">유저 닉네임</option>--%>
+<%--                                    </select>--%>
+<%--                                    <input type="text" class="input-box mx-2" placeholder="검색" id="keyword" name="keyword"/>--%>
+<%--                                    <button class="btn btn-primary mx-2" type="button" id="searchBtn" onclick="SMSUsearch()">Search</button>--%>
 
-                            </div>
-                            <table class="table text-center" id="searchResultTable">
+<%--                            </div>--%>
+                            <table class="tables text-center" id="searchResultTable">
                                 <thead>
-                                <th scope="col"><input type='checkbox' name='user' value='selectall' onclick='selectAll(this)'/></th>
+                                <th scope="col"><input type='checkbox' name='userck' onclick='selectAll(this)'/></th>
                                 <th scope="col">유저 번호</th>
                                 <th scope="col">유저 닉네임</th>
                                 <th scope="col">유저 이름</th>
@@ -91,23 +94,24 @@
                                 <th scope="col">가입 방식</th>
                                 </thead>
                                 <tbody id="tableBody">
-                                <c:forEach var="user" items="${user}">
+                                <c:forEach varStatus="index" var="userlist" items="${user}">
                                 <tr style="cursor:hand">
-                                    <td><input type="checkbox" name="user" value="yyy" ></td>
-                                    <td>${user.user_no}</td>
-                                    <td>${user.user_nic}</td>
-                                    <td>${user.user_name}</td>
-                                    <td>${user.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</td>
+
+                                    <td><input type="checkbox" id="checkuserno${index.current}" name="userck" value="${userlist.user_no}" ></td>
+                                    <td>${userlist.user_no}</td>
+                                    <td>${userlist.user_nic}</td>
+                                    <td>${userlist.user_name}</td>
+                                    <td>${userlist.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</td>
                                     <c:choose>
-                                        <c:when test="${user.user_Activation eq false}">
+                                        <c:when test="${userlist.user_Activation eq false}">
                                             <td>정지</td>
                                         </c:when>
-                                        <c:when test="${user.user_Activation eq true}">
+                                        <c:when test="${userlist.user_Activation eq true}">
                                             <td>활동</td>
                                         </c:when>
                                     </c:choose>
                                     <td>???</td>
-                                    <td>${user.social_info}</td>
+                                    <td>${userlist.social_info}</td>
                                 </tr>
                                 </c:forEach>
                                 </tbody>
@@ -116,9 +120,9 @@
                     <div class="row my-3">
                         <div class="">
                         <h5>메세지 내용</h5>
-                        <textarea class="sendmsgtext"></textarea>
-                        <button class="">SMS 전송</button>
-                        <button class="">이메일 전송</button>
+                        <textarea class="sendmsgtext" id="smscontent"></textarea>
+                        <button class="" onclick="putSMSsend()">SMS 전송</button>
+                        <button class="" onclick="putEmailsend()">이메일 전송</button>
                         </div>
                     </div>
                     </div>
@@ -136,7 +140,14 @@
 <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
         crossorigin="anonymous"></script>
-<script defer src="/js/ServiceCenter.js"></script>
+<%--<script defer src="/js/ServiceCenter.js"></script>--%>
+
+
+<script defer src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script defer src="https://cdn.datatables.net/1.11.3/js/dataTables.jqueryui.min.js"></script>
+<script defer src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
+<script defer src="https://cdn.datatables.net/rowgroup/1.1.4/js/dataTables.rowGroup.min.js"></script>
+<script defer src="/js/datatable.js"></script>
 <script defer src="/js/admin_sendMessage.js"></script>
 
 </html>
