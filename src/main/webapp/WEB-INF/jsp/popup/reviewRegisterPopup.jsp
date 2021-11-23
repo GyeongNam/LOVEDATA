@@ -49,7 +49,7 @@
 						<td colspan="6">
 							<div id="loc_rating">
 								<c:forEach begin="1" end="5" var="i">
-									<image class="sc_icon_small" src="http://localhost:8080/image/icon/star_black.png" onclick="fillRating('loc', ${i})"></image>
+									<image class="sc_icon_small" src="/image/icon/star_black.png" onclick="fillRating('loc', ${i})"></image>
 								</c:forEach>
 							</div>
 						</td>
@@ -59,7 +59,7 @@
 						<td colspan="6">
 							<div id="move_rating">
 								<c:forEach begin="1" end="5" var="i">
-									<image class="sc_icon_small" src="http://localhost:8080/image/icon/star_black.png" onclick="fillRating('move', ${i})"></image>
+									<image class="sc_icon_small" src="/image/icon/star_black.png" onclick="fillRating('move', ${i})"></image>
 								</c:forEach>
 							</div>
 						</td>
@@ -69,7 +69,7 @@
 						<td colspan="6">
 							<div id="time_rating">
 								<c:forEach begin="1" end="5" var="i">
-									<image class="sc_icon_small" src="http://localhost:8080/image/icon/star_black.png" onclick="fillRating('time', ${i})"></image>
+									<image class="sc_icon_small" src="/image/icon/star_black.png" onclick="fillRating('time', ${i})"></image>
 								</c:forEach>
 							</div>
 						</td>
@@ -79,7 +79,7 @@
 						<td colspan="6">
 							<div id="revisit_rating">
 								<c:forEach begin="1" end="5" var="i">
-									<image class="sc_icon_small" src="http://localhost:8080/image/icon/star_black.png" onclick="fillRating('revisit', ${i})"></image>
+									<image class="sc_icon_small" src="/image/icon/star_black.png" onclick="fillRating('revisit', ${i})"></image>
 								</c:forEach>
 							</div>
 						</td>
@@ -89,7 +89,7 @@
 						<td colspan="6">
 							<div id="total_rating">
 								<c:forEach begin="1" end="5" var="i">
-									<image class="sc_icon_small" src="http://localhost:8080/image/icon/star_black.png"></image>
+									<image class="sc_icon_small" src="/image/icon/star_black.png"></image>
 								</c:forEach>
 							</div>
 						</td>
