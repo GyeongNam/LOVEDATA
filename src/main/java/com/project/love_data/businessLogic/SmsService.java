@@ -53,8 +53,58 @@ public class SmsService {
                     +"&sphone3="+base64Encode("1437")
                     +"&rphone="+base64Encode(data)
                     +"&mode="+base64Encode("1")
-                    +"&smsType=S"
-                    +"&rtime"+base64Encode(""); // SMS/LMS 여부
+                    +"&smsType=S";
+//                    +"&rtime"+base64Encode(""); // SMS/LMS 여부
+
+
+            //For POST only    - START
+            con.setDoOutput(true);
+            OutputStream os = con.getOutputStream();
+            os.write(postParams.getBytes());
+            os.flush();
+            os.close();
+
+            //For POST only - END
+            int responseCode = con.getResponseCode();
+            log.info("POST Response Code::"+responseCode);
+
+            if(responseCode == HttpURLConnection.HTTP_OK){ // success
+                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                String inputLine;
+                StringBuffer buf  = new StringBuffer();
+                while((inputLine=in.readLine())!=null){
+                    buf.append(inputLine);
+                }
+                in.close();
+                log.info("SMS Content : "+buf.toString());
+            }else{
+                log.error("POST request not worked");
+            }
+        }catch(IOException ex){
+            log.error("SMS IOException:"+ex.getMessage());
+        }
+    }
+
+    public void managersendSMS(String data, String text){
+
+        try{
+            URL obj = new URL(apiUrl);
+            HttpsURLConnection con= (HttpsURLConnection) obj.openConnection();
+            con.setRequestProperty("Content-type", "application/x-www-form-urlencoded");
+            con.setRequestProperty("Accept-Charset", charset);
+            con.setRequestMethod("POST");
+            con.setRequestProperty("User-Agent", userAgent);
+
+            String postParams = "user_id="+base64Encode("silentsns97")
+                    +"&secure="+base64Encode("1d1e0e0bdf80e01761871ec94d8f8d62")
+                    +"&msg="+base64Encode(text)
+                    +"&sphone1="+base64Encode("010")
+                    +"&sphone2="+base64Encode("3014")
+                    +"&sphone3="+base64Encode("1437")
+                    +"&rphone="+base64Encode(data)
+                    +"&mode="+base64Encode("1")
+                    +"&smsType=S";
+//                    +"&rtime"+base64Encode(""); // SMS/LMS 여부
 
 
             //For POST only    - START
@@ -89,12 +139,12 @@ public class SmsService {
         // @Todo 컴파일러 경고남
         // src\main\java\com\project\love_data\service\SmsService.java:76: warning: BASE64Encoder is internal proprietary API and may be removed in a future release
         //        sun.misc.BASE64Encoder encoder = new sun.misc.BASE64Encoder();
-//        sun.misc.BASE64Encoder encoder = new sun.misc.BASE64Encoder();
-//        byte[] strByte = str.getBytes();
-//        String result = encoder.encode(strByte);
-        byte[] strByte = DatatypeConverter.parseBase64Binary(str);
-        String result = null;
-        assert result == DatatypeConverter.printBase64Binary(strByte);
+        sun.misc.BASE64Encoder encoder = new sun.misc.BASE64Encoder();
+        byte[] strByte = str.getBytes();
+        String result = encoder.encode(strByte);
+//        byte[] strByte = DatatypeConverter.parseBase64Binary(str);
+//        String result = null;
+//        assert result == DatatypeConverter.printBase64Binary(strByte);
 
         return result ;
     }
