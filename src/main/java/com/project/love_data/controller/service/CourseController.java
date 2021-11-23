@@ -364,11 +364,12 @@ public class CourseController {
                 }
             }
 
-            if (dto.is_deleted()) {
-                courseImageList = (ArrayList<CourseImage>) courseImageService.getLastDeletedCourseImageList(dto.getCor_no());
-            } else {
-                courseImageList = (ArrayList<CourseImage>) courseImageService.getLiveImagesByCorNo(dto.getCor_no());
-            }
+//            if (dto.is_deleted()) {
+//                courseImageList = (ArrayList<CourseImage>) courseImageService.getLastDeletedCourseImageList(dto.getCor_no());
+//            } else {
+//                courseImageList = (ArrayList<CourseImage>) courseImageService.getLiveImagesByCorNo(dto.getCor_no());
+//            }
+            courseImageList = (ArrayList<CourseImage>) courseImageService.getLiveImagesByCorNo(dto.getCor_no());
 
             User userEntity = userService.select(dto.getUser_no());
             UserDTO userDTO = null;

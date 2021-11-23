@@ -761,23 +761,15 @@ public class RestController {
         reqParam.put("postNo", String.valueOf(postNo));
         reqParam.put("postType", postTye);
         reqParam.put("userNo", String.valueOf(userNo));
-
-//        // 기존의 신고내역 확인
-//        List<Report> reportList = reportManageService.getReportsByUserNo(userNo);
-//        if (reportList != null) {
-//            for (Report report : reportList) {
-//                ReportCluster rcEntity = reportManageService.getReportClusterByRcNo(report.getRcNo());
-//                if (rcEntity != null && rcEntity.getPostNo().equals(postNo) && rcEntity.getPostType().equals(postTye)) {
-////                    log.info("기존의 신고 검색됨! 신고 접수가 취소됨");
-//                    return "Found report in same post : You can only report once per post";
-//                }
-//            }
-//        }
+        if (request.getParameter("dupCheck") == null) {
+            reqParam.put("dupCheck", "false");
+        } else {
+            reqParam.put("dupCheck", request.getParameter("dupCheck"));
+        }
 
         Report repEntity = reportManageService.registerReport(reqParam);
 
         if (repEntity == null) {
-//            log.warn("신고가 정상적으로 처리되지 않았습니다.");
             return "Fail";
         }
 

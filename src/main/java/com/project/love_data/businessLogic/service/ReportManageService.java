@@ -134,8 +134,6 @@ public class ReportManageService {
             return false;
         }
 
-        //Todo 처리된 신고 수 만큼 ReportCluster에 있는 reportCount 감소시키는 메소드 만들기
-
         return true;
     }
 

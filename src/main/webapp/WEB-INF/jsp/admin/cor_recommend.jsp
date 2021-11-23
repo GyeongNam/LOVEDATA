@@ -219,7 +219,7 @@
 					<ul class="pagination justify-content-center">
 						<c:if test="${result.next eq true}">
 							<li class="page-item">
-								<a class="page-link" href="/admin/service/cor_recommend/list?page=${result.start - 1}"
+								<a class="page-link" href="/admin/cor_recommend/list?page=${result.start - 1}"
 								   aria-label="Previous">
 									<span aria-hidden="true">&laquo;</span>
 								</a>
@@ -230,19 +230,19 @@
 						<c:when test="${result.page eq j}">
 						<li class="page-item active">
 							<a class="page-link"
-							   href="/admin/service/cor_recommend/list?page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>
+							   href="/admin/cor_recommend/list?page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>
 							</c:when>
 							<c:otherwise>
 						<li class="page-item">
 							<a class="page-link"
-							   href="/admin/service/cor_recommend/list?page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>
+							   href="/admin/cor_recommend/list?page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>
 							</c:otherwise>
 							</c:choose>
 							</c:forEach>
 						</li>
 						<c:if test="${result.next eq true}">
 							<li class="page-item">
-								<a class="page-link" href="/admin/service/cor_recommend/list?page=${result.end + 1}"
+								<a class="page-link" href="/admin/cor_recommend/list?page=${result.end + 1}"
 								   aria-label="Previous">
 									<span aria-hidden="true">&raquo;</span>
 								</a>

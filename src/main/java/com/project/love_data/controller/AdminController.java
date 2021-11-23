@@ -1399,4 +1399,84 @@ public class AdminController {
 
         return "fail";
     }
+
+    @PostMapping("/report_center/post_unblind")
+    @ResponseBody
+    public String processUnblindPost(HttpServletRequest request, Model model,
+                                         Authentication authentication, @RequestParam("rcNo") Long rcNo,
+                                         @RequestParam("repNoList[]") Long[] repNoList, @RequestParam("postNo") Long postNo,
+                                         @RequestParam("postType") String postType, @RequestParam("result") String result,
+                                         @RequestParam("processType") String processType) {
+        if (authentication == null) {
+            return "authentication failed";
+        }
+
+        AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
+        Long user_no = authUserModel.getUser_no();
+        Set<GrantedAuthority> authorities = (Set<GrantedAuthority>) authUserModel.getAuthorities();
+
+        if (!request.isUserInRole("ROLE_ADMIN")) {
+            log.warn("게시글 삭제를 요청한 유저가 어드민 권한이 없습니다");
+            return "USER is not ADMIN";
+        }
+
+        switch (postType) {
+            case "LOC" :
+                Location locEntity = locService.selectLoc(postNo);
+
+                if (locEntity == null) {
+                    return "Location Entity Null";
+                }
+
+                locEntity.set_reported(false);
+                locEntity.set_deleted(false);
+                locService.update(locEntity);
+
+                reportManageService.processReportCluster(rcNo, Arrays.asList(repNoList), result, processType);
+                return "Post Unblind Successful";
+            case "COR" :
+                Course corEntity = corService.selectCor(postNo);
+
+                if (corEntity == null) {
+                    return "Course cEntity Null";
+                }
+
+                corEntity.set_reported(false);
+                corEntity.set_deleted(false);
+                corService.update(corEntity);
+
+                reportManageService.processReportCluster(rcNo, Arrays.asList(repNoList), result, processType);
+                return "Post Unblind Successful";
+            case "COM" :
+                Comment comEntity = comService.select(postNo);
+
+                if (comEntity == null) {
+                    return "Comment Entity Null";
+                }
+
+                comEntity.set_reported(false);
+                comEntity.set_deleted(false);
+                comService.update(comEntity);
+
+                reportManageService.processReportCluster(rcNo, Arrays.asList(repNoList), result, processType);
+                return "Post Unblind Successful";
+            case "REV" :
+                Review revEntity = reviewService.select(postNo);
+
+                if (revEntity == null) {
+                    return "Review Entity Null";
+                }
+
+                revEntity.set_reported(false);
+                revEntity.set_deleted(false);
+                reviewService.update(revEntity);
+
+                reportManageService.processReportCluster(rcNo, Arrays.asList(repNoList), result, processType);
+                return "Post Unblind Successful";
+            case "PROFILE_PIC" :
+                return "User ProfilePic Unblind Successful";
+        }
+
+        return "fail";
+    }
 }

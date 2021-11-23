@@ -85,7 +85,7 @@
 							<th scope="col">파일 크기</th>
 							<th scope="col">등록일</th>
 							<th scope="col">삭제일</th>
-							<th scope="col">선택<input class="form-check-input ms-2 mt-0" type="checkbox" onclick="checkAllItems(this)"></th>
+							<th scope="col">선택<input class="form-check-input ms-2 mt-0" type="checkbox" onclick="checkAllItems(this)" value="total_check"></th>
 							</thead>
 							<tbody id="table">
 								<c:choose>
@@ -126,7 +126,7 @@
 													</c:otherwise>
 												</c:choose>
 												<td><input type="checkbox" name="fileCheckBox${i}" value="${fileNameList.get(i)}"
-														   onchange="onChangeCheckBox(this)" style="margin: 4px;"/></td>
+														   onclick="addCheck(this)" style="margin: 4px;"/></td>
 											</tr>
 										</c:forEach>
 									</c:when>
@@ -273,23 +273,47 @@
         });
 	}
 
-    function onChangeCheckBox(checkbox) {
-        checkBoxList.push(checkbox.value);
-        console.log(checkBoxList);
-	}
+    // function onChangeCheckBox(checkbox) {
+    //     checkBoxList.push(checkbox.value);
+    //     console.log(checkBoxList);
+	// }
+
+    // function checkAllItems(check) {
+    //     let checkBoxes = document.querySelectorAll('input[type="checkbox"]');
+	//
+    //     for (let i = 0; i < checkBoxes.length; i++) {
+    //         if (check.checked) {
+    //             checkBoxes[i].checked = true;
+    //             if (i != 0) checkBoxList.push(checkBoxes[i].value);
+    //         } else {
+    //             checkBoxes[i].checked = false;
+    //             if (i != 0) checkBoxList.splice(checkBoxList.indexOf(checkBoxes[i].value), 1);
+    //         }
+    //     }
+    // }
 
     function checkAllItems(check) {
         let checkBoxes = document.querySelectorAll('input[type="checkbox"]');
+        checkBoxList = [];
 
         for (let i = 0; i < checkBoxes.length; i++) {
             if (check.checked) {
-                checkBoxes[i].checked = true;
-                if (i != 0) checkBoxList.push(checkBoxes[i].value);
-            } else {
-                checkBoxes[i].checked = false;
-                if (i != 0) checkBoxList.pop(checkBoxes[i].value);
+                if (checkBoxes[i].value !== 'total_check') {
+                    checkBoxList.push(checkBoxes[i].value);
+                }
             }
+
+            checkBoxes[i].checked = check.checked;
         }
+    }
+
+    function addCheck(check) {
+        if (checkBoxList.indexOf(check.value) === -1) {
+            checkBoxList.push(check.value);
+            return;
+        }
+
+        checkBoxList.splice(checkBoxList.indexOf(check.value), 1);
     }
 </script>
 </html>

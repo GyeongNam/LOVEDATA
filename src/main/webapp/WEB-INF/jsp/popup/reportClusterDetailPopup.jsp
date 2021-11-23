@@ -76,7 +76,7 @@
 						</div></th>
 						<th scope="col">
 							처리
-							<input class="form-check-input" type="checkbox" onclick="checkAllItems(this)">
+							<input class="form-check-input" type="checkbox" onclick="checkAllItems(this)" value="total_check">
 						</th>
 					</thead>
 					<tbody id="table">
@@ -101,7 +101,9 @@
 											}
 										%></td>
 									<td>
-										<input class="form-check-input mt-0" type="checkbox" value="${pageResultDTO.dtoList.get(i).repNo}">
+										<c:if test="${!pageResultDTO.dtoList.get(i).complete}">
+											<input class="form-check-input mt-0" type="checkbox" value="${pageResultDTO.dtoList.get(i).repNo}" onclick="addCheck(this)">
+										</c:if>
 									</td>
 								</tr>
 							</c:forEach>
@@ -114,7 +116,7 @@
 		<div class="col d-flex">
 			<button class="btn btn-primary" onclick="onClickPermaDeletePost('${rcDTO.rcNo}', '${rcDTO.postType}', '${rcDTO.postNo}')">삭제</button>
 			<button class="btn btn-primary">유저 제재</button>
-			<button class="btn btn-primary">블라인드 취소</button>
+			<button class="btn btn-primary" onclick="onClickUnblindPost('${rcDTO.rcNo}', '${rcDTO.postType}', '${rcDTO.postNo}')">블라인드 취소</button>
 		</div>
 	</div>
 </div>
@@ -140,6 +142,8 @@
     }
 </script>
 <script defer>
+	let checkBoxList = [];
+
 	function changeRepType(type) {
         let url = new URL(window.location.href);
 
@@ -150,29 +154,31 @@
 
     function checkAllItems(check) {
         let checkBoxes = document.querySelectorAll('input[type="checkbox"]');
+        checkBoxList = [];
 
         for (let i = 0; i < checkBoxes.length; i++) {
             if (check.checked) {
-                checkBoxes[i].checked = true;
-			} else {
-                checkBoxes[i].checked = false;
-			}
+                if (checkBoxes[i].value !== 'total_check') {
+                    checkBoxList.push(checkBoxes[i].value);
+				}
+            }
+
+            checkBoxes[i].checked = check.checked;
         }
 	}
 
     function processItems(rcNo) {
-        let checkBoxes = document.querySelectorAll('input[type="checkbox"]:checked');
 		let values = [];
         let text = document.getElementById("resultText").value;
 
-        for (let i = 0; i < checkBoxes.length; i++) {
-			values.push(Number.parseInt(checkBoxes[i].value));
-        }
-
-        if (values.length === 0) {
-            alert("처리할 신고를 선택해주세요");
+        if (checkBoxList.length === 0) {
+            alert("선택된 신고가 없어서 처리할 수 없습니다.");
             return;
 		}
+
+        for (let i = 0; i < checkBoxList.length; i++) {
+			values.push(Number.parseInt(checkBoxList[i]));
+        }
 
         $.ajax({
             type: "POST",
@@ -217,12 +223,11 @@
     }
 
     function onClickPermaDeletePost(rcNo, postType, postNo) {
-        let checkBoxes = document.querySelectorAll('input[type="checkbox"]:checked');
         let values = [];
         let text = document.getElementById("resultText").value;
 
-        for (let i = 0; i < checkBoxes.length; i++) {
-            values.push(Number.parseInt(checkBoxes[i].value));
+        for (let i = 0; i < checkBoxList.length; i++) {
+            values.push(Number.parseInt(checkBoxList[i]));
         }
 
         if (values.length === 0) {
@@ -259,13 +264,70 @@
                 // alert("선택된 이미지 삭제 성공");
                 location.reload();
             }, error: function (e) {
-                alert("신고 처리 과정에서 오류 발생");
-                console.log("신고 처리 과정에 오류 발생");
+                alert("영구삭제 처리 과정에서 오류 발생");
+                console.log("영구삭제 처리 과정에 오류 발생");
                 console.log(e);
             }
         });
-
     }
+
+    function onClickUnblindPost(rcNo, postType, postNo) {
+        let values = [];
+        let text = document.getElementById("resultText").value;
+
+        for (let i = 0; i < checkBoxList.length; i++) {
+            values.push(Number.parseInt(checkBoxList[i]));
+        }
+
+        if (values.length === 0) {
+            alert("신고를 선택하지 않아서 게시글 언블라인드를 진행할 수 없습니다.");
+            return;
+        }
+
+        if (values.length !== document.querySelectorAll('input[type="checkbox"]').length-1) {
+            alert("선택되지 않은 신고가 존재하여, 게시글 언블라인드를 진행할 수 없습니다.");
+            return;
+        }
+
+        if (!window.confirm("게시글을 언블라인드하시겠습니까?")) {
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/admin/report_center/post_unblind",
+            data: {
+                rcNo : rcNo,
+                repNoList : values,
+                postNo : postNo,
+                postType : postType,
+                result : text,
+                processType : '언블라인드'
+            },
+            beforeSend: function (xhr) {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                xhr.setRequestHeader(header, token);
+            },
+            success: function (response) {
+                // do something ...
+                // console.log("선택된 이미지 삭제 성공");
+                // alert("선택된 이미지 삭제 성공");
+                location.reload();
+            }, error: function (e) {
+                alert("언블라이드 처리 과정에서 오류 발생");
+                console.log("언블라인드 처리 과정에 오류 발생");
+                console.log(e);
+            }
+        });
+    }
+
+    function addCheck(check) {
+        if (checkBoxList.indexOf(check.value) === -1) {
+            checkBoxList.push(check.value);
+            return;
+		}
+
+        checkBoxList.splice(checkBoxList.indexOf(check.value), 1);
+	}
 </script>
 </body>
 </html>

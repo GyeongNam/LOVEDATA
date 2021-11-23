@@ -923,6 +923,9 @@
     function reportSubmit() {
         let reportType = document.querySelector('input[name="report"]:checked').value;
         let reportContent = document.getElementById("repContent").value;
+        let dupCheck = null;
+
+        dupCheck = confirm("중복 체크를 해제하시겠습니까");
 
         if (reportType !== 'ETC') {
             reportContent = '';
@@ -947,7 +950,8 @@
                 repContent : reportContent,
                 postNo : postNo,
                 postType : postType,
-                userNo : userNo
+                userNo : userNo,
+				dupCheck : dupCheck
             },
             beforeSend: function (xhr) {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
                 xhr.setRequestHeader(header, token);

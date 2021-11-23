@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Function;
 
@@ -26,8 +27,9 @@ public class ReportClusterService {
         ReportCluster temp = selectByPostNoPostType(Long.valueOf(reqParam.get("postNo")), reqParam.get("postType"));
 
         if (temp != null) {
-            log.warn("Duplicated ReportCluster Found");
-            return null;
+            temp.setRcComplete(false);
+            save(temp);
+            return selectByPostNoPostType(Long.valueOf(reqParam.get("postNo")), reqParam.get("postType"));
         }
 
         ReportCluster entity = ReportCluster.builder()
@@ -248,8 +250,12 @@ public class ReportClusterService {
         }
 
         ReportCluster rcEntity = item.get();
+        String oldResult = "";
+        if (rcEntity.getRcResult() != null || !rcEntity.getRcResult().equals("")) {
+            oldResult = rcEntity.getRcResult() + "\r\n";
+        }
         rcEntity.setRcComplete(true);
-        rcEntity.setRcResult(rcResult);
+        rcEntity.setRcResult(oldResult + rcResult + "시간 (" + LocalDateTime.now() + ")");
 
         save(rcEntity);
 

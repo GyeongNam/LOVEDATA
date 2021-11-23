@@ -13,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Function;
 
@@ -33,6 +32,8 @@ public class ReportService {
     ReviewRepository revRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    ReportClusterRepository rcRepository;
     static final int REPORT_STATUS_CHANGE_SIZE = 5;
 
     public Report register(Map<String, String> reqParam) {
@@ -72,14 +73,27 @@ public class ReportService {
                 return null;
         }
 
+        Optional<List<Report>> repItems = repository.findAllByUserNo(Long.valueOf(reqParam.get("userNo")));
+        if (repItems.isPresent()) {
+            List<Report> reportList = repItems.get();
+
+            for (Report report : reportList) {
+                if (report.getRcNo().equals(Long.valueOf(reqParam.get("rcNo")))) {
+                    if (Boolean.valueOf(reqParam.get("dupCheck"))) {
+                        break;
+                    } else {
+                        return null;
+                    }
+                }
+            }
+        }
+
         Report entity = Report.builder()
                 .userNo(Long.valueOf(reqParam.get("userNo")))
                 .repContent(reqParam.get("repContent"))
                 .rcNo(Long.valueOf(reqParam.get("rcNo")))
                 .repType(reqParam.get("repType"))
                 .build();
-
-        // TODO rcNo 추가하기
 
         save(entity);
 
@@ -174,6 +188,26 @@ public class ReportService {
         Optional<List<Report>> items = repository.findAllByUserNo(userNo);
 
         return items.orElse(null);
+    }
+
+    public List<Report> findAllByPostNoAndPostType(Long postNo, String postType) {
+        if (postNo == null || postType == null) {
+            return null;
+        }
+
+        if (postNo < 0 || postType.equals("")) {
+            return null;
+        }
+
+        Optional<ReportCluster> items = rcRepository.findByPostNoAndPostType(postNo, postType);
+        
+        if (!items.isPresent()) {
+            return null;
+        }
+        
+        Optional<List<Report>> repItems = repository.findAllByRcNo(items.get().getRcNo());
+
+        return repItems.orElse(null);
     }
 
     public ReportPageResultDTO<ReportDTO, Report> getList(ReportPageRequestDTO requestDTO) {
@@ -282,7 +316,7 @@ public class ReportService {
     }
 
     private void updatePostReportStatus(String postType, Long postNo) {
-        List<Report> reportList = findAllByRcNo(postNo);
+        List<Report> reportList = findAllByPostNoAndPostType(postNo, postType);
 
         if (reportList.size() >= REPORT_STATUS_CHANGE_SIZE) {
             switch (postType) {
@@ -292,6 +326,7 @@ public class ReportService {
                         Location locEntity = locItem.get();
                         if (!locEntity.is_reported()) {
                             locEntity.set_reported(true);
+                            locEntity.set_deleted(true);
                             locRepository.save(locEntity);
                         }
                     }
@@ -302,6 +337,7 @@ public class ReportService {
                         Course corEntity = corItem.get();
                         if (!corEntity.is_reported()) {
                             corEntity.set_reported(true);
+                            corEntity.set_deleted(true);
                             corRepository.save(corEntity);
                         }
                     }
@@ -312,6 +348,7 @@ public class ReportService {
                         Comment comEntity = comItem.get();
                         if (!comEntity.is_reported()) {
                             comEntity.set_reported(true);
+                            comEntity.set_deleted(true);
                             comRepository.save(comEntity);
                         }
                     }
@@ -322,6 +359,7 @@ public class ReportService {
                         Review revEntity = revItem.get();
                         if (!revEntity.is_reported()) {
                             revEntity.set_reported(true);
+                            revEntity.set_deleted(true);
                             revRepository.save(revEntity);
                         }
                     }
