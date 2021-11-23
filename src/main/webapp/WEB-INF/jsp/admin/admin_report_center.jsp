@@ -155,6 +155,9 @@
 													case "REV" :
 														out.println("리뷰");
                                                         break;
+													case "PROFILE_PIC" :
+														out.println("프로필 사진");
+                                                        break;
 													default :
 														out.println("NULL");
                                                         break;

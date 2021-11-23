@@ -75,22 +75,52 @@ public class ReportManageService {
         return rcService.entityToDto(entity);
     }
 
+    public boolean processReportCluster(Long rcNo, List<Long> repNoList, String result, String adminComment) {
+//        String msg = "";
+//        ReportCluster rcEntity = rcService.select(rcNo);
+//
+//        if (rcEntity == null) {
+//            return false;
+//        }
+//
+//        for (int i = 0; i < repNoList.size(); i++) {
+//            Report repEntity = repService.select(repNoList.get(i));
+//            if (repEntity == null) {
+//                continue;
+//            }
+//
+//            msg += "Ticket( " + repEntity.getRepNo() + ")" + repEntity.getUserNo() + "번 유저가 " + repEntity.getRepType() + "으로 신고했습니다.(" + repEntity.getRegDate() + ")\r\n";
+//        }
+
+        if (!processReport(repNoList, result)) {
+            return false;
+        }
+
+        syncReportClusterRepCount(rcNo);
+
+        if (!rcService.setCompleteAndResult(rcNo, adminComment)) {
+            return false;
+        }
+
+        return true;
+    }
+
     public ReportCluster getReportClusterEntity(ReportClusterDTO dto) {
         return rcService.dtoToEntity(dto);
     }
 
     // 주어진 명령(삭제 혹은 무시)에 따라 신고를 처리하는 메소드
-    public boolean processReport(List<Long> rcNoList, String result) {
+    public boolean processReport(List<Long> repNoList, String result) {
         List<Long> completeList = new ArrayList<>();
         boolean isError = false;
 
-        for (Long rcNo : rcNoList) {
-            if (!repService.processReport(rcNo, result)) {
+        for (Long repNo : repNoList) {
+            if (!repService.processReport(repNo, result)) {
                 log.warn("Error occurs during process report");
                 isError = true;
                 break;
             } else {
-                completeList.add(rcNo);
+                completeList.add(repNo);
             }
         }
 

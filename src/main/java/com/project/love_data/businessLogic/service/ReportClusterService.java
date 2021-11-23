@@ -232,4 +232,33 @@ public class ReportClusterService {
 
         return false;
     }
+
+    public boolean setCompleteAndResult(Long rcNo, String rcResult) {
+        if (rcNo == null) {
+            return false;
+        }
+
+        if (rcNo < 0) {
+            return false;
+        }
+
+        Optional<ReportCluster> item = repository.findById(rcNo);
+        if (!item.isPresent()) {
+            return false;
+        }
+
+        ReportCluster rcEntity = item.get();
+        rcEntity.setRcComplete(true);
+        rcEntity.setRcResult(rcResult);
+
+        save(rcEntity);
+
+        item = repository.findById(rcNo);
+
+        if (!item.get().isRcComplete() || !item.get().getRcResult().equals(rcResult)) {
+            return false;
+        }
+
+        return true;
+    }
 }

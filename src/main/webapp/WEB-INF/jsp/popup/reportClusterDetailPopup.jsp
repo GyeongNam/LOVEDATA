@@ -35,7 +35,7 @@
 	</div>
 	<div class="row d-flex">
 		<div class="flex-row-reverse d-flex">
-			<button type="button" onclick="processItems()" class="btn btn-primary me-5">처리</button>
+			<button type="button" onclick="processItems('${rcDTO.rcNo}')" class="btn btn-primary me-5">처리</button>
 			<div class="col-3 pt-1">
 				<label>
 					처리 방식
@@ -112,7 +112,7 @@
 			</div>
 		</div>
 		<div class="col d-flex">
-			<button class="btn btn-primary" onclick="onClickPermaDeletePost('${rcDTO.postType}', '${rcDTO.postNo}')">삭제</button>
+			<button class="btn btn-primary" onclick="onClickPermaDeletePost('${rcDTO.rcNo}', '${rcDTO.postType}', '${rcDTO.postNo}')">삭제</button>
 			<button class="btn btn-primary">유저 제재</button>
 			<button class="btn btn-primary">블라인드 취소</button>
 		</div>
@@ -160,7 +160,7 @@
         }
 	}
 
-    function processItems() {
+    function processItems(rcNo) {
         let checkBoxes = document.querySelectorAll('input[type="checkbox"]:checked');
 		let values = [];
         let text = document.getElementById("resultText").value;
@@ -169,11 +169,17 @@
 			values.push(Number.parseInt(checkBoxes[i].value));
         }
 
+        if (values.length === 0) {
+            alert("처리할 신고를 선택해주세요");
+            return;
+		}
+
         $.ajax({
             type: "POST",
             url: "/admin/report_center/report_process",
             data: {
-                rcNoList : values,
+                rcNo : rcNo,
+                repNoList : values,
 				result : text
             },
             beforeSend: function (xhr) {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
@@ -210,33 +216,55 @@
         location.href = url;
     }
 
-    function onClickPermaDeletePost(postType, postNo) {
+    function onClickPermaDeletePost(rcNo, postType, postNo) {
+        let checkBoxes = document.querySelectorAll('input[type="checkbox"]:checked');
+        let values = [];
+        let text = document.getElementById("resultText").value;
+
+        for (let i = 0; i < checkBoxes.length; i++) {
+            values.push(Number.parseInt(checkBoxes[i].value));
+        }
+
+        if (values.length === 0) {
+            alert("신고를 선택하지 않아서 게시글 영구 삭제를 진행할 수 없습니다.");
+            return;
+		}
+
+        if (values.length !== document.querySelectorAll('input[type="checkbox"]').length-1) {
+            alert("선택되지 않은 신고가 존재하여, 게시글 삭제를 진행할 수 없습니다.");
+            return;
+		}
+
         if (!window.confirm("게시글을 영구삭제하시겠습니까?")) {
             return;
         }
 
-        let form;
-        form = document.createElement("form");
-        form.method = "post";
-        switch (postType) {
-            case "LOC" :
-                form.action= "/service/loc_perma_delete?locNo=" + postNo;
-                break;
-			case "COR" :
-                form.action= "/service/cor_perma_delete?corNo=" + postNo;
-				break;
-			case "COM" :
-                // form.action= "/service/loc_perma_delete" + param;
-				break;
-			case "REV" :
-                // form.action= "/service/loc_perma_delete" + param;
-				break;
-			case "PROFILE_PIC" :
-				break;
-		}
+        $.ajax({
+            type: "POST",
+            url: "/admin/report_center/post_perma_delete",
+            data: {
+                rcNo : rcNo,
+                repNoList : values,
+                postNo : postNo,
+                postType : postType,
+				result : text,
+				processType : '영구삭제'
+            },
+            beforeSend: function (xhr) {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                xhr.setRequestHeader(header, token);
+            },
+            success: function (response) {
+                // do something ...
+                // console.log("선택된 이미지 삭제 성공");
+                // alert("선택된 이미지 삭제 성공");
+                location.reload();
+            }, error: function (e) {
+                alert("신고 처리 과정에서 오류 발생");
+                console.log("신고 처리 과정에 오류 발생");
+                console.log(e);
+            }
+        });
 
-        document.body.appendChild(form);
-        form.submit();
     }
 </script>
 </body>

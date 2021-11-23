@@ -72,6 +72,9 @@ public interface UserRepository extends JpaRepository<User, Long>{
 //	@Query(value = "DELETE  FROM user_role_set r WHERE r.user_user_no = :user_no", nativeQuery = true)
 //	void deleteUserRoleByEmail(@Param("user_no") Long user_no);
 
+	@Query(value = "select * from user where profile_pic = :profile_pic", nativeQuery = true)
+	Optional<List<User>> selectUserByProfilePic (@Param("profile_pic")String profile_pic);
+
 	@Modifying
 	@Query(value = "DELETE  FROM user  WHERE user_email = :email", nativeQuery = true)
 	@Transactional

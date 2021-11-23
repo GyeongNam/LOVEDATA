@@ -14,6 +14,7 @@ import com.project.love_data.util.FileSizeCalculator;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static com.project.love_data.util.ConstantValues.*;
@@ -977,6 +977,7 @@ public class AdminController {
                         break;
                     case "PIC" :
                         fileTypeList.add("프로필");
+//                        User userEntity = userService.findByProfilePic()
                         fileNoList.add(null);
                         fileOriginURLList.add(null);
                         fileUploadUserList.add("삭제 된 사용자");
@@ -1167,6 +1168,16 @@ public class AdminController {
                         urlList.add("/service/cor_detail?corNo=" + revEntity.getCorNo() + "&page=" + pageNum + "&revNo=" + revEntity.getRevNo());
                     }
                     break;
+                case "PROFILE_PIC" :
+                    User userEntity = userService.select(reportClusterDTO.getPostNo());
+                    if (userEntity == null) {
+                        reportClusterDTO.setPostNo(null);
+                        userNickList.add("삭제된 유저");
+                    } else {
+                        userNickList.add(userEntity.getUser_nic());
+                        urlList.add(userEntity.getProfile_pic());
+                    }
+                    break;
                 default :
                     urlList.add(null);
                     userNickList.add("삭제된 유저");
@@ -1252,22 +1263,129 @@ public class AdminController {
     @PostMapping("/report_center/report_process")
     @ResponseBody
     public boolean processReport(HttpServletRequest request, Model model,
-                                 @RequestParam("rcNoList[]") Long[] rcNoList,
+                                 @RequestParam("rcNo") Long rcNo,
+                                 @RequestParam("repNoList") Long[] repNoList,
                                  @RequestParam String result) {
-        if (rcNoList == null) {
+        if (repNoList == null) {
             log.warn("rcNoList is null");
             return false;
         }
 
-        if (rcNoList.length == 0) {
+        if (repNoList.length == 0) {
             log.warn("rcNoList is empty");
             return false;
         }
 
-        if (!reportManageService.processReport(Arrays.asList(rcNoList), result)) {
+        if (!reportManageService.processReport(Arrays.asList(repNoList), result)) {
             return false;
         }
 
+        reportManageService.syncReportClusterRepCount(rcNo);
+
         return true;
+    }
+
+    @PostMapping("/report_center/post_perma_delete")
+    @ResponseBody
+    public String processPermaDeletePost(HttpServletRequest request, Model model,
+                                         Authentication authentication, @RequestParam("rcNo") Long rcNo,
+                                         @RequestParam("repNoList[]") Long[] repNoList, @RequestParam("postNo") Long postNo,
+                                         @RequestParam("postType") String postType, @RequestParam("result") String result,
+                                         @RequestParam("processType") String processType) {
+        if (authentication == null) {
+            return "authentication failed";
+        }
+
+        AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
+        Long user_no = authUserModel.getUser_no();
+        Set<GrantedAuthority> authorities = (Set<GrantedAuthority>) authUserModel.getAuthorities();
+
+        if (!request.isUserInRole("ROLE_ADMIN")) {
+            log.warn("게시글 삭제를 요청한 유저가 어드민 권한이 없습니다");
+            return "USER is not ADMIN";
+        }
+
+        switch (postType) {
+            case "LOC" :
+                Location locEntity = locService.selectLoc(postNo);
+
+                if (locEntity == null) {
+                    return "Location Entity Null";
+                }
+
+                locService.delete(locEntity.getLoc_no());
+                locService.permaDelete(locEntity);
+
+                if (locService.selectLoc(postNo) == null) {
+                    reportManageService.processReportCluster(rcNo, Arrays.asList(repNoList), result, processType);
+                    return "Post Perma Delete Successful";
+                }
+
+                break;
+            case "COR" :
+                Course corEntity = corService.selectCor(postNo);
+
+                if (corEntity == null) {
+                    return "Course cEntity Null";
+                }
+
+                corService.delete(corEntity.getCor_no());
+                corService.permaDelete(corEntity.getCor_no());
+
+                if (corService.selectCor(postNo) == null) {
+                    reportManageService.processReportCluster(rcNo, Arrays.asList(repNoList), result, processType);
+                    return "Post Perma Delete Successful";
+                }
+
+                break;
+            case "COM" :
+                Comment comEntity = comService.select(postNo);
+
+                if (comEntity == null) {
+                    return "Comment Entity Null";
+                }
+
+                comService.delete(comEntity.getCmtNo());
+                comService.permaDelete(comEntity);
+
+                if (comService.select(postNo) == null) {
+                    reportManageService.processReportCluster(rcNo, Arrays.asList(repNoList), result, processType);
+                    return "Post Perma Delete Successful";
+                }
+
+                break;
+            case "REV" :
+                Review revEntity = reviewService.select(postNo);
+
+                if (revEntity == null) {
+                    return "Review Entity Null";
+                }
+
+                reviewService.delete(revEntity.getRevNo());
+                reviewService.permaDelete(revEntity);
+
+                if (reviewService.select(postNo) == null) {
+                    reportManageService.processReportCluster(rcNo, Arrays.asList(repNoList), result, processType);
+                    return "Post Perma Delete Successful";
+                }
+
+                break;
+            case "PROFILE_PIC" :
+                User userEntity = userService.select(postNo);
+
+                if (userEntity == null) {
+                    return "User Entity Null";
+                }
+
+                if (userService.changeProfilePicToDefault(userEntity.getUser_no())) {
+                    processType = "기본 프로필 사진으로 변경";
+                    reportManageService.processReportCluster(rcNo, Arrays.asList(repNoList), result, processType);
+                    return "User ProfilePic Perma Delete Successful";
+                }
+
+                break;
+        }
+
+        return "fail";
     }
 }

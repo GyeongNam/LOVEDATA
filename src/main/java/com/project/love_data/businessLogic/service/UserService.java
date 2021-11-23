@@ -119,6 +119,32 @@ public class UserService {
         userRepository.delete(user);
     }
 
+    public boolean changeProfilePicToDefault(Long userNo) {
+        if (userNo == null) {
+            return false;
+        }
+
+        if (userNo < 0) {
+            return false;
+        }
+
+        Optional<User> item = userRepository.findById(userNo);
+
+        if (!item.isPresent()) {
+            return false;
+        }
+
+        User userEntity = item.get();
+        userEntity.setProfile_pic("/image/icon/user/user.png");
+        update(userEntity);
+
+        if (!userRepository.findById(userNo).get().getProfile_pic().equals("/image/icon/user/user.png")) {
+            return false;
+        }
+
+        return true;
+    }
+
     //CHOI
     public UserDTO DTOselect(String email) {
         Optional<User> item = userRepository.findUserByEmail(email);
@@ -171,63 +197,24 @@ public class UserService {
     Optional<List<UserSuspension>> userSuspensions = usRepository.findStopByUser_no(user_no, progress);
         return userSuspensions.orElse(new ArrayList<>());
     }
-//    public LocationDTO LocDTO(Long loc_no) {
-//        Optional<Location> item = LocationRepository.findByAllUser_no(loc_no);
-//
-//        return item.isPresent() ? entityToDto(item.get()) : null;
-////        return item.orElse(null);
-//    }
-//    public void addLikeLocation(User user, Location location) {
-//        user.addLikeLocation(location);
-//
-//        update(user);
-//    }
-//
-//    public void removeLikeLocation(User user, Location location) {
-//        user.removeLikeLocation(location);
-//
-//        update(user);
-//    }
-//
-//    public void removeLikeLocation(User user, int index) {
-//        user.removeLikeLocation(index);
-//
-//        update(user);
-//    }
-//
-//    public void addRecentLocation(User user, Location location){
-//        user.addRecentLocation(location);
-//
-//        update(user);
-//    }
-//
-//    public void removeRecentLocation(User user, Location location){
-//        user.removeRecentLocation(location);
-//
-//        update(user);
-//    }
-//
-//    public void removeRecentLocation(User user, int index){
-//        user.removeRecentLocation(index);
-//
-//        update(user);
-//    }
 
-    // Todo UserService에 추가하기
-//    public UserLikeLoc addLikeLocation(Long userNo, Long locNo) {
-//        UserLikeLoc entity = likeLocService.register(userNo, locNo);
-//
-//        return entity;
-//        dto.addLikeLocation(location);
+    public User findByProfilePic(String profilPic) {
+        if (profilPic == null) {
+            return null;
+        }
 
-        // locService에서 업데이트 해주는 식으로
-//        update(user);
-//    }
+        if (profilPic.equals("")) {
+            return null;
+        }
 
-//    public boolean removeLikeLocation(Long userNo, Long locNo) {
-//        return likeLocService.delete(userNo, locNo);
-//        dto.removeLikeLocation(location);
+        Optional<List<User>> item = userRepository.selectUserByProfilePic(profilPic);
 
-//        update(dto);
-//    }
+        if (!item.isPresent() || item.get().size() > 1) {
+            return null;
+        }
+
+        User userEntity = item.get().get(0);
+
+        return userEntity;
+    }
 }
