@@ -916,6 +916,28 @@ public class UserController {
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping("admin/SendMessage")
+	public String adminSendMessage(HttpServletRequest request, Model model) {
+		List<User> User = userService.finduserAll();
+		model.addAttribute("user", User);
+
+		return "/admin/admin_sendMessage_user";
+	}
+
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping(value = "/admin/SendMessage/search/{menu}/{text}/{page}")
+	public String Msgsearch( @PathVariable("page") String page,
+							 @PathVariable("text") String text,
+							 @PathVariable("menu") String menu,
+							 Model model,
+							 Principal principal)  {
+		List<User> user = userService.search_user(menu, text);
+		model.addAttribute("user", user);
+		return "admin/admin_sendMessage_user";
+	}
+
+
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping(value = "/admin/user/{page}")
 	public String admin_user(@PathVariable("page") String page, HttpServletRequest request, Model model){
 		List<User> User = userService.finduserAll();
