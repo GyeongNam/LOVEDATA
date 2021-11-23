@@ -73,6 +73,23 @@ function Usearch(){
     }
 }
 
+function SMSUsearch(){
+    var select =$('#Notice_select').val();
+    var text =$('#keyword').val();
+
+    var special_pattern = /[`~!@#$%^&*|\\\'\";:\/?]/gi;
+    if( text == '' ||text == null ){
+        alert( '값을 입력해주세요' );
+    }
+    else {
+        if(special_pattern.test(text) == true) {
+            alert("특수문자는 안됩니다.")
+        } else {
+            return location.href="/admin/SendMessage/search/"+select+"/"+text+"/1";
+        }
+    }
+}
+
 function Nsearch(){
     var select =$('#Notice_select').val();
     var text =$('#keyword').val();

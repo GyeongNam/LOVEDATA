@@ -44,9 +44,15 @@
 				</p>
 			</div>
 			<div>
-				<p>
-					<a href="/mypage_myreview/1" >나의 리뷰</a>
-				</p>
+				<button class="accordion">나의댓글/리뷰</button>
+				<div class="panel">
+					<p>
+						<a href="/mypage_mycomment/1" >나의 댓글</a>
+					</p>
+					<p>
+						<a href="/mypage_myreview/1" >나의 리뷰</a>
+					</p>
+				</div>
 			</div>
 			<div>
 				<div>
@@ -95,17 +101,17 @@
 				<tr>
 					<th>등록 날짜</th>
 					<th>제목</th>
-					<th>조회수</th>
+					<th>좋아요 수</th>
 				</tr>
 				</thead>
 				<tbody>
-				<c:forEach var="rev" items="${my_rev}">
+				<c:forEach var="i" begin="0" end="${my_rev.size() - 1}">
 					<c:choose>
-						<c:when test="${rev._deleted eq false}">
+						<c:when test="${my_rev.get(i)._deleted eq false}">
 							<tr>
-								<td><span>${rev.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</span></td>
-								<td><a href="/service/cor_detail?corNo=${rev.corNo}&page=1">${rev.revContent}</a></td>
-								<td>${rev.view_count}</td>
+								<td><span>${my_rev.get(i).regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</span></td>
+								<td><a href="/service/cor_detail?corNo=${my_rev.get(i).corNo}&page=${revPageNumList.get(i)}&revNo=${my_rev.get(i).revNo}">${my_rev.get(i).revContent}</a></td>
+								<td>${my_rev.get(i).rev_like}</td>
 
 							</tr>
 						</c:when>

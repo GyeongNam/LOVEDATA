@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/service/loc.css">
     <link rel="stylesheet" href="/css/ServiceCenter.css" >
+    <link rel="stylesheet" href="/css/admin_sendMaessage_user.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
 
@@ -42,8 +43,8 @@
                     <div id="loc_collapse" class="collapse show" aria-labelledby="headingLoc" data-parent="#loc">
                         <div class="card-body center-pill">
                             <p><a href="/admin/dash" class="highlight-not-selected-text-menu">대시보드</a></p>
-                            <p><a href="/admin/user" class="highlight-selected-text-menu">유저 관리</a></p>
-                            <p><a href="/admin/SendMessage" class="highlight-not-selected-text-menu">메시지 발송</a></p>
+                            <p><a href="/admin/user" class="highlight-not-selected-text-menu">유저 관리</a></p>
+                            <p><a href="/admin/SendMessage" class="highlight-selected-text-menu">메시지 발송</a></p>
                             <p><a type="button" class="accordion highlight-not-selected-text-menu" data-toggle="collapse" data-target="#service_collapse" aria-expanded="false">공지사항과 문의사항</a></p>
                             <div id="service_collapse" class="panel-collapse collapse">
                                 <p>
@@ -65,7 +66,7 @@
         <div class="row justify-content-md-start">
             <div class="tab-content" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="recent-post" role="tabpanel" aria-labelledby="recent-post-tab">
-                    <span>유저관리</span>
+                    <h3>메세지 발송</h3>
                     <div class="row my-3">
                             <div class="collapse navbar-collapse d-flex justify-content-end" id="bs-example-navbar-collapse-1">
 
@@ -75,11 +76,12 @@
                                         <option value="2">유저 닉네임</option>
                                     </select>
                                     <input type="text" class="input-box mx-2" placeholder="검색" id="keyword" name="keyword"/>
-                                    <button class="btn btn-primary mx-2" type="button" id="searchBtn" onclick="Usearch()">Search</button>
+                                    <button class="btn btn-primary mx-2" type="button" id="searchBtn" onclick="SMSUsearch()">Search</button>
 
                             </div>
                             <table class="table text-center" id="searchResultTable">
                                 <thead>
+                                <th scope="col"><input type='checkbox' name='user' value='selectall' onclick='selectAll(this)'/></th>
                                 <th scope="col">유저 번호</th>
                                 <th scope="col">유저 닉네임</th>
                                 <th scope="col">유저 이름</th>
@@ -90,7 +92,8 @@
                                 </thead>
                                 <tbody id="tableBody">
                                 <c:forEach var="user" items="${user}">
-                                <tr onclick="location.href='/'" style="cursor:hand">
+                                <tr style="cursor:hand">
+                                    <td><input type="checkbox" name="user" value="yyy" ></td>
                                     <td>${user.user_no}</td>
                                     <td>${user.user_nic}</td>
                                     <td>${user.user_name}</td>
@@ -110,6 +113,14 @@
                                 </tbody>
                             </table>
                         </div>
+                    <div class="row my-3">
+                        <div class="">
+                        <h5>메세지 내용</h5>
+                        <textarea class="sendmsgtext"></textarea>
+                        <button class="">SMS 전송</button>
+                        <button class="">이메일 전송</button>
+                        </div>
+                    </div>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="hot-post" role="tabpanel" aria-labelledby="hot-post-tab">
@@ -126,4 +137,6 @@
         integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
         crossorigin="anonymous"></script>
 <script defer src="/js/ServiceCenter.js"></script>
+<script defer src="/js/admin_sendMessage.js"></script>
+
 </html>

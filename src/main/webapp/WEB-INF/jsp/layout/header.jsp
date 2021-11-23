@@ -13,6 +13,13 @@
 	<meta name="_csrf" content="${_csrf.token}">
 	<meta name="_csrf_header" content="${_csrf.headerName}">
 	<title>Insert title here</title>
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+		body {
+			font-family: 'Jua', sans-serif;
+		}
+	</style>
 </head>
 <body>
 <div id="header" class="deactive" class="fixed-top">

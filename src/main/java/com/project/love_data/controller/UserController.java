@@ -282,7 +282,86 @@ public class UserController {
 			return "user/mypage";
 		}
 	}
+	//CHOI
+	@GetMapping(value = "/mypage_mycomment/{page}")
+	public String mycomment(@PathVariable("page") String page, Authentication authentication, Model model) {
+		if (authentication == null) {
+			return "redirect:/login";
+		} else {
+			AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
+			List<Comment> myComList = cmtService.findAllByLoc_no(authUserModel.getUser_no());
+			List<Comment> comlist_page = null;
+			List<Integer> comPageNumList = new ArrayList<>();
 
+			model.addAttribute("search", false);
+			long qu_size = myComList.size();
+			long qu_page = myComList.size()/8;
+			long qu_page_na = myComList.size()%8;
+			long qu_page_size = qu_page/10;
+			long qu_page_size_na = qu_page%10;
+			Date today = new Date();
+			SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+			model.addAttribute("qu_time", format1.format(today));
+
+			if(qu_page_size_na >= 1){
+				qu_page_size = qu_page_size+1;
+				model.addAttribute("qu_page_size",qu_page_size);
+			}
+			else {
+				model.addAttribute("qu_page_size",qu_page_size);
+			}
+
+
+			if(qu_page_na >= 1){
+				qu_page = qu_page+1;
+				model.addAttribute("qu_page",qu_page);
+			}
+			else {
+				model.addAttribute("qu_page",qu_page);
+			}
+			model.addAttribute("qu_size",myComList.size());
+
+			// 페이지네이션
+			long j=0;
+
+			if(myComList.size()<8){
+				model.addAttribute("my_com",myComList);
+				for (Comment comEntity : myComList) {
+					comPageNumList.add(cmtService.getCommentCurrentPageNum(comEntity.getCmtNo()));
+				}
+			}else {
+				for (int i = 0; i < qu_size; i++) {
+					comlist_page = myComList.subList(0,8);
+
+					if (i % 8 == 0) {
+						j = j + 1;
+						if (j == Long.parseLong(page)) {
+							model.addAttribute("my_com",comlist_page);
+							for (Comment comEntity : comlist_page) {
+								comPageNumList.add(cmtService.getCommentCurrentPageNum(comEntity.getCmtNo()));
+							}
+							break;
+						} else {
+							myComList.subList(0,8).clear();
+
+							if(myComList.size()<8){
+								model.addAttribute("my_com",myComList);
+								for (Comment comEntity : myComList) {
+									comPageNumList.add(cmtService.getCommentCurrentPageNum(comEntity.getCmtNo()));
+								}
+								break;
+							}
+						}
+					}
+				}
+			}
+
+			model.addAttribute("comPageNumList", comPageNumList);
+
+
+			return "user/mypage_mycomment";
+		}
+	}
 	//CHOI
 	@GetMapping(value = "/mypage_myreview/{page}")
 	public String myreview(@PathVariable("page") String page, Authentication authentication, Model model) {
@@ -291,10 +370,9 @@ public class UserController {
 		} else {
 			AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
 			List<Review> myRevList = reviewService.findAllByUser_no(authUserModel.getUser_no());
-
-//			model.addAttribute("my_rev", myRevList);
-
 			List<Review> revlist_page = null;
+			List<Integer> revPageNumList = new ArrayList<>();
+
 			model.addAttribute("search", false);
 			long qu_size = myRevList.size();
 			long qu_page = myRevList.size()/8;
@@ -328,6 +406,9 @@ public class UserController {
 
 			if(myRevList.size()<8){
 				model.addAttribute("my_rev",myRevList);
+				for (Review revEntity : myRevList) {
+					revPageNumList.add(reviewService.getReviewCurrentPageNum(revEntity.getRevNo()));
+				}
 			}else {
 				for (int i = 0; i < qu_size; i++) {
 					revlist_page = myRevList.subList(0,8);
@@ -336,12 +417,18 @@ public class UserController {
 						j = j + 1;
 						if (j == Long.parseLong(page)) {
 							model.addAttribute("my_rev",revlist_page);
+							for (Review revEntity : revlist_page) {
+								revPageNumList.add(reviewService.getReviewCurrentPageNum(revEntity.getRevNo()));
+							}
 							break;
 						} else {
 							myRevList.subList(0,8).clear();
 
 							if(myRevList.size()<8){
 								model.addAttribute("my_rev",myRevList);
+								for (Review revEntity : myRevList) {
+									revPageNumList.add(reviewService.getReviewCurrentPageNum(revEntity.getRevNo()));
+								}
 								break;
 							}
 						}
@@ -349,6 +436,7 @@ public class UserController {
 				}
 			}
 
+			model.addAttribute("revPageNumList", revPageNumList);
 
 			return "user/mypage_myreview";
 		}
@@ -851,6 +939,27 @@ public class UserController {
 			calenderService.update(calenders.get(i));
 		}
 		return "redirect:/";
+	}
+
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping("admin/SendMessage")
+	public String adminSendMessage(HttpServletRequest request, Model model) {
+		List<User> User = userService.finduserAll();
+		model.addAttribute("user", User);
+
+		return "/admin/admin_sendMessage_user";
+	}
+
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping(value = "/admin/SendMessage/search/{menu}/{text}/{page}")
+	public String Msgsearch( @PathVariable("page") String page,
+						   @PathVariable("text") String text,
+						   @PathVariable("menu") String menu,
+						   Model model,
+						   Principal principal)  {
+		List<User> user = userService.search_user(menu, text);
+		model.addAttribute("user", user);
+		return "admin/admin_sendMessage_user";
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")

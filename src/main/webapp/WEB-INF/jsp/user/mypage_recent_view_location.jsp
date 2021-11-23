@@ -44,9 +44,15 @@
 				</p>
 			</div>
 			<div>
-				<p>
-					<a href="/mypage_myreview/1" >나의 리뷰</a>
-				</p>
+				<button class="accordion">나의댓글/리뷰</button>
+				<div class="panel">
+					<p>
+						<a href="/mypage_mycomment/1" >나의 댓글</a>
+					</p>
+					<p>
+						<a href="/mypage_myreview/1" >나의 리뷰</a>
+					</p>
+				</div>
 			</div>
 			<div>
 				<div>
@@ -91,7 +97,7 @@
 	</div>
 	<div id="jb-content">
 		<div id="RecView" class="tabcontent">
-			<h3>최근 본 코스</h3>
+			<h3>최근 본 장소</h3>
 			<table>
 				<thead>
 				<tr>

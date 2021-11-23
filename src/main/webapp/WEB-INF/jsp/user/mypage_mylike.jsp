@@ -42,9 +42,15 @@
 				</p>
 			</div>
 			<div>
-				<p>
-					<a href="/mypage_myreview/1" >나의 리뷰</a>
-				</p>
+				<button class="accordion">나의댓글/리뷰</button>
+				<div class="panel">
+					<p>
+						<a href="/mypage_mycomment/1" >나의 댓글</a>
+					</p>
+					<p>
+						<a href="/mypage_myreview/1" >나의 리뷰</a>
+					</p>
+				</div>
 			</div>
 			<div>
 				<div>
@@ -87,7 +93,7 @@
 	</div>
 	<div id="jb-content">
 		<div id="LikeList" class="tabcontent container d-flex">
-			<h3>찜 목록</h3>
+			<h3>내가 찜한 장소</h3>
 				<c:choose>
 				<c:when test="${empty my_Loclike}">
 					<table>

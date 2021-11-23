@@ -558,4 +558,9 @@ public class CommentService {
         List<Comment> item = cmtRepository.findAllByUser_no(user_no);
         return item;
     }
+
+    public List<Comment> findAllByLoc_no(Long loc_no){
+        List<Comment> item = cmtRepository.findAllByLoc_no(loc_no);
+        return item;
+    }
 }
