@@ -18,6 +18,7 @@ public class DeletedImageInfoDTO {
     private Long diiNo;
     private String imgType;
     private Long imgNo;
+    private String imgUuid;
     private Long imgUserNo;
 
     @Builder.Default

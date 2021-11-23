@@ -8,6 +8,7 @@ import com.project.love_data.model.resource.ReviewImage;
 import com.project.love_data.model.service.*;
 import com.project.love_data.model.user.User;
 import com.project.love_data.security.model.AuthUserModel;
+import com.project.love_data.util.DefaultLocalDateTimeFormatter;
 import com.project.love_data.util.FileLastDateComparator;
 import com.project.love_data.util.FileSizeCalculator;
 import lombok.extern.log4j.Log4j2;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static com.project.love_data.util.ConstantValues.*;
@@ -55,6 +57,9 @@ public class AdminController {
     ReviewImageService revImageService;
     @Autowired
     ReportManageService reportManageService;
+    @Autowired
+    DeletedImageInfoService deletedImageInfoService;
+    DefaultLocalDateTimeFormatter defaultLocalDateTimeFormatter = new DefaultLocalDateTimeFormatter();
     FileSizeCalculator fileSizeCalculator = new FileSizeCalculator();
 
     List<String> tagList = new ArrayList<>();
@@ -878,7 +883,7 @@ public class AdminController {
         List<String> fileTypeList = new ArrayList<>();
         List<Long> fileNoList = new ArrayList<>();
         List<String> fileUploadUserList = new ArrayList<>();
-        List<LocalDateTime> fileUploadTimeList = new ArrayList<>();
+        List<LocalDateTime> fileDeletedTimeList = new ArrayList<>();
         List<String> fileOriginURLList = new ArrayList<>();
 
         fileList = fileManagementService.getAllFilesList(PathType.UPLOAD);
@@ -890,9 +895,17 @@ public class AdminController {
                 String type = "";
                 String uuid = "";
                 String uuidAndExtenstion = "";
+                DeletedImageInfo imageInfo = null;
                 lastModifiedTimeList.add(LocalDateTime.ofInstant(Instant.ofEpochMilli(file.lastModified()), TimeZone.getTimeZone("Asia/Seoul").toZoneId()));
                 fileSizeList.add(fileSizeCalculator.execute(file.length()));
                 fileNameList.add(fileName);
+
+                imageInfo = deletedImageInfoService.findByImgUuid(fileName);
+                if (imageInfo == null) {
+                    fileDeletedTimeList.add(null);
+                } else {
+                    fileDeletedTimeList.add(imageInfo.getRegDate());
+                }
 
                 int index = fileName.indexOf("^");
                 type = fileName.substring(0, index);
@@ -908,12 +921,10 @@ public class AdminController {
                         LocationImage locImg = locImageService.getAllImage(uuidAndExtenstion);
                         if (locImg == null) {
                             fileNoList.add(null);
-                            fileUploadTimeList.add(null);
                             fileUploadUserList.add("삭제 된 사용자");
                             fileOriginURLList.add(null);
                         } else {
                             fileNoList.add(locImg.getImg_no());
-                            fileUploadTimeList.add(locImg.getRegDate());
                             fileOriginURLList.add("/service/loc_detail?locNo=" + locImg.getLocation().getLoc_no());
                             User user = userService.select(locImg.getUser_no());
                             if (user == null) {
@@ -928,12 +939,10 @@ public class AdminController {
                         CourseImage corImg = corImageService.getAllImage(uuidAndExtenstion);
                         if (corImg == null) {
                             fileNoList.add(null);
-                            fileUploadTimeList.add(null);
                             fileUploadUserList.add("삭제 된 사용자");
                             fileOriginURLList.add(null);
                         } else {
                             fileNoList.add(corImg.getImg_no());
-                            fileUploadTimeList.add(corImg.getRegDate());
                             fileOriginURLList.add("/service/cor_detail?corNo=" + corImg.getCor_no());
                             User user = userService.select(corImg.getUser_no());
                             if (user == null) {
@@ -948,12 +957,10 @@ public class AdminController {
                         ReviewImage revImg = revImageService.getAllImage(uuidAndExtenstion);
                         if (revImg == null) {
                             fileNoList.add(null);
-                            fileUploadTimeList.add(null);
                             fileUploadUserList.add("삭제 된 사용자");
                             fileOriginURLList.add(null);
                         } else {
                             fileNoList.add(revImg.getImg_no());
-                            fileUploadTimeList.add(revImg.getRegDate());
                             Integer pageNum = reviewService.getReviewCurrentPageNum(revImg.getRev_no());
                             if (pageNum == null) {
                                 fileOriginURLList.add(null);
@@ -971,28 +978,24 @@ public class AdminController {
                     case "PIC" :
                         fileTypeList.add("프로필");
                         fileNoList.add(null);
-                        fileUploadTimeList.add(null);
                         fileOriginURLList.add(null);
                         fileUploadUserList.add("삭제 된 사용자");
                         break;
                     case "QNA" :
                         fileTypeList.add("문의사항");
                         fileNoList.add(null);
-                        fileUploadTimeList.add(null);
                         fileOriginURLList.add(null);
                         fileUploadUserList.add("삭제 된 사용자");
                         break;
                     case "NTC" :
                         fileTypeList.add("공지사항");
                         fileNoList.add(null);
-                        fileUploadTimeList.add(null);
                         fileOriginURLList.add(null);
                         fileUploadUserList.add("삭제 된 사용자");
                         break;
                     default :
                         fileTypeList.add("NULL");
                         fileNoList.add(null);
-                        fileUploadTimeList.add(null);
                         fileOriginURLList.add(null);
                         fileUploadUserList.add("삭제 된 사용자");
                         break;
@@ -1006,7 +1009,7 @@ public class AdminController {
         model.addAttribute("fileTypeList", fileTypeList);
         model.addAttribute("fileNoList", fileNoList);
         model.addAttribute("fileUploadUserList", fileUploadUserList);
-        model.addAttribute("fileUploadTimeList", fileUploadTimeList);
+        model.addAttribute("fileDeletedTimeList", fileDeletedTimeList);
         model.addAttribute("fileOriginURLList", fileOriginURLList);
 
         return "/admin/admin_upload_cache";
@@ -1017,11 +1020,25 @@ public class AdminController {
     public List<Boolean> deleteUploadCache(HttpServletRequest request,
                                            Model model,
                                            @RequestParam("pathName[]") String[] pathNameAry,
-                                           @RequestParam("pathType") String pathType) {
+                                           @RequestParam("pathType") String pathType,
+                                           Authentication authentication) {
         if (pathNameAry.length > 0) {
             List<String> pathNameList = new ArrayList<>();
             pathNameList = Arrays.asList(pathNameAry);
-            List<Boolean> result = fileManagementService.deleteFiles(PathType.valueOf(pathType), pathNameList);
+            List<Boolean> result = new ArrayList<>();
+
+            for (String s : pathNameList) {
+                AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
+                String str = authUserModel.getUser_nic() + "(" + authUserModel.getUser_no() + ") 관리자가 "
+                        + LocalDateTime.now().format(defaultLocalDateTimeFormatter.getDateTimeFormatter()) + "에 " + s + "삭제를 진행함";
+                if (!deletedImageInfoService.updateStatusToDelete(s, str)) {
+                    log.warn("DeletedImageInfo를 상태를 변경하는 과정에서 오류 발생!");
+                    log.warn("Error 파일 명 : " + s);
+                    log.warn("결과 : " + str);
+                }
+            }
+            result = fileManagementService.deleteFiles(PathType.valueOf(pathType), pathNameList);
+
 
             for (int i = 0; i < pathNameList.size(); i++) {
                 log.info("File " + pathNameList.get(i) + " " + (result.get(i) ? "successfully deleted" : "delete failed"));
@@ -1166,6 +1183,7 @@ public class AdminController {
     @GetMapping("/report_center/report_detail")
     public String reportDetail(HttpServletRequest request,
                                Model model, @RequestParam Long rcNo){
+        ReportClusterDTO reportClusterDTO = reportManageService.getReportClusterDTO(reportManageService.getReportClusterByRcNo(rcNo));
         ReportPageCompleteType completeType = ReportPageCompleteType.PROGRESS;
         String repType = null;
         List<String> repTypeList = new ArrayList<>();
@@ -1226,6 +1244,7 @@ public class AdminController {
         model.addAttribute("pageResultDTO", pageResultDTO);
         model.addAttribute("repTypeList", repTypeList);
         model.addAttribute("resultDTORepTypeKRList", resultDTORepTypeKRList);
+        model.addAttribute("rcDTO", reportClusterDTO);
 
         return "/popup/reportClusterDetailPopup";
     }

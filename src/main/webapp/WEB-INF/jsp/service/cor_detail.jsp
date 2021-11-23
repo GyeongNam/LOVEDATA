@@ -260,6 +260,9 @@
 					<div class="row d-flex">
 						<h5>작성자 : ${userNick}</h5>
 					</div>
+					<div class="row d-flex">
+						<h5>리뷰 : ${revCount}</h5>
+					</div>
 				</div>
 				<div class="row d-flex">
 				</div>
@@ -268,59 +271,57 @@
 					<sec:authorize access="isAuthenticated()">
 						<c:choose>
 							<c:when test="${isLiked eq true}">
-								<img src="/image/icon/like/love_color.png" class="loc_icon_big me-2" alt="찜하기"
+								<img src="/image/icon/like/love_color.png" class="loc_icon_big me-2 ms-0" alt="찜하기"
 									 onclick="onClickLike(this, <sec:authentication property="principal.user_no"/>, 'cor')">
 							</c:when>
 							<c:otherwise>
-								<img src="/image/icon/like/love_black.png" class="loc_icon_big me-2" alt="찜하기"
+								<img src="/image/icon/like/love_black.png" class="loc_icon_big me-2 ms-0" alt="찜하기"
 									 onclick="onClickLike(this, <sec:authentication property="principal.user_no"/>, 'cor')">
 							</c:otherwise>
 						</c:choose>
 					</sec:authorize>
 					<sec:authorize access="isAnonymous()">
-						<img src="/image/icon/like/love_black.png" class="loc_icon_big me-2" alt="찜하기">
+						<img src="/image/icon/like/love_black.png" class="loc_icon_big me-2 ms-0" alt="찜하기">
 					</sec:authorize>
-					<span class="text-center align-middle fs-3 me-4" id="likeCount">${dto.likeCount}</span>
-					<img src="/image/icon/comment.png" class="loc_icon_big me-2" alt="리뷰">
-					<span class="text-center align-middle fs-3 me-4">${revCount}</span>
-<%--					Todo 추후에 위치 수정하기--%>
-<%--				loc_common onClickLike	--%>
+					<span class="text-center align-middle fs-3 me-3" id="likeCount">${dto.likeCount}</span>
 					<span class="visually-hidden">${dto.user_no}</span>
-					<button class="btn btn-outline-danger col-3" style="max-height: 56px" onclick="copyURL()">공유</button>
-					<button class="btn btn-outline-danger col-3" style="max-height: 56px;" onclick="location.href='/service/cor_edit?corNo=${dto.cor_no}'">수정</button>
-					<!-- Button trigger modal -->
-					<button class="btn btn-outline-danger col-3" style="max-height: 56px" data-bs-toggle="modal" data-bs-target="#exampleModal"
-							onclick="openReportModal('${dto.cor_name}', '${userNick}', 'COR', '${dto.cor_no}')">신고</button>
-					<button class="btn btn-outline-danger col-3" style="max-height: 56px" onclick="openReviewRegisterPopup()">리뷰 팝업 열기</button>
+					<img src="/image/icon/share.png" class="loc_icon_big ms-0 me-2" style="max-height: 56px" onclick="copyURL()">
+					<sec:authorize access="isAuthenticated()">
+						<img src="/image/icon/comment.png" class="loc_icon_big me-2 mt-1" alt="리뷰" onclick="openReviewRegisterPopup()">
+						<img src="/image/icon/report.png" class="loc_icon_big ms-2" style="max-height: 56px" data-bs-toggle="modal" data-bs-target="#exampleModal"
+								onclick="openReportModal('${dto.cor_name}', '${userNick}', 'COR', '${dto.cor_no}')">
+					</sec:authorize>
 				</div>
-				<sec:authorize access="isAuthenticated()">
-					<%--						<span><sec:authentication property="principal.user_no"></sec:authentication></span>--%>
-					<c:set var="currUserNo"><sec:authentication property="principal.user_no"></sec:authentication></c:set>
-					<c:choose>
-						<c:when test="${dto.user_no eq currUserNo}">
-							<sec:authorize access="hasAnyRole('ADMIN')">
-								<img src="/image/icon/trash.png" class="loc_icon_big me-2" alt="코스 삭제"
-									 onclick="onClickRemoveCourse()">
-								<img src="/image/icon/rollback.png" class="loc_icon_big me-2" alt="코스 복원"
-									 onclick="onClickRollbackCourse()">
-								<Button class="btn btn-primary" onclick="onClickPermaDeleteCourse()">영구삭제</Button>
-							</sec:authorize>
-							<sec:authorize access="hasRole('USER') && !hasRole('ADMIN')">
-								<img src="/image/icon/trash.png" class="loc_icon_big me-2" alt="코스 삭제"
-									 onclick="onClickRemoveCourse()">
-							</sec:authorize>
-						</c:when>
-						<c:otherwise>
-							<sec:authorize access="hasAnyRole('ADMIN')">
-								<img src="/image/icon/trash.png" class="loc_icon_big me-2" alt="코스 삭제"
-									 onclick="onClickRemoveCourse()">
-								<img src="/image/icon/rollback.png" class="loc_icon_big me-2" alt="코스 복원"
-									 onclick="onClickRollbackCourse()">
-								<Button class="btn btn-primary" onclick="onClickPermaDeleteCourse()">영구삭제</Button>
-							</sec:authorize>
-						</c:otherwise>
-					</c:choose>
-				</sec:authorize>
+				<div class="d-flex align-content-end flex-wrap">
+					<sec:authorize access="isAuthenticated()">
+						<c:set var="currUserNo"><sec:authentication property="principal.user_no"></sec:authentication></c:set>
+						<c:choose>
+							<c:when test="${dto.user_no eq currUserNo}">
+								<sec:authorize access="hasAnyRole('ADMIN')">
+									<img src="/image/icon/edit.png" class="loc_icon_big ms-0" style="max-height: 56px;" onclick="location.href='/service/cor_edit?corNo=${dto.cor_no}'">
+									<img src="/image/icon/trash.png" class="loc_icon_big me-2" alt="코스 삭제"
+										 onclick="onClickRemoveCourse()">
+									<img src="/image/icon/rollback.png" class="loc_icon_big me-2" alt="코스 복원"
+										 onclick="onClickRollbackCourse()">
+									<Button class="btn btn-primary ms-3" onclick="onClickPermaDeleteCourse()">영구삭제</Button>
+								</sec:authorize>
+								<sec:authorize access="hasRole('USER') && !hasRole('ADMIN')">
+									<img src="/image/icon/trash.png" class="loc_icon_big me-2" alt="코스 삭제"
+										 onclick="onClickRemoveCourse()">
+								</sec:authorize>
+							</c:when>
+							<c:otherwise>
+								<sec:authorize access="hasAnyRole('ADMIN')">
+									<img src="/image/icon/trash.png" class="loc_icon_big me-2" alt="코스 삭제"
+										 onclick="onClickRemoveCourse()">
+									<img src="/image/icon/rollback.png" class="loc_icon_big me-2" alt="코스 복원"
+										 onclick="onClickRollbackCourse()">
+									<Button class="btn btn-primary" onclick="onClickPermaDeleteCourse()">영구삭제</Button>
+								</sec:authorize>
+							</c:otherwise>
+						</c:choose>
+					</sec:authorize>
+				</div>
 				<span class="d-none" id="cor_no">${dto.cor_no}</span>
 			</div>
 		</div>
@@ -375,6 +376,16 @@
 							aria-selected="true">설명
 					</button>
 				</li>
+				<c:choose>
+					<c:when test="${dto.est_type eq 'date'}">
+						<li class="nav-item" role="presentation">
+							<button class="nav-link" id="course-acc-tab" data-bs-toggle="pill"
+									data-bs-target="#course-info" type="button" role="tab" aria-controls="course-info" onclick="removeURLParam('page')"
+									aria-selected="true">숙박 정보
+							</button>
+						</li>
+					</c:when>
+				</c:choose>
 				<li class="nav-item" role="presentation">
 				<c:choose>
 					<c:when test="${param.containsKey('page') eq true}">
@@ -479,6 +490,18 @@
 						</div>
 					</div>
 				</div>
+				<c:choose>
+					<c:when test="${dto.est_type eq 'date'}">
+						<%--      숙박 정보--%>
+						<div class="tab-pane fade" id="course-acc" role="tabpanel" aria-labelledby="course-acc-tab">
+							<div class="container">
+								<div class="d-flex mt-3">
+									<span class="fs-5" style="white-space: pre-wrap;">${dto.accommodations_info}</span>
+								</div>
+							</div>
+						</div>
+					</c:when>
+				</c:choose>
 				<%--    리뷰--%>
 				<c:choose>
 					<c:when test="${param.containsKey('page') eq true}">

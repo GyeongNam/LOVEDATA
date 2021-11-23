@@ -248,8 +248,9 @@
 					<div class="row d-flex">
 						<h5>작성자 : ${userNick}</h5>
 					</div>
-				</div>
-				<div class="row d-flex">
+					<div class="row d-flex">
+						<h5>댓글 : ${dto.liveCmtCount}</h5>
+					</div>
 				</div>
 
 				<div class="d-flex align-content-end flex-wrap">
@@ -270,43 +271,47 @@
 						<img src="/image/icon/like/love_black.png" class="loc_icon_big me-2" alt="찜하기">
 					</sec:authorize>
 					<span class="text-center align-middle fs-3 me-4" id="likeCount">${dto.likeCount}</span>
-					<img src="/image/icon/comment.png" class="loc_icon_big me-2" alt="댓글">
-					<span class="text-center align-middle fs-3 me-4">${dto.liveCmtCount}</span>
 <%--					Todo 추후에 위치 수정하기--%>
 <%--				loc_common onClickLike	--%>
 					<span class="visually-hidden">${dto.user_no}</span>
-					<button class="btn btn-outline-danger col-3" style="max-height: 56px" onclick="copyURL()">공유</button>
-					<button class="btn btn-outline-danger col-3" style="max-height: 56px;" onclick="location.href='/service/loc_edit?locNo=${dto.loc_no}'">수정</button>
+					<img src="/image/icon/share.png" class="loc_icon_big ms-0 me-4" style="max-height: 56px" onclick="copyURL()">
 					<sec:authorize access="isAuthenticated()">
-						<button class="btn btn-outline-danger col-3" style="max-height: 56px" data-bs-toggle="modal" data-bs-target="#exampleModal"
-								onclick="openReportModal('${dto.loc_name}', '${userNick}', 'LOC', '${dto.loc_no}')">신고</button>
+						<img src="/image/icon/report.png" class="loc_icon_big ms-0" style="max-height: 56px" data-bs-toggle="modal" data-bs-target="#exampleModal"
+								onclick="openReportModal('${dto.loc_name}', '${userNick}', 'LOC', '${dto.loc_no}')">
 <%--						<span><sec:authentication property="principal.user_no"></sec:authentication></span>--%>
-					<c:set var="currUserNo"><sec:authentication property="principal.user_no"></sec:authentication></c:set>
-					<c:choose>
-						<c:when test="${dto.user_no eq currUserNo}">
-							<sec:authorize access="hasAnyRole('ADMIN')">
-								<img src="/image/icon/trash.png" class="loc_icon_big me-2" alt="장소 삭제"
-									 onclick="onClickRemoveLocation()">
-								<img src="/image/icon/rollback.png" class="loc_icon_big me-2" alt="장소 복원"
-									 onclick="onClickRollbackLocation()">
-								<button class="btn btn-primary" onclick="onClickPermaDeleteLocation()">영구삭제</button>
-							</sec:authorize>
-							<sec:authorize access="hasRole('USER') && !hasRole('ADMIN')">
-								<img src="/image/icon/trash.png" class="loc_icon_big me-2" alt="장소 삭제"
-									 onclick="onClickRemoveLocation()">
-							</sec:authorize>
-						</c:when>
-						<c:otherwise>
-							<sec:authorize access="hasAnyRole('ADMIN')">
-								<img src="/image/icon/trash.png" class="loc_icon_big me-2" alt="장소 삭제"
-									 onclick="onClickRemoveLocation()">
-								<img src="/image/icon/rollback.png" class="loc_icon_big me-2" alt="장소 복원"
-									 onclick="onClickRollbackLocation()">
-								<button class="btn btn-primary" onclick="onClickPermaDeleteLocation()">영구삭제</button>
-							</sec:authorize>
-						</c:otherwise>
-					</c:choose>
-				</sec:authorize>
+					</sec:authorize>
+				</div>
+				<div class="d-flex align-content-end flex-wrap">
+					<sec:authorize access="isAuthenticated()">
+						<c:set var="currUserNo"><sec:authentication property="principal.user_no"></sec:authentication></c:set>
+						<c:choose>
+							<c:when test="${dto.user_no eq currUserNo}">
+								<sec:authorize access="hasAnyRole('ADMIN')">
+									<img src="/image/icon/edit.png" alt="수정" class="loc_icon_big ms-0 me-2" style="max-height: 56px;" onclick="location.href='/service/loc_edit?locNo=${dto.loc_no}'">
+									<img src="/image/icon/trash.png" class="loc_icon_big me-2" alt="장소 삭제"
+										 onclick="onClickRemoveLocation()">
+									<img src="/image/icon/rollback.png" class="loc_icon_big me-2" alt="장소 복원"
+										 onclick="onClickRollbackLocation()">
+									<button class="btn btn-primary ms-2" onclick="onClickPermaDeleteLocation()">영구삭제</button>
+								</sec:authorize>
+								<sec:authorize access="hasRole('USER') && !hasRole('ADMIN')">
+									<img src="/image/icon/edit.png" class="loc_icon_big ms-0 me-2" style="max-height: 56px;" onclick="location.href='/service/loc_edit?locNo=${dto.loc_no}'">
+									<img src="/image/icon/trash.png" class="loc_icon_big me-2" alt="장소 삭제"
+										 onclick="onClickRemoveLocation()">
+								</sec:authorize>
+							</c:when>
+							<c:otherwise>
+								<sec:authorize access="hasAnyRole('ADMIN')">
+									<img src="/image/icon/edit.png" class="loc_icon_big ms-0 me-2" style="max-height: 56px;" onclick="location.href='/service/loc_edit?locNo=${dto.loc_no}'">
+									<img src="/image/icon/trash.png" class="loc_icon_big me-2" alt="장소 삭제"
+										 onclick="onClickRemoveLocation()">
+									<img src="/image/icon/rollback.png" class="loc_icon_big me-2" alt="장소 복원"
+										 onclick="onClickRollbackLocation()">
+									<button class="btn btn-primary ms-2" onclick="onClickPermaDeleteLocation()">영구삭제</button>
+								</sec:authorize>
+							</c:otherwise>
+						</c:choose>
+					</sec:authorize>
 				</div>
 				<span class="d-none" id="loc_no">${dto.loc_no}</span>
 			</div>
@@ -896,7 +901,9 @@
     }
 
     function onClickRollbackLocation() {
-        alert('장소를 복원하시겠습니까?');
+        if (!window.confirm("장소를 복원하시겠습니까?")) {
+            return;
+        }
 
         let param = location.search;
 

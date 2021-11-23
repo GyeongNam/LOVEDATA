@@ -71,6 +71,14 @@ public class ReportManageService {
         return rcService.select(rcNo);
     }
 
+    public ReportClusterDTO getReportClusterDTO(ReportCluster entity) {
+        return rcService.entityToDto(entity);
+    }
+
+    public ReportCluster getReportClusterEntity(ReportClusterDTO dto) {
+        return rcService.dtoToEntity(dto);
+    }
+
     // 주어진 명령(삭제 혹은 무시)에 따라 신고를 처리하는 메소드
     public boolean processReport(List<Long> rcNoList, String result) {
         List<Long> completeList = new ArrayList<>();

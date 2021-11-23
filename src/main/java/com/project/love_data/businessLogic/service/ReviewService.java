@@ -295,6 +295,34 @@ public class ReviewService {
         return false;
     }
 
+    public boolean permaDeleteReviewsByCorNo(Long corNo){
+        if (corNo == null) {
+            return false;
+        }
+
+        if (corNo < 0) {
+            return false;
+        }
+
+        List<Review> items = findAllByCor_no(corNo);
+
+        if (items == null) {
+            return false;
+        }
+
+        for (Review review : items) {
+            permaDelete(review);
+        }
+
+        items = findAllByCor_no(corNo);
+
+        if (items != null) {
+            return false;
+        }
+
+        return true;
+    }
+
     public void permaDelete(Review rev) {
         if(rev == null) {
             return;
@@ -306,7 +334,8 @@ public class ReviewService {
             for (ReviewImage reviewImage : list) {
                 revImgService.delete(reviewImage.getImg_no());
                 if (revImgService.getImage(reviewImage.getImg_no()).is_deleted()) {
-                    deletedImageInfoService.register(reviewImage.getImg_no(), "REV_IMG", reviewImage.getUser_no());
+                    deletedImageInfoService.register(reviewImage.getImg_no(), "REV_IMG",
+                            reviewImage.getUser_no(), "REV^" + reviewImage.getImg_uuid());
                     revImgService.permaDelete(reviewImage.getImg_uuid());
                 }
             }

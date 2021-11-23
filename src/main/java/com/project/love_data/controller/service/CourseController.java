@@ -754,6 +754,7 @@ public class CourseController {
 
         corService.delete(entity.getCor_no());
         corService.permaDelete(entity.getCor_no());
+        reviewService.permaDeleteReviewsByCorNo(entity.getCor_no());
 
         return "redirect:/service/cor_recommend";
     }

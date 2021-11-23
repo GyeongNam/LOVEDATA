@@ -34,6 +34,9 @@ public class DeletedImageInfo extends TimeEntity {
     @Column(name = "img_no", nullable = false)
     private Long imgNo;
 
+    @Column(name = "img_uuid", nullable = false)
+    private String imgUuid;
+
     @Column(name = "img_user_no", nullable = false)
     private Long imgUserNo;
 

@@ -4,13 +4,45 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+	<style>
+        @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+        body {
+            font-family: 'Jua', sans-serif;
+        }
+	</style>
 	<title>Course PathFinding</title>
 </head>
-<body onload="initTmap();">
-<div class="ft_area">
-	<div class="ft_select_wrap">
-		<div class="ft_select">
-			<select id="selectLevel">
+<body onload="initTmap();" style="max-width: 1140px">
+<%--<div class="ft_area">--%>
+<%--	<div class="ft_select_wrap row d-flex">--%>
+<%--		<div class="ft_select col">--%>
+<%--			<select class="form-select" id="selectLevel" style="max-width: 600px">--%>
+<%--				<option value="0" selected="selected">교통최적+추천</option>--%>
+<%--				<option value="1">교통최적+무료우선</option>--%>
+<%--				<option value="2">교통최적+최소시간</option>--%>
+<%--				<option value="3">교통최적+초보</option>--%>
+<%--				<option value="4">교통최적+고속도로우선</option>--%>
+<%--				<option value="10">최단거리+유/무료</option>--%>
+<%--				<option value="12">이륜차도로우선</option>--%>
+<%--				<option value="19">교통최적+어린이보호구역 회피</option>--%>
+<%--			</select>--%>
+<%--&lt;%&ndash;			<select id="year">&ndash;%&gt;--%>
+<%--&lt;%&ndash;				<option value="N" selected="selected">교통정보 표출 옵션</option>&ndash;%&gt;--%>
+<%--&lt;%&ndash;				<option value="Y">Y</option>&ndash;%&gt;--%>
+<%--&lt;%&ndash;				<option value="N">N</option>&ndash;%&gt;--%>
+<%--&lt;%&ndash;			</select>&ndash;%&gt;--%>
+<%--			<button class="btn btn-primary" id="btn_select">적용하기</button>--%>
+<%--		</div>--%>
+<%--	</div>--%>
+<%--	<div class="map_act_btn_wrap clear_box"></div>--%>
+<%--	<div class="clear"></div>--%>
+<%--</div>--%>
+<div class="container-sm p-0">
+	<div class="row">
+		<div class="col d-flex">
+			<select class="form-select" id="selectLevel" style="max-width: 600px">
 				<option value="0" selected="selected">교통최적+추천</option>
 				<option value="1">교통최적+무료우선</option>
 				<option value="2">교통최적+최소시간</option>
@@ -20,16 +52,14 @@
 				<option value="12">이륜차도로우선</option>
 				<option value="19">교통최적+어린이보호구역 회피</option>
 			</select>
-<%--			<select id="year">--%>
-<%--				<option value="N" selected="selected">교통정보 표출 옵션</option>--%>
-<%--				<option value="Y">Y</option>--%>
-<%--				<option value="N">N</option>--%>
-<%--			</select>--%>
-			<button id="btn_select">적용하기</button>
+			<%--			<select id="year">--%>
+			<%--				<option value="N" selected="selected">교통정보 표출 옵션</option>--%>
+			<%--				<option value="Y">Y</option>--%>
+			<%--				<option value="N">N</option>--%>
+			<%--			</select>--%>
+			<button class="btn btn-primary" id="btn_select">적용하기</button>
 		</div>
 	</div>
-	<div class="map_act_btn_wrap clear_box"></div>
-	<div class="clear"></div>
 </div>
 
 <div id="map_wrap" class="map_wrap">
@@ -37,6 +67,20 @@
 </div>
 <div class="map_act_btn_wrap clear_box"></div>
 <p id="result"></p>
+<div class="row">
+	<div class="d-flex justify-content-center align-items-md-center">
+		<table class="table text-center" id="recentLocCorTable">
+			<thead>
+				<th scope="col">총 거리</th>
+				<th scope="col">총 시간</th>
+				<th scope="col">총 요금</th>
+				<th scope="col">예상 택시 요금</th>
+			</thead>
+			<tbody id="table">
+			</tbody>
+		</table>
+	</div>
+</div>
 <p id="nullLocationWarning"></p>
 </body>
 <script	src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -232,20 +276,30 @@
 
                                 var tDistance = "총 거리 : "
                                     + (resultData[0].properties.totalDistance / 1000)
-                                        .toFixed(1) + "km,";
+                                        .toFixed(1) + "km";
                                 var tTime = " 총 시간 : "
                                     + (resultData[0].properties.totalTime / 60)
-                                        .toFixed(0) + "분,";
+                                        .toFixed(0) + "분";
                                 var tFare = " 총 요금 : "
-                                    + resultData[0].properties.totalFare
-                                    + "원,";
+                                    + resultData[0].properties.totalFare.toLocaleString('ko-KR')
+                                    + "원";
                                 var taxiFare = " 예상 택시 요금 : "
-                                    + resultData[0].properties.taxiFare
+                                    + resultData[0].properties.taxiFare.toLocaleString('ko-KR')
                                     + "원";
 
-                                $("#result").text(
-                                tDistance + tTime + tFare
-                                + taxiFare);
+                                // $("#result").text(
+                                // tDistance + tTime + tFare
+                                // + taxiFare);
+                                let row = document.getElementById("table").insertRow(0);
+                                let cellAry = [];
+                                for (let i = 0; i < 4; i++) {
+									let cell = row.insertCell(i);
+                                    if (i === 0) cell.innerText = tDistance;
+                                    else if (i === 1) cell.innerText = tTime;
+                                    else if (i === 2) cell.innerText = tFare;
+                                    else cell.innerText = taxiFare;
+                                    cellAry.push(cell);
+                                }
                                 
                                 <c:choose>
 									<c:when test="${!empty nullLocIdxList}">
@@ -612,4 +666,7 @@
         resultdrawArr = [];
     }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+		crossorigin="anonymous"></script>
 </html>

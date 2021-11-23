@@ -112,7 +112,8 @@
 			</div>
 		</div>
 		<div class="col d-flex">
-			<button class="btn btn-primary">삭제</button>
+			<button class="btn btn-primary" onclick="onClickPermaDeletePost('${rcDTO.postType}', '${rcDTO.postNo}')">삭제</button>
+			<button class="btn btn-primary">유저 제재</button>
 			<button class="btn btn-primary">블라인드 취소</button>
 		</div>
 	</div>
@@ -207,6 +208,35 @@
         }
 
         location.href = url;
+    }
+
+    function onClickPermaDeletePost(postType, postNo) {
+        if (!window.confirm("게시글을 영구삭제하시겠습니까?")) {
+            return;
+        }
+
+        let form;
+        form = document.createElement("form");
+        form.method = "post";
+        switch (postType) {
+            case "LOC" :
+                form.action= "/service/loc_perma_delete?locNo=" + postNo;
+                break;
+			case "COR" :
+                form.action= "/service/cor_perma_delete?corNo=" + postNo;
+				break;
+			case "COM" :
+                // form.action= "/service/loc_perma_delete" + param;
+				break;
+			case "REV" :
+                // form.action= "/service/loc_perma_delete" + param;
+				break;
+			case "PROFILE_PIC" :
+				break;
+		}
+
+        document.body.appendChild(form);
+        form.submit();
     }
 </script>
 </body>

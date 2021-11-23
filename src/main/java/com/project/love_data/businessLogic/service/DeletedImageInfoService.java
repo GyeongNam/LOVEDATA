@@ -22,6 +22,7 @@ public class DeletedImageInfoService {
                 .diiNo(dto.getDiiNo())
                 .diiUuid(dto.getDiiUuid())
                 .imgNo(dto.getImgNo())
+                .imgUuid(dto.getImgUuid())
                 .imgType(dto.getImgType())
                 .imgUserNo(dto.getImgUserNo())
                 .result(dto.getResult())
@@ -36,6 +37,7 @@ public class DeletedImageInfoService {
                 .diiNo(entity.getDiiNo())
                 .diiUuid(entity.getDiiUuid())
                 .imgNo(entity.getImgNo())
+                .imgUuid(entity.getImgUuid())
                 .imgType(entity.getImgType())
                 .imgUserNo(entity.getImgUserNo())
                 .result(entity.getResult())
@@ -47,9 +49,9 @@ public class DeletedImageInfoService {
         return dto;
     }
 
-    public DeletedImageInfo register(Long imgNo, String imgType, Long imgUserNo) {
+    public DeletedImageInfo register(Long imgNo, String imgType, Long imgUserNo, String imgUuid) {
 
-        if (imgNo == null || imgType == null || imgUserNo == null) {
+        if (imgNo == null || imgType == null || imgUserNo == null || imgUuid == null) {
             log.warn("Fail during Registering DeletedImageInfo\nreqParam doesn't have sufficient keys");
             return null;
         }
@@ -63,6 +65,7 @@ public class DeletedImageInfoService {
                 .imgType(imgType)
                 .imgNo(imgNo)
                 .imgUserNo(imgUserNo)
+                .imgUuid(imgUuid)
                 .build();
 
         save(entity);
@@ -172,5 +175,40 @@ public class DeletedImageInfoService {
         Optional<List<DeletedImageInfo>> items = repository.findDIIsByUserNoAndDeleted(userNo, deleted);
 
         return items.orElse(null);
+    }
+
+    public DeletedImageInfo findByImgUuid(String uuid) {
+        if (uuid == null) {
+            return null;
+        }
+
+        if (uuid.equals("")) {
+            return null;
+        }
+
+        Optional<DeletedImageInfo> item = repository.findDIIByImgUuid(uuid);
+
+        return item.orElse(null);
+    }
+
+    public boolean updateStatusToDelete(String uuid, String result) {
+        DeletedImageInfo entity = findByImgUuid(uuid);
+
+        if (entity == null) {
+            return false;
+        }
+
+        entity.setDeleted(true);
+        entity.setResult(result);
+
+        save(entity);
+
+        entity = findByImgUuid(uuid);
+
+        if (!entity.isDeleted() || !entity.getResult().equals(result)) {
+            return false;
+        }
+
+        return true;
     }
 }

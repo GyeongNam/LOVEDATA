@@ -5,6 +5,7 @@ import com.project.love_data.dto.CourseImageDTO;
 import com.project.love_data.dto.PageRequestDTO;
 import com.project.love_data.dto.PageResultDTO;
 import com.project.love_data.model.resource.CourseImage;
+import com.project.love_data.model.resource.ReviewImage;
 import com.project.love_data.model.service.CorLocMapper;
 import com.project.love_data.model.service.Course;
 import com.project.love_data.model.service.QCourse;
@@ -412,7 +413,8 @@ public class CourseService {
         for (CourseImage courseImage : list) {
             imgService.delete(courseImage.getImg_no());
             if (imgService.getAllImage(courseImage.getImg_no()).is_deleted()) {
-                deletedImageInfoService.register(courseImage.getImg_no(), "COR_IMG",  courseImage.getUser_no());
+                deletedImageInfoService.register(courseImage.getImg_no(), "COR_IMG",
+                        courseImage.getUser_no(), "COR^" + courseImage.getImg_uuid());
                 imgService.permaDelete(courseImage.getImg_uuid());
             } else {
                 log.warn("ERROR During delete");

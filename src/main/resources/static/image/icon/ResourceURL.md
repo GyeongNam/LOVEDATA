@@ -57,3 +57,11 @@
 19. Comment Dislike icon
 <ol><a> https://www.flaticon.com/free-icon/dislike_1182773?related_id=1182773&origin=pack </a></ol>
 
+20.Share icon
+<ol><a> https://www.flaticon.com/premium-icon/share_3405255?term=share&page=1&position=16&page=1&position=16&related_id=3405255&origin=search </a></ol>
+
+21. Edit icon
+<ol><a> https://www.flaticon.com/free-icon/edit_2910768?term=edit&page=2&position=35&page=2&position=35&related_id=2910768&origin=search </a></ol>
+
+22. Report Icon
+<ol><a> https://www.flaticon.com/premium-icon/siren_312378?term=siren&related_id=312378 </a></ol>

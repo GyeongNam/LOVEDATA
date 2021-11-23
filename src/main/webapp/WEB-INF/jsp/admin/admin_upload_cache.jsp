@@ -71,21 +71,21 @@
 				</div>
 			</div>
 			<div class="row d-flex">
-				<span>Upload Cache!</span>
-				<button class="col-1 btn-primary" onclick="onClickDeleteImgBtn()">삭제</button>
+				<div class="row flex-row-reverse">
+					<button class="btn btn-primary col-1" onclick="onClickDeleteImgBtn()">삭제</button>
+				</div>
 				<div class="row my-3">
 					<div class="d-flex justify-content-center align-items-md-center">
 						<table class="table text-center" id="recentLocCorTable">
 							<thead>
 							<th scope="col">No</th>
-							<th scope="col">ID</th>
 							<th scope="col">타입</th>
 							<th scope="col">업로드 유저</th>
 							<th scope="col">파일명</th>
 							<th scope="col">파일 크기</th>
 							<th scope="col">등록일</th>
 							<th scope="col">삭제일</th>
-							<th scope="col">선택</th>
+							<th scope="col">선택<input class="form-check-input ms-2 mt-0" type="checkbox" onclick="checkAllItems(this)"></th>
 							</thead>
 							<tbody id="table">
 								<c:choose>
@@ -93,14 +93,6 @@
 										<c:forEach var="i" begin="0" end="${fileNameList.size() - 1}">
 											<tr id="row_${i}">
 												<td>${i + 1}</td>
-												<c:choose>
-													<c:when test="${fileNoList.get(i) ne null}">
-														<td>${fileNoList.get(i)}</td>
-													</c:when>
-													<c:otherwise>
-														<td>NULL</td>
-													</c:otherwise>
-												</c:choose>
 												<td>${fileTypeList.get(i)}</td>
 												<c:choose>
 													<c:when test="${fileUploadUserList.get(i) ne null}">
@@ -118,16 +110,16 @@
 												</td>
 												<td>${fileSizeList.get(i)}</td>
 												<c:choose>
-													<c:when test="${fileUploadTimeList.get(i) ne null}">
-														<td>${fileUploadTimeList.get(i).format(defaultDateTimeFormatter.dateTimeFormatter)}</td>
+													<c:when test="${lastModifiedTimeList.get(i) ne null}">
+														<td>${lastModifiedTimeList.get(i).format(defaultDateTimeFormatter.dateTimeFormatter)}</td>
 													</c:when>
 													<c:otherwise>
 														<td>NULL</td>
 													</c:otherwise>
 												</c:choose>
 												<c:choose>
-													<c:when test="${lastModifiedTimeList.get(i) ne null}">
-														<td>${lastModifiedTimeList.get(i).format(defaultDateTimeFormatter.dateTimeFormatter)}</td>
+													<c:when test="${fileDeletedTimeList.get(i) ne null}">
+														<td>${fileDeletedTimeList.get(i).format(defaultDateTimeFormatter.dateTimeFormatter)}</td>
 													</c:when>
 													<c:otherwise>
 														<td>NULL</td>
@@ -169,6 +161,7 @@
 <script defer>
 	let urlList = [];
     let aryLength = ${fileNameList.size()};
+    let fileOriginURLList = [];
 
     <c:choose>
 		<c:when test="${!empty fileNameList}">
@@ -183,18 +176,18 @@
                     // 타입 (2)로 테이블 색상 결정
                     tableRowColor(row, row.children.item(2).innerText);
 
-					for (let j = 0; j < row.childElementCount; j++) {
-						// 파일명 (4), 선택(8) 제외
-						let col = row.children.item(j);
-						if (j == 4 || j == 8) {
-							continue;
-						}
-
-						col.addEventListener("click", function() {
-							location.href = fileOriginURLList[i];
-                            col.style.cursor = 'pointer';
-						})
-					}
+					// for (let j = 0; j < row.childElementCount; j++) {
+					// 	// 파일명 (4), 선택(8) 제외
+					// 	let col = row.children.item(j);
+					// 	if (j == 4 || j == 8) {
+					// 		continue;
+					// 	}
+					//
+					// 	col.addEventListener("click", function() {
+					// 		location.href = fileOriginURLList[i];
+                    //         col.style.cursor = 'pointer';
+					// 	})
+					// }
 				}
 			}
 		</c:when>
@@ -284,5 +277,19 @@
         checkBoxList.push(checkbox.value);
         console.log(checkBoxList);
 	}
+
+    function checkAllItems(check) {
+        let checkBoxes = document.querySelectorAll('input[type="checkbox"]');
+
+        for (let i = 0; i < checkBoxes.length; i++) {
+            if (check.checked) {
+                checkBoxes[i].checked = true;
+                if (i != 0) checkBoxList.push(checkBoxes[i].value);
+            } else {
+                checkBoxes[i].checked = false;
+                if (i != 0) checkBoxList.pop(checkBoxes[i].value);
+            }
+        }
+    }
 </script>
 </html>

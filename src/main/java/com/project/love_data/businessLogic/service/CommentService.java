@@ -237,17 +237,17 @@ public class CommentService {
     }
 
     public void permaDelete(Comment cmt) {
-        LocationDTO locDTO = locEntityToLocDto(cmt.getLocation());
-
-        List<Comment> cmtList = locDTO.getCmtList();
-
-        cmtList.remove(cmt);
-
-        locDTO.setCmtList(cmtList);
-
-        Location loc = locDtoToLocEntity(locDTO);
-
-        locRepository.save(loc);
+//        LocationDTO locDTO = locEntityToLocDto(cmt.getLocation());
+//
+//        List<Comment> cmtList = locDTO.getCmtList();
+//
+//        cmtList.remove(cmt);
+//
+//        locDTO.setCmtList(cmtList);
+//
+//        Location loc = locDtoToLocEntity(locDTO);
+//
+//        locRepository.save(loc);
 
         cmtRepository.deleteByCmt_uuid(cmt.getCmtUuid());
     }

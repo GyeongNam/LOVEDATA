@@ -439,7 +439,8 @@ public class LocationService {
             for (LocationImage locationImage : list) {
                 imgService.delete(locationImage.getImg_no());
                 if (imgService.getImage(locationImage.getImg_no()).is_deleted()) {
-                    deletedImageInfoService.register(locationImage.getImg_no(), "LOC_IMG", locationImage.getUser_no());
+                    deletedImageInfoService.register(locationImage.getImg_no(), "LOC_IMG",
+                            locationImage.getUser_no(), "LOC^" + locationImage.getImg_uuid());
                     imgService.permaDelete(locationImage.getImg_uuid());
                 }
             }

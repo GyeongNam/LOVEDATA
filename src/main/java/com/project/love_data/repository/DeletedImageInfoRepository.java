@@ -11,6 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 public interface DeletedImageInfoRepository extends JpaRepository<DeletedImageInfo, Long> {
+    @Query(value = "SELECT * from del_img_info dii WHERE  dii.img_uuid = :img_uuid", nativeQuery = true)
+    Optional<DeletedImageInfo> findDIIByImgUuid(@Param("img_uuid") String imgUuid);
+
     @Query(value = "SELECT * from del_img_info dii WHERE  dii.dii_uuid = :dii_uuid", nativeQuery = true)
     Optional<DeletedImageInfo> findDIIByDiiUuid(@Param("dii_uuid") String diiUuid);
 
