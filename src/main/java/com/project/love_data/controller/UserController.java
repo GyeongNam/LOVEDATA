@@ -1,5 +1,6 @@
 package com.project.love_data.controller;
 
+import com.project.love_data.businessLogic.MailService;
 import com.project.love_data.businessLogic.service.*;
 import com.project.love_data.dto.CalenderDTO;
 import com.project.love_data.dto.UserDTO;
@@ -57,6 +58,8 @@ public class UserController {
 	@Autowired
 	private ReviewRepository reviewRepository;
 	@Autowired
+	private MailService mailService;
+	@Autowired
 	UserService userService;
 	@Autowired
 	CalenderService calenderService;
@@ -84,6 +87,7 @@ public class UserController {
 	UserRecentCorService userRecentCorService;
 	@Autowired
 	QuestionsImageService questionsImageService;
+
 
 	@RequestMapping(value = "/signup_add", method = RequestMethod.POST)
 	public String signup(
@@ -176,7 +180,50 @@ public class UserController {
 		log.info("num:" + num);
 		map.put("msg", "성공");
 		map.put("num", num);
-//		smsService.sendSMS(data.get("phones"), num);
+		smsService.sendSMS(data.get("phones"), num);
+		return map;
+	}
+
+	//2021-11-24
+	@ResponseBody
+	@PostMapping(value = "/admin_send_sms")
+	public Map<String, String> adminsms(
+			@RequestParam("list[]") String[] list,
+			@RequestParam("smscontent")String smscontent) {
+		Map<String, String> map = new HashMap<String, String>();
+		for(int i = 0 ; i< list.length; i++){
+			if(!list[i].equals("on")) {
+				User user = userService.select(Long.parseLong(list[i]));
+				if (user != null) {
+					smsService.managersendSMS(user.getUser_phone(), smscontent);
+				}
+			}
+		}
+
+//		log.info("list : "+ list.length);
+//		log.info("smstestcontent: "+ smscontent);
+		map.put("msg", "sms 성공");
+		return map;
+	}
+	//email
+	@ResponseBody
+	@PostMapping(value = "/admin_send_email")
+	public Map<String, String> adminemail(
+			@RequestParam("list[]") String[] list,
+			@RequestParam("smscontent")String smscontent) {
+		Map<String, String> map = new HashMap<String, String>();
+		for(int i = 0 ; i< list.length; i++){
+			if(!list[i].equals("on")){
+				User user = userService.select(Long.parseLong(list[i]));
+				if(user != null) {
+					mailService.adminmailSend(user.getUser_email(), smscontent);
+				}
+			}
+		}
+
+//		log.info("list : "+ list.length);
+//		log.info("smstestcontent: "+ smscontent);
+		map.put("msg", "이메일 성공");
 		return map;
 	}
 
@@ -288,7 +335,86 @@ public class UserController {
 			return "user/mypage";
 		}
 	}
+	//CHOI
+	@GetMapping(value = "/mypage_mycomment/{page}")
+	public String mycomment(@PathVariable("page") String page, Authentication authentication, Model model) {
+		if (authentication == null) {
+			return "redirect:/login";
+		} else {
+			AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
+			List<Comment> myComList = cmtService.findAllByLocNo(authUserModel.getUser_no());
+			List<Comment> comlist_page = null;
+			List<Integer> comPageNumList = new ArrayList<>();
 
+			model.addAttribute("search", false);
+			long qu_size = myComList.size();
+			long qu_page = myComList.size()/8;
+			long qu_page_na = myComList.size()%8;
+			long qu_page_size = qu_page/10;
+			long qu_page_size_na = qu_page%10;
+			Date today = new Date();
+			SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+			model.addAttribute("qu_time", format1.format(today));
+
+			if(qu_page_size_na >= 1){
+				qu_page_size = qu_page_size+1;
+				model.addAttribute("qu_page_size",qu_page_size);
+			}
+			else {
+				model.addAttribute("qu_page_size",qu_page_size);
+			}
+
+
+			if(qu_page_na >= 1){
+				qu_page = qu_page+1;
+				model.addAttribute("qu_page",qu_page);
+			}
+			else {
+				model.addAttribute("qu_page",qu_page);
+			}
+			model.addAttribute("qu_size",myComList.size());
+
+			// 페이지네이션
+			long j=0;
+
+			if(myComList.size()<8){
+				model.addAttribute("my_com",myComList);
+				for (Comment comEntity : myComList) {
+					comPageNumList.add(cmtService.getCommentCurrentPageNum(comEntity.getCmtNo()));
+				}
+			}else {
+				for (int i = 0; i < qu_size; i++) {
+					comlist_page = myComList.subList(0,8);
+
+					if (i % 8 == 0) {
+						j = j + 1;
+						if (j == Long.parseLong(page)) {
+							model.addAttribute("my_com",comlist_page);
+							for (Comment comEntity : comlist_page) {
+								comPageNumList.add(cmtService.getCommentCurrentPageNum(comEntity.getCmtNo()));
+							}
+							break;
+						} else {
+							myComList.subList(0,8).clear();
+
+							if(myComList.size()<8){
+								model.addAttribute("my_com",myComList);
+								for (Comment comEntity : myComList) {
+									comPageNumList.add(cmtService.getCommentCurrentPageNum(comEntity.getCmtNo()));
+								}
+								break;
+							}
+						}
+					}
+				}
+			}
+
+			model.addAttribute("comPageNumList", comPageNumList);
+
+
+			return "user/mypage_mycomment";
+		}
+	}
 	//CHOI
 	@GetMapping(value = "/mypage_myreview/{page}")
 	public String myreview(@PathVariable("page") String page, Authentication authentication, Model model) {
