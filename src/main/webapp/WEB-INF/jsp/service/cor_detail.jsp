@@ -366,7 +366,7 @@
 				</c:choose>
 				<li class="nav-item" role="presentation">
 					<button class="nav-link" id="course-map-tab" data-bs-toggle="pill"
-							data-bs-target="#course-map" type="button" role="tab" aria-controls="course-info" onclick="removeURLParam('page')"
+							data-bs-target="#course-map" type="button" role="tab" aria-controls="course-map" onclick="removeURLParam('page')"
 							aria-selected="true">경로
 					</button>
 				</li>
@@ -519,7 +519,7 @@
 									<c:choose>
 										<c:when test="${!empty bestRevList and paramValues.page[0] eq 1}">
 											<c:forEach var="b" begin="0" end="${bestRevList.size()-1}">
-												<div class="p-2" style="background: #FFC2D6">
+												<div class="p-2" style="background: #FFC2D6; max-width: 1020px">
 													<span class="best badge bg-primary fs-6 mb-2">BEST</span>
 													<div class="d-flex flex-row align-items-center">
 														<img src="${bestRevUserPicList.get(b)}"
