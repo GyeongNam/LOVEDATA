@@ -114,7 +114,7 @@ public class FilePathChangeService {
                     "upload" + File.separator + pathType + "^" + fileName);
         } else {
             // 윈도우 이외의 OS에서 돌아갈 경우 /home/tomcat/LoveData-Storage에 위치로 지정
-            pathStr = "/home/tomcat/LoveData-Storage";
+            pathStr = "/opt/apache-tomcat-9.0.46/webapps/love_data/WEB-INF/classes/static/image";
             switch (pathType) {
                 case LOC:
                     resPath = Paths.get(pathStr + File.separator + "location" + File.separator + fileName);
