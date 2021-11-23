@@ -1,8 +1,5 @@
-@charset "UTF-8";
-
-
 #header {
-	background-color: rgba( 255, 194, 214, 0.3);
+    background-color: #ffbdd1;
 	/*    padding: 5px;*/
 	    /* float: right; */
 	    /*width:100%;*/
@@ -68,15 +65,13 @@
     background-color: transparent !important;
     background-image: none !important;
     border-color: transparent;
+    font-family: 'Jua', sans-serif;
     border: none;
     color: #ffffff;
     font-weight: bold;
     padding: 10px;
     text-align: center;
     font-size: 16px;
-    /* margin: 4px 2px; */
-    /*opacity: 1;*/
-    /*transition: 0.3s;*/
 }
 #hd-btn:hover {
 	/*opacity: 0.5;*/
@@ -102,7 +97,7 @@
 .dropdown-content {
   display: none;
   position: absolute;
-  font-weight: bold;
+  /*font-weight: bold;*/
   background-color: #ffccff;
   min-width: 160px;
   border-radius: 10px;
@@ -113,7 +108,7 @@
 .dropdown-content a {
   background-color: #ffccff;
   border-radius: 10px;
-  font-weight: bold;
+  /*font-weight: bold;*/
   color: white;
   padding: 12px 16px;
   text-decoration: none;

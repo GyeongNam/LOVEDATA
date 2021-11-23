@@ -21,7 +21,7 @@
 			font-family: 'Jua', sans-serif;
 		}
 	</style>
-    <title>Home</title>
+    <title>내가 쓴 댓글</title>
 </head>
 <%@ include file="../layout/header.jsp"%>
 <body>
@@ -81,47 +81,81 @@
 				</div>
 			</div>
 			<div>
-				<div>
-					<button class="accordion">최근 본 장소/코스</button>
-					<div class="panel">
-						<p>
-							<a href="/mypage_recent_view_location" >최근 본 장소</a>
-						</p>
-						<p>
-							<a href="/mypage_recent_view_corse" >최근 본 코스</a>
-						</p>
-					</div>
+				<button class="accordion">최근 본 장소/코스</button>
+				<div class="panel">
+					<p>
+						<a href="/mypage_recent_view_location" >최근 본 장소</a>
+					</p>
+					<p>
+						<a href="/mypage_recent_view_corse" >최근 본 코스</a>
+					</p>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div id="jb-content">
-		<div id="RecView" class="tabcontent">
-			<h3>최근 본 코스</h3>
+		<div id="MyReview" class="tabcontent">
+			<h3>나의 댓글</h3>
 			<table>
 				<thead>
 				<tr>
-					<th>날짜</th>
-					<th>제목</th>
-					<th>조회수</th>
+					<th>등록 날짜</th>
+					<th>댓글 단 장소</th>
+					<th>내용</th>
 				</tr>
 				</thead>
 				<tbody>
-				<c:forEach var="viewCor" items="${RecviewCor}" >
-				<c:choose>
-				<c:when test="${viewCor._deleted eq false}">
-				<tbody>
-				<tr>
-					<td><span>${viewCor.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</span></td>
-					<td><a href="/service/cor_detail?corNo=${viewCor.cor_no}">${viewCor.cor_name}</a></td>
-					<td>${viewCor.viewCount}</td>
-				</tr>
-				</c:when>
-				</c:choose>
+<%--				<c:forEach var="com" items="${my_com}">--%>
+<%--					<c:choose>--%>
+<%--						<c:when test="${com._deleted eq false}">--%>
+<%--							<tr>--%>
+<%--								<td><span>${com.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</span></td>--%>
+<%--								<td>${com.location.loc_name}</td>--%>
+<%--								<td><a href="/service/loc_detail?locNo=${com.location.loc_no}&page=${comPageNumList.}">${com.cmtContent}</a></td>--%>
+<%--							</tr>--%>
+<%--						</c:when>--%>
+<%--					</c:choose>--%>
+<%--&lt;%&ndash;					${my_com.get(0).}&ndash;%&gt;--%>
+<%--				</c:forEach>--%>
+<%--				<span>${my_com.get(0).location.loc_name}</span>--%>
+<%--				<span>${comPageNumList.get(0)}</span>--%>
+				<c:forEach var="i" begin="0" end="${my_com.size() - 1}">
+					<c:choose>
+						<c:when test="${my_com.get(i)._deleted eq false}">
+							<tr>
+								<td><span>${my_com.get(i).regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</span></td>
+								<td>${my_com.get(i).location.loc_name}</td>
+								<td><a href="/service/loc_detail?locNo=${my_com.get(i).location.loc_no}&page=${comPageNumList.get(i)}&cmtNo=${my_com.get(i).cmtNo}">
+										${my_com.get(i).cmtContent}
+								</a></td>
+							</tr>
+						</c:when>
+					</c:choose>
+					<%--					${my_com.get(0).}--%>
 				</c:forEach>
 				</tbody>
 			</table>
-			* 최근 본 8개 장소만 표시됩니다.
+			<div class="col" id="pu_navbar">
+				<div class="container d-flex" id="">
+					<div class="col" id="page_number">
+						<nav aria-label="Page navigation example">
+							<input id="qu_pages" value="${qu_page_size}" type="hidden">
+							<input id="qu_pagess" value="${qu_page}" type="hidden">
+							<div class="pagination justify-content-center" , id="pagination justify-content-center">
+								<p onclick="subpage()"> < </p>
+								<c:forEach var="qu_pages" begin="1" end="${qu_page}" step="1">
+									<div class="page-item" id="${qu_pages}">
+										<li class="page-item ${qu_pages}">
+											<a href="/mypage_mycomment/${qu_pages}">${qu_pages}</a>
+										</li>
+									</div>
+								</c:forEach>
+								<p onclick="plupage()"> > </p>
+							</div>
+						</nav>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
@@ -131,5 +165,6 @@
 <!--   부트스트랩 js 사용  -->
 <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script defer type="text/javascript" src="/resource/js/bootstrap.js"></script>
+<script defer src="/js/ServiceCenter.js"></script>
 <script defer src="/js/mypage.js"></script>
 </html>

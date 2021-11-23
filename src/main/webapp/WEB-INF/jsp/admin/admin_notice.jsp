@@ -7,11 +7,15 @@
 <html><jsp:useBean id="defaultDateTimeFormatter" class="com.project.love_data.util.DefaultLocalDateTimeFormatter"></jsp:useBean>
 <jsp:useBean id="simpleDateTimeFormatter" class="com.project.love_data.util.SimpleLocalDateTimeFormatter"></jsp:useBean>
 <head>
+    <frame-options disabled="true"/>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="_csrf" content="${_csrf.token}">
     <meta name="_csrf_header" content="${_csrf.headerName}">
+    <%--    <script type="text/javascript" src="/smartditor2/js/HuskyEZCreator.js" charset="utf-8"></script>--%>
+    <script type="text/javascript" src="/se2/js/HuskyEZCreator.js" charset="utf-8"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/service/loc.css">
     <link rel="stylesheet" href="/css/ServiceCenter.css" >
@@ -45,7 +49,7 @@
                         <div class="card-body center-pill">
                             <p><a href="/admin/dash" class="highlight-not-selected-text-menu">대시보드</a></p>
                             <p><a href="/admin/user/1" class="highlight-not-selected-text-menu">유저 관리</a></p>
-                            <p><a href="/admin/dash" class="highlight-not-selected-text-menu">메시지 발송</a></p>
+                            <p><a href="/admin/SendMessage" class="highlight-not-selected-text-menu">메시지 발송</a></p>
                             <p><a type="button" class="accordion highlight-selected-text-menu" data-toggle="collapse" data-target="#service_collapse" aria-expanded="false">공지사항과 문의사항</a></p>
                             <div id="service_collapse" class="collapse show" >
                                 <p>
@@ -55,7 +59,8 @@
                                     <a href="/admin/qna/1" class="highlight-not-selected-text-menu">- 문의사항</a>
                                 </p>
                             </div>
-                            <p><a href="/admin/upload_cache" class="highlight-not-selected-text-menu">upload 파일 캐시 삭제</a></p>
+                            <p><a href="/admin/
+                            load_cache" class="highlight-not-selected-text-menu">upload 파일 캐시 삭제</a></p>
                             <p class="mb-0"><a href="/admin/report_center" class="highlight-not-selected-text-menu">신고 센터</a></p>
                         </div>
                     </div>
@@ -172,5 +177,7 @@
 <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
         crossorigin="anonymous"></script>
+<script src="/js/qu_post_add.js"></script>
+<script src="/js/SmartEditor2.js"></script>
 
 </html>
