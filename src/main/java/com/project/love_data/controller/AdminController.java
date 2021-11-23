@@ -1316,12 +1316,14 @@ public class AdminController {
                 locService.delete(locEntity.getLoc_no());
                 locService.permaDelete(locEntity);
 
-                if (locService.selectLoc(postNo) == null) {
-                    reportManageService.processReportCluster(rcNo, Arrays.asList(repNoList), result, processType);
-                    return "Post Perma Delete Successful";
-                }
-
-                break;
+//                if (locService.selectLoc(postNo) == null) {
+//                    reportManageService.processReportCluster(rcNo, Arrays.asList(repNoList), result, processType);
+//                    return "Post Perma Delete Successful";
+//                }
+//
+//                break;
+                reportManageService.processReportCluster(rcNo, Arrays.asList(repNoList), result, processType);
+                return "Post Perma Delete Successful";
             case "COR" :
                 Course corEntity = corService.selectCor(postNo);
 
@@ -1332,12 +1334,14 @@ public class AdminController {
                 corService.delete(corEntity.getCor_no());
                 corService.permaDelete(corEntity.getCor_no());
 
-                if (corService.selectCor(postNo) == null) {
-                    reportManageService.processReportCluster(rcNo, Arrays.asList(repNoList), result, processType);
-                    return "Post Perma Delete Successful";
-                }
-
-                break;
+//                if (corService.selectCor(postNo) == null) {
+//                    reportManageService.processReportCluster(rcNo, Arrays.asList(repNoList), result, processType);
+//                    return "Post Perma Delete Successful";
+//                }
+//
+//                break;
+            reportManageService.processReportCluster(rcNo, Arrays.asList(repNoList), result, processType);
+            return "Post Perma Delete Successful";
             case "COM" :
                 Comment comEntity = comService.select(postNo);
 
@@ -1348,12 +1352,14 @@ public class AdminController {
                 comService.delete(comEntity.getCmtNo());
                 comService.permaDelete(comEntity);
 
-                if (comService.select(postNo) == null) {
-                    reportManageService.processReportCluster(rcNo, Arrays.asList(repNoList), result, processType);
-                    return "Post Perma Delete Successful";
-                }
-
-                break;
+//                if (comService.select(postNo) == null) {
+//                    reportManageService.processReportCluster(rcNo, Arrays.asList(repNoList), result, processType);
+//                    return "Post Perma Delete Successful";
+//                }
+//
+//                break;
+                reportManageService.processReportCluster(rcNo, Arrays.asList(repNoList), result, processType);
+                return "Post Perma Delete Successful";
             case "REV" :
                 Review revEntity = reviewService.select(postNo);
 
@@ -1364,12 +1370,14 @@ public class AdminController {
                 reviewService.delete(revEntity.getRevNo());
                 reviewService.permaDelete(revEntity);
 
-                if (reviewService.select(postNo) == null) {
-                    reportManageService.processReportCluster(rcNo, Arrays.asList(repNoList), result, processType);
-                    return "Post Perma Delete Successful";
-                }
-
-                break;
+//                if (reviewService.select(postNo) == null) {
+//                    reportManageService.processReportCluster(rcNo, Arrays.asList(repNoList), result, processType);
+//                    return "Post Perma Delete Successful";
+//                }
+//
+//                break;
+                reportManageService.processReportCluster(rcNo, Arrays.asList(repNoList), result, processType);
+                return "Post Perma Delete Successful";
             case "PROFILE_PIC" :
                 User userEntity = userService.select(postNo);
 
@@ -1377,13 +1385,16 @@ public class AdminController {
                     return "User Entity Null";
                 }
 
-                if (userService.changeProfilePicToDefault(userEntity.getUser_no())) {
-                    processType = "기본 프로필 사진으로 변경";
-                    reportManageService.processReportCluster(rcNo, Arrays.asList(repNoList), result, processType);
-                    return "User ProfilePic Perma Delete Successful";
-                }
-
-                break;
+//                if (userService.changeProfilePicToDefault(userEntity.getUser_no())) {
+//                    processType = "기본 프로필 사진으로 변경";
+//                    reportManageService.processReportCluster(rcNo, Arrays.asList(repNoList), result, processType);
+//                    return "User ProfilePic Perma Delete Successful";
+//                }
+//
+//                break;
+                processType = "기본 프로필 사진으로 변경";
+                reportManageService.processReportCluster(rcNo, Arrays.asList(repNoList), result, processType);
+                return "User ProfilePic Perma Delete Successful";
         }
 
         return "fail";

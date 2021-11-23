@@ -313,6 +313,14 @@
 <script defer>
 	let urlList = [];
     let aryLength = ${urlList.size()};
+    let rowLength = '${reportClusterList.size()}';
+
+    for (let i = 0; i < rowLength; i++) {
+        let row = document.getElementById('row_' + i);
+
+        // 상태 (5)로 테이블 색상 결정
+        tableRowColor(row, row.children.item(5).innerText);
+    }
 
     <c:choose>
 		<c:when test="${!empty urlList}">
@@ -322,9 +330,6 @@
 
 			for (let i = 0; i < aryLength; i++) {
 				let row = document.getElementById('row_' + i);
-
-                // 상태 (5)로 테이블 색상 결정
-                tableRowColor(row, row.children.item(5).innerText);
 
 				if (urlList[i] != null && urlList[i] !== '') {
                     for (let j = 0; j < row.childElementCount; j++) {
