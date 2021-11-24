@@ -104,7 +104,7 @@
                                             <td>${user.user_name}</td>
                                             <td>${user.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</td>
                                             <td>정지</td>
-                                            <td>???</td>
+                                            <td>${rep.get(index.count-1)}</td>
                                             <td>${user.social_info}</td>
                                             <td><button onclick="location.href='/admin_user_detail/${user.user_no}'"class="btn btn-primary mx-2">관리</button></td>
                                         </tr>
@@ -117,7 +117,7 @@
                                                 <td>${user.user_name}</td>
                                                 <td>${user.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</td>
                                                 <td>활동</td>
-                                                <td>???</td>
+                                                <td>${rep.get(index.count-1)}</td>
                                                 <td>${user.social_info}</td>
                                                 <td><button onclick="location.href='/admin_user_detail/${user.user_no}'"  class="btn btn-primary mx-2">관리</button></td>
                                             </tr>

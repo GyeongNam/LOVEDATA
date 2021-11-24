@@ -87,6 +87,8 @@ public class UserController {
 	UserRecentCorService userRecentCorService;
 	@Autowired
 	QuestionsImageService questionsImageService;
+	@Autowired
+	ReportManageService reportManageService;
 
 
 	@RequestMapping(value = "/signup_add", method = RequestMethod.POST)
@@ -1082,11 +1084,13 @@ public class UserController {
 		List<String> cor = new ArrayList<>();
 		List<String> re = new ArrayList<>();
 		List<String> com = new ArrayList<>();
+		List<String> rep = new ArrayList<>();
 		List<User> user_page = null;
 		List<String> user_loc = null;
 		List<String> user_cor = null;
 		List<String> user_re = null;
 		List<String> user_com = null;
+		List<String> user_rep = null;
 		long no_size = User.size();
 		long no_page = User.size()/10;
 		long no_page_na = User.size()%10;
@@ -1102,6 +1106,8 @@ public class UserController {
 			re.add(Integer.toString(reviews.size()));
 			List<Comment> comments = cmtService.findAllByUserNo(User.get(i).getUser_no());
 			com.add(Integer.toString(comments.size()));
+			List<ReportCluster> reportClusterList = reportManageService.getReportClustersByRcUserNo(User.get(i).getUser_no());
+			rep.add(Integer.toString(reportClusterList.size()));
 		}
 
 		if(no_page_size_na >= 1){
@@ -1129,14 +1135,15 @@ public class UserController {
 			model.addAttribute("cor", cor);
 			model.addAttribute("re", re);
 			model.addAttribute("com", com);
-
+			model.addAttribute("rep", rep);
 		}else {
 			for (int i = 0; i < no_size; i++) {
 				user_page = User.subList(0,10);
-				user_loc = loc.subList(0,10);;
-				user_cor = cor.subList(0,10);;
-				user_re = re.subList(0,10);;
-				user_com = com.subList(0,10);;
+				user_loc = loc.subList(0,10);
+				user_cor = cor.subList(0,10);
+				user_re = re.subList(0,10);
+				user_com = com.subList(0,10);
+				user_rep = rep.subList(0, 10);
 				if (i % 10 == 0) {
 					j = j + 1;
 					if (j == Long.parseLong(page)) {
@@ -1145,6 +1152,7 @@ public class UserController {
 						model.addAttribute("cor", user_cor);
 						model.addAttribute("re", user_re);
 						model.addAttribute("com", user_com);
+						model.addAttribute("rep", user_rep);
 						break;
 					} else {
 						User.subList(0,10).clear();
@@ -1152,12 +1160,14 @@ public class UserController {
 						cor.subList(0,10).clear();
 						re.subList(0,10).clear();
 						com.subList(0,10).clear();
+						rep.subList(0, 10).clear();
 						if(User.size()<10){
 							model.addAttribute("user",User);
 							model.addAttribute("loc", loc);
 							model.addAttribute("cor", cor);
 							model.addAttribute("re", re);
 							model.addAttribute("com", com);
+							model.addAttribute("rep", rep);
 							break;
 						}
 					}

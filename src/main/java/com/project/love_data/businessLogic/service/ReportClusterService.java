@@ -89,8 +89,12 @@ public class ReportClusterService {
         ReportCluster entity = ReportCluster.builder()
                 .postNo(Long.valueOf(reqParam.get("postNo")))
                 .postType(reqParam.get("postType"))
-                .rcUserNo(Long.valueOf(reqParam.get("rcUserNo")))
+                .rcUserNo(null)
                 .build();
+
+        if (reqParam.get("rcUserNo") != null){
+            entity.setRcUserNo(Long.valueOf(reqParam.get("rcUserNo")));
+        }
 
         save(entity);
 

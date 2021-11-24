@@ -90,7 +90,6 @@
                                 <th scope="col">유저 이름</th>
                                 <th scope="col">가입 날짜</th>
                                 <th scope="col">상태</th>
-                                <th scope="col">신고된 게시글 수</th>
                                 <th scope="col">가입 방식</th>
                                 </thead>
                                 <tbody id="tableBody">
@@ -110,7 +109,6 @@
                                             <td>활동</td>
                                         </c:when>
                                     </c:choose>
-                                    <td>???</td>
                                     <td>${userlist.social_info}</td>
                                 </tr>
                                 </c:forEach>
