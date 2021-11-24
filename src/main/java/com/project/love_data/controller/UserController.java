@@ -342,7 +342,7 @@ public class UserController {
 			return "redirect:/login";
 		} else {
 			AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
-			List<Comment> myComList = cmtService.findAllByLocNo(authUserModel.getUser_no());
+			List<Comment> myComList = cmtService.findAllByUserNo(authUserModel.getUser_no());
 			List<Comment> comlist_page = null;
 			List<Integer> comPageNumList = new ArrayList<>();
 

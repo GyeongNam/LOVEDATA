@@ -138,7 +138,6 @@
 						</tbody>
 					</table>
 				</c:when>
-
 				</c:choose>
 		</div>
 		<div class="col" id="pu_navbar">
