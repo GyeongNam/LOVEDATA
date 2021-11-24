@@ -105,33 +105,18 @@
 				</tr>
 				</thead>
 				<tbody>
-<%--				<c:forEach var="com" items="${my_com}">--%>
-<%--					<c:choose>--%>
-<%--						<c:when test="${com._deleted eq false}">--%>
-<%--							<tr>--%>
-<%--								<td><span>${com.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</span></td>--%>
-<%--								<td>${com.location.loc_name}</td>--%>
-<%--								<td><a href="/service/loc_detail?locNo=${com.location.loc_no}&page=${comPageNumList.}">${com.cmtContent}</a></td>--%>
-<%--							</tr>--%>
-<%--						</c:when>--%>
-<%--					</c:choose>--%>
-<%--&lt;%&ndash;					${my_com.get(0).}&ndash;%&gt;--%>
-<%--				</c:forEach>--%>
-<%--				<span>${my_com.get(0).location.loc_name}</span>--%>
-<%--				<span>${comPageNumList.get(0)}</span>--%>
-				<c:forEach var="i" begin="0" end="${my_com.size() - 1}">
+				<c:forEach var="com" items="${my_com}" varStatus="index">
 					<c:choose>
-						<c:when test="${my_com.get(i)._deleted eq false}">
+						<c:when test="${com._deleted eq false}">
 							<tr>
-								<td><span>${my_com.get(i).regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</span></td>
-								<td>${my_com.get(i).location.loc_name}</td>
-								<td><a href="/service/loc_detail?locNo=${my_com.get(i).location.loc_no}&page=${comPageNumList.get(i)}&cmtNo=${my_com.get(i).cmtNo}">
-										${my_com.get(i).cmtContent}
+								<td><span>${com.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</span></td>
+								<td>${com.getLocation().loc_name}</td>
+								<td><a href="/service/loc_detail?locNo=${com.getLocation().loc_no}&page=${comPageNumList.get(index.count-1)}&cmtNo=${com.cmtNo}">
+										${com.cmtContent}
 								</a></td>
 							</tr>
 						</c:when>
 					</c:choose>
-					<%--					${my_com.get(0).}--%>
 				</c:forEach>
 				</tbody>
 			</table>

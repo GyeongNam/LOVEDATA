@@ -105,14 +105,13 @@
 				</tr>
 				</thead>
 				<tbody>
-				<c:forEach var="i" begin="0" end="${my_rev.size() - 1}">
+				<c:forEach var="my_rev" items="${my_rev}" varStatus="index">
 					<c:choose>
-						<c:when test="${my_rev.get(i)._deleted eq false}">
+						<c:when test="${my_rev._deleted eq false}">
 							<tr>
-								<td><span>${my_rev.get(i).regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</span></td>
-								<td><a href="/service/cor_detail?corNo=${my_rev.get(i).corNo}&page=${revPageNumList.get(i)}&revNo=${my_rev.get(i).revNo}">${my_rev.get(i).revContent}</a></td>
-								<td>${my_rev.get(i).rev_like}</td>
-
+								<td><span>${my_rev.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</span></td>
+								<td><a href="/service/cor_detail?corNo=${my_rev.corNo}&page=${revPageNumList.get(index.count-1)}&revNo=${my_rev.revNo}">${my_rev.revContent}</a></td>
+								<td>${my_rev.rev_like}</td>
 							</tr>
 						</c:when>
 					</c:choose>
