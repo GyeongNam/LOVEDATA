@@ -115,7 +115,9 @@
 		</div>
 		<div class="col d-flex">
 			<button class="btn btn-primary" onclick="onClickPermaDeletePost('${rcDTO.rcNo}', '${rcDTO.postType}', '${rcDTO.postNo}')">삭제</button>
-			<button class="btn btn-primary">유저 제재</button>
+			<input  type="text" id="re_text" placeholder="정지사유">
+			<input  type="number" id="stop_day" placeholder="정지 일">
+			<button class="btn btn-primary" onclick="onClickUserSuspension('${rcDTO.rcNo}', '${rcDTO.postType}', '${rcDTO.postNo}','${rcDTO.rcUserNo}')">유저 제재</button>
 			<button class="btn btn-primary" onclick="onClickUnblindPost('${rcDTO.rcNo}', '${rcDTO.postType}', '${rcDTO.postNo}')">블라인드 취소</button>
 		</div>
 	</div>
@@ -270,6 +272,60 @@
             }
         });
     }
+
+	function onClickUserSuspension(rcNo, postType, postNo, userNo) {
+		let values = [];
+		let text = document.getElementById("resultText").value;
+		let stopDay = document.getElementById("stop_day").value;
+		let reText = document.getElementById("re_text").value;
+
+		for (let i = 0; i < checkBoxList.length; i++) {
+			values.push(Number.parseInt(checkBoxList[i]));
+		}
+
+		if (values.length === 0) {
+			alert("신고를 선택하지 않아서 게시글 영구 삭제를 진행할 수 없습니다.");
+			return;
+		}
+
+		if (values.length !== document.querySelectorAll('input[type="checkbox"]').length-1) {
+			alert("선택되지 않은 신고가 존재하여, 게시글 삭제를 진행할 수 없습니다.");
+			return;
+		}
+
+		if (!window.confirm("유저를 정지하시겠습니까?")) {
+			return;
+		}
+
+		$.ajax({
+			type: "POST",
+			url: "/admin/report_center/user_suspension",
+			data: {
+				rcNo : rcNo,
+				repNoList : values,
+				postNo : postNo,
+				postType : postType,
+				result : text,
+				userNo : userNo,
+				stopDay : stopDay,
+				reText : reText,
+				processType : '유저정지'
+			},
+			beforeSend: function (xhr) {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+				xhr.setRequestHeader(header, token);
+			},
+			success: function (response) {
+				// do something ...
+				// console.log("선택된 이미지 삭제 성공");
+				// alert("선택된 이미지 삭제 성공");
+				location.reload();
+			}, error: function (e) {
+				alert("유저 제재 과정에서 오류 발생");
+				console.log("유저 제재 과정에 오류 발생");
+				console.log(e);
+			}
+		});
+	}
 
     function onClickUnblindPost(rcNo, postType, postNo) {
         let values = [];

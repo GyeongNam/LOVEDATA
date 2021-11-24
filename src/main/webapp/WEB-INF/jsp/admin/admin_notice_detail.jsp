@@ -55,7 +55,7 @@
                                     <a href="/admin/qna/1" class="highlight-not-selected-text-menu">- 문의사항</a>
                                 </p>
                             </div>
-                            <p><a href="/admin/dash" class="highlight-not-selected-text-menu">upload 파일 캐시 삭제</a></p>
+                            <p><a href="/admin/upload_cache" class="highlight-not-selected-text-menu">upload 파일 캐시 삭제</a></p>
                             <p class="mb-0"><a href="/admin/report_center" class="highlight-not-selected-text-menu">신고 센터</a></p>
                         </div>
                     </div>
