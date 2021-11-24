@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Base64;
 import java.util.Random;
 
 
@@ -134,18 +135,11 @@ public class SmsService {
             log.error("SMS IOException:"+ex.getMessage());
         }
     }
-
+    // base64Encode
     public static String base64Encode(String str)  throws java.io.IOException {
-        // @Todo 컴파일러 경고남
-        // src\main\java\com\project\love_data\service\SmsService.java:76: warning: BASE64Encoder is internal proprietary API and may be removed in a future release
-        //        sun.misc.BASE64Encoder encoder = new sun.misc.BASE64Encoder();
-        sun.misc.BASE64Encoder encoder = new sun.misc.BASE64Encoder();
-        byte[] strByte = str.getBytes();
-        String result = encoder.encode(strByte);
-//        byte[] strByte = DatatypeConverter.parseBase64Binary(str);
-//        String result = null;
-//        assert result == DatatypeConverter.printBase64Binary(strByte);
-
+        Base64.Encoder encoder = Base64.getEncoder();
+        byte[] strByte = str.getBytes("UTF-8");
+        String result = encoder.encodeToString(strByte);
         return result ;
     }
 }
