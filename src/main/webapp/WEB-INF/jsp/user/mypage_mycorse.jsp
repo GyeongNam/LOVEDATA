@@ -136,7 +136,7 @@
 								<c:forEach var="qu_pages" begin="1" end="${qu_page}" step="1">
 									<div class="page-item" id="${qu_pages}">
 										<li class="page-item ${qu_pages}">
-											<a href="/mypage_mylike/${qu_pages}">${qu_pages}</a>
+											<a href="/mypage_mycorse/${qu_pages}">${qu_pages}</a>
 										</li>
 									</div>
 								</c:forEach>
