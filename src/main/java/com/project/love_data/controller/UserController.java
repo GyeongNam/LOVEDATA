@@ -1188,13 +1188,39 @@ public class UserController {
 		List<Review> reviewList = reviewService.findAllByUser_no(num);
 		List<Comment> commentList = cmtService.findAllByUserNo(num);
 		List<UserSuspension> userSuspensionList = userService.su_findAllByUser_no(num);
-		// 리포트 신고 기록 추가
+		List<Course> rev_cor_name = new ArrayList<>();
+		for(int i = 0; i<reviewList.size(); i++){
+			Course course = corService.selectCor(reviewList.get(i).getCorNo());
+			rev_cor_name.add(course);
+		}
+
+		List<Integer> RevPageNum = new ArrayList<>();
+		List<Integer> ComPageNum = new ArrayList<>();
+
+		for (int i = 0; i < reviewList.size(); i++) {
+			Integer temp = reviewService.getReviewCurrentPageNum(reviewList.get(i).getRevNo());
+			if (temp == null) {
+				temp = -1;
+			}
+			RevPageNum.add(temp);
+		}
+
+		for (int i = 0; i < commentList.size(); i++) {
+			Integer temp = cmtService.getCommentCurrentPageNum(commentList.get(i).getCmtNo());
+			if (temp == null) {
+				temp = -1;
+			}
+			ComPageNum.add(temp);
+		}
 
 		model.addAttribute("user" ,user);
 		model.addAttribute("loc" ,locationList);
 		model.addAttribute("cor" ,courseList);
+		model.addAttribute("rev_cor_name" ,rev_cor_name);
 		model.addAttribute("rev" ,reviewList);
+		model.addAttribute("RevPageNum" ,RevPageNum);
 		model.addAttribute("com" ,commentList);
+		model.addAttribute("ComPageNum" ,ComPageNum);
 		model.addAttribute("us" ,userSuspensionList);
 
 		return "admin/admin_user_detail";
@@ -1223,7 +1249,7 @@ public class UserController {
 
 		UserSuspension userSuspension = UserSuspension.builder()
 				.user_no(user_no)
-				.re_no(Long.parseLong("0"))
+				.rec_no(Long.parseLong("0"))
 				.re_content(request.getParameter("re_content"))
 		 		.start_day(format1.format(today))
 				.stop_day(request.getParameter("stop_day"))

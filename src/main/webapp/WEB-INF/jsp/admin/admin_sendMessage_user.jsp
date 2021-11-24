@@ -120,7 +120,7 @@
                     <div class="row my-3">
                         <div class="">
                         <h5>메세지 내용</h5>
-                        <textarea class="sendmsgtext" id="smscontent"></textarea>
+                        <textarea placeholder="SMS는 45자를 넘을 수 없습니다." class="sendmsgtext" id="smscontent"></textarea>
                         <button class="" onclick="putSMSsend()">SMS 전송</button>
                         <button class="" onclick="putEmailsend()">이메일 전송</button>
                         </div>
