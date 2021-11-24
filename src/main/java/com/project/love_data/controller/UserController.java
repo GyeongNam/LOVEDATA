@@ -424,9 +424,9 @@ public class UserController {
 			AuthUserModel authUserModel = (AuthUserModel) authentication.getPrincipal();
 			List<Review> myRevList = reviewService.findAllByUser_no(authUserModel.getUser_no());
 
-//			model.addAttribute("my_rev", myRevList);
-
 			List<Review> revlist_page = null;
+			List<Integer> revPageNumList = new ArrayList<>();
+
 			model.addAttribute("search", false);
 			long qu_size = myRevList.size();
 			long qu_page = myRevList.size()/8;
@@ -460,6 +460,9 @@ public class UserController {
 
 			if(myRevList.size()<8){
 				model.addAttribute("my_rev",myRevList);
+				for (Review revEntity : myRevList) {
+					revPageNumList.add(reviewService.getReviewCurrentPageNum(revEntity.getRevNo()));
+				}
 			}else {
 				for (int i = 0; i < qu_size; i++) {
 					revlist_page = myRevList.subList(0,8);
@@ -468,19 +471,25 @@ public class UserController {
 						j = j + 1;
 						if (j == Long.parseLong(page)) {
 							model.addAttribute("my_rev",revlist_page);
+							for (Review revEntity : revlist_page) {
+								revPageNumList.add(reviewService.getReviewCurrentPageNum(revEntity.getRevNo()));
+							}
 							break;
 						} else {
 							myRevList.subList(0,8).clear();
 
 							if(myRevList.size()<8){
 								model.addAttribute("my_rev",myRevList);
+								for (Review revEntity : myRevList) {
+									revPageNumList.add(reviewService.getReviewCurrentPageNum(revEntity.getRevNo()));
+								}
 								break;
 							}
 						}
 					}
 				}
 			}
-
+			model.addAttribute("revPageNumList", revPageNumList);
 
 			return "user/mypage_myreview";
 		}
