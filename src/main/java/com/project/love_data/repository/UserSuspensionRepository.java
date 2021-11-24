@@ -14,6 +14,9 @@ public interface UserSuspensionRepository extends JpaRepository<UserSuspension, 
     @Query(value = "SELECT * FROM user_suspension us WHERE us.user_no = :user_no", nativeQuery = true)
     Optional<List<UserSuspension>> findAllByUser_no(@Param("user_no") Long user_no);
 
+    @Query(value = "SELECT * FROM user_suspension us WHERE us.progress = :progress", nativeQuery = true)
+    Optional<List<UserSuspension>> findAllByprogress(@Param("progress") String progress);
+
     @Query(value = "SELECT * FROM user_suspension us WHERE us.user_no = :user_no and us.progress = :progress ", nativeQuery = true)
     Optional<List<UserSuspension>> findStopByUser_no(@Param("user_no") Long user_no ,@Param("progress") String progress);
 }

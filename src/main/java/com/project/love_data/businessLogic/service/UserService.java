@@ -197,6 +197,10 @@ public class UserService {
     Optional<List<UserSuspension>> userSuspensions = usRepository.findStopByUser_no(user_no, progress);
         return userSuspensions.orElse(new ArrayList<>());
     }
+    public List<UserSuspension> findAllByprogress (String progress){
+        Optional<List<UserSuspension>> userSuspensions = usRepository.findAllByprogress(progress);
+        return userSuspensions.orElse(new ArrayList<>());
+    }
 
     public User findByProfilePic(String profilPic) {
         if (profilPic == null) {

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -1392,6 +1393,118 @@ public class AdminController {
 //                }
 //
 //                break;
+                processType = "기본 프로필 사진으로 변경";
+                reportManageService.processReportCluster(rcNo, Arrays.asList(repNoList), result, processType);
+                return "User ProfilePic Perma Delete Successful";
+        }
+
+        return "fail";
+    }
+
+    @PostMapping("/report_center/user_suspension")
+    @ResponseBody
+    public String rc_user_suspension(HttpServletRequest request, Model model,
+                                         Authentication authentication, @RequestParam("rcNo") Long rcNo,
+                                         @RequestParam("repNoList[]") Long[] repNoList, @RequestParam("postNo") Long postNo,
+                                         @RequestParam("postType") String postType, @RequestParam("result") String result,
+                                         @RequestParam("userNo") Long userNo, @RequestParam("stopDay") String stopDay,
+                                         @RequestParam("reText") String reText,
+                                         @RequestParam("processType") String processType) {
+        if (authentication == null) {
+            return "authentication failed";
+        }
+
+        if (!request.isUserInRole("ROLE_ADMIN")) {
+            log.warn("게시글 삭제를 요청한 유저가 어드민 권한이 없습니다");
+            return "USER is not ADMIN";
+        }
+
+        List<UserSuspension> userSuspensionList = userService.findStopByUser_no(userNo, "1");
+        User user = userService.select(userNo);
+        user.setUser_Activation(false);
+        userService.update(user);
+
+        Date today = new Date();
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+
+        java.util.Calendar cal = Calendar.getInstance();
+        cal.setTime(today);
+        cal.add(Calendar.DATE,Integer.parseInt(stopDay));
+
+        String progress;
+        if(userSuspensionList.size() > 0){
+            progress = "2";
+        }else {
+            progress = "1";
+        }
+
+        UserSuspension userSuspension = UserSuspension.builder()
+                .user_no(userNo)
+                .rc_no(rcNo)
+                .re_content(reText)
+                .start_day(format1.format(today))
+                .stop_day(stopDay)
+                .end_day(format1.format(cal.getTime()))
+                .progress(progress)
+                .build();
+        userService.su_update(userSuspension);
+
+        ReportCluster reportCluster = reportManageService.getReportClusterByRcNo(rcNo);
+        reportCluster.setRcResult(reportCluster.getRcResult() + "\r\n" + reText);
+
+        switch (postType) {
+            case "LOC" :
+                Location locEntity = locService.selectLoc(postNo);
+
+                if (locEntity == null) {
+                    return "Location Entity Null";
+                }
+
+                locService.delete(locEntity.getLoc_no());
+                locService.permaDelete(locEntity);
+                reportManageService.processReportCluster(rcNo, Arrays.asList(repNoList), result, processType);
+                return "Post Perma Delete Successful";
+            case "COR" :
+                Course corEntity = corService.selectCor(postNo);
+
+                if (corEntity == null) {
+                    return "Course cEntity Null";
+                }
+
+                corService.delete(corEntity.getCor_no());
+                corService.permaDelete(corEntity.getCor_no());
+                reportManageService.processReportCluster(rcNo, Arrays.asList(repNoList), result, processType);
+                return "Post Perma Delete Successful";
+            case "COM" :
+                Comment comEntity = comService.select(postNo);
+
+                if (comEntity == null) {
+                    return "Comment Entity Null";
+                }
+
+                comService.delete(comEntity.getCmtNo());
+                comService.permaDelete(comEntity);
+                reportManageService.processReportCluster(rcNo, Arrays.asList(repNoList), result, processType);
+                return "Post Perma Delete Successful";
+
+            case "REV" :
+                Review revEntity = reviewService.select(postNo);
+
+                if (revEntity == null) {
+                    return "Review Entity Null";
+                }
+
+                reviewService.delete(revEntity.getRevNo());
+                reviewService.permaDelete(revEntity);
+                reportManageService.processReportCluster(rcNo, Arrays.asList(repNoList), result, processType);
+                return "Post Perma Delete Successful";
+            case "PROFILE_PIC" :
+                User userEntity = userService.select(postNo);
+
+                if (userEntity == null) {
+                    return "User Entity Null";
+                }
+
                 processType = "기본 프로필 사진으로 변경";
                 reportManageService.processReportCluster(rcNo, Arrays.asList(repNoList), result, processType);
                 return "User ProfilePic Perma Delete Successful";
