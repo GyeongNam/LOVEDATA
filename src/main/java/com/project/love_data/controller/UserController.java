@@ -1338,7 +1338,7 @@ public class UserController {
 
 		UserSuspension userSuspension = UserSuspension.builder()
 				.user_no(user_no)
-				.rec_no(Long.parseLong("0"))
+				.rc_no(Long.parseLong("0"))
 				.re_content(request.getParameter("re_content"))
 		 		.start_day(format1.format(today))
 				.stop_day(request.getParameter("stop_day"))

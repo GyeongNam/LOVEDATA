@@ -2,7 +2,8 @@ package com.project.love_data.businessLogic.service;
 
 import com.project.love_data.dto.*;
 import com.project.love_data.model.service.*;
-import com.project.love_data.repository.ReportClusterRepository;
+import com.project.love_data.model.user.User;
+import com.project.love_data.repository.*;
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -22,6 +23,16 @@ import java.util.function.Function;
 public class ReportClusterService {
     @Autowired
     ReportClusterRepository repository;
+    @Autowired
+    LocationRepository locRepository;
+    @Autowired
+    CourseRepository corRepository;
+    @Autowired
+    CommentRepository comRepository;
+    @Autowired
+    ReviewRepository revRepository;
+    @Autowired
+    UserRepository userRepository;
 
     public ReportCluster register(Map<String, String> reqParam) {
         ReportCluster temp = selectByPostNoPostType(Long.valueOf(reqParam.get("postNo")), reqParam.get("postType"));
@@ -32,9 +43,53 @@ public class ReportClusterService {
             return selectByPostNoPostType(Long.valueOf(reqParam.get("postNo")), reqParam.get("postType"));
         }
 
+        switch (reqParam.get("postType")) {
+            case "LOC" :
+                Optional<Location> locItem = locRepository.findById(Long.valueOf(reqParam.get("postNo")));
+                if (locItem.isPresent()) {
+                    reqParam.put("rcUserNo", String.valueOf(locItem.get().getUser_no()));
+                } else {
+                    reqParam.put("rcUserNo", null);
+                }
+                break;
+            case "COR" :
+                Optional<Course> corItem = corRepository.findById(Long.valueOf(reqParam.get("postNo")));
+                if (corItem.isPresent()) {
+                    reqParam.put("rcUserNo", String.valueOf(corItem.get().getUser_no()));
+                } else {
+                    reqParam.put("rcUserNo", null);
+                }
+                break;
+            case "COM" :
+                Optional<Comment> comItem = comRepository.findById(Long.valueOf(reqParam.get("postNo")));
+                if (comItem.isPresent()) {
+                    reqParam.put("rcUserNo", String.valueOf(comItem.get().getUser().getUser_no()));
+                } else {
+                    reqParam.put("rcUserNo", null);
+                }
+                break;
+            case "REV" :
+                Optional<Review> revItem = revRepository.findById(Long.valueOf(reqParam.get("postNo")));
+                if (revItem.isPresent()) {
+                    reqParam.put("rcUserNo", String.valueOf(revItem.get().getUser_no()));
+                } else {
+                    reqParam.put("rcUserNo", null);
+                }
+                break;
+            case "PROFILE_PIC" :
+                Optional<User> userItem = userRepository.findById(Long.valueOf(reqParam.get("postNo")));
+                if (userItem.isPresent()) {
+                    reqParam.put("rcUserNo", String.valueOf(userItem.get().getUser_no()));
+                } else {
+                    reqParam.put("rcUserNo", null);
+                }
+                break;
+        }
+
         ReportCluster entity = ReportCluster.builder()
                 .postNo(Long.valueOf(reqParam.get("postNo")))
                 .postType(reqParam.get("postType"))
+                .rcUserNo(Long.valueOf(reqParam.get("rcUserNo")))
                 .build();
 
         save(entity);
@@ -50,6 +105,7 @@ public class ReportClusterService {
                 .rcUuid(dto.getRcUuid())
                 .postNo(dto.getPostNo())
                 .postType(dto.getPostType())
+                .rcUserNo(dto.getRcUserNo())
                 .rcResult(dto.getRcResult())
                 .rcComplete(dto.isRcComplete())
                 .repCount(dto.getRepCount())
@@ -64,6 +120,7 @@ public class ReportClusterService {
                 .rcUuid(entity.getRcUuid())
                 .postNo(entity.getPostNo())
                 .postType(entity.getPostType())
+                .rcUserNo(entity.getRcUserNo())
                 .rcResult(entity.getRcResult())
                 .rcComplete(entity.isRcComplete())
                 .repCount(entity.getRepCount())
@@ -104,6 +161,20 @@ public class ReportClusterService {
         Optional<ReportCluster> item = repository.findByPostNoAndPostType(postNo, postType);
 
         return item.orElse(null);
+    }
+
+    public List<ReportCluster> selectAllByRcUserNo(Long rcUserNo) {
+        if (rcUserNo == null) {
+            return null;
+        }
+
+        if (rcUserNo < 0) {
+            return null;
+        }
+
+        Optional<List<ReportCluster>> items = repository.findAllByRcUserNo(rcUserNo);
+
+        return items.orElse(null);
     }
 
     public ReportClusterPageResultDTO<ReportClusterDTO, ReportCluster> getList(ReportClusterPageRequestDTO requestDTO) {

@@ -16,6 +16,7 @@ import java.util.*;
 public class ReportClusterDTO extends TimeEntity {
     private Long rcNo;
     private Long postNo;
+    private Long rcUserNo;
     private String postType;
 
     @Builder.Default

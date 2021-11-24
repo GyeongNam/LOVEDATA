@@ -67,6 +67,10 @@ public class ReportManageService {
         return repService.findAllByUserNo(userNo);
     }
 
+    public List<ReportCluster> getReportClustersByRcUserNo(Long rcUserNo) {
+        return rcService.selectAllByRcUserNo(rcUserNo);
+    }
+
     public ReportCluster getReportClusterByRcNo(Long rcNo) {
         return rcService.select(rcNo);
     }

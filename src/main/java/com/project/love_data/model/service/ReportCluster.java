@@ -30,6 +30,9 @@ public class ReportCluster extends TimeEntity {
     @Column(name = "post_type", nullable = false)
     private String postType;
 
+    @Column(name = "rc_user_no", nullable = true)
+    private Long rcUserNo;
+
     @Column(name = "rc_uuid", nullable = false)
     @Builder.Default
     private String rcUuid = UUID.randomUUID().toString();

@@ -28,6 +28,9 @@ public interface ReportClusterRepository extends JpaRepository<ReportCluster, Lo
     @Query(value = "SELECT * FROM report_cluster rc WHERE rc.complete = :rc_complete", nativeQuery = true)
     Optional<List<ReportCluster>> getAllByRcComplete(@Param("rc_complete") boolean rcComplete);
 
+    @Query(value = "SELECT * FROM report_cluster rc WHERE rc.rc_user_no = :rc_user_no", nativeQuery = true)
+    Optional<List<ReportCluster>> findAllByRcUserNo(@Param("rc_user_no") Long rcUserNo);
+
     @Modifying
     @Query(value = "DELETE FROM report_cluster rc WHERE rc_no = :rc_no", nativeQuery = true)
     @Transactional

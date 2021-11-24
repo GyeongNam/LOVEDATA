@@ -276,7 +276,7 @@
                         <c:when test="${uss.progress eq 0}">
                             <tr>
                                 <td>${uss.user_suspension_no}</td>
-                                <td>${uss.rec_no}</td>
+                                <td>${uss.rc_no}</td>
                                 <td>${uss.re_content}</td>
                                 <td>${uss.start_day}</td>
                                 <td>${uss.stop_day}</td>
@@ -286,7 +286,7 @@
                         <c:when test="${uss.progress eq 1}">
                             <tr style="cursor:hand; background: #ffdef2;">
                                 <td>${uss.user_suspension_no}</td>
-                                <td>${uss.rec_no}</td>
+                                <td>${uss.rc_no}</td>
                                 <td>${uss.re_content}</td>
                                 <td>${uss.start_day}</td>
                                 <td>${uss.stop_day}</td>
@@ -296,7 +296,7 @@
                         <c:when test="${uss.progress eq 2}">
                             <tr style="cursor:hand; background: #fff8de;">
                                 <td>${uss.user_suspension_no}</td>
-                                <td>${uss.rec_no}</td>
+                                <td>${uss.rc_no}</td>
                                 <td>${uss.re_content}</td>
                                 <td>${uss.start_day}</td>
                                 <td>${uss.stop_day}</td>

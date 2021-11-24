@@ -170,4 +170,10 @@ public class ReportTest {
             System.out.println((reportClusterPageResultDTO.getDtoList().indexOf(clusterDTO) + 1) + ") " + clusterDTO);
         }
     }
+
+    @Test
+    public void SelectTest() {
+        System.out.println(reportManageService.getReportClustersByRcUserNo(1L));
+        System.out.println(reportManageService.getReportClustersByRcUserNo(2L));
+    }
 }

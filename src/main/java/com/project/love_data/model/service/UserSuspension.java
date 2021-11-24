@@ -29,8 +29,8 @@ public class UserSuspension extends TimeEntity {
     @Column(name = "user_no", nullable = false)
     private Long user_no;
 
-    @Column(name = "rec_no", nullable = true)
-    private Long rec_no;
+    @Column(name = "rc_no", nullable = true)
+    private Long rc_no;
 
     @Column(name = "re_content", nullable = false)
     private String re_content;
