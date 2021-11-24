@@ -140,17 +140,15 @@
             </table>
         </div>
 
-        <div class="tab-content" id="pills-tabContent">
+        <div class="tab-content">
             <h2>코스</h2>
             <table class="table-bordered table text-center tables" >
                 <thead>
                 <th scope="col">코스 번호</th>
                 <th scope="col">코스 이름</th>
-                <th scope="col">예상 소요시간</th>
-                <th scope="col">이동 수단</th>
-                <th scope="col">비용</th>
                 <th scope="col">등록일</th>
                 <th scope="col">조회수</th>
+                <th scope="col">좋아요</th>
                 </thead>
                 <tbody>
                 <c:forEach var="cors" items="${cor}">
@@ -159,36 +157,100 @@
                             <tr style="cursor:hand; background: #e2eeff;" onclick="location.href='/service/cor_detail?corNo=${cors.cor_no}'">
                                 <td>${cors.cor_no}</td>
                                 <td>${cors.cor_name}</td>
-                                <c:choose>
-                                    <c:when test="${cors.est_type eq 'time'}">
-                                            <td>예상 소요시간 : ${cors.est_value}</td>
-                                    </c:when>
-                                    <c:otherwise>
-                                            <td>예상 소요일 : ${cors.est_value}</td>
-                                    </c:otherwise>
-                                </c:choose>
-                                <td>${cors.transportation}</td>
-                                <td>${cors.cost}</td>
                                 <td>${cors.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</td>
                                 <td>${cors.viewCount}</td>
+                                <td>${cors.likeCount}</td>
                             </tr>
                         </c:when>
                         <c:when test="${cors._deleted eq true}">
                             <tr style="cursor:hand; background: #ffdef2;" onclick="location.href='/service/cor_detail?corNo=${cors.cor_no}'">
                                 <td>${cors.cor_no}</td>
                                 <td>${cors.cor_name}</td>
-                                <c:choose>
-                                    <c:when test="${cors.est_type eq 'time'}">
-                                        <td>예상 소요시간 : ${cors.est_value}</td>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <td>예상 소요일 : ${cors.est_value}</td>
-                                    </c:otherwise>
-                                </c:choose>
-                                <td>${cors.transportation}</td>
-                                <td>${cors.cost}</td>
                                 <td>${cors.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</td>
                                 <td>${cors.viewCount}</td>
+                                <td>${cors.likeCount}</td>
+                            </tr>
+                        </c:when>
+                    </c:choose>
+                </c:forEach>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="tab-content">
+            <h2>리뷰</h2>
+            <table class="table-bordered table text-center tables" >
+                <thead>
+                <th scope="col">리뷰 번호</th>
+                <th scope="col">코스 번호</th>
+                <th scope="col">코스 이름</th>
+                <th scope="col">등록일</th>
+                <th scope="col">좋아요</th>
+                <th scope="col">싫어요</th>
+                <th scope="col">별점</th>
+                </thead>
+                <tbody>
+                <c:forEach var="revs" varStatus="index" items="${rev}">
+                    <c:choose>
+                        <c:when test="${revs._deleted eq false}">
+                            <tr style="cursor:hand; background: #e2eeff;" onclick="location.href='/service/cor_detail?corNo=${revs.corNo}&page=${RevPageNum.get(index.count-1)}'">
+                                <td>${revs.revNo}</td>
+                                <td>${revs.corNo}</td>
+                                <td>${rev_cor_name.get(index.count-1).cor_name}</td>
+                                <td>${revs.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</td>
+                                <td>${revs.rev_like}</td>
+                                <td>${revs.rev_dislike}</td>
+                                <td>${revs.sc_total}</td>
+                            </tr>
+                        </c:when>
+                        <c:when test="${revs._deleted eq true}">
+                            <tr style="cursor:hand; background: #ffdef2;" onclick="location.href='/service/cor_detail?corNo=${revs.corNo}&page=${RevPageNum.get(index.count-1)}'">
+                                <td>${revs.revNo}</td>
+                                <td>${revs.corNo}</td>
+                                <td>${rev_cor_name.get(index.count-1).cor_name}</td>
+                                <td>${revs.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</td>
+                                <td>${revs.rev_like}</td>
+                                <td>${revs.rev_dislike}</td>
+                                <td>${revs.sc_total}</td>
+                            </tr>
+                        </c:when>
+                    </c:choose>
+                </c:forEach>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="tab-content">
+            <h2>댓글</h2>
+            <table class="table-bordered table text-center tables" >
+                <thead>
+                <th scope="col">댓글 번호</th>
+                <th scope="col">장소 번호</th>
+                <th scope="col">장소 이름</th>
+                <th scope="col">등록일</th>
+                <th scope="col">좋아요</th>
+                </thead>
+                <tbody>
+                <c:forEach var="coms" varStatus="index" items="${com}">
+                    <c:choose>
+                        <c:when test="${coms._deleted eq false}">
+                            <tr style="cursor:hand; background: #e2eeff;"
+                                onclick="location.href='/service/loc_detail?locNo=${coms.getLocation().loc_no}&page=${ComPageNum.get(index.count-1)}'">
+                                <td>${coms.cmtNo}</td>
+                                <td>${coms.getLocation().loc_no}</td>
+                                <td>${coms.getLocation().loc_name}</td>
+                                <td>${coms.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</td>
+                                <td>${coms.likeCount}</td>
+                            </tr>
+                        </c:when>
+                        <c:when test="${coms._deleted eq true}">
+                            ${RevPageNum.size()}
+                            <tr style="cursor:hand; background: #ffdef2;" onclick="location.href='/service/loc_detail?locNo=${coms.getLocation().loc_no}&page=${ComPageNum.get(index.count-1)}'">
+                                <td>${coms.cmtNo}</td>
+                                <td>${coms.getLocation().loc_no}</td>
+                                <td>${coms.getLocation().loc_name}</td>
+                                <td>${coms.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</td>
+                                <td>${coms.likeCount}</td>
                             </tr>
                         </c:when>
                     </c:choose>
@@ -202,7 +264,7 @@
             <table class="table-bordered table text-center tables" >
                 <thead>
                 <th scope="col">정지 번호</th>
-                <th scope="col">신고 번호</th>
+                <th scope="col">사유 번호</th>
                 <th scope="col">정지 사유</th>
                 <th scope="col">정지 시작</th>
                 <th scope="col">정지 일</th>
@@ -214,7 +276,7 @@
                         <c:when test="${uss.progress eq 0}">
                             <tr>
                                 <td>${uss.user_suspension_no}</td>
-                                <td>${uss.re_no}</td>
+                                <td>${uss.rec_no}</td>
                                 <td>${uss.re_content}</td>
                                 <td>${uss.start_day}</td>
                                 <td>${uss.stop_day}</td>
@@ -224,7 +286,7 @@
                         <c:when test="${uss.progress eq 1}">
                             <tr style="cursor:hand; background: #ffdef2;">
                                 <td>${uss.user_suspension_no}</td>
-                                <td>${uss.re_no}</td>
+                                <td>${uss.rec_no}</td>
                                 <td>${uss.re_content}</td>
                                 <td>${uss.start_day}</td>
                                 <td>${uss.stop_day}</td>
@@ -234,7 +296,7 @@
                         <c:when test="${uss.progress eq 2}">
                             <tr style="cursor:hand; background: #fff8de;">
                                 <td>${uss.user_suspension_no}</td>
-                                <td>${uss.re_no}</td>
+                                <td>${uss.rec_no}</td>
                                 <td>${uss.re_content}</td>
                                 <td>${uss.start_day}</td>
                                 <td>${uss.stop_day}</td>
