@@ -147,7 +147,7 @@
 						<input id="qu_pages" value="${qu_page_size}" type="hidden">
 						<input id="qu_pagess" value="${qu_page}" type="hidden">
 						<div class="pagination justify-content-center" , id="pagination justify-content-center">
-							<p onclick="subpage()"> < </p>
+							<span onclick="subpage()"> < </span>
 									<c:forEach var="qu_pages" begin="1" end="${qu_page}" step="1">
 										<div class="page-item" id="${qu_pages}">
 											<li class="page-item ${qu_pages}">
@@ -155,7 +155,7 @@
 											</li>
 										</div>
 									</c:forEach>
-							<p onclick="plupage()"> > </p>
+							<span onclick="plupage()"> > </span>
 						</div>
 					</nav>
 				</div>

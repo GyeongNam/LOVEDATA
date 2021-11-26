@@ -107,13 +107,13 @@
 				<div class="icon-box">
 
 					<a href="/ServiceCenter/Notice/1" >
-						<img class="main-2btpic" src="/image/icon/home/notice (1).png" href="/ServiceCenter/Notice/1">
+						<img class="main-2btpic" src="/image/icon/home/notice.jpg" href="/ServiceCenter/Notice/1">
 <%--						공지사항--%>
 					</a>
 				</div>
 				<div class="icon-box">
 					<a href="/ServiceCenter/Questions/1">
-						<img class="main-2btpic" src="/image/icon/home/qa.png" href="/ServiceCenter/Questions/1">
+						<img class="main-2btpic" src="/image/icon/home/qa.jpg" href="/ServiceCenter/Questions/1">
 <%--						문의사항--%>
 					</a>
 				</div>
