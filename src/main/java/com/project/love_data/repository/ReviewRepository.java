@@ -32,7 +32,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long>,
     Optional<List<Review>> findLiveByCor_no(@Param("cor_no") Long corNo);
 
     // 베스트 리뷰로 불러오는 갯수는 최대 3개이고, 최소 추천수 3개 이상이어야함
-    @Query(value = "SELECT * FROM review r WHERE r.cor_no = :cor_no AND r.rev_like > 3 ORDER BY r.rev_like desc limit 3", nativeQuery = true)
+    @Query(value = "SELECT * FROM review r WHERE r.cor_no = :cor_no AND r.is_deleted = false AND r.rev_like > 3 ORDER BY r.rev_like desc limit 3", nativeQuery = true)
     Optional<List<Review>> getBestReview(@Param("cor_no") Long corNo);
 
     // 어드민 대쉬보드 최근 댓글

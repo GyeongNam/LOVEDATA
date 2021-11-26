@@ -1386,16 +1386,13 @@ public class AdminController {
                     return "User Entity Null";
                 }
 
-//                if (userService.changeProfilePicToDefault(userEntity.getUser_no())) {
-//                    processType = "기본 프로필 사진으로 변경";
-//                    reportManageService.processReportCluster(rcNo, Arrays.asList(repNoList), result, processType);
-//                    return "User ProfilePic Perma Delete Successful";
-//                }
-//
-//                break;
-                processType = "기본 프로필 사진으로 변경";
-                reportManageService.processReportCluster(rcNo, Arrays.asList(repNoList), result, processType);
-                return "User ProfilePic Perma Delete Successful";
+                if (userService.changeProfilePicToDefault(userEntity.getUser_no())) {
+                    processType = "기본 프로필 사진으로 변경";
+                    reportManageService.processReportCluster(rcNo, Arrays.asList(repNoList), result, processType);
+                    return "User ProfilePic Perma Delete Successful";
+                }
+
+                break;
         }
 
         return "fail";

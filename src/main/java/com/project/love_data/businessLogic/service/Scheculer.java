@@ -37,7 +37,7 @@ public class Scheculer implements ApplicationRunner {
         Date date = new Date();
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
 
-        log.info("스케줄러 작동 :"+ format1.format(date));
+//        log.info("스케줄러 작동 :"+ format1.format(date));
 
         List<UserSuspension> userSuspension = userService.findAllByprogress("1");
         for(int i = 0; i<userSuspension.size(); i++){

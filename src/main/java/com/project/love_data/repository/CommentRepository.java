@@ -31,8 +31,8 @@ public interface CommentRepository extends JpaRepository<Comment, Long>,
     @Query(value = "SELECT max(cmt_idx) FROM comment c WHERE c.location_loc_no = :loc_no", nativeQuery = true)
     Long findMaxIdxByLoc_no(@Param("loc_no") Long locNo);
 
-    // 베스트 댓글로 불러오는 갯수는 최대 3개이고, 최소 추천수 3개 이상이어야함
-    @Query(value = "SELECT * FROM comment c WHERE c.location_loc_no = :loc_no AND c.likecount > 3 ORDER BY c.likecount desc limit 3", nativeQuery = true)
+    // 베스트 댓글로 불러오는 갯수는 최대 3개이고, 최소 추천수 3개 이상이어야함, 삭제된 댓글은 포함 X
+    @Query(value = "SELECT * FROM comment c WHERE c.location_loc_no = :loc_no AND c.is_deleted = false AND c.likecount > 3 ORDER BY c.likecount desc limit 3", nativeQuery = true)
     Optional<List<Comment>> getBestComment(@Param("loc_no") Long locNo);
 
     // 어드민 대쉬보드 최근 댓글
