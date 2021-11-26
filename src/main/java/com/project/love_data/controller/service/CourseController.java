@@ -599,12 +599,12 @@ public class CourseController {
         SortCriterion sortCriterion = null;
         SearchType searchType = SearchType.valueOf(type);
         List<String> tempList = Arrays.asList(tagString.split(","));
-        tagList.clear();
+        List<String> tagListStr = new ArrayList<>();
         for (String s : tempList) {
             if ("".equals(s)) {
                 continue;
             } else {
-                tagList.add(s);
+                tagListStr.add(s);
             }
         }
 
@@ -652,7 +652,7 @@ public class CourseController {
                 .size(MAX_COR_LIST_SIZE)
                 .searchType(searchType)
                 .keyword(keyword)
-                .tagList(tagList)
+                .tagList(tagListStr)
                 .sortCriterion(sortCriterion)
                 .sortingOrder(sortingOrder)
                 .page(pageNum)
@@ -690,7 +690,7 @@ public class CourseController {
         }
 
         List<LocationTag> tags = Arrays.asList(LocationTag.values());
-        List<String> activeTags = tagList;
+        List<String> activeTags = tagListStr;
 
         model.addAttribute("result", resultDTO);
         model.addAttribute("tagList", tags);

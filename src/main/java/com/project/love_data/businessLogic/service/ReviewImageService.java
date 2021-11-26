@@ -210,28 +210,33 @@ public class ReviewImageService {
         List<ReviewImage> entities = items.get();
         List<ReviewImage> duplicatedImg = new ArrayList<>();
 
-        int i = 0;
         for (ReviewImage image : entities) {
-            if (!filePath.get(i + 1).equals(image.getImg_uuid())) {
-                delete(image.getImg_no());
-            } else {
-                duplicatedImg.add(image);
+            for (int i = 1; i < filePath.size(); i += 2) {
+                if (filePath.get(i).equals(image.getImg_uuid())) {
+                    duplicatedImg.add(image);
+                    image.set_deleted(true);
+                    update(image);
+                }
             }
-            i += 2;
+
+//            delete(image.getImg_no());
         }
         entities.clear();
 
-        int j = 0;
-        for (i = 0; i < filePath.size(); i += 2) {
+        first :
+        for (int i = 0; i < filePath.size(); i += 2) {
             // filePath.get(i)  ==  Parent Folder (URI)
             // filePath.get(i+1)  ==  fileNames
-            if (!filePath.get(i + 1).equals(duplicatedImg.get(j).getImg_uuid())) {
-                ReviewImage revImage = getImageEntity(revItem.get().getUser_no(),
-                        filePath.get(i), filePath.get(i+1), revItem.get().getCorNo(), revItem.get().getRevNo(), (long) (i / 2));
-                ReviewImage imgEntity = update(revImage);
-                entities.add(imgEntity);
+            second :
+            for (int j = 0; j < duplicatedImg.size(); j++) {
+                if (!filePath.get(i + 1).equals(duplicatedImg.get(j).getImg_uuid())) {
+                    ReviewImage revImage = getImageEntity(revItem.get().getUser_no(),
+                            filePath.get(i), filePath.get(i+1), revItem.get().getCorNo(), revItem.get().getRevNo(), (long) (i / 2));
+                    ReviewImage imgEntity = update(revImage);
+                    entities.add(imgEntity);
+                    continue first;
+                }
             }
-            j += 1;
         }
 
         return entities;

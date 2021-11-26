@@ -58,10 +58,10 @@
 								<c:forEach begin="1" end="5" var="i">
 									<c:choose>
 										<c:when test="${i <= dto.sc_loc}">
-											<image class="sc_icon_small" src="http://localhost:8080/image/icon/star_color.png" onclick="fillRating('loc', ${i})"></image>
+											<image class="sc_icon_small" src="/image/icon/star_color.png" onclick="fillRating('loc', ${i})"></image>
 										</c:when>
 										<c:otherwise>
-											<image class="sc_icon_small" src="http://localhost:8080/image/icon/star_black.png" onclick="fillRating('loc', ${i})"></image>
+											<image class="sc_icon_small" src="/image/icon/star_black.png" onclick="fillRating('loc', ${i})"></image>
 										</c:otherwise>
 									</c:choose>
 								</c:forEach>
@@ -75,10 +75,10 @@
 								<c:forEach begin="1" end="5" var="i">
 									<c:choose>
 										<c:when test="${i <= dto.sc_move}">
-											<image class="sc_icon_small" src="http://localhost:8080/image/icon/star_color.png" onclick="fillRating('move', ${i})"></image>
+											<image class="sc_icon_small" src="/image/icon/star_color.png" onclick="fillRating('move', ${i})"></image>
 										</c:when>
 										<c:otherwise>
-											<image class="sc_icon_small" src="http://localhost:8080/image/icon/star_black.png" onclick="fillRating('move', ${i})"></image>
+											<image class="sc_icon_small" src="/image/icon/star_black.png" onclick="fillRating('move', ${i})"></image>
 										</c:otherwise>
 									</c:choose>
 								</c:forEach>
@@ -92,10 +92,10 @@
 								<c:forEach begin="1" end="5" var="i">
 									<c:choose>
 										<c:when test="${i <= dto.sc_time}">
-											<image class="sc_icon_small" src="http://localhost:8080/image/icon/star_color.png" onclick="fillRating('time', ${i})"></image>
+											<image class="sc_icon_small" src="/image/icon/star_color.png" onclick="fillRating('time', ${i})"></image>
 										</c:when>
 										<c:otherwise>
-											<image class="sc_icon_small" src="http://localhost:8080/image/icon/star_black.png" onclick="fillRating('time', ${i})"></image>
+											<image class="sc_icon_small" src="/image/icon/star_black.png" onclick="fillRating('time', ${i})"></image>
 										</c:otherwise>
 									</c:choose>
 								</c:forEach>
@@ -109,10 +109,10 @@
 								<c:forEach begin="1" end="5" var="i">
 									<c:choose>
 										<c:when test="${i <= dto.sc_revisit}">
-											<image class="sc_icon_small" src="http://localhost:8080/image/icon/star_color.png" onclick="fillRating('revisit', ${i})"></image>
+											<image class="sc_icon_small" src="/image/icon/star_color.png" onclick="fillRating('revisit', ${i})"></image>
 										</c:when>
 										<c:otherwise>
-											<image class="sc_icon_small" src="http://localhost:8080/image/icon/star_black.png" onclick="fillRating('revisit', ${i})"></image>
+											<image class="sc_icon_small" src="/image/icon/star_black.png" onclick="fillRating('revisit', ${i})"></image>
 										</c:otherwise>
 									</c:choose>
 								</c:forEach>
@@ -126,10 +126,10 @@
 								<c:forEach begin="1" end="5" var="i">
 									<c:choose>
 										<c:when test="${i <= dto.sc_total}">
-											<image class="sc_icon_small" src="http://localhost:8080/image/icon/star_color.png"></image>
+											<image class="sc_icon_small" src="/image/icon/star_color.png"></image>
 										</c:when>
 										<c:otherwise>
-											<image class="sc_icon_small" src="http://localhost:8080/image/icon/star_black.png"></image>
+											<image class="sc_icon_small" src="/image/icon/star_black.png"></image>
 										</c:otherwise>
 									</c:choose>
 								</c:forEach>
