@@ -680,6 +680,8 @@
 <%--<script defer src="/js/bootstrap.js"></script>--%>
 <script src="/js/loc_common.js"></script>
 <script>
+    let input = document.getElementById("imgInput");
+
 	window.onload = function() {
         if ('date' === '${dto.est_type}'){
             let accommodations = document.getElementById("accom_input");
@@ -796,7 +798,6 @@
     }
 </script>
 <script defer>
-    let input = document.getElementById("imgInput");
     let isBuffered = false;
 
     function onClickAddImage() {
@@ -940,68 +941,113 @@
 		    return;
 		}
 
-        $.ajax({
-            type: "POST",
-            url: "/rest/authenticationCheck",
-            data: JSON.stringify(debugCheck),
-            dataType: 'json',
-            contentType: "application/json; charset=UTF-8",
-            beforeSend: function (xhr) {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
-                xhr.setRequestHeader(header, token);
-            },
-            success: function (response) {
-                // do something ...
-                console.log("Login Check Success");
-                console.log("is login : " + response);
+        // $.ajax({
+        //     type: "POST",
+        //     url: "/rest/authenticationCheck",
+        //     data: JSON.stringify(debugCheck),
+        //     dataType: 'json',
+        //     contentType: "application/json; charset=UTF-8",
+        //     beforeSend: function (xhr) {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+        //         xhr.setRequestHeader(header, token);
+        //     },
+        //     success: function (response) {
+        //         // do something ...
+        //         console.log("Login Check Success");
+        //         console.log("is login : " + response);
+		//
+        //         if (tagList.length < 3) {
+        //             alert("해시태그는 최소 3개 이상 추가해야합니다.");
+        //             return
+		// 		}
+		//
+        //         if (response) {
+        //             if (parseInt($fileUpload.get(0).files.length) < 3) {
+        //                 alert("최소 3개의 이미지 파일은 업로드 해야합니다.")
+        //             } else if (parseInt($fileUpload.get(0).files.length) > 10) {
+        //                 alert("최대 10개의 이미지 파일만 업로드 가능합니다.");
+        //             } else {
+        //                 // Todo 디버깅 모드 (추후에 주석 해제하기)
+        //                 // if (currentLocationLength < 3) {
+        //                 //     alert("최소 3곳의 장소를 코스에 추가해야합니다.");
+        //                 // } else {
+        //                     var formData = $("form");
+        //                     $.ajax({
+        //                         type: "POST",
+        //                         url: "/service/cor/tags",
+        //                         data: {
+        //                             tags: tagList
+        //                         },
+        //                         success: function (response) {
+        //                             console.log("장소 등록 성공");
+        //                             alert("장소 등록 성공");
+        //                         },
+        //                         error: function (e) {
+        //                             console.log("태그 등록 실패");
+        //                         }
+        //                     });
+		//
+        //                 console.log(formData);
+        //                 formData.submit();
+        //                 // }
+        //             }
+        //         } else {
+        //             alert("코스 등록 실패 : 로그인을 해주세요");
+        //             console.log("코스 등록 실패 : 로그인을 해주세요");
+        //         }
+        //     }, error: function (e) {
+        //         // console.log("Login Check Failed")
+        //         // alert("장소 등록 실패");
+        //         // console.log("장소 등록 실패");
+        //         // onClickRegister();
+        //         console.log(e);
+        //     }
+		//
+        // });
 
-                if (tagList.length < 3) {
-                    alert("해시태그는 최소 3개 이상 추가해야합니다.");
-                    return
-				}
+        if (tagList.length < 3) {
+            alert("해시태그는 최소 3개 이상 추가해야합니다.");
+            return;
+        }
 
-                if (response) {
-                    if (parseInt($fileUpload.get(0).files.length) < 3) {
-                        alert("최소 3개의 이미지 파일은 업로드 해야합니다.")
-                    } else if (parseInt($fileUpload.get(0).files.length) > 10) {
-                        alert("최대 10개의 이미지 파일만 업로드 가능합니다.");
-                    } else {
-                        // Todo 디버깅 모드 (추후에 주석 해제하기)
-                        // if (currentLocationLength < 3) {
-                        //     alert("최소 3곳의 장소를 코스에 추가해야합니다.");
-                        // } else {
-                            var formData = $("form");
-                            $.ajax({
-                                type: "POST",
-                                url: "/service/cor/tags",
-                                data: {
-                                    tags: tagList
-                                },
-                                success: function (response) {
-                                    console.log("장소 등록 성공");
-                                    alert("장소 등록 성공");
-                                },
-                                error: function (e) {
-                                    console.log("태그 등록 실패");
-                                }
-                            });
+        if (currentLocationLength < 2) {
+            alert("최소 2곳의 장소를 코스에 추가해야합니다.");
+        }
 
+        if (parseInt($fileUpload.get(0).files.length) < 3) {
+            alert("최소 ${minCorImgCount}개의 이미지 파일은 업로드 해야합니다.")
+        } else if (parseInt($fileUpload.get(0).files.length) > 10) {
+            alert("최대 ${maxCorImgCount}개의 이미지 파일만 업로드 가능합니다.");
+        } else {
+            // Todo 디버깅 모드 (추후에 주석 해제하기)
+            // if (currentLocationLength < 3) {
+            //     alert("최소 3곳의 장소를 코스에 추가해야합니다.");
+            // } else {
+            var formData = $("form");
+            $.ajax({
+                type: "POST",
+                url: "/service/cor/tags",
+                data: {
+                    tags: tagList
+                },
+                success: function (response) {
+                    if (response == "Tag register Success") {
                         console.log(formData);
                         formData.submit();
-                        // }
+                        console.log("코스 등록 성공");
+                        alert("코스 등록 성공");
+                    } else if (response == "Tag register Fail") {
+                        console.log("코스 등록 실패");
+                        alert("코스 등록 실패");
+                    } else if (response == "Authentication Failed") {
+                        console.log("로그인 되어 있지 않습니다.");
+                        alert("다시 로그인 해주세요");
                     }
-                } else {
-                    alert("코스 등록 실패 : 로그인을 해주세요");
-                    console.log("코스 등록 실패 : 로그인을 해주세요");
+                },
+                error: function (e) {
+                    console.log("태그 등록 실패");
                 }
-            }, error: function (e) {
-                // console.log("Login Check Failed")
-                // alert("장소 등록 실패");
-                // console.log("장소 등록 실패");
-                // onClickRegister();
-                console.log(e);
-            }
-
-        });
+            });
+        }
     }
 </script>
 <script defer>

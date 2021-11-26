@@ -59,13 +59,24 @@ public class LocationController {
     }
 
     @PostMapping("/service/loc/tags")
-    public void locGetTagsList(@RequestParam("tags[]") String[] tagArray) {
+    @ResponseBody
+    public String locGetTagsList(@RequestParam("tags[]") String[] tagArray, Authentication authentication) {
+        if (authentication == null) {
+            return "Authentication Failed";
+        }
+
+        if (!authentication.isAuthenticated()) {
+            return "Authentication Failed";
+        }
+
         tagList = Arrays.asList(tagArray);
 
         if (tagList != null) {
-            log.info("태그 등록 성공");
+//            log.info("태그 등록 성공");
+            return "Tag register Success";
         } else {
-            log.info("태그 등록 실패");
+//            log.info("태그 등록 실패");
+            return "Tag register Fail";
         }
     }
 

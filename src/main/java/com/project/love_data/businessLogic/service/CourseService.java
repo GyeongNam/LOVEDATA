@@ -5,7 +5,6 @@ import com.project.love_data.dto.CourseImageDTO;
 import com.project.love_data.dto.PageRequestDTO;
 import com.project.love_data.dto.PageResultDTO;
 import com.project.love_data.model.resource.CourseImage;
-import com.project.love_data.model.resource.ReviewImage;
 import com.project.love_data.model.service.CorLocMapper;
 import com.project.love_data.model.service.Course;
 import com.project.love_data.model.service.QCourse;
@@ -49,35 +48,43 @@ public class CourseService {
 
         imgList = imgService.getLiveImagesByCorNo(Long.valueOf(reqParam.get("cor_no")));
 
-        int  j = 0;
+        first :
         for (int i = 0; i < imgList.size(); i++) {
-            if (!filePath.get(j + 1).equals(imgList.get(i).getImg_uuid())) {
-                imgService.delete(imgList.get(i).getImg_uuid());
-            } else {
-                duplicatedImg.add(imgList.get(i));
+            second :
+            for (int j = 1; j < filePath.size(); j += 2) {
+                if (filePath.get(j).equals(imgList.get(i).getImg_uuid())) {
+                    duplicatedImg.add(imgList.get(i));
+                    imgList.get(i).set_deleted(true);
+                    imgService.update(imgList.get(i));
+                    continue first;
+                }
             }
-            j += 2;
+
+            imgService.delete(imgList.get(i).getImg_uuid());
         }
         imgList.clear();
 
-        j = 0;
+        first :
         for (int i = 0; i < filePath.size(); i += 2) {
             // filePath.get(i)  ==  Parent Folder (URI)
             // filePath.get(i+1)  ==  fileNames
-            if (!filePath.get(i + 1).equals(duplicatedImg.get(j).getImg_uuid())) {
-                CourseImage locImage = imgService.getImageEntity(reqParam.get("user_no"),
-                        filePath.get(i), filePath.get(i+1), entity.getCor_no(), (i/2));
-                CourseImage imgEntity = imgService.update(locImage);
-                imgList.add(imgEntity);
-                if (i == 0) {
-                    firstImage = imgEntity;
-                }
-            } else {
-                if (i == 0) {
-                    firstImage = duplicatedImg.get(0);
+            second :
+            for (int j = 0; j < duplicatedImg.size(); j++) {
+                if (!filePath.get(i + 1).equals(duplicatedImg.get(j).getImg_uuid())) {
+                    CourseImage locImage = imgService.getImageEntity(reqParam.get("user_no"),
+                            filePath.get(i), filePath.get(i+1), entity.getCor_no(), (i/2));
+                    CourseImage imgEntity = imgService.update(locImage);
+                    imgList.add(imgEntity);
+                    if (i == 0) {
+                        firstImage = imgEntity;
+                    }
+                    continue first;
                 }
             }
-            j += 1;
+
+            if (i == 0) {
+                firstImage = duplicatedImg.get(0);
+            }
         }
 
         if (imgList.isEmpty()) {

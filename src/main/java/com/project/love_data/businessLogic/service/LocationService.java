@@ -1,6 +1,7 @@
 package com.project.love_data.businessLogic.service;
 
 import com.project.love_data.dto.*;
+import com.project.love_data.model.resource.CourseImage;
 import com.project.love_data.model.resource.LocationImage;
 import com.project.love_data.model.service.Comment;
 import com.project.love_data.model.service.Location;
@@ -632,30 +633,69 @@ public class LocationService {
             entity.addLocTag(item);
         }
 
-        imgList = imgService.getAllLiveImageByLocNo(entity.getLoc_no());
-        int i = 0;
-        for (LocationImage img : imgList) {
-            if (!filePath.get(i + 1).equals(img.getImg_uuid())) {
-                delete(img.getImg_no());
-            } else {
-                duplicatedImg.add(img);
-            }
-            i += 2;
-        }
+//        imgList = imgService.getAllLiveImageByLocNo(entity.getLoc_no());
+//        int i = 0;
+//        for (LocationImage img : imgList) {
+//            if (!filePath.get(i + 1).equals(img.getImg_uuid())) {
+//                delete(img.getImg_no());
+//            } else {
+//                duplicatedImg.add(img);
+//            }
+//            i += 2;
+//        }
+//
+//        int j = 0;
+//        imgList.clear();
+//        for (i = 0; i < filePath.size(); i += 2) {
+//            // filePath.get(0)  ==  Parent Folder (URI)
+//            // filePath.get(i)  ==  fileNames
+//            if (!filePath.get(i + 1).equals(duplicatedImg.get(j).getImg_uuid())) {
+//                LocationImage locImage = imgService.getImageEntity(reqParam.get("user_no"), filePath.get(i), filePath.get(i + 1), entity, i / 2);
+//                LocationImage imgEntity = imgService.update(locImage);
+//                imgList.add(imgEntity);
+//            } else {
+//                imgList.add(duplicatedImg.get(j));
+//            }
+//            j += 1;
+//        }
 
-        int j = 0;
-        imgList.clear();
-        for (i = 0; i < filePath.size(); i += 2) {
-            // filePath.get(0)  ==  Parent Folder (URI)
-            // filePath.get(i)  ==  fileNames
-            if (!filePath.get(i + 1).equals(duplicatedImg.get(j).getImg_uuid())) {
-                LocationImage locImage = imgService.getImageEntity(reqParam.get("user_no"), filePath.get(i), filePath.get(i + 1), entity, i / 2);
-                LocationImage imgEntity = imgService.update(locImage);
-                imgList.add(imgEntity);
-            } else {
-                imgList.add(duplicatedImg.get(j));
+        imgList = imgService.getAllLiveImageByLocNo(entity.getLoc_no());
+
+        first :
+        for (int i = 0; i < imgList.size(); i++) {
+            second :
+            for (int j = 1; j < filePath.size(); j += 2) {
+                if (filePath.get(j).equals(imgList.get(i).getImg_uuid())) {
+                    duplicatedImg.add(imgList.get(i));
+                    imgList.get(i).set_deleted(true);
+                    imgService.update(imgList.get(i));
+                    continue first;
+                }
             }
-            j += 1;
+
+            imgService.delete(imgList.get(i).getImg_uuid());
+        }
+        imgList.clear();
+
+        first :
+        for (int i = 0; i < filePath.size(); i += 2) {
+            // filePath.get(i)  ==  Parent Folder (URI)
+            // filePath.get(i+1)  ==  fileNames
+            second :
+            for (int j = 0; j < duplicatedImg.size(); j++) {
+                if (!filePath.get(i + 1).equals(duplicatedImg.get(j).getImg_uuid())) {
+//                    CourseImage locImage = imgService.getImageEntity(reqParam.get("user_no"),
+//                            filePath.get(i), filePath.get(i+1), entity.getLoc_no(), (i/2));
+//                    CourseImage imgEntity = imgService.update(locImage);
+//                    imgList.add(imgEntity);
+                    LocationImage locImage = imgService.getImageEntity(reqParam.get("user_no"), filePath.get(i), filePath.get(i + 1), entity, i / 2);
+                    LocationImage imgEntity = imgService.update(locImage);
+                    imgList.add(imgEntity);
+                    continue first;
+                }
+            }
+
+            imgList.add(duplicatedImg.get(i));
         }
 
         entity.setImgSet(new HashSet<>(imgList));

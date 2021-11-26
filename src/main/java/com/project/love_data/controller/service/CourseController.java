@@ -61,14 +61,25 @@ public class CourseController {
     }
 
     @PostMapping("/service/cor/tags")
-    public void corGetTagsList(@RequestParam("tags[]") String[] tagArray) {
+    @ResponseBody
+    public String corGetTagsList(@RequestParam("tags[]") String[] tagArray, Authentication authentication) {
+        if (authentication == null) {
+            return "Authentication Failed";
+        }
+
+        if (!authentication.isAuthenticated()) {
+            return "Authentication Failed";
+        }
+
         tagList = Arrays.asList(tagArray);
 
-//        if (tagList != null) {
+        if (tagList != null) {
 //            log.info("태그 등록 성공");
-//        } else {
+            return "Tag register Success";
+        } else {
 //            log.info("태그 등록 실패");
-//        }
+            return "Tag register Fail";
+        }
     }
 
     @GetMapping("/service/cor_registration/regData")

@@ -403,59 +403,69 @@
             return
         }
 
-        $.ajax({
-            type: "POST",
-            url: "/rest/authenticationCheck",
-            data: JSON.stringify(debugCheck),
-            dataType: 'json',
-            contentType: "application/json; charset=UTF-8",
-            beforeSend: function (xhr) {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
-                xhr.setRequestHeader(header, token);
-            },
-            success: function (response) {
-                // do something ...
-                console.log("Login Check Success");
-                console.log("is login : " + response);
+        // $.ajax({
+        //     type: "POST",
+        //     url: "/rest/authenticationCheck",
+        //     data: JSON.stringify(debugCheck),
+        //     dataType: 'json',
+        //     contentType: "application/json; charset=UTF-8",
+        //     beforeSend: function (xhr) {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+        //         xhr.setRequestHeader(header, token);
+        //     },
+        //     success: function (response) {
+        //         // do something ...
+        //         console.log("Login Check Success");
+        //         console.log("is login : " + response);
+		//
+        //         if (response) {
+        //
+		// 		}
+        //         else {
+        //             alert("장소 등록 실패 : 로그인을 해주세요");
+        //             console.log("장소 등록 실패 : 로그인을 해주세요");
+		// 		}
+        //     },error: function (e) {
+        //         // console.log("Login Check Failed")
+        //         // alert("장소 등록 실패");
+        //         // console.log("장소 등록 실패");
+		// 		// onClickRegister();
+		// 		console.log(e);
+        //     }
+		//
+        // });
 
-                if (response) {
-                    if (parseInt($fileUpload.get(0).files.length) < ${minLocImgCount}) {
-                        alert("최소 3개의 이미지 파일은 업로드 해야합니다.")
-                    } else if (parseInt($fileUpload.get(0).files.length) > ${maxLocImgCount}) {
-                        alert("최대 10개의 이미지 파일만 업로드 가능합니다.");
-                    } else {
-                        var formData = $("form");
-                        $.ajax({
-                            type: "POST",
-                            url: "/service/loc/tags",
-                            data: {
-                                tags: tagList //notice that "myArray" matches the value for @RequestParam
-                                //on the Java side
-                            },
-                            success: function (response) {
-                                // do something ...
-                                console.log("장소 등록 성공");
-								alert("장소 등록 성공");
-                            },
-                            error: function (e) {
-                                console.log(e);
-                            }
-                        });
+        if (parseInt($fileUpload.get(0).files.length) < ${minLocImgCount}) {
+            alert("최소 3개의 이미지 파일은 업로드 해야합니다.")
+        } else if (parseInt($fileUpload.get(0).files.length) > ${maxLocImgCount}) {
+            alert("최대 10개의 이미지 파일만 업로드 가능합니다.");
+        } else {
+            var formData = $("form");
+            $.ajax({
+                type: "POST",
+                url: "/service/loc/tags",
+                data: {
+                    tags: tagList //notice that "myArray" matches the value for @RequestParam
+                    //on the Java side
+                },
+                success: function (response) {
+                    // do something ...
+					if (response == "Tag register Success") {
                         formData.submit();
+                        console.log("장소 등록 성공");
+                        alert("장소 등록 성공");
+					} else if (response == "Tag register Fail") {
+                        console.log("장소 등록 실패");
+                        alert("장소 등록 실패");
+					} else if (response == "Authentication Failed") {
+                        console.log("현재 로그인 되어 있지 않습니다.");
+                        alert("다시 로그인 해주세요");
                     }
-				}
-                else {
-                    alert("장소 등록 실패 : 로그인을 해주세요");
-                    console.log("장소 등록 실패 : 로그인을 해주세요");
-				}
-            },error: function (e) {
-                // console.log("Login Check Failed")
-                // alert("장소 등록 실패");
-                // console.log("장소 등록 실패");
-				// onClickRegister();
-				console.log(e);
-            }
-
-        });
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
+        }
     }
 </script>
 <script defer>

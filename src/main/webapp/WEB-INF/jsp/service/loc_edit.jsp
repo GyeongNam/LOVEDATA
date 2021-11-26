@@ -63,7 +63,7 @@
 <%--			<span><sec:authentication property="principal.authorities"></sec:authentication></span>--%>
 			<c:set var="dto" value="${dto}"/>
 			<c:set var="user_no"><sec:authentication property="principal.user_no"/></c:set>
-			<sec:authorize access="hasAnyRole('USER')">
+			<sec:authorize access="hasAnyRole('USER') && !hasRole('ADMIN')">
 				<c:choose>
 					<c:when test="${user_no ne dto.user_no}">
 						<span>등록하지 않은 장소 입니다.</span>
@@ -438,57 +438,88 @@
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
 
-        $.ajax({
-            type: "POST",
-            url: "/rest/authenticationCheck",
-            data: JSON.stringify(debugCheck),
-            dataType: 'json',
-            contentType: "application/json; charset=UTF-8",
-            beforeSend: function (xhr) {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
-                xhr.setRequestHeader(header, token);
-            },
-            success: function (response) {
-                // do something ...
-                console.log("Login Check Success");
-                console.log("is login : " + response);
+        // $.ajax({
+        //     type: "POST",
+        //     url: "/rest/authenticationCheck",
+        //     data: JSON.stringify(debugCheck),
+        //     dataType: 'json',
+        //     contentType: "application/json; charset=UTF-8",
+        //     beforeSend: function (xhr) {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+        //         xhr.setRequestHeader(header, token);
+        //     },
+        //     success: function (response) {
+        //         // do something ...
+        //         console.log("Login Check Success");
+        //         console.log("is login : " + response);
+		//
+        //         if (response) {
+        //             if (parseInt($fileUpload.get(0).files.length) < 3) {
+        //                 alert("최소 3개의 이미지 파일은 업로드 해야합니다.")
+        //             } else if (parseInt($fileUpload.get(0).files.length) > 10) {
+        //                 alert("최대 10개의 이미지 파일만 업로드 가능합니다.");
+        //             } else {
+        //                 var formData = $("form");
+        //                 $.ajax({
+        //                     type: "POST",
+        //                     url: "/service/loc/tags",
+        //                     data: {
+        //                         tags: tagList
+        //                     },
+        //                     success: function (response) {
+        //                         console.log("장소 등록 성공");
+        //                         alert("장소 등록 성공");
+        //                     },
+        //                     error: function (e) {
+        //                         console.log("태그 등록 실패");
+        //                     }
+        //                 });
+        //                 formData.submit();
+        //             }
+        //         }
+        //         else {
+        //             alert("장소 등록 실패 : 로그인을 해주세요");
+        //             console.log("장소 등록 실패 : 로그인을 해주세요");
+        //         }
+        //     },error: function (e) {
+        //         // console.log("Login Check Failed")
+        //         // alert("장소 등록 실패");
+        //         // console.log("장소 등록 실패");
+        //         // onClickRegister();
+        //         console.log(e);
+        //     }
+		//
+        // });
 
-                if (response) {
-                    if (parseInt($fileUpload.get(0).files.length) < 3) {
-                        alert("최소 3개의 이미지 파일은 업로드 해야합니다.")
-                    } else if (parseInt($fileUpload.get(0).files.length) > 10) {
-                        alert("최대 10개의 이미지 파일만 업로드 가능합니다.");
-                    } else {
-                        var formData = $("form");
-                        $.ajax({
-                            type: "POST",
-                            url: "/service/loc/tags",
-                            data: {
-                                tags: tagList
-                            },
-                            success: function (response) {
-                                console.log("장소 등록 성공");
-                                alert("장소 등록 성공");
-                            },
-                            error: function (e) {
-                                console.log("태그 등록 실패");
-                            }
-                        });
+        if (parseInt($fileUpload.get(0).files.length) < 3) {
+            alert("최소 3개의 이미지 파일은 업로드 해야합니다.")
+        } else if (parseInt($fileUpload.get(0).files.length) > 10) {
+            alert("최대 10개의 이미지 파일만 업로드 가능합니다.");
+        } else {
+            var formData = $("form");
+            $.ajax({
+                type: "POST",
+                url: "/service/loc/tags",
+                data: {
+                    tags: tagList
+                },
+                success: function (response) {
+                    if (response == "Tag register Success") {
                         formData.submit();
+                        console.log("장소 등록 성공");
+                        alert("장소 등록 성공");
+                    } else if (response == "Tag register Fail") {
+                        console.log("장소 등록 실패");
+                        alert("장소 등록 실패");
+                    } else if (response == "Authentication Failed") {
+                        console.log("현재 로그인 되어 있지 않습니다.");
+                        alert("다시 로그인 해주세요");
                     }
+                },
+                error: function (e) {
+                    console.log("태그 등록 실패");
                 }
-                else {
-                    alert("장소 등록 실패 : 로그인을 해주세요");
-                    console.log("장소 등록 실패 : 로그인을 해주세요");
-                }
-            },error: function (e) {
-                // console.log("Login Check Failed")
-                // alert("장소 등록 실패");
-                // console.log("장소 등록 실패");
-                // onClickRegister();
-                console.log(e);
-            }
-
-        });
+            });
+        }
     }
 
     function getLocImg() {
