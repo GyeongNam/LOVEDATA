@@ -20,7 +20,7 @@ public class MailService {
         message.setSubject("LOVEDATA 비밀번호 재설정 안내 메일입니다.");
         message.setText(
                 "LOVEDATA 비밀번호 재설정 안내 메일입니다 아래의 링크로 들어가서 비밀번호를 재설정 해 주세요\n" +
-                        "http://localhost:8080/NewPassword/" + randomArr
+                        "https://lovedata.duckdns.org/NewPassword/" + randomArr
         );
 //        message.setText("http://localhost:8080/NewPassword");
 

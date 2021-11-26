@@ -347,7 +347,6 @@ public class UserController {
 			List<Comment> myComList = cmtService.findAllByUserNo(authUserModel.getUser_no());
 			List<Comment> comlist_page = null;
 			List<Integer> comPageNumList = new ArrayList<>();
-			log.info("디질레? :"+myComList);
 
 			model.addAttribute("search", false);
 			long qu_size = myComList.size();
