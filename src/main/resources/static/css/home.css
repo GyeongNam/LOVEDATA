@@ -35,16 +35,16 @@ html{
 	/*margin: 70px 0px 70px 0px;*/
 }
 .main-2{
-	padding-top: 60px;
+	/*padding-top: 60px;*/
 }
 .main-2-rightBox{
 	float: right;
-	margin-top: 100px;
+	margin-top: 65px;
 	margin-right: 50px;
 }
 .main-2-leftBox{
 	float: left;
-	margin-top: 100px;
+	margin-top: 65px;
 	margin-left: 50px;
 
 }
@@ -71,7 +71,7 @@ html{
 	transform: translateX(-50%);
 	padding-top: 0px;
 	bottom: 60px;
-	z-index: 99999999;
+	z-index: 50;
 }
 
 .mouse span {

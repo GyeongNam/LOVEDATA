@@ -193,7 +193,10 @@ border: 1px solid #bcbcbc;
     display: flex;
     text-align: center;
     margin: 20px;
+    list-style: none;
+    justify-content: center;
 }
+
 .pagination a {
     /*color: black;*/
     padding: 8px 16px;
@@ -204,5 +207,8 @@ border: 1px solid #bcbcbc;
 .pagination a.active {
     /*background-color: dodgerblue;*/
     /*color: white;*/
+}
+.page-item{
+    display: inline-block;
 }
 /*pagenation*/
