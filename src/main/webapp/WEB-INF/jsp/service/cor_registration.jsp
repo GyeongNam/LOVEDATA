@@ -62,6 +62,12 @@
 	<c:set value="7" var="maxCorCount"></c:set>
 	<c:set value="2" var="minCorCount"></c:set>
 	<div class="container m-5" id="display_center" style="margin-right: 30px; margin-top: 30px">
+		<sec:authorize access="!isAuthenticated()">
+			<span>로그인 하지 않으면 코스를 등록할 수 없습니다.</span>
+			<%
+				if(true) return;
+			%>
+		</sec:authorize>
 		<h1>코스 등록</h1>
 		<div class="container-fluid">
 			<form action="/service/cor_registration/regData" method="post" enctype="multipart/form-data">

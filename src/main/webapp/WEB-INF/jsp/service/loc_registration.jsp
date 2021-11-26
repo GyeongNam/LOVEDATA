@@ -60,6 +60,12 @@
 	<c:set value="3" var="minLocImgCount"></c:set>
 	<c:set value="10" var="maxLocImgCount"></c:set>
 	<div class="container m-5" id="display_center" style="margin-right: 30px; margin-top: 30px">
+		<sec:authorize access="!isAuthenticated()">
+			<span>로그인 하지 않으면 장소를 등록할 수 없습니다.</span>
+			<%
+				if(true) return;
+			%>
+		</sec:authorize>
 		<h1>장소 등록</h1>
 		<div class="container-fluid">
 			<form action="/service/loc_registration/regData" method="post" enctype="multipart/form-data">

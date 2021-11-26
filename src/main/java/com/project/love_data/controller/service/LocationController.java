@@ -61,13 +61,13 @@ public class LocationController {
     @PostMapping("/service/loc/tags")
     @ResponseBody
     public String locGetTagsList(@RequestParam("tags[]") String[] tagArray, Authentication authentication) {
-        if (authentication == null) {
-            return "Authentication Failed";
-        }
-
-        if (!authentication.isAuthenticated()) {
-            return "Authentication Failed";
-        }
+//        if (authentication == null) {
+//            return "Authentication Failed";
+//        }
+//
+//        if (!authentication.isAuthenticated()) {
+//            return "Authentication Failed";
+//        }
 
         tagList = Arrays.asList(tagArray);
 

@@ -63,13 +63,13 @@ public class CourseController {
     @PostMapping("/service/cor/tags")
     @ResponseBody
     public String corGetTagsList(@RequestParam("tags[]") String[] tagArray, Authentication authentication) {
-        if (authentication == null) {
-            return "Authentication Failed";
-        }
-
-        if (!authentication.isAuthenticated()) {
-            return "Authentication Failed";
-        }
+//        if (authentication == null) {
+//            return "Authentication Failed";
+//        }
+//
+//        if (!authentication.isAuthenticated()) {
+//            return "Authentication Failed";
+//        }
 
         tagList = Arrays.asList(tagArray);
 
