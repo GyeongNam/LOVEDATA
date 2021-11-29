@@ -633,10 +633,10 @@
 								<div class="d-flex flex-row align-items-start">
 									<c:set var="currentUserPic"><sec:authentication property="principal.user_profilePic"></sec:authentication></c:set>
 									<img class="m-3" src="${currentUserPic}" width="60">
-									<textarea id="commentArea" rows="6" maxlength="300" class="form-control ml-1 shadow-none textarea" placeholder="postCommentTest"></textarea>
+									<textarea id="commentArea" rows="6" maxlength="300" class="form-control ml-1 shadow-none textarea" placeholder="내용을 입력해주세요"></textarea>
 								</div>
 								<div class="mt-2 text-end">
-									<button id="postCommentBtn" onclick="onClickPostComment()" class="btn btn-primary btn shadow-none" type="button">Post comment</button>
+									<button id="postCommentBtn" onclick="onClickPostComment()" class="btn btn-primary btn shadow-none" type="button">댓글 남기기</button>
 								</div>
 							</div>
 						</div>

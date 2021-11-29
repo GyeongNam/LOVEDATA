@@ -139,26 +139,20 @@ public class ReviewImageService {
     private ReviewImage disable(ReviewImage img) {
         img.set_deleted(true);
         update(img);
-        String extension = pathChangeService.getFileExtension(img.getImg_url());
-        if (pathChangeService.execute(img.getImg_uuid(), FileAction.DELETE,
-                PathType.REV, FileExtension.valueOf(extension.toUpperCase(Locale.ROOT)))){
-            img.set_deleted(true);
-            img.setImg_url("/image/upload/REV^" + img.getImg_uuid());
-            update(img);
-        }
 
         return getImage(img.getImg_no());
     }
 
     private ReviewImage enable(ReviewImage img) {
-        String extension = pathChangeService.getFileExtension(img.getImg_url());
-        if (pathChangeService.execute(img.getImg_uuid(), FileAction.ROLLBACK,
-                PathType.REV, FileExtension.valueOf(extension.toUpperCase(Locale.ROOT)))){
-            img.set_deleted(false);
-            img.setImg_url("/image/review/" + img.getImg_uuid());
-            update(img);
-        }
+//        String extension = pathChangeService.getFileExtension(img.getImg_url());
+//        if (pathChangeService.execute(img.getImg_uuid(), FileAction.ROLLBACK,
+//                PathType.REV, FileExtension.valueOf(extension.toUpperCase(Locale.ROOT)))){
+//            img.set_deleted(false);
+//            img.setImg_url("/image/review/" + img.getImg_uuid());
+//            update(img);
+//        }
 
+        img.set_deleted(false);
         update(img);
 
         return getImage(img.getImg_no());
@@ -181,7 +175,21 @@ public class ReviewImageService {
     }
 
     public void permaDelete(String img_uuid) {
-        repository.deleteByImg_uuid(img_uuid);
+        Optional<ReviewImage> item = repository.findImageByImg_uuid(img_uuid);
+
+        if (item.isPresent()) {
+            ReviewImage img = item.get();
+            String extension = pathChangeService.getFileExtension(img.getImg_url());
+            if (pathChangeService.execute(img.getImg_uuid(), FileAction.DELETE,
+                    PathType.REV, FileExtension.valueOf(extension.toUpperCase(Locale.ROOT)))){
+                img.set_deleted(true);
+                img.setImg_url("/image/upload/REV^" + img.getImg_uuid());
+                update(img);
+            }
+
+            repository.deleteByImg_uuid(img_uuid);
+        }
+
     }
 
     public ReviewImage editImageEntityIndex(String uuid, Long img_Index) {
@@ -210,34 +218,44 @@ public class ReviewImageService {
         List<ReviewImage> entities = items.get();
         List<ReviewImage> duplicatedImg = new ArrayList<>();
 
-        for (ReviewImage image : entities) {
-            for (int i = 1; i < filePath.size(); i += 2) {
-                if (filePath.get(i).equals(image.getImg_uuid())) {
-                    duplicatedImg.add(image);
-                    image.set_deleted(true);
-                    update(image);
+        if (filePath != null) {
+            for (ReviewImage image : entities) {
+                for (int i = 1; i < filePath.size(); i += 2) {
+                    if (filePath.get(i).equals(image.getImg_uuid())) {
+                        duplicatedImg.add(image);
+//                        image.set_deleted(true);
+                        update(image);
+                    }
                 }
+
+                delete(image.getImg_no());
+            }
+            entities.clear();
+
+            first :
+            for (int i = 0; i < filePath.size(); i += 2) {
+                // filePath.get(i)  ==  Parent Folder (URI)
+                // filePath.get(i+1)  ==  fileNames
+                second :
+                for (int j = 0; j < duplicatedImg.size(); j++) {
+                    if (!filePath.get(i + 1).equals(duplicatedImg.get(j).getImg_uuid())) {
+                        entities.add(duplicatedImg.get(j));
+                        continue first;
+                    }
+                }
+                ReviewImage revImage = getImageEntity(revItem.get().getUser_no(),
+                        filePath.get(i), filePath.get(i+1), revItem.get().getCorNo(), revItem.get().getRevNo(), (long) (i / 2));
+                ReviewImage imgEntity = update(revImage);
+                entities.add(imgEntity);
+            }
+        } else {
+            for (ReviewImage image : entities) {
+                delete(image.getImg_no());
             }
 
-//            delete(image.getImg_no());
+            entities.clear();
         }
-        entities.clear();
 
-        first :
-        for (int i = 0; i < filePath.size(); i += 2) {
-            // filePath.get(i)  ==  Parent Folder (URI)
-            // filePath.get(i+1)  ==  fileNames
-            second :
-            for (int j = 0; j < duplicatedImg.size(); j++) {
-                if (!filePath.get(i + 1).equals(duplicatedImg.get(j).getImg_uuid())) {
-                    ReviewImage revImage = getImageEntity(revItem.get().getUser_no(),
-                            filePath.get(i), filePath.get(i+1), revItem.get().getCorNo(), revItem.get().getRevNo(), (long) (i / 2));
-                    ReviewImage imgEntity = update(revImage);
-                    entities.add(imgEntity);
-                    continue first;
-                }
-            }
-        }
 
         return entities;
     }

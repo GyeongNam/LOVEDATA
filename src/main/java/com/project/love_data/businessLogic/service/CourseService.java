@@ -54,7 +54,7 @@ public class CourseService {
             for (int j = 1; j < filePath.size(); j += 2) {
                 if (filePath.get(j).equals(imgList.get(i).getImg_uuid())) {
                     duplicatedImg.add(imgList.get(i));
-                    imgList.get(i).set_deleted(true);
+//                    imgList.get(i).set_deleted(true);
                     imgService.update(imgList.get(i));
                     continue first;
                 }
@@ -70,20 +70,21 @@ public class CourseService {
             // filePath.get(i+1)  ==  fileNames
             second :
             for (int j = 0; j < duplicatedImg.size(); j++) {
-                if (!filePath.get(i + 1).equals(duplicatedImg.get(j).getImg_uuid())) {
-                    CourseImage locImage = imgService.getImageEntity(reqParam.get("user_no"),
-                            filePath.get(i), filePath.get(i+1), entity.getCor_no(), (i/2));
-                    CourseImage imgEntity = imgService.update(locImage);
-                    imgList.add(imgEntity);
+                if (filePath.get(i + 1).equals(duplicatedImg.get(j).getImg_uuid())) {
                     if (i == 0) {
-                        firstImage = imgEntity;
+                        firstImage = duplicatedImg.get(0);
                     }
+                    imgList.add(duplicatedImg.get(j));
                     continue first;
                 }
             }
 
+            CourseImage locImage = imgService.getImageEntity(reqParam.get("user_no"),
+                    filePath.get(i), filePath.get(i+1), entity.getCor_no(), (i/2));
+            CourseImage imgEntity = imgService.update(locImage);
+            imgList.add(imgEntity);
             if (i == 0) {
-                firstImage = duplicatedImg.get(0);
+                firstImage = imgEntity;
             }
         }
 

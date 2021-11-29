@@ -306,12 +306,14 @@
 									<Button class="btn btn-primary ms-3" onclick="onClickPermaDeleteCourse()">영구삭제</Button>
 								</sec:authorize>
 								<sec:authorize access="hasRole('USER') && !hasRole('ADMIN')">
+									<img src="/image/icon/edit.png" class="loc_icon_big ms-0" style="max-height: 56px;" onclick="location.href='/service/cor_edit?corNo=${dto.cor_no}'">
 									<img src="/image/icon/trash.png" class="loc_icon_big me-2" alt="코스 삭제"
 										 onclick="onClickRemoveCourse()">
 								</sec:authorize>
 							</c:when>
 							<c:otherwise>
 								<sec:authorize access="hasAnyRole('ADMIN')">
+									<img src="/image/icon/edit.png" class="loc_icon_big ms-0" style="max-height: 56px;" onclick="location.href='/service/cor_edit?corNo=${dto.cor_no}'">
 									<img src="/image/icon/trash.png" class="loc_icon_big me-2" alt="코스 삭제"
 										 onclick="onClickRemoveCourse()">
 									<img src="/image/icon/rollback.png" class="loc_icon_big me-2" alt="코스 복원"
@@ -380,7 +382,7 @@
 					<c:when test="${dto.est_type eq 'date'}">
 						<li class="nav-item" role="presentation">
 							<button class="nav-link" id="course-acc-tab" data-bs-toggle="pill"
-									data-bs-target="#course-info" type="button" role="tab" aria-controls="course-info" onclick="removeURLParam('page')"
+									data-bs-target="#course-acc" type="button" role="tab" aria-controls="course-acc" onclick="removeURLParam('page')"
 									aria-selected="true">숙박 정보
 							</button>
 						</li>
