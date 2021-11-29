@@ -182,14 +182,12 @@ public class ReviewImageService {
             String extension = pathChangeService.getFileExtension(img.getImg_url());
             if (pathChangeService.execute(img.getImg_uuid(), FileAction.DELETE,
                     PathType.REV, FileExtension.valueOf(extension.toUpperCase(Locale.ROOT)))){
-                img.set_deleted(true);
-                img.setImg_url("/image/upload/REV^" + img.getImg_uuid());
-                update(img);
+//                img.set_deleted(true);
+//                img.setImg_url("/image/upload/REV^" + img.getImg_uuid());
+//                update(img);
+                repository.deleteByImg_uuid(img_uuid);
             }
-
-            repository.deleteByImg_uuid(img_uuid);
         }
-
     }
 
     public ReviewImage editImageEntityIndex(String uuid, Long img_Index) {
@@ -219,12 +217,15 @@ public class ReviewImageService {
         List<ReviewImage> duplicatedImg = new ArrayList<>();
 
         if (filePath != null) {
+            first :
             for (ReviewImage image : entities) {
+                second :
                 for (int i = 1; i < filePath.size(); i += 2) {
                     if (filePath.get(i).equals(image.getImg_uuid())) {
                         duplicatedImg.add(image);
 //                        image.set_deleted(true);
-                        update(image);
+//                        update(image);
+                        continue first;
                     }
                 }
 

@@ -107,25 +107,31 @@ public class CourseImageService {
     }
 
     private CourseImage disable(CourseImage img) {
-        String extension = pathChangeService.getFileExtension(img.getImg_url());
-        if (pathChangeService.execute(img.getImg_uuid(), FileAction.DELETE,
-                PathType.COR, FileExtension.valueOf(extension.toUpperCase(Locale.ROOT)))){
-            img.set_deleted(true);
-            img.setImg_url("/image/upload/COR^" + img.getImg_uuid());
-            update(img);
-        }
+//        String extension = pathChangeService.getFileExtension(img.getImg_url());
+//        if (pathChangeService.execute(img.getImg_uuid(), FileAction.DELETE,
+//                PathType.COR, FileExtension.valueOf(extension.toUpperCase(Locale.ROOT)))){
+//            img.set_deleted(true);
+//            img.setImg_url("/image/upload/COR^" + img.getImg_uuid());
+//            update(img);
+//        }
+
+        img.set_deleted(true);
+        update(img);
 
         return getAllImage(img.getImg_no());
     }
 
     private CourseImage enable(CourseImage img) {
-        String extension = pathChangeService.getFileExtension(img.getImg_url());
-        if (pathChangeService.execute(img.getImg_uuid(), FileAction.ROLLBACK,
-                PathType.COR, FileExtension.valueOf(extension.toUpperCase(Locale.ROOT)))){
-            img.set_deleted(false);
-            img.setImg_url("/image/course/" + img.getImg_uuid());
-            update(img);
-        }
+//        String extension = pathChangeService.getFileExtension(img.getImg_url());
+//        if (pathChangeService.execute(img.getImg_uuid(), FileAction.ROLLBACK,
+//                PathType.COR, FileExtension.valueOf(extension.toUpperCase(Locale.ROOT)))){
+//            img.set_deleted(false);
+//            img.setImg_url("/image/course/" + img.getImg_uuid());
+//            update(img);
+//        }
+
+        img.set_deleted(false);
+        update(img);
 
         return getAllImage(img.getImg_no());
     }
@@ -155,7 +161,19 @@ public class CourseImageService {
     }
 
     public void permaDelete(String img_uuid) {
-        repository.deleteByImg_uuid(img_uuid);
+        Optional<CourseImage> item = repository.findImageByImg_uuid(img_uuid);
+
+        if (item.isPresent()) {
+            CourseImage img = item.get();
+            String extension = pathChangeService.getFileExtension(img.getImg_url());
+            if (pathChangeService.execute(img.getImg_uuid(), FileAction.DELETE,
+                    PathType.COR, FileExtension.valueOf(extension.toUpperCase(Locale.ROOT)))){
+//                img.set_deleted(true);
+//                img.setImg_url("/image/upload/COR^" + img.getImg_uuid());
+//                update(img);
+                repository.deleteByImg_uuid(img_uuid);
+            }
+        }
     }
 
     public CourseImage editImageEntityIndex(String uuid, Long img_Index) {

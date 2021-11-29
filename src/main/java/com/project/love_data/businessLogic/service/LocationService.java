@@ -482,6 +482,10 @@ public class LocationService {
 //                disableLocation(loc);
 //                return true;
 //            }
+
+            for (LocationImage image : loc.getImgSet()) {
+                imgService.delete(image.getImg_no());
+            }
             disableLocation(loc);
             return true;
         }
@@ -512,6 +516,9 @@ public class LocationService {
 //                return true;
 //            }
 
+            for (LocationImage image : loc.getImgSet()) {
+                imgService.delete(image.getImg_no());
+            }
             disableLocation(loc);
             return true;
         }
@@ -543,6 +550,9 @@ public class LocationService {
 //                return true;
 //            }
 
+            for (LocationImage image : loc.getImgSet()) {
+                imgService.rollback(image.getImg_no());
+            }
             enableLocation(loc);
             return true;
         }
@@ -574,6 +584,9 @@ public class LocationService {
 //                return true;
 //            }
 
+            for (LocationImage image : loc.getImgSet()) {
+                imgService.rollback(image.getImg_no());
+            }
             enableLocation(loc);
             return true;
         }

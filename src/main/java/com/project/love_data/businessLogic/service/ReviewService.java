@@ -258,6 +258,11 @@ public class ReviewService {
 //                return true;
 //            }
 
+            List<ReviewImage> imageList = revImgService.getAllLiveImageByRevNo(revNo);
+            for (ReviewImage image : imageList) {
+                revImgService.delete(image.getImg_no());
+            }
+
             disable(rev);
             return true;
         }
@@ -287,6 +292,12 @@ public class ReviewService {
 //                disable(rev);
 //                return true;
 //            }
+            Review item = select(uuid);
+
+            List<ReviewImage> imageList = revImgService.getAllLiveImageByRevNo(item.getRevNo());
+            for (ReviewImage image : imageList) {
+                revImgService.delete(image.getImg_no());
+            }
 
             disable(rev);
             return true;
@@ -366,6 +377,11 @@ public class ReviewService {
 //                enable(rev);
 //                return true;
 //            }
+
+            List<ReviewImage> imageList = revImgService.getLastDeletedImageByRevNo(revNo);
+            for (ReviewImage image : imageList) {
+                revImgService.rollback(image.getImg_no());
+            }
 
             enable(rev);
             return true;

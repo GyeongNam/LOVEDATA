@@ -446,6 +446,14 @@ public class CourseService {
         Course cor = selectCor(corNo);
 
         if (!cor.is_deleted()) {
+            List<CourseImage> imageList = imgService.getLiveImagesByCorNo(corNo);
+
+            if (imageList != null ){
+                for (CourseImage image : imageList) {
+                    imgService.delete(image.getImg_no());
+                }
+            }
+
             disableCourse(cor);
             return true;
         }
@@ -457,6 +465,13 @@ public class CourseService {
         Course cor = selectCor(uuid);
 
         if (!cor.is_deleted()) {
+            List<CourseImage> imageList = imgService.getLiveImagesByCorNo(cor.getCor_no());
+
+            if (imageList != null ){
+                for (CourseImage image : imageList) {
+                    imgService.delete(image.getImg_no());
+                }
+            }
             disableCourse(cor);
             return true;
         }
@@ -492,6 +507,14 @@ public class CourseService {
 //                enableCourse(cor);
 //                return true;
 //            }
+            List<CourseImage> imageList = imgService.getLastDeletedCourseImageList(corNo);
+
+            if (imageList != null ){
+                for (CourseImage image : imageList) {
+                    imgService.rollback(image.getImg_no());
+                }
+            }
+
             enableCourse(cor);
             return true;
         }
@@ -527,6 +550,14 @@ public class CourseService {
 //                enableCourse(cor);
 //                return true;
 //            }
+            List<CourseImage> imageList = imgService.getLastDeletedCourseImageList(cor.getCor_no());
+
+            if (imageList != null ){
+                for (CourseImage image : imageList) {
+                    imgService.rollback(image.getImg_no());
+                }
+            }
+
             enableCourse(cor);
             return true;
         }

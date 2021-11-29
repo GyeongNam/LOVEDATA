@@ -101,13 +101,14 @@ public class LocationImageService {
             return null;
         }
 
-        String extension = pathChangeService.getFileExtension(img.getImg_url());
-        if (pathChangeService.execute(img.getImg_uuid(), FileAction.DELETE, PathType.LOC,
-                FileExtension.valueOf(extension.toUpperCase(Locale.ROOT)))) {
-            img.set_deleted(true);
-            img.setImg_url("/image/upload/" + "LOC^"  + img.getImg_uuid());
-        }
+//        String extension = pathChangeService.getFileExtension(img.getImg_url());
+//        if (pathChangeService.execute(img.getImg_uuid(), FileAction.DELETE, PathType.LOC,
+//                FileExtension.valueOf(extension.toUpperCase(Locale.ROOT)))) {
+//            img.set_deleted(true);
+//            img.setImg_url("/image/upload/" + "LOC^"  + img.getImg_uuid());
+//        }
 
+        img.set_deleted(true);
         update(img);
 
         return getImage(img.getImg_no());
@@ -118,13 +119,14 @@ public class LocationImageService {
             return null;
         }
 
-        String extension = pathChangeService.getFileExtension(img.getImg_url());
-        if (pathChangeService.execute(img.getImg_uuid(), FileAction.ROLLBACK, PathType.LOC,
-                FileExtension.valueOf(extension.toUpperCase(Locale.ROOT)))) {
-            img.set_deleted(false);
-            img.setImg_url("/image/location/" + img.getImg_uuid());
-        }
+//        String extension = pathChangeService.getFileExtension(img.getImg_url());
+//        if (pathChangeService.execute(img.getImg_uuid(), FileAction.ROLLBACK, PathType.LOC,
+//                FileExtension.valueOf(extension.toUpperCase(Locale.ROOT)))) {
+//            img.set_deleted(false);
+//            img.setImg_url("/image/location/" + img.getImg_uuid());
+//        }
 
+        img.set_deleted(false);
         update(img);
 
         return getImage(img.getImg_no());
@@ -185,7 +187,19 @@ public class LocationImageService {
     }
 
     public void permaDelete(String img_uuid) {
-        repository.deleteByImg_uuid(img_uuid);
+        Optional<LocationImage> item = repository.findImageByImg_uuid(img_uuid);
+
+        if (item.isPresent()) {
+            LocationImage img = item.get();
+
+            String extension = pathChangeService.getFileExtension(img.getImg_url());
+            if (pathChangeService.execute(img.getImg_uuid(), FileAction.DELETE, PathType.LOC,
+                    FileExtension.valueOf(extension.toUpperCase(Locale.ROOT)))) {
+//                img.set_deleted(true);
+//                img.setImg_url("/image/upload/" + "LOC^" + img.getImg_uuid());
+                repository.deleteByImg_uuid(img_uuid);
+            }
+        }
     }
 
     public LocationImage editImageEntityIndex(String uuid, Long img_Index) {

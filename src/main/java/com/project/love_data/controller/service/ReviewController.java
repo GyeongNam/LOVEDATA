@@ -246,7 +246,7 @@ public class ReviewController {
             return "/alert/alert";
         }
 
-        revService.delete(revNo);
+        revService.rollback(revNo);
 
         if (returnURL != null) {
             return "redirect:" + returnURL;
