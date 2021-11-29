@@ -84,7 +84,7 @@
                                     <c:when test="${qu.qu_secret eq true}">
                                         <sec:authorize access="isAuthenticated()">
                                             <sec:authorize access="hasAnyRole('ADMIN')">
-                                                <td onclick=location.href='/admin/Questions_Post/${qu.qu_no}';>${qu.qu_title} <img src="/image/icon/user/secret.png" class="img_s" id="imgDisplay" name="imgDisplay" ></td>
+                                                <td onclick=location.href='/admin/Questions_Post_mana/${qu.qu_no}';>${qu.qu_title} <img src="/image/icon/user/secret.png" class="img_s" id="imgDisplay" name="imgDisplay" ></td>
                                             </sec:authorize>
                                             <sec:authorize access="!hasRole('ADMIN')">
                                                 <td onclick=location.href='/admin/Questions_Post/${qu.qu_no}';>${qu.qu_title} <img src="/image/icon/user/secret.png" class="img_s"  id="imgDisplay" name="imgDisplay" ></td>

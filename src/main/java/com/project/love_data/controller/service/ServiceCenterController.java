@@ -534,6 +534,16 @@ public class ServiceCenterController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping(value = "/admin/Questions_Post_mana/{num}")
+    public String ad_Questions_no_mana(@PathVariable("num") String num, Model model, HttpServletResponse response , Principal principal) throws IOException {
+        Questions questions = serviceCenterService.qu_select_no(num);
+        List<QuestionsImage> questionsImage = questionsImageService.qu_no_imgselect(num);
+        model.addAttribute("qu_img", questionsImage);
+        model.addAttribute("qu", questions);
+        return "admin/admin_qna_detail";
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping(value = "/admin/qna/{page}")
     public String admin_qna(@PathVariable("page") String page, Model model, HttpServletResponse response , Principal principal) throws IOException {
         List<Questions> questions = serviceCenterService.qua_all();
