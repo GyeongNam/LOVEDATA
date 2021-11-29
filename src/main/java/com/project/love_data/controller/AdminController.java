@@ -904,8 +904,15 @@ public class AdminController {
                 imageInfo = deletedImageInfoService.findByImgUuid(fileName);
                 if (imageInfo == null) {
                     fileDeletedTimeList.add(null);
+                    fileUploadUserList.add("삭제 된 사용자");
                 } else {
                     fileDeletedTimeList.add(imageInfo.getRegDate());
+                    User user = userService.select(imageInfo.getImgUserNo());
+                    if (user == null) {
+                        fileUploadUserList.add("삭제 된 사용자");
+                    } else {
+                        fileUploadUserList.add(user.getUser_nic());
+                    }
                 }
 
                 int index = fileName.indexOf("^");
@@ -922,17 +929,10 @@ public class AdminController {
                         LocationImage locImg = locImageService.getAllImage(uuidAndExtenstion);
                         if (locImg == null) {
                             fileNoList.add(null);
-                            fileUploadUserList.add("삭제 된 사용자");
                             fileOriginURLList.add(null);
                         } else {
                             fileNoList.add(locImg.getImg_no());
                             fileOriginURLList.add("/service/loc_detail?locNo=" + locImg.getLocation().getLoc_no());
-                            User user = userService.select(locImg.getUser_no());
-                            if (user == null) {
-                                fileUploadUserList.add("삭제 된 사용자");
-                            } else {
-                                fileUploadUserList.add(user.getUser_nic());
-                            }
                         }
                         break;
                     case "COR" :
@@ -940,17 +940,10 @@ public class AdminController {
                         CourseImage corImg = corImageService.getAllImage(uuidAndExtenstion);
                         if (corImg == null) {
                             fileNoList.add(null);
-                            fileUploadUserList.add("삭제 된 사용자");
                             fileOriginURLList.add(null);
                         } else {
                             fileNoList.add(corImg.getImg_no());
                             fileOriginURLList.add("/service/cor_detail?corNo=" + corImg.getCor_no());
-                            User user = userService.select(corImg.getUser_no());
-                            if (user == null) {
-                                fileUploadUserList.add("삭제 된 사용자");
-                            } else {
-                                fileUploadUserList.add(user.getUser_nic());
-                            }
                         }
                         break;
                     case "REV" :
@@ -958,7 +951,6 @@ public class AdminController {
                         ReviewImage revImg = revImageService.getAllImage(uuidAndExtenstion);
                         if (revImg == null) {
                             fileNoList.add(null);
-                            fileUploadUserList.add("삭제 된 사용자");
                             fileOriginURLList.add(null);
                         } else {
                             fileNoList.add(revImg.getImg_no());
@@ -968,38 +960,27 @@ public class AdminController {
                             } else {
                                 fileOriginURLList.add("/service/cor_detail?corNo=" + revImg.getCor_no() + "&page=" + pageNum + "&revNo=" + revImg.getRev_no());
                             }
-                            User user = userService.select(revImg.getUser_no());
-                            if (user == null) {
-                                fileUploadUserList.add("삭제 된 사용자");
-                            } else {
-                                fileUploadUserList.add(user.getUser_nic());
-                            }
                         }
                         break;
                     case "PIC" :
                         fileTypeList.add("프로필");
-//                        User userEntity = userService.findByProfilePic()
                         fileNoList.add(null);
                         fileOriginURLList.add(null);
-                        fileUploadUserList.add("삭제 된 사용자");
                         break;
                     case "QNA" :
                         fileTypeList.add("문의사항");
                         fileNoList.add(null);
                         fileOriginURLList.add(null);
-                        fileUploadUserList.add("삭제 된 사용자");
                         break;
                     case "NTC" :
                         fileTypeList.add("공지사항");
                         fileNoList.add(null);
                         fileOriginURLList.add(null);
-                        fileUploadUserList.add("삭제 된 사용자");
                         break;
                     default :
                         fileTypeList.add("NULL");
                         fileNoList.add(null);
                         fileOriginURLList.add(null);
-                        fileUploadUserList.add("삭제 된 사용자");
                         break;
                 }
             }
