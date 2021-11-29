@@ -28,6 +28,6 @@ public interface UserRecentCorRepository extends JpaRepository<UserRecentCor, Lo
     @Transactional
     void deleteByCor_noAndUser_no(@Param("cor_no") Long cor_no, @Param("user_no") Long user_no);
 
-    @Query(value = "select * from user_recent_Cor where user_no = :userNB ORDER BY user_recent_Cor_no desc limit 8", nativeQuery = true)
-    public Optional<List <UserRecentCor>> findUser_no(@Param("userNB") Long userNo);
+    @Query(value = "select * from user_recent_cor where user_no = :userNB ORDER BY user_recent_Cor_no desc limit 8", nativeQuery = true)
+    Optional<List <UserRecentCor>> findUser_no(@Param("userNB") Long userNo);
 }

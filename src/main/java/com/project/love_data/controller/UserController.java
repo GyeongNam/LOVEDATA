@@ -89,6 +89,8 @@ public class UserController {
 	QuestionsImageService questionsImageService;
 	@Autowired
 	ReportManageService reportManageService;
+	@Autowired
+	DeletedImageInfoService deletedImageInfoService;
 
 
 	@RequestMapping(value = "/signup_add", method = RequestMethod.POST)
@@ -295,6 +297,7 @@ public class UserController {
 	@PostMapping(value = "/mypropicdel")
 	public Map<String, String>  mypropicdele(Principal principal, Model model, HttpServletRequest request) {
 		Map<String, String> map = new HashMap<String, String>();
+		String uuid = "";
 		if (principal == null) {
 			map.put("msg","1");
 		} else {
@@ -304,14 +307,25 @@ public class UserController {
 				String imageFile = user.getProfile_pic();
 				log.info("여기와요 :"+ imageFile);
 				if(!imageFile.equals("/image/icon/user/user.png")){
-					String r = request.getSession().getServletContext().getRealPath("/");
-					int idx =  r.indexOf("main");
-					String imgpath =r.substring(0, idx)+"main/resources/static"+ imageFile;
-					log.info("imgpath 확인 :" + imgpath);
-					File file = FileUtils.getFile(imgpath);
-					imageFile = imageFile.replace("/image/user_pic/","/image/upload/");
-					File fileToMove = FileUtils.getFile(r.substring(0, idx)+"main/resources/static"+ imageFile);
-					FileUtils.moveFile(file, fileToMove);
+					if ("Windows_NT".equals(System.getenv().get("OS"))) {
+						int lastIndex = user.getProfile_pic().split("/").length - 1;
+						uuid  = user.getProfile_pic().split("/")[lastIndex];
+						String r = request.getSession().getServletContext().getRealPath("/");
+						int idx =  r.indexOf("main");
+						String imgpath =r.substring(0, idx)+"main/resources/static"+ imageFile;
+						log.info("imgpath 확인 :" + imgpath);
+						File file = FileUtils.getFile(imgpath);
+						File fileToMove = FileUtils.getFile(r.substring(0, idx)+"main/resources/static/image/upload/PIC^" + uuid);
+						FileUtils.moveFile(file, fileToMove);
+					} else {
+						int lastIndex = user.getProfile_pic().split("/").length - 1;
+						uuid = user.getProfile_pic().split("/")[lastIndex];
+						String imgpath = Linux_Image_Upload_Path+"user_pic/" + uuid;
+
+						File file = FileUtils.getFile(imgpath);
+						File fileToMove = FileUtils.getFile(Linux_Image_Upload_Path+"upload/PIC^" + uuid);
+						FileUtils.moveFile(file, fileToMove);
+					}
 				}
 			}
 			catch (IOException e){
@@ -319,6 +333,8 @@ public class UserController {
 			}
 			user.setProfile_pic("/image/icon/user/user.png");
 			userService.update(user);
+			deletedImageInfoService.register(0L, "PROFILE_PIC_IMG",
+					user.getUser_no(), "PIC^" + uuid);
 
 			map.put("msg","0");
 		}

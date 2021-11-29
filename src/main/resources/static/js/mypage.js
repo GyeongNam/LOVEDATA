@@ -1,4 +1,4 @@
-var mynick = false;
+var mynick = true;
 
 //home로 돌아가기
 function gohome(){
@@ -167,6 +167,7 @@ function nick_check(){
     var nickname = $('#newnic');
     var s_relult = $('#newnic_check');
     var postdata = {"nickname" : nickname.val() }
+    mynick = false;
 
     $.ajax({
         url: "/nick_check",
@@ -180,13 +181,11 @@ function nick_check(){
             if(datas=="0"){
                 s_relult.css("color", "red");
                 s_relult.text("사용 중인 닉네임 입니다!");
-                mynick = false;
             }
             else {
                 if(nickname.val().search(/\s/) != -1 || nickname.val().length == 0){
                     s_relult.css("color", "red");
                     s_relult.text("닉네임을 입력해주세요");
-                    mynick = false;
                 }
                 else {
                     s_relult.css("color", "green");
@@ -228,8 +227,8 @@ function picdel(){
 
 function submypage(){
     if(mynick == false){
-        alert("닉네임을 확인하세요");
-        return false;
+        alert("사용할 수 없는 닉네임입니다. 다시 입력해주세요")
+        return;
     }
 }
 
