@@ -127,7 +127,6 @@
         </div>
     </div>
 </body>
-<%@ include file="../layout/footer.jsp" %>
 <script src="/fullcalendar/jquery.min.js"></script>
 <script src="/fullcalendar/bootstrap.min.js"></script>
 <script src="/fullcalendar/moment.min.js"></script>
