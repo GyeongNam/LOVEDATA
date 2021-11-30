@@ -82,11 +82,11 @@
 					</div>
 
 					<div class="mySlides2 fade2">
-						<img class="imgslide2" src="/image/icon/home/placeload.png" alt="">
+						<img class="imgslide2" src="/image/icon/home/lovedatasg2pg.png" alt="">
 					</div>
 
 					<div class="mySlides2 fade2">
-						<img class="imgslide2" src="">
+						<img class="imgslide2" src="/image/icon/home/lovedatasg3pg.png">
 					</div>
 
 					<!-- Next and previous buttons -->
