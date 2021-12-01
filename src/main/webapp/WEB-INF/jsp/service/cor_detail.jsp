@@ -534,7 +534,7 @@
 															</span>
 															<span class="date text-black-50 ml-5">${bestRevList.get(b).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}</span>
 															<c:choose>
-																<c:when test="${bestRevList.get(b).regDate ne bestRevList.get(b).modDate}">
+																<c:when test="${bestRevList.get(b).modified}">
 																	<span class="date text-black-50 ml-5">(수정됨)</span>
 																</c:when>
 															</c:choose>
@@ -635,7 +635,7 @@
 															<div>
 																<span class="date text-black-50 ml-5">${revDTO.get(c).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}</span>
 																<c:choose>
-																	<c:when test="${revDTO.get(c)._modified eq true}">
+																	<c:when test="${revDTO.get(c).modified eq true}">
 																		<span class="date text-primary ml-5">(수정됨)</span>
 																	</c:when>
 																</c:choose>

@@ -41,6 +41,10 @@ public class Comment extends TimeEntity {
     @Builder.Default
     private boolean is_deleted = false;
 
+    @Column(name = "is_modified", nullable = false)
+    @Builder.Default
+    private boolean modified = false;
+
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private User user;
 

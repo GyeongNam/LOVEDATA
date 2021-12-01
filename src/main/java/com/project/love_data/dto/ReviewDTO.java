@@ -1,11 +1,7 @@
 package com.project.love_data.dto;
 
 import lombok.*;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -35,7 +31,7 @@ public class ReviewDTO {
     @Builder.Default
     private boolean is_deleted = false;
     @Builder.Default
-    private boolean is_modified = false;
+    private boolean modified = false;
     @Builder.Default
     private boolean is_reported = false;
     @Builder.Default

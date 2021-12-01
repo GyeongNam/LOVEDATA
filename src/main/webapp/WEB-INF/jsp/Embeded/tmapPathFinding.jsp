@@ -290,6 +290,9 @@
                                 // $("#result").text(
                                 // tDistance + tTime + tFare
                                 // + taxiFare);
+								if (document.getElementById("table").hasChildNodes()) {
+                                    document.getElementById("table").deleteRow(-1);
+                                }
                                 let row = document.getElementById("table").insertRow(0);
                                 let cellAry = [];
                                 for (let i = 0; i < 4; i++) {

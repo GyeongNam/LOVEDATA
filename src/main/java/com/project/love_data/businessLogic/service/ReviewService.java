@@ -51,7 +51,7 @@ public class ReviewService {
                 .sc_move(dto.getSc_move())
                 .sc_revisit(dto.getSc_revisit())
                 .sc_time(dto.getSc_time())
-                .is_modified(dto.is_modified())
+                .is_modified(dto.isModified())
                 .build();
 
         return entity;
@@ -77,7 +77,7 @@ public class ReviewService {
                 .sc_time(entity.getSc_time())
                 .regDate(entity.getRegDate())
                 .modDate(entity.getModDate())
-                .is_modified(entity.is_modified())
+                .modified(entity.is_modified())
                 .build();
 
         return dto;

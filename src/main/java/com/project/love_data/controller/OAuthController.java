@@ -129,7 +129,9 @@ public class OAuthController {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
                     SecurityContextHolder.getContext());
-            AuthUserModel authUserModel = (AuthUserModel) userDetailsService.loadUserByUsername(kakaoUserInfo.getEmail());
+            // 세션이 30분 동안 유지
+            session.setMaxInactiveInterval(30 * 60 * 60);
+//            AuthUserModel authUserModel = (AuthUserModel) userDetailsService.loadUserByUsername(kakaoUserInfo.getEmail());
         } catch (InternalAuthenticationServiceException e) {
             String msg = e.getMessage();
             log.info(msg);
@@ -254,7 +256,9 @@ public class OAuthController {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
                     SecurityContextHolder.getContext());
-            AuthUserModel authUserModel = (AuthUserModel) userDetailsService.loadUserByUsername(naverUserInfo.getEmail());
+            // 세션이 30분 동안 유지
+            session.setMaxInactiveInterval(30 * 60 * 60);
+//            AuthUserModel authUserModel = (AuthUserModel) userDetailsService.loadUserByUsername(naverUserInfo.getEmail());
         } catch (NonUniqueResultException e) {
             log.warn("Non Unique User Result Find");
             log.warn("Please Check DB");

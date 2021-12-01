@@ -22,6 +22,8 @@ public class CommentDTO {
     private boolean is_deleted = false;
     @Builder.Default
     private boolean is_reported = false;
+    @Builder.Default
+    private boolean modified = false;
     @ToString.Exclude
     private Location location;
     private String cmtContent;

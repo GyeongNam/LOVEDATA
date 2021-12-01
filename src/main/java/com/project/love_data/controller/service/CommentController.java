@@ -100,6 +100,7 @@ public class CommentController {
 
         if (!returnFlag) {
             cmt_temp.setCmtContent(cmtContent);
+            cmt_temp.setModified(true);
             cmtService.update(cmt_temp);
         }
 

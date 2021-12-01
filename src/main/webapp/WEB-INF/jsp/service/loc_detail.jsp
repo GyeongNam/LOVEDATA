@@ -271,7 +271,6 @@
 						<img src="/image/icon/like/love_black.png" class="loc_icon_big me-2" alt="찜하기">
 					</sec:authorize>
 					<span class="text-center align-middle fs-3 me-4" id="likeCount">${dto.likeCount}</span>
-<%--					Todo 추후에 위치 수정하기--%>
 <%--				loc_common onClickLike	--%>
 					<span class="visually-hidden">${dto.user_no}</span>
 					<img src="/image/icon/share.png" class="loc_icon_big ms-0 me-4" style="max-height: 56px" onclick="copyURL()">
@@ -403,7 +402,7 @@
 															</span>
 															<span class="date text-black-50 ml-5">${bestCmtList.get(b).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}</span>
 															<c:choose>
-																<c:when test="${bestCmtList.get(b).regDate ne bestCmtList.get(b).modDate}">
+																<c:when test="${bestCmtList.get(b).modified}">
 																	<span class="date text-black-50 ml-5">(수정됨)</span>
 																</c:when>
 															</c:choose>
@@ -478,7 +477,7 @@
 															</span>
 															<span class="date text-black-50 ml-5">${cmtDTO.get(c).regDate.format(defaultDateTimeFormatter.dateTimeFormatter)}</span>
 															<c:choose>
-																<c:when test="${cmtDTO.get(c).regDate ne cmtDTO.get(c).modDate}">
+																<c:when test="${cmtDTO.get(c).modified}">
 																	<span class="date text-black-50 ml-5">(수정됨)</span>
 																</c:when>
 															</c:choose>

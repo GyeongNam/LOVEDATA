@@ -788,6 +788,7 @@
 
         if (currentLocationLength < 2) {
 			alert("최소 2곳의 장소를 코스에 추가해야합니다.");
+            return;
 		}
 
         if (parseInt($fileUpload.get(0).files.length) < 3) {

@@ -48,6 +48,7 @@ public class CommentService {
                 .dislikeCount(dto.getDislikeCount())
                 .likeCount(dto.getLikeCount())
                 .is_reported(dto.is_reported())
+                .modified(dto.isModified())
                 .build();
 
         return entity;
@@ -67,6 +68,7 @@ public class CommentService {
                 .dislikeCount(cmt.getDislikeCount())
                 .likeCount(cmt.getLikeCount())
                 .is_reported(cmt.is_reported())
+                .modified(cmt.isModified())
                 .build();
 
         return dto;
