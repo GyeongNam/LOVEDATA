@@ -62,10 +62,10 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	@Query(value = "select user_no from user u where user_email = :email", nativeQuery = true)
 	String finduserNo(String email);
 
-	@Query(value = "select * from User q where q.user_name LIKE :text order by q.user_no desc", nativeQuery = true)
+	@Query(value = "select * from user q where q.user_name LIKE :text order by q.user_no desc", nativeQuery = true)
 	Optional<List<User>> name_search(String text);
 
-	@Query(value = "select * from User q where q.user_nic LIKE :text order by q.user_no desc", nativeQuery = true)
+	@Query(value = "select * from user q where q.user_nic LIKE :text order by q.user_no desc", nativeQuery = true)
 	Optional<List<User>> nic_search(String text);
 //	@Modifying
 //	@Transactional

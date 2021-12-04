@@ -8,8 +8,11 @@ import com.project.love_data.security.model.AuthUserModel;
 import com.project.love_data.security.service.UserDetailsService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.endpoint.SecurityContext;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -51,16 +54,19 @@ public class LocationController {
     List<String> tagList = new ArrayList<>();
 
     @RequestMapping("/service/loc_registration")
-    public String loc_Reg(Model model) {
+    public String loc_Reg(Model model, HttpServletRequest request) {
         List<LocationTag> tagList = Arrays.asList(LocationTag.values());
         model.addAttribute("tagList", tagList);
+
+        log.info(request.getSession().getAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY));
+        log.info(SecurityContextHolder.getContext().getAuthentication());
 
         return "/service/loc_registration";
     }
 
     @PostMapping("/service/loc/tags")
     @ResponseBody
-    public String locGetTagsList(@RequestParam("tags[]") String[] tagArray, Authentication authentication) {
+    public String locGetTagsList(@RequestParam("tags[]") String[] tagArray, Authentication authentication, HttpServletRequest request) {
 //        if (authentication == null) {
 //            return "Authentication Failed";
 //        }
@@ -70,6 +76,8 @@ public class LocationController {
 //        }
 
         tagList = Arrays.asList(tagArray);
+        log.info(request.getSession().getAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY));
+        log.info(SecurityContextHolder.getContext().getAuthentication());
 
         if (tagList != null) {
 //            log.info("태그 등록 성공");
@@ -130,6 +138,9 @@ public class LocationController {
         LocationDTO dto = locService.entityToDto(entity);
 
         redirectAttributes.addFlashAttribute("dto", dto);
+
+        log.info(request.getSession().getAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY));
+        log.info(SecurityContextHolder.getContext().getAuthentication());
 
         return "redirect:/service/loc_recommend";
     }
