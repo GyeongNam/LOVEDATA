@@ -82,6 +82,11 @@
 					</p>
 				</div>
 			</div>
+			<div>
+				<p>
+					<a href="/biz_reg" >사업자 등록</a>
+				</p>
+			</div>
 		</div>
 	</div>
 	<div id="jb-content">

@@ -1044,237 +1044,232 @@ lovedata|schema||lovedatauser|localhost|UPDATE|G</Grants>
     <user id="327" parent="1" name="lovedatauser">
       <Host>localhost</Host>
     </user>
-    <table id="328" parent="325" name="calender"/>
-    <table id="329" parent="325" name="comment"/>
-    <table id="330" parent="325" name="cor_image"/>
-    <table id="331" parent="325" name="cor_loc_mapper"/>
-    <table id="332" parent="325" name="course"/>
-    <table id="333" parent="325" name="course_tag_set"/>
-    <table id="334" parent="325" name="del_img_info"/>
-    <table id="335" parent="325" name="loc_image"/>
-    <table id="336" parent="325" name="location"/>
-    <table id="337" parent="325" name="location_tag_set"/>
-    <table id="338" parent="325" name="notice"/>
-    <table id="339" parent="325" name="noticeimg"/>
-    <table id="340" parent="325" name="qu_image"/>
-    <table id="341" parent="325" name="questions"/>
-    <table id="342" parent="325" name="report"/>
-    <table id="343" parent="325" name="report_cluster"/>
-    <table id="344" parent="325" name="rev_image"/>
-    <table id="345" parent="325" name="review"/>
-    <table id="346" parent="325" name="user"/>
-    <table id="347" parent="325" name="user_dislike_cmt"/>
-    <table id="348" parent="325" name="user_dislike_rev"/>
-    <table id="349" parent="325" name="user_like_cmt"/>
-    <table id="350" parent="325" name="user_like_cor"/>
-    <table id="351" parent="325" name="user_like_loc"/>
-    <table id="352" parent="325" name="user_like_rev"/>
-    <table id="353" parent="325" name="user_recent_cor"/>
-    <table id="354" parent="325" name="user_recent_loc"/>
-    <table id="355" parent="325" name="user_role_set"/>
-    <table id="356" parent="325" name="user_suspension"/>
-    <column id="357" parent="328" name="cal_no">
+    <table id="328" parent="325" name="bizreg"/>
+    <table id="329" parent="325" name="calender"/>
+    <table id="330" parent="325" name="comment"/>
+    <table id="331" parent="325" name="cor_image"/>
+    <table id="332" parent="325" name="cor_loc_mapper"/>
+    <table id="333" parent="325" name="course"/>
+    <table id="334" parent="325" name="course_tag_set"/>
+    <table id="335" parent="325" name="del_img_info"/>
+    <table id="336" parent="325" name="loc_image"/>
+    <table id="337" parent="325" name="location"/>
+    <table id="338" parent="325" name="location_tag_set"/>
+    <table id="339" parent="325" name="notice"/>
+    <table id="340" parent="325" name="noticeimg"/>
+    <table id="341" parent="325" name="qu_image"/>
+    <table id="342" parent="325" name="questions"/>
+    <table id="343" parent="325" name="report"/>
+    <table id="344" parent="325" name="report_cluster"/>
+    <table id="345" parent="325" name="rev_image"/>
+    <table id="346" parent="325" name="review"/>
+    <table id="347" parent="325" name="user"/>
+    <table id="348" parent="325" name="user_dislike_cmt"/>
+    <table id="349" parent="325" name="user_dislike_rev"/>
+    <table id="350" parent="325" name="user_like_cmt"/>
+    <table id="351" parent="325" name="user_like_cor"/>
+    <table id="352" parent="325" name="user_like_loc"/>
+    <table id="353" parent="325" name="user_like_rev"/>
+    <table id="354" parent="325" name="user_recent_cor"/>
+    <table id="355" parent="325" name="user_recent_loc"/>
+    <table id="356" parent="325" name="user_role_set"/>
+    <table id="357" parent="325" name="user_suspension"/>
+    <column id="358" parent="328" name="br_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="358" parent="328" name="moddate">
+    <column id="359" parent="328" name="moddate">
       <DataType>datetime|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="359" parent="328" name="regdate">
+    <column id="360" parent="328" name="regdate">
       <DataType>datetime|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="360" parent="328" name="all_day">
+    <column id="361" parent="328" name="certified">
+      <DataType>bit(1)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+    </column>
+    <column id="362" parent="328" name="deleted">
+      <DataType>bit(1)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+    </column>
+    <column id="363" parent="328" name="url">
+      <DataType>varchar(255)|0s</DataType>
+      <Position>6</Position>
+    </column>
+    <column id="364" parent="328" name="user_no">
+      <DataType>bigint(20)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>7</Position>
+    </column>
+    <column id="365" parent="328" name="uuid">
+      <DataType>varchar(255)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>8</Position>
+    </column>
+    <key id="366" parent="328" name="PRIMARY">
+      <ColNames>br_no</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <Primary>1</Primary>
+    </key>
+    <column id="367" parent="329" name="cal_no">
+      <DataType>bigint(20)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <column id="368" parent="329" name="moddate">
+      <DataType>datetime|0s</DataType>
+      <Position>2</Position>
+    </column>
+    <column id="369" parent="329" name="regdate">
+      <DataType>datetime|0s</DataType>
+      <Position>3</Position>
+    </column>
+    <column id="370" parent="329" name="all_day">
       <DataType>tinyint(1)|0s</DataType>
       <Position>4</Position>
     </column>
-    <column id="361" parent="328" name="cal_activation">
+    <column id="371" parent="329" name="cal_activation">
       <DataType>tinyint(1)|0s</DataType>
       <Position>5</Position>
     </column>
-    <column id="362" parent="328" name="color">
+    <column id="372" parent="329" name="color">
       <DataType>varchar(15)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <column id="363" parent="328" name="end">
+    <column id="373" parent="329" name="end">
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>7</Position>
     </column>
-    <column id="364" parent="328" name="road">
+    <column id="374" parent="329" name="road">
       <DataType>varchar(50)|0s</DataType>
       <Position>8</Position>
     </column>
-    <column id="365" parent="328" name="road2">
+    <column id="375" parent="329" name="road2">
       <DataType>varchar(50)|0s</DataType>
       <Position>9</Position>
     </column>
-    <column id="366" parent="328" name="start">
+    <column id="376" parent="329" name="start">
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>10</Position>
     </column>
-    <column id="367" parent="328" name="text">
+    <column id="377" parent="329" name="text">
       <DataType>varchar(100)|0s</DataType>
       <Position>11</Position>
     </column>
-    <column id="368" parent="328" name="title">
+    <column id="378" parent="329" name="title">
       <DataType>varchar(15)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>12</Position>
     </column>
-    <column id="369" parent="328" name="user_mail">
+    <column id="379" parent="329" name="user_mail">
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>13</Position>
     </column>
-    <key id="370" parent="328" name="PRIMARY">
+    <key id="380" parent="329" name="PRIMARY">
       <ColNames>cal_no</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="371" parent="329" name="cmt_no">
+    <column id="381" parent="330" name="cmt_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="372" parent="329" name="moddate">
+    <column id="382" parent="330" name="moddate">
       <DataType>datetime|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="373" parent="329" name="regdate">
+    <column id="383" parent="330" name="regdate">
       <DataType>datetime|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="374" parent="329" name="cmt_content">
+    <column id="384" parent="330" name="cmt_content">
       <DataType>varchar(300)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="375" parent="329" name="cmt_idx">
+    <column id="385" parent="330" name="cmt_idx">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="376" parent="329" name="cmt_uuid">
+    <column id="386" parent="330" name="cmt_uuid">
       <DataType>varchar(60)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <column id="377" parent="329" name="dislikecount">
+    <column id="387" parent="330" name="dislikecount">
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>7</Position>
     </column>
-    <column id="378" parent="329" name="is_deleted">
+    <column id="388" parent="330" name="is_deleted">
       <DataType>bit(1)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>8</Position>
     </column>
-    <column id="379" parent="329" name="is_reported">
+    <column id="389" parent="330" name="is_reported">
       <DataType>bit(1)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>9</Position>
     </column>
-    <column id="380" parent="329" name="likecount">
+    <column id="390" parent="330" name="likecount">
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>10</Position>
     </column>
-    <column id="381" parent="329" name="is_modified">
+    <column id="391" parent="330" name="is_modified">
       <DataType>bit(1)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>11</Position>
     </column>
-    <column id="382" parent="329" name="location_loc_no">
+    <column id="392" parent="330" name="location_loc_no">
       <DataType>bigint(20)|0s</DataType>
       <Position>12</Position>
     </column>
-    <column id="383" parent="329" name="user_user_no">
+    <column id="393" parent="330" name="user_user_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>13</Position>
     </column>
-    <foreign-key id="384" parent="329" name="FKe2sqie7jgcyvvyuekwx181vsf">
+    <foreign-key id="394" parent="330" name="FKe2sqie7jgcyvvyuekwx181vsf">
       <ColNames>location_loc_no</ColNames>
       <OnDelete>cascade</OnDelete>
       <RefColNames>loc_no</RefColNames>
       <RefTableName>location</RefTableName>
     </foreign-key>
-    <foreign-key id="385" parent="329" name="FK5sgnblekkqyvmejrggk0if01c">
+    <foreign-key id="395" parent="330" name="FK5sgnblekkqyvmejrggk0if01c">
       <ColNames>user_user_no</ColNames>
       <OnDelete>cascade</OnDelete>
       <RefColNames>user_no</RefColNames>
       <RefTableName>user</RefTableName>
     </foreign-key>
-    <index id="386" parent="329" name="FKe2sqie7jgcyvvyuekwx181vsf">
+    <index id="396" parent="330" name="FKe2sqie7jgcyvvyuekwx181vsf">
       <ColNames>location_loc_no</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="387" parent="329" name="FK5sgnblekkqyvmejrggk0if01c">
+    <index id="397" parent="330" name="FK5sgnblekkqyvmejrggk0if01c">
       <ColNames>user_user_no</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="388" parent="329" name="PRIMARY">
+    <key id="398" parent="330" name="PRIMARY">
       <ColNames>cmt_no</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="389" parent="330" name="img_no">
-      <DataType>bigint(20)|0s</DataType>
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-      <SequenceIdentity>null</SequenceIdentity>
-    </column>
-    <column id="390" parent="330" name="moddate">
-      <DataType>datetime|0s</DataType>
-      <Position>2</Position>
-    </column>
-    <column id="391" parent="330" name="regdate">
-      <DataType>datetime|0s</DataType>
-      <Position>3</Position>
-    </column>
-    <column id="392" parent="330" name="cor_no">
-      <DataType>bigint(20)|0s</DataType>
-      <NotNull>1</NotNull>
-      <Position>4</Position>
-    </column>
-    <column id="393" parent="330" name="img_idx">
-      <DataType>bigint(20)|0s</DataType>
-      <NotNull>1</NotNull>
-      <Position>5</Position>
-    </column>
-    <column id="394" parent="330" name="img_url">
-      <DataType>varchar(200)|0s</DataType>
-      <NotNull>1</NotNull>
-      <Position>6</Position>
-    </column>
-    <column id="395" parent="330" name="img_uuid">
-      <DataType>varchar(45)|0s</DataType>
-      <NotNull>1</NotNull>
-      <Position>7</Position>
-    </column>
-    <column id="396" parent="330" name="is_deleted">
-      <DataType>bit(1)|0s</DataType>
-      <NotNull>1</NotNull>
-      <Position>8</Position>
-    </column>
-    <column id="397" parent="330" name="user_no">
-      <DataType>bigint(20)|0s</DataType>
-      <NotNull>1</NotNull>
-      <Position>9</Position>
-    </column>
-    <key id="398" parent="330" name="PRIMARY">
-      <ColNames>img_no</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <Primary>1</Primary>
-    </key>
-    <column id="399" parent="331" name="clm_no">
+    <column id="399" parent="331" name="img_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
@@ -1288,1242 +1283,1291 @@ lovedata|schema||lovedatauser|localhost|UPDATE|G</Grants>
       <DataType>datetime|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="402" parent="331" name="clm_uuid">
-      <DataType>varchar(255)|0s</DataType>
+    <column id="402" parent="331" name="cor_no">
+      <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="403" parent="331" name="cor_no">
+    <column id="403" parent="331" name="img_idx">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="404" parent="331" name="loc_index">
-      <DataType>int(11)|0s</DataType>
+    <column id="404" parent="331" name="img_url">
+      <DataType>varchar(200)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <column id="405" parent="331" name="loc_no">
-      <DataType>bigint(20)|0s</DataType>
+    <column id="405" parent="331" name="img_uuid">
+      <DataType>varchar(45)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>7</Position>
     </column>
-    <key id="406" parent="331" name="PRIMARY">
-      <ColNames>clm_no</ColNames>
+    <column id="406" parent="331" name="is_deleted">
+      <DataType>bit(1)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>8</Position>
+    </column>
+    <column id="407" parent="331" name="user_no">
+      <DataType>bigint(20)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>9</Position>
+    </column>
+    <key id="408" parent="331" name="PRIMARY">
+      <ColNames>img_no</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="407" parent="332" name="cor_no">
+    <column id="409" parent="332" name="clm_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="408" parent="332" name="moddate">
+    <column id="410" parent="332" name="moddate">
       <DataType>datetime|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="409" parent="332" name="regdate">
+    <column id="411" parent="332" name="regdate">
       <DataType>datetime|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="410" parent="332" name="accommodations_info">
+    <column id="412" parent="332" name="clm_uuid">
+      <DataType>varchar(255)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+    </column>
+    <column id="413" parent="332" name="cor_no">
+      <DataType>bigint(20)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+    </column>
+    <column id="414" parent="332" name="loc_index">
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>6</Position>
+    </column>
+    <column id="415" parent="332" name="loc_no">
+      <DataType>bigint(20)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>7</Position>
+    </column>
+    <key id="416" parent="332" name="PRIMARY">
+      <ColNames>clm_no</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <Primary>1</Primary>
+    </key>
+    <column id="417" parent="333" name="cor_no">
+      <DataType>bigint(20)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <column id="418" parent="333" name="moddate">
+      <DataType>datetime|0s</DataType>
+      <Position>2</Position>
+    </column>
+    <column id="419" parent="333" name="regdate">
+      <DataType>datetime|0s</DataType>
+      <Position>3</Position>
+    </column>
+    <column id="420" parent="333" name="accommodations_info">
       <DataType>varchar(255)|0s</DataType>
       <Position>4</Position>
     </column>
-    <column id="411" parent="332" name="cor_name">
+    <column id="421" parent="333" name="cor_name">
       <DataType>varchar(40)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="412" parent="332" name="cor_uuid">
+    <column id="422" parent="333" name="cor_uuid">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <column id="413" parent="332" name="cost">
+    <column id="423" parent="333" name="cost">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>7</Position>
     </column>
-    <column id="414" parent="332" name="est_type">
+    <column id="424" parent="333" name="est_type">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>8</Position>
     </column>
-    <column id="415" parent="332" name="est_value">
+    <column id="425" parent="333" name="est_value">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>9</Position>
     </column>
-    <column id="416" parent="332" name="info">
+    <column id="426" parent="333" name="info">
       <DataType>varchar(150)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>10</Position>
     </column>
-    <column id="417" parent="332" name="is_deleted">
+    <column id="427" parent="333" name="is_deleted">
       <DataType>bit(1)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>11</Position>
     </column>
-    <column id="418" parent="332" name="is_reported">
+    <column id="428" parent="333" name="is_reported">
       <DataType>bit(1)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>12</Position>
     </column>
-    <column id="419" parent="332" name="likecount">
+    <column id="429" parent="333" name="likecount">
       <DataType>int(11)|0s</DataType>
       <DefaultExpression>0</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>13</Position>
     </column>
-    <column id="420" parent="332" name="location_count">
+    <column id="430" parent="333" name="location_count">
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>14</Position>
     </column>
-    <column id="421" parent="332" name="thumbnail">
+    <column id="431" parent="333" name="thumbnail">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>15</Position>
     </column>
-    <column id="422" parent="332" name="transportation">
+    <column id="432" parent="333" name="transportation">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>16</Position>
     </column>
-    <column id="423" parent="332" name="user_no">
+    <column id="433" parent="333" name="user_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>17</Position>
     </column>
-    <column id="424" parent="332" name="viewcount">
+    <column id="434" parent="333" name="viewcount">
       <DataType>int(11)|0s</DataType>
       <DefaultExpression>0</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>18</Position>
     </column>
-    <key id="425" parent="332" name="PRIMARY">
+    <key id="435" parent="333" name="PRIMARY">
       <ColNames>cor_no</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="426" parent="333" name="course_cor_no">
+    <column id="436" parent="334" name="course_cor_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="427" parent="333" name="tag_set">
+    <column id="437" parent="334" name="tag_set">
       <DataType>varchar(255)|0s</DataType>
       <Position>2</Position>
     </column>
-    <foreign-key id="428" parent="333" name="FKrr8frd88gu1iqaoilocuonlxy">
+    <foreign-key id="438" parent="334" name="FKrr8frd88gu1iqaoilocuonlxy">
       <ColNames>course_cor_no</ColNames>
       <OnDelete>cascade</OnDelete>
       <RefColNames>cor_no</RefColNames>
       <RefTableName>course</RefTableName>
     </foreign-key>
-    <index id="429" parent="333" name="FKrr8frd88gu1iqaoilocuonlxy">
+    <index id="439" parent="334" name="FKrr8frd88gu1iqaoilocuonlxy">
       <ColNames>course_cor_no</ColNames>
       <Type>btree</Type>
     </index>
-    <column id="430" parent="334" name="dii_no">
+    <column id="440" parent="335" name="dii_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="431" parent="334" name="moddate">
+    <column id="441" parent="335" name="moddate">
       <DataType>datetime|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="432" parent="334" name="regdate">
+    <column id="442" parent="335" name="regdate">
       <DataType>datetime|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="433" parent="334" name="deleted">
+    <column id="443" parent="335" name="deleted">
       <DataType>bit(1)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="434" parent="334" name="dii_uuid">
+    <column id="444" parent="335" name="dii_uuid">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="435" parent="334" name="img_no">
+    <column id="445" parent="335" name="img_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <column id="436" parent="334" name="img_type">
+    <column id="446" parent="335" name="img_type">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>7</Position>
     </column>
-    <column id="437" parent="334" name="img_user_no">
+    <column id="447" parent="335" name="img_user_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>8</Position>
     </column>
-    <column id="438" parent="334" name="img_uuid">
+    <column id="448" parent="335" name="img_uuid">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>9</Position>
     </column>
-    <column id="439" parent="334" name="result">
+    <column id="449" parent="335" name="result">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>10</Position>
     </column>
-    <key id="440" parent="334" name="PRIMARY">
+    <key id="450" parent="335" name="PRIMARY">
       <ColNames>dii_no</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="441" parent="335" name="img_no">
+    <column id="451" parent="336" name="img_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="442" parent="335" name="moddate">
+    <column id="452" parent="336" name="moddate">
       <DataType>datetime|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="443" parent="335" name="regdate">
+    <column id="453" parent="336" name="regdate">
       <DataType>datetime|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="444" parent="335" name="img_idx">
+    <column id="454" parent="336" name="img_idx">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="445" parent="335" name="img_url">
+    <column id="455" parent="336" name="img_url">
       <DataType>varchar(200)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="446" parent="335" name="img_uuid">
+    <column id="456" parent="336" name="img_uuid">
       <DataType>varchar(45)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <column id="447" parent="335" name="is_deleted">
+    <column id="457" parent="336" name="is_deleted">
       <DataType>bit(1)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>7</Position>
     </column>
-    <column id="448" parent="335" name="user_no">
+    <column id="458" parent="336" name="user_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>8</Position>
     </column>
-    <column id="449" parent="335" name="location_loc_no">
+    <column id="459" parent="336" name="location_loc_no">
       <DataType>bigint(20)|0s</DataType>
       <Position>9</Position>
     </column>
-    <column id="450" parent="335" name="loc_no">
+    <column id="460" parent="336" name="loc_no">
       <DataType>bigint(20)|0s</DataType>
       <Position>10</Position>
     </column>
-    <foreign-key id="451" parent="335" name="FKb1c6wmt0ynattkkdkwi4oxowr">
+    <foreign-key id="461" parent="336" name="FKb1c6wmt0ynattkkdkwi4oxowr">
       <ColNames>location_loc_no</ColNames>
       <RefColNames>loc_no</RefColNames>
       <RefTableName>location</RefTableName>
     </foreign-key>
-    <foreign-key id="452" parent="335" name="FK57hf880ludabe6ma7ca0erh9q">
+    <foreign-key id="462" parent="336" name="FK57hf880ludabe6ma7ca0erh9q">
       <ColNames>loc_no</ColNames>
       <OnDelete>cascade</OnDelete>
       <RefColNames>loc_no</RefColNames>
       <RefTableName>location</RefTableName>
     </foreign-key>
-    <index id="453" parent="335" name="FKb1c6wmt0ynattkkdkwi4oxowr">
+    <index id="463" parent="336" name="FKb1c6wmt0ynattkkdkwi4oxowr">
       <ColNames>location_loc_no</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="454" parent="335" name="FK57hf880ludabe6ma7ca0erh9q">
+    <index id="464" parent="336" name="FK57hf880ludabe6ma7ca0erh9q">
       <ColNames>loc_no</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="455" parent="335" name="PRIMARY">
+    <key id="465" parent="336" name="PRIMARY">
       <ColNames>img_no</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="456" parent="336" name="loc_no">
+    <column id="466" parent="337" name="loc_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="457" parent="336" name="moddate">
+    <column id="467" parent="337" name="moddate">
       <DataType>datetime|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="458" parent="336" name="regdate">
+    <column id="468" parent="337" name="regdate">
       <DataType>datetime|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="459" parent="336" name="addrdetail">
+    <column id="469" parent="337" name="addrdetail">
       <DataType>varchar(30)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="460" parent="336" name="fullroadaddr">
+    <column id="470" parent="337" name="fullroadaddr">
       <DataType>varchar(90)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="461" parent="336" name="info">
+    <column id="471" parent="337" name="info">
       <DataType>varchar(150)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <column id="462" parent="336" name="is_deleted">
+    <column id="472" parent="337" name="is_deleted">
       <DataType>bit(1)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>7</Position>
     </column>
-    <column id="463" parent="336" name="is_reported">
+    <column id="473" parent="337" name="is_reported">
       <DataType>bit(1)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>8</Position>
     </column>
-    <column id="464" parent="336" name="likecount">
+    <column id="474" parent="337" name="likecount">
       <DataType>int(11)|0s</DataType>
       <DefaultExpression>0</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>9</Position>
     </column>
-    <column id="465" parent="336" name="loc_name">
+    <column id="475" parent="337" name="loc_name">
       <DataType>varchar(40)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>10</Position>
     </column>
-    <column id="466" parent="336" name="loc_uuid">
+    <column id="476" parent="337" name="loc_uuid">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>11</Position>
     </column>
-    <column id="467" parent="336" name="roadaddr">
+    <column id="477" parent="337" name="roadaddr">
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>12</Position>
     </column>
-    <column id="468" parent="336" name="sido">
+    <column id="478" parent="337" name="sido">
       <DataType>varchar(15)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>13</Position>
     </column>
-    <column id="469" parent="336" name="sigungu">
+    <column id="479" parent="337" name="sigungu">
       <DataType>varchar(8)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>14</Position>
     </column>
-    <column id="470" parent="336" name="tel">
+    <column id="480" parent="337" name="tel">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>15</Position>
     </column>
-    <column id="471" parent="336" name="thumbnail">
+    <column id="481" parent="337" name="thumbnail">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>16</Position>
     </column>
-    <column id="472" parent="336" name="user_no">
+    <column id="482" parent="337" name="user_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>17</Position>
     </column>
-    <column id="473" parent="336" name="viewcount">
+    <column id="483" parent="337" name="viewcount">
       <DataType>int(11)|0s</DataType>
       <DefaultExpression>0</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>18</Position>
     </column>
-    <column id="474" parent="336" name="zipno">
+    <column id="484" parent="337" name="zipno">
       <DataType>varchar(10)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>19</Position>
     </column>
-    <key id="475" parent="336" name="PRIMARY">
+    <key id="485" parent="337" name="PRIMARY">
       <ColNames>loc_no</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="476" parent="337" name="location_loc_no">
+    <column id="486" parent="338" name="location_loc_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="477" parent="337" name="tag_set">
+    <column id="487" parent="338" name="tag_set">
       <DataType>varchar(255)|0s</DataType>
       <Position>2</Position>
     </column>
-    <foreign-key id="478" parent="337" name="FK6ognhsdr00rsmv9g1e6d4ec95">
+    <foreign-key id="488" parent="338" name="FK6ognhsdr00rsmv9g1e6d4ec95">
       <ColNames>location_loc_no</ColNames>
       <OnDelete>cascade</OnDelete>
       <RefColNames>loc_no</RefColNames>
       <RefTableName>location</RefTableName>
     </foreign-key>
-    <index id="479" parent="337" name="FK6ognhsdr00rsmv9g1e6d4ec95">
+    <index id="489" parent="338" name="FK6ognhsdr00rsmv9g1e6d4ec95">
       <ColNames>location_loc_no</ColNames>
       <Type>btree</Type>
     </index>
-    <column id="480" parent="338" name="noti_no">
+    <column id="490" parent="339" name="noti_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="481" parent="338" name="noti_activation">
+    <column id="491" parent="339" name="noti_activation">
       <DataType>bit(1)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="482" parent="338" name="noti_date">
+    <column id="492" parent="339" name="noti_date">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="483" parent="338" name="noti_manager">
+    <column id="493" parent="339" name="noti_manager">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="484" parent="338" name="noti_text">
+    <column id="494" parent="339" name="noti_text">
       <DataType>longtext|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="485" parent="338" name="noti_title">
+    <column id="495" parent="339" name="noti_title">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <column id="486" parent="338" name="noti_view_count">
+    <column id="496" parent="339" name="noti_view_count">
       <DataType>int(11)|0s</DataType>
       <DefaultExpression>0</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>7</Position>
     </column>
-    <key id="487" parent="338" name="PRIMARY">
+    <key id="497" parent="339" name="PRIMARY">
       <ColNames>noti_no</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="488" parent="339" name="notiimg_no">
+    <column id="498" parent="340" name="notiimg_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="489" parent="339" name="notiimg_activation">
+    <column id="499" parent="340" name="notiimg_activation">
       <DataType>bit(1)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="490" parent="339" name="notiimg_name">
+    <column id="500" parent="340" name="notiimg_name">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="491" parent="339" name="notiimg_postno">
+    <column id="501" parent="340" name="notiimg_postno">
       <DataType>varchar(255)|0s</DataType>
       <Position>4</Position>
     </column>
-    <column id="492" parent="339" name="notiimg_user">
+    <column id="502" parent="340" name="notiimg_user">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <key id="493" parent="339" name="PRIMARY">
+    <key id="503" parent="340" name="PRIMARY">
       <ColNames>notiimg_no</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="494" parent="340" name="qu_img_no">
+    <column id="504" parent="341" name="qu_img_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="495" parent="340" name="moddate">
+    <column id="505" parent="341" name="moddate">
       <DataType>datetime|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="496" parent="340" name="regdate">
+    <column id="506" parent="341" name="regdate">
       <DataType>datetime|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="497" parent="340" name="qu_img_activation">
+    <column id="507" parent="341" name="qu_img_activation">
       <DataType>tinyint(1)|0s</DataType>
       <Position>4</Position>
     </column>
-    <column id="498" parent="340" name="qu_img_url">
+    <column id="508" parent="341" name="qu_img_url">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="499" parent="340" name="qu_no">
+    <column id="509" parent="341" name="qu_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <column id="500" parent="340" name="user_no">
+    <column id="510" parent="341" name="user_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>7</Position>
     </column>
-    <key id="501" parent="340" name="PRIMARY">
+    <key id="511" parent="341" name="PRIMARY">
       <ColNames>qu_img_no</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="502" parent="341" name="qu_no">
+    <column id="512" parent="342" name="qu_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="503" parent="341" name="qu_activation">
+    <column id="513" parent="342" name="qu_activation">
       <DataType>bit(1)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="504" parent="341" name="qu_answer">
+    <column id="514" parent="342" name="qu_answer">
       <DataType>bit(1)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="505" parent="341" name="qu_answer_manager">
+    <column id="515" parent="342" name="qu_answer_manager">
       <DataType>varchar(255)|0s</DataType>
       <Position>4</Position>
     </column>
-    <column id="506" parent="341" name="qu_answer_text">
+    <column id="516" parent="342" name="qu_answer_text">
       <DataType>varchar(255)|0s</DataType>
       <Position>5</Position>
     </column>
-    <column id="507" parent="341" name="qu_date">
+    <column id="517" parent="342" name="qu_date">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <column id="508" parent="341" name="qu_secret">
+    <column id="518" parent="342" name="qu_secret">
       <DataType>bit(1)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>7</Position>
     </column>
-    <column id="509" parent="341" name="qu_text">
+    <column id="519" parent="342" name="qu_text">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>8</Position>
     </column>
-    <column id="510" parent="341" name="qu_title">
+    <column id="520" parent="342" name="qu_title">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>9</Position>
     </column>
-    <column id="511" parent="341" name="qu_type">
+    <column id="521" parent="342" name="qu_type">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>10</Position>
     </column>
-    <column id="512" parent="341" name="qu_user">
+    <column id="522" parent="342" name="qu_user">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>11</Position>
     </column>
-    <column id="513" parent="341" name="qu_user_no">
+    <column id="523" parent="342" name="qu_user_no">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>12</Position>
     </column>
-    <key id="514" parent="341" name="PRIMARY">
+    <key id="524" parent="342" name="PRIMARY">
       <ColNames>qu_no</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="515" parent="342" name="rep_no">
+    <column id="525" parent="343" name="rep_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="516" parent="342" name="moddate">
+    <column id="526" parent="343" name="moddate">
       <DataType>datetime|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="517" parent="342" name="regdate">
+    <column id="527" parent="343" name="regdate">
       <DataType>datetime|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="518" parent="342" name="is_complete">
+    <column id="528" parent="343" name="is_complete">
       <DataType>bit(1)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="519" parent="342" name="rc_no">
+    <column id="529" parent="343" name="rc_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="520" parent="342" name="rep_content">
+    <column id="530" parent="343" name="rep_content">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <column id="521" parent="342" name="rep_type">
+    <column id="531" parent="343" name="rep_type">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>7</Position>
     </column>
-    <column id="522" parent="342" name="rep_uuid">
+    <column id="532" parent="343" name="rep_uuid">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>8</Position>
     </column>
-    <column id="523" parent="342" name="result">
+    <column id="533" parent="343" name="result">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>9</Position>
     </column>
-    <column id="524" parent="342" name="user_no">
+    <column id="534" parent="343" name="user_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>10</Position>
     </column>
-    <key id="525" parent="342" name="PRIMARY">
+    <key id="535" parent="343" name="PRIMARY">
       <ColNames>rep_no</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="526" parent="343" name="rc_no">
+    <column id="536" parent="344" name="rc_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="527" parent="343" name="moddate">
+    <column id="537" parent="344" name="moddate">
       <DataType>datetime|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="528" parent="343" name="regdate">
+    <column id="538" parent="344" name="regdate">
       <DataType>datetime|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="529" parent="343" name="post_no">
+    <column id="539" parent="344" name="post_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="530" parent="343" name="post_type">
+    <column id="540" parent="344" name="post_type">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="531" parent="343" name="rc_complete">
+    <column id="541" parent="344" name="rc_complete">
       <DataType>bit(1)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <column id="532" parent="343" name="rc_result">
+    <column id="542" parent="344" name="rc_result">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>7</Position>
     </column>
-    <column id="533" parent="343" name="rc_user_no">
+    <column id="543" parent="344" name="rc_user_no">
       <DataType>bigint(20)|0s</DataType>
       <Position>8</Position>
     </column>
-    <column id="534" parent="343" name="rc_uuid">
+    <column id="544" parent="344" name="rc_uuid">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>9</Position>
     </column>
-    <column id="535" parent="343" name="rep_count">
+    <column id="545" parent="344" name="rep_count">
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>10</Position>
     </column>
-    <key id="536" parent="343" name="PRIMARY">
+    <key id="546" parent="344" name="PRIMARY">
       <ColNames>rc_no</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="537" parent="344" name="img_no">
+    <column id="547" parent="345" name="img_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="538" parent="344" name="moddate">
+    <column id="548" parent="345" name="moddate">
       <DataType>datetime|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="539" parent="344" name="regdate">
+    <column id="549" parent="345" name="regdate">
       <DataType>datetime|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="540" parent="344" name="cor_no">
+    <column id="550" parent="345" name="cor_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="541" parent="344" name="img_idx">
+    <column id="551" parent="345" name="img_idx">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="542" parent="344" name="img_url">
+    <column id="552" parent="345" name="img_url">
       <DataType>varchar(200)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <column id="543" parent="344" name="img_uuid">
+    <column id="553" parent="345" name="img_uuid">
       <DataType>varchar(45)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>7</Position>
     </column>
-    <column id="544" parent="344" name="is_deleted">
+    <column id="554" parent="345" name="is_deleted">
       <DataType>bit(1)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>8</Position>
     </column>
-    <column id="545" parent="344" name="rev_no">
+    <column id="555" parent="345" name="rev_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>9</Position>
     </column>
-    <column id="546" parent="344" name="user_no">
+    <column id="556" parent="345" name="user_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>10</Position>
     </column>
-    <key id="547" parent="344" name="PRIMARY">
+    <key id="557" parent="345" name="PRIMARY">
       <ColNames>img_no</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="548" parent="345" name="rev_no">
+    <column id="558" parent="346" name="rev_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="549" parent="345" name="moddate">
+    <column id="559" parent="346" name="moddate">
       <DataType>datetime|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="550" parent="345" name="regdate">
+    <column id="560" parent="346" name="regdate">
       <DataType>datetime|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="551" parent="345" name="cor_no">
+    <column id="561" parent="346" name="cor_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="552" parent="345" name="is_deleted">
+    <column id="562" parent="346" name="is_deleted">
       <DataType>bit(1)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="553" parent="345" name="is_modified">
+    <column id="563" parent="346" name="is_modified">
       <DataType>bit(1)|0s</DataType>
       <Position>6</Position>
     </column>
-    <column id="554" parent="345" name="is_reported">
+    <column id="564" parent="346" name="is_reported">
       <DataType>bit(1)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>7</Position>
     </column>
-    <column id="555" parent="345" name="rev_content">
+    <column id="565" parent="346" name="rev_content">
       <DataType>varchar(300)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>8</Position>
     </column>
-    <column id="556" parent="345" name="rev_idx">
+    <column id="566" parent="346" name="rev_idx">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>9</Position>
     </column>
-    <column id="557" parent="345" name="rev_uuid">
+    <column id="567" parent="346" name="rev_uuid">
       <DataType>varchar(60)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>10</Position>
     </column>
-    <column id="558" parent="345" name="rev_dislike">
+    <column id="568" parent="346" name="rev_dislike">
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>11</Position>
     </column>
-    <column id="559" parent="345" name="rev_like">
+    <column id="569" parent="346" name="rev_like">
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>12</Position>
     </column>
-    <column id="560" parent="345" name="sc_loc">
+    <column id="570" parent="346" name="sc_loc">
       <DataType>int(11)|0s</DataType>
       <Position>13</Position>
     </column>
-    <column id="561" parent="345" name="sc_move">
+    <column id="571" parent="346" name="sc_move">
       <DataType>int(11)|0s</DataType>
       <Position>14</Position>
     </column>
-    <column id="562" parent="345" name="sc_revisit">
+    <column id="572" parent="346" name="sc_revisit">
       <DataType>int(11)|0s</DataType>
       <Position>15</Position>
     </column>
-    <column id="563" parent="345" name="sc_time">
+    <column id="573" parent="346" name="sc_time">
       <DataType>int(11)|0s</DataType>
       <Position>16</Position>
     </column>
-    <column id="564" parent="345" name="sc_total">
+    <column id="574" parent="346" name="sc_total">
       <DataType>float|0s</DataType>
       <NotNull>1</NotNull>
       <Position>17</Position>
     </column>
-    <column id="565" parent="345" name="user_nickname">
+    <column id="575" parent="346" name="user_nickname">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>18</Position>
     </column>
-    <column id="566" parent="345" name="user_no">
+    <column id="576" parent="346" name="user_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>19</Position>
     </column>
-    <key id="567" parent="345" name="PRIMARY">
+    <key id="577" parent="346" name="PRIMARY">
       <ColNames>rev_no</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="568" parent="346" name="user_no">
+    <column id="578" parent="347" name="user_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="569" parent="346" name="moddate">
+    <column id="579" parent="347" name="moddate">
       <DataType>datetime|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="570" parent="346" name="regdate">
+    <column id="580" parent="347" name="regdate">
       <DataType>datetime|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="571" parent="346" name="is_deleted">
+    <column id="581" parent="347" name="is_deleted">
       <DataType>bit(1)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="572" parent="346" name="profile_pic">
+    <column id="582" parent="347" name="profile_pic">
       <DataType>varchar(100)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="573" parent="346" name="social_id">
+    <column id="583" parent="347" name="social_id">
       <DataType>int(11)|0s</DataType>
       <Position>6</Position>
     </column>
-    <column id="574" parent="346" name="social_info">
+    <column id="584" parent="347" name="social_info">
       <DataType>varchar(20)|0s</DataType>
       <Position>7</Position>
     </column>
-    <column id="575" parent="346" name="user_activation">
+    <column id="585" parent="347" name="user_activation">
       <DataType>tinyint(1)|0s</DataType>
       <Position>8</Position>
     </column>
-    <column id="576" parent="346" name="user_birth">
+    <column id="586" parent="347" name="user_birth">
       <DataType>varchar(30)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>9</Position>
     </column>
-    <column id="577" parent="346" name="user_email">
+    <column id="587" parent="347" name="user_email">
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>10</Position>
     </column>
-    <column id="578" parent="346" name="user_email_re">
+    <column id="588" parent="347" name="user_email_re">
       <DataType>tinyint(1)|0s</DataType>
       <Position>11</Position>
     </column>
-    <column id="579" parent="346" name="user_name">
+    <column id="589" parent="347" name="user_name">
       <DataType>varchar(15)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>12</Position>
     </column>
-    <column id="580" parent="346" name="user_nic">
+    <column id="590" parent="347" name="user_nic">
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>13</Position>
     </column>
-    <column id="581" parent="346" name="user_phone">
+    <column id="591" parent="347" name="user_phone">
       <DataType>varchar(15)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>14</Position>
     </column>
-    <column id="582" parent="346" name="user_pw">
+    <column id="592" parent="347" name="user_pw">
       <DataType>varchar(60)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>15</Position>
     </column>
-    <column id="583" parent="346" name="user_sex">
+    <column id="593" parent="347" name="user_sex">
       <DataType>tinyint(1)|0s</DataType>
       <Position>16</Position>
     </column>
-    <column id="584" parent="346" name="user_social">
+    <column id="594" parent="347" name="user_social">
       <DataType>tinyint(1)|0s</DataType>
       <Position>17</Position>
     </column>
-    <key id="585" parent="346" name="PRIMARY">
+    <key id="595" parent="347" name="PRIMARY">
       <ColNames>user_no</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="586" parent="347" name="user_dislike_cmt_no">
+    <column id="596" parent="348" name="user_dislike_cmt_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="587" parent="347" name="moddate">
+    <column id="597" parent="348" name="moddate">
       <DataType>datetime|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="588" parent="347" name="regdate">
+    <column id="598" parent="348" name="regdate">
       <DataType>datetime|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="589" parent="347" name="cmt_no">
+    <column id="599" parent="348" name="cmt_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="590" parent="347" name="user_no">
+    <column id="600" parent="348" name="user_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="591" parent="347" name="uuid">
+    <column id="601" parent="348" name="uuid">
       <DataType>varchar(45)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <key id="592" parent="347" name="PRIMARY">
+    <key id="602" parent="348" name="PRIMARY">
       <ColNames>user_dislike_cmt_no</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="593" parent="348" name="user_dislike_rev_no">
+    <column id="603" parent="349" name="user_dislike_rev_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="594" parent="348" name="moddate">
+    <column id="604" parent="349" name="moddate">
       <DataType>datetime|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="595" parent="348" name="regdate">
+    <column id="605" parent="349" name="regdate">
       <DataType>datetime|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="596" parent="348" name="rev_no">
+    <column id="606" parent="349" name="rev_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="597" parent="348" name="user_no">
+    <column id="607" parent="349" name="user_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="598" parent="348" name="uuid">
+    <column id="608" parent="349" name="uuid">
       <DataType>varchar(45)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <key id="599" parent="348" name="PRIMARY">
+    <key id="609" parent="349" name="PRIMARY">
       <ColNames>user_dislike_rev_no</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="600" parent="349" name="user_like_cmt_no">
+    <column id="610" parent="350" name="user_like_cmt_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="601" parent="349" name="moddate">
+    <column id="611" parent="350" name="moddate">
       <DataType>datetime|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="602" parent="349" name="regdate">
+    <column id="612" parent="350" name="regdate">
       <DataType>datetime|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="603" parent="349" name="cmt_no">
+    <column id="613" parent="350" name="cmt_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="604" parent="349" name="user_no">
+    <column id="614" parent="350" name="user_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="605" parent="349" name="uuid">
+    <column id="615" parent="350" name="uuid">
       <DataType>varchar(45)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <key id="606" parent="349" name="PRIMARY">
+    <key id="616" parent="350" name="PRIMARY">
       <ColNames>user_like_cmt_no</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="607" parent="350" name="user_like_cor_no">
+    <column id="617" parent="351" name="user_like_cor_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="608" parent="350" name="moddate">
+    <column id="618" parent="351" name="moddate">
       <DataType>datetime|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="609" parent="350" name="regdate">
+    <column id="619" parent="351" name="regdate">
       <DataType>datetime|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="610" parent="350" name="cor_no">
+    <column id="620" parent="351" name="cor_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="611" parent="350" name="user_no">
+    <column id="621" parent="351" name="user_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="612" parent="350" name="uuid">
+    <column id="622" parent="351" name="uuid">
       <DataType>varchar(45)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <key id="613" parent="350" name="PRIMARY">
+    <key id="623" parent="351" name="PRIMARY">
       <ColNames>user_like_cor_no</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="614" parent="351" name="user_like_loc_no">
+    <column id="624" parent="352" name="user_like_loc_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="615" parent="351" name="moddate">
+    <column id="625" parent="352" name="moddate">
       <DataType>datetime|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="616" parent="351" name="regdate">
+    <column id="626" parent="352" name="regdate">
       <DataType>datetime|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="617" parent="351" name="loc_no">
+    <column id="627" parent="352" name="loc_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="618" parent="351" name="user_no">
+    <column id="628" parent="352" name="user_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="619" parent="351" name="uuid">
+    <column id="629" parent="352" name="uuid">
       <DataType>varchar(45)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <key id="620" parent="351" name="PRIMARY">
+    <key id="630" parent="352" name="PRIMARY">
       <ColNames>user_like_loc_no</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="621" parent="352" name="user_like_rev_no">
+    <column id="631" parent="353" name="user_like_rev_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="622" parent="352" name="moddate">
+    <column id="632" parent="353" name="moddate">
       <DataType>datetime|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="623" parent="352" name="regdate">
+    <column id="633" parent="353" name="regdate">
       <DataType>datetime|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="624" parent="352" name="rev_no">
+    <column id="634" parent="353" name="rev_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="625" parent="352" name="user_no">
+    <column id="635" parent="353" name="user_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="626" parent="352" name="uuid">
+    <column id="636" parent="353" name="uuid">
       <DataType>varchar(45)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <key id="627" parent="352" name="PRIMARY">
+    <key id="637" parent="353" name="PRIMARY">
       <ColNames>user_like_rev_no</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="628" parent="353" name="user_recent_cor_no">
+    <column id="638" parent="354" name="user_recent_cor_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="629" parent="353" name="moddate">
+    <column id="639" parent="354" name="moddate">
       <DataType>datetime|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="630" parent="353" name="regdate">
+    <column id="640" parent="354" name="regdate">
       <DataType>datetime|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="631" parent="353" name="cor_no">
+    <column id="641" parent="354" name="cor_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="632" parent="353" name="user_no">
+    <column id="642" parent="354" name="user_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="633" parent="353" name="uuid">
+    <column id="643" parent="354" name="uuid">
       <DataType>varchar(45)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <key id="634" parent="353" name="PRIMARY">
+    <key id="644" parent="354" name="PRIMARY">
       <ColNames>user_recent_cor_no</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="635" parent="354" name="user_recent_loc_no">
+    <column id="645" parent="355" name="user_recent_loc_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="636" parent="354" name="moddate">
+    <column id="646" parent="355" name="moddate">
       <DataType>datetime|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="637" parent="354" name="regdate">
+    <column id="647" parent="355" name="regdate">
       <DataType>datetime|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="638" parent="354" name="loc_no">
+    <column id="648" parent="355" name="loc_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="639" parent="354" name="user_no">
+    <column id="649" parent="355" name="user_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="640" parent="354" name="uuid">
+    <column id="650" parent="355" name="uuid">
       <DataType>varchar(45)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <key id="641" parent="354" name="PRIMARY">
+    <key id="651" parent="355" name="PRIMARY">
       <ColNames>user_recent_loc_no</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="642" parent="355" name="user_user_no">
+    <column id="652" parent="356" name="user_user_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="643" parent="355" name="role_set">
+    <column id="653" parent="356" name="role_set">
       <DataType>varchar(255)|0s</DataType>
       <Position>2</Position>
     </column>
-    <foreign-key id="644" parent="355" name="FKr9gbvf29req6g5b79kcwj7oqm">
+    <foreign-key id="654" parent="356" name="FKr9gbvf29req6g5b79kcwj7oqm">
       <ColNames>user_user_no</ColNames>
       <OnDelete>cascade</OnDelete>
       <RefColNames>user_no</RefColNames>
       <RefTableName>user</RefTableName>
     </foreign-key>
-    <index id="645" parent="355" name="FKr9gbvf29req6g5b79kcwj7oqm">
+    <index id="655" parent="356" name="FKr9gbvf29req6g5b79kcwj7oqm">
       <ColNames>user_user_no</ColNames>
       <Type>btree</Type>
     </index>
-    <column id="646" parent="356" name="user_suspension_no">
+    <column id="656" parent="357" name="user_suspension_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="647" parent="356" name="moddate">
+    <column id="657" parent="357" name="moddate">
       <DataType>datetime|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="648" parent="356" name="regdate">
+    <column id="658" parent="357" name="regdate">
       <DataType>datetime|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="649" parent="356" name="end_day">
+    <column id="659" parent="357" name="end_day">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="650" parent="356" name="progress">
+    <column id="660" parent="357" name="progress">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="651" parent="356" name="rc_no">
+    <column id="661" parent="357" name="rc_no">
       <DataType>bigint(20)|0s</DataType>
       <Position>6</Position>
     </column>
-    <column id="652" parent="356" name="re_content">
+    <column id="662" parent="357" name="re_content">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>7</Position>
     </column>
-    <column id="653" parent="356" name="start_day">
+    <column id="663" parent="357" name="start_day">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>8</Position>
     </column>
-    <column id="654" parent="356" name="stop_day">
+    <column id="664" parent="357" name="stop_day">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>9</Position>
     </column>
-    <column id="655" parent="356" name="user_no">
+    <column id="665" parent="357" name="user_no">
       <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>10</Position>
     </column>
-    <key id="656" parent="356" name="PRIMARY">
+    <key id="666" parent="357" name="PRIMARY">
       <ColNames>user_suspension_no</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>

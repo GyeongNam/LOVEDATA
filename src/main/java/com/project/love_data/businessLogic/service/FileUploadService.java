@@ -287,6 +287,15 @@ public class FileUploadService {
                             "image" + File.separator +
                             "user_pic");
                     break;
+                case BIZ_REG:
+                    path = Paths.get(pathStr + File.separator +
+                            "src" + File.separator +
+                            "main" + File.separator +
+                            "resources" + File.separator +
+                            "static" + File.separator +
+                            "image" + File.separator +
+                            "biz_reg");
+                    break;
                 default :
                         path = Paths.get(pathStr + File.separator +
                                 "src" + File.separator +
@@ -338,6 +347,10 @@ public class FileUploadService {
                 case USER_PIC:
                     path = Paths.get(pathStr + File.separator +
                             "user_pic");
+                    break;
+                case BIZ_REG:
+                    path = Paths.get(pathStr + File.separator +
+                            "biz_reg");
                     break;
                 default :
                     path = Paths.get(pathStr + File.separator +
@@ -406,6 +419,8 @@ public class FileUploadService {
                 return "/image/qna";
             case USER_PIC:
                 return "/image/user_pic";
+            case BIZ_REG:
+                return "/image/biz_reg";
             default:
                 return "/image/upload";
         }

@@ -7,6 +7,7 @@ import com.project.love_data.model.resource.ReviewImage;
 import com.project.love_data.model.service.*;
 import com.project.love_data.model.user.User;
 import com.project.love_data.security.model.AuthUserModel;
+import com.project.love_data.security.model.UserRole;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -386,6 +387,12 @@ public class CourseController {
             UserDTO userDTO = null;
             if (userEntity != null) {
                 userDTO = userService.entityToDto(userEntity);
+            }
+
+            if (userDTO.getRoleSet().contains(UserRole.BIZ.toString())) {
+                model.addAttribute("isBizUploader", true);
+            } else {
+                model.addAttribute("isBizUploader", false);
             }
 
             model.addAttribute("dto", dto);

@@ -2,6 +2,7 @@ package com.project.love_data.controller;
 
 import com.project.love_data.businessLogic.MailService;
 import com.project.love_data.businessLogic.service.*;
+import com.project.love_data.dto.BizRegDTO;
 import com.project.love_data.dto.CalenderDTO;
 import com.project.love_data.dto.UserDTO;
 import com.project.love_data.model.resource.QuestionsImage;
@@ -91,6 +92,8 @@ public class UserController {
 	ReportManageService reportManageService;
 	@Autowired
 	DeletedImageInfoService deletedImageInfoService;
+	@Autowired
+	BizRegService bizRegService;
 
 
 	@RequestMapping(value = "/signup_add", method = RequestMethod.POST)
@@ -1399,6 +1402,62 @@ public class UserController {
 		}
 
 		return "redirect:/admin_user_detail/"+user_no;
+	}
+
+	@GetMapping(value = "/biz_reg")
+	public String mybizreg(Principal principal, Model model) {
+		if (principal == null) {
+			return "redirect:/login";
+		} else {
+			UserDTO userDTO = userService.DTOselect(principal.getName());
+			BizReg bizRegEntity = bizRegService.findByUserNo(userDTO.getUser_no());
+
+			model.addAttribute("UserDTO", userDTO);
+
+			if (bizRegEntity == null) {
+				BizRegDTO bizRegDTO = BizRegDTO.builder().build();
+				model.addAttribute("bizRegDTO", bizRegDTO);
+			} else {
+				BizRegDTO bizRegDTO = bizRegService.entityToDto(bizRegEntity);
+				model.addAttribute("bizRegDTO", bizRegDTO);
+			}
+
+			return "user/bizreg";
+		}
+	}
+
+	@PostMapping(value = "/biz_reg/update")
+	public String mybizregUpdate(HttpServletRequest request, HttpServletResponse response,
+								 Principal principal, Model model, @RequestParam("file")List<MultipartFile> fileList) {
+		if (principal == null) {
+			return "redirect:/login";
+		} else {
+			if (fileList == null) {
+				return "redirect:/biz_reg";
+			}
+
+			Map<String, String> reqParam = new HashMap<>();
+			User user = userService.select(principal.getName());
+
+			List<String> filePath = null;
+			Map<String, String> mypgup = new HashMap<>();
+
+			filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE, UploadFileCount.MULTIPLE,
+					1, MAX_UPLOAD_COUNT, PathType.BIZ_REG, request);
+
+			reqParam.put("bizName", request.getParameter("biz_name"));
+			reqParam.put("bizCeoName", request.getParameter("biz_ceo_name"));
+			reqParam.put("bizCall", request.getParameter("first-phone-number") + request.getParameter("second_num") + request.getParameter("third_num"));
+			if (filePath != null) {
+				reqParam.put("uuid", filePath.get(filePath.size()-1));
+				reqParam.put("url", filePath.get(0) + "/" + filePath.get(1));
+			}
+			reqParam.put("userNo", String.valueOf(user.getUser_no()));
+
+			bizRegService.registration(reqParam);
+
+			return "redirect:/biz_reg";
+		}
 	}
 
 	//alert 창 설정 class

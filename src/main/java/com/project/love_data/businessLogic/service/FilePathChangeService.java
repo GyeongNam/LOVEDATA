@@ -92,6 +92,15 @@ public class FilePathChangeService {
                             "image" + File.separator +
                             "user_pic" + File.separator + fileName);
                     break;
+                case BIZ_REG:
+                    resPath = Paths.get(pathStr + File.separator +
+                            "src" + File.separator +
+                            "main" + File.separator +
+                            "resources" + File.separator +
+                            "static" + File.separator +
+                            "image" + File.separator +
+                            "biz_reg" + File.separator + fileName);
+                    break;
                 case UPLOAD:
                     resPath = Paths.get(pathStr + File.separator +
                             "src" + File.separator +
@@ -133,6 +142,9 @@ public class FilePathChangeService {
                     break;
                 case UPLOAD:
                     resPath = Paths.get(pathStr + File.separator + "upload" + File.separator + fileName);
+                    break;
+                case BIZ_REG:
+                    resPath = Paths.get(pathStr + File.separator + "biz_reg" + File.separator + fileName);
                     break;
                 default:
                     return false;

@@ -6,5 +6,6 @@ public enum PathType {
     REV,
     USER_PIC,
     QNA,
-    UPLOAD
+    UPLOAD,
+    BIZ_REG
 }

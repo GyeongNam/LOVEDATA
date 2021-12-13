@@ -228,6 +228,11 @@
 			<div class="col-md-5 justify-content-md-center">
 				<div class="row d-flex">
 					<div class="row d-flex justify-content-between p-1">
+						<c:choose>
+							<c:when test="${isBizUploader eq true}">
+								<span class="best badge bg-primary col-2 ms-3 mb-1">업체</span>
+							</c:when>
+						</c:choose>
 						<span class="h2">${dto.cor_name}</span>
 					</div>
 					<div class="row d-flex">

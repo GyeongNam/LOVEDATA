@@ -174,6 +174,15 @@ public class FileManagementService {
                             "image" + File.separator +
                             "user_pic");
                     break;
+                case BIZ_REG:
+                    path = Paths.get(pathStr + File.separator +
+                            "src" + File.separator +
+                            "main" + File.separator +
+                            "resources" + File.separator +
+                            "static" + File.separator +
+                            "image" + File.separator +
+                            "biz_reg");
+                    break;
                 default :
                     path = Paths.get(pathStr + File.separator +
                             "src" + File.separator +
@@ -205,6 +214,10 @@ public class FileManagementService {
                 case USER_PIC:
                     path = Paths.get(pathStr + File.separator +
                             "user_pic");
+                    break;
+                case BIZ_REG:
+                    path = Paths.get(pathStr + File.separator +
+                            "biz_reg");
                     break;
                 default :
                     path = Paths.get(pathStr + File.separator +
