@@ -48,6 +48,7 @@
                         <div class="card-body center-pill">
                             <p><a href="/admin/dash" class="highlight-not-selected-text-menu">대시보드</a></p>
                             <p><a href="/admin/user/1" class="highlight-selected-text-menu">유저 관리</a></p>
+                            <p><a href="/admin/buisnessman" class="highlight-not-selected-text-menu">사업자 관리</a></p>
                             <p><a href="/admin/SendMessage" class="highlight-not-selected-text-menu">메시지 발송</a></p>
                             <p><a type="button" class="accordion highlight-not-selected-text-menu" data-toggle="collapse" data-target="#service_collapse" aria-expanded="false">공지사항과 문의사항</a></p>
                             <div id="service_collapse" class="panel-collapse collapse">
@@ -76,7 +77,6 @@
                     <th scope="col">유저 이름</th>
                     <th scope="col">가입 날짜</th>
                     <th scope="col">상태</th>
-                    <th scope="col">신고 게시물</th>
                     <th scope="col">가입 방식</th>
                 </thead>
                 <tbody id="tableBody">
@@ -93,7 +93,6 @@
                                 <td>활동</td>
                             </c:when>
                         </c:choose>
-                        <td>???</td>
                         <td>${user.social_info}</td>
                     </tr>
                 </tbody>

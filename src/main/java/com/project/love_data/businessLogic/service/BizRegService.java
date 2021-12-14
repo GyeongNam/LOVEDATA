@@ -241,4 +241,9 @@ public class BizRegService {
 
         repository.deleteByUuid(uuid);
     }
+
+    public List<BizReg> findAllByUserAll(){
+        Optional<List<BizReg>> item = repository.findAllByUserAll();
+        return item.orElse(new ArrayList<>());
+    }
 }

@@ -1459,6 +1459,102 @@ public class UserController {
 			return "redirect:/biz_reg";
 		}
 	}
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping("/admin/buisnessman")
+	public String buisnessman(Model model){
+
+		List<BizReg> bizReg = bizRegService.findAllByUserAll();
+		model.addAttribute("bizReg",bizReg);
+
+		return "admin/admin_buisnessman";
+	}
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping("/admin/buisnessman_detail/{num}")
+	public String buisnessman_page(Model model,@PathVariable("num") Long num){
+
+		BizReg bizReg = bizRegService.findByUserNo(num);
+		User user = userService.select(num);
+		model.addAttribute("user",user);
+		model.addAttribute("bizReg",bizReg);
+
+		return "admin/admin_buisnessman_detail";
+	}
+
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@ResponseBody
+	@RequestMapping(value = "/admin/buisnessman_file_download/{num}", method = RequestMethod.GET)
+	public void doDownloadFile(HttpServletRequest request, HttpServletResponse response, @PathVariable("num") Long num) throws IOException {
+
+		BizReg bizReg = bizRegService.findByUserNo(num);
+		String fileName = bizReg.getUuid();
+		if("Windows_NT".equals(System.getenv().get("OS"))) {
+			String r = request.getSession().getServletContext().getRealPath("/");
+			int idx = r.indexOf("main");
+			String imgpath = r.substring(0, idx) + "main/resources/static/image/biz_reg/" + fileName;
+			response.setContentType("application/octer-stream");
+			response.setHeader("Content-Transfer-Encoding", "binary;");
+			response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+			try {
+				OutputStream os = response.getOutputStream();
+				FileInputStream fis = new FileInputStream(imgpath);
+
+				int count = 0;
+				byte[] bytes = new byte[512];
+
+				while ((count = fis.read(bytes)) != -1 ) {
+					os.write(bytes, 0, count);
+				}
+
+				fis.close();
+				os.close();
+			} catch (FileNotFoundException ex) {
+				System.out.println("FileNotFoundException");
+			}
+
+		}else {
+			String imgpath = Linux_Image_Upload_Path+"biz_reg/" + fileName;
+
+			response.setContentType("application/octer-stream");
+			response.setHeader("Content-Transfer-Encoding", "binary;");
+			response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+			try {
+				OutputStream os = response.getOutputStream();
+				FileInputStream fis = new FileInputStream(imgpath);
+
+				int count = 0;
+				byte[] bytes = new byte[512];
+
+				while ((count = fis.read(bytes)) != -1 ) {
+					os.write(bytes, 0, count);
+				}
+
+				fis.close();
+				os.close();
+			} catch (FileNotFoundException ex) {
+				System.out.println("FileNotFoundException");
+			}
+		}
+	}
+
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping("/admin/buisnessman_start/{num}")
+	public String buisnessman_start(Model model,@PathVariable("num") Long num){
+
+		BizReg bizReg = bizRegService.findByUserNo(num);
+		bizReg.setCertified(true);
+		bizRegService.save(bizReg);
+
+		User user = userService.select(num);
+		user.addUserRole(UserRole.BIZ);
+		userService.update(user);
+		model.addAttribute("user",user);
+		model.addAttribute("bizReg",bizReg);
+
+		String string = user.getUser_nic()+" 님 신청하신 LOVEDATA 사업자 등록이 정상적으로 처리되었습니다.";
+		mailService.adminmailSend(user.getUser_email(),string);
+
+		return "admin/admin_buisnessman_detail";
+	}
 
 	//alert 창 설정 class
 	public class ScriptUtils {

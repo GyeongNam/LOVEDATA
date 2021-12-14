@@ -390,7 +390,11 @@ public class ServiceCenterController {
 
 
     @GetMapping(value = "/ServiceCenter/Policy")
-    public String Policy(Model model, HttpServletResponse response)  {
+    public String Policy(Model model, HttpServletRequest request )  {
+        String affiliate =request.getParameter("affiliate");
+        if(affiliate != null){
+            model.addAttribute("affiliate",1);
+        }
         Policy policy = new Policy();
         policy.model_add(model, policy);
         return "/user/Service_center_po";

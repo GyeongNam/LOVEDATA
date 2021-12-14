@@ -24,7 +24,7 @@
             font-family: 'Jua', sans-serif;
         }
     </style>
-    <title>Admin Dashboard</title>
+    <title>Admin Buisnessman</title>
 </head>
 <%@ include file="../layout/header.jsp" %>
 <body class="bg-light">
@@ -47,8 +47,8 @@
                         <div class="card-body center-pill">
                             <p><a href="/admin/dash" class="highlight-not-selected-text-menu">대시보드</a></p>
                             <p><a href="/admin/user/1" class="highlight-not-selected-text-menu">유저 관리</a></p>
-                            <p><a href="/admin/buisnessman" class="highlight-not-selected-text-menu">사업자 관리</a></p>
-                            <p><a href="/admin/SendMessage" class="highlight-selected-text-menu">메시지 발송</a></p>
+                            <p><a href="/admin/buisnessman" class="highlight-selected-text-menu">사업자 관리</a></p>
+                            <p><a href="/admin/SendMessage" class="highlight-not-selected-text-menu">메시지 발송</a></p>
                             <p><a type="button" class="accordion highlight-not-selected-text-menu" data-toggle="collapse" data-target="#service_collapse" aria-expanded="false">공지사항과 문의사항</a></p>
                             <div id="service_collapse" class="panel-collapse collapse">
                                 <p>
@@ -70,60 +70,45 @@
         <div class="row justify-content-md-start">
             <div class="tab-content" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="recent-post" role="tabpanel" aria-labelledby="recent-post-tab">
-                    <h3>메세지 발송</h3>
+                    <h3>사업자 관리</h3>
                     <div class="row my-3">
-<%--                            <div class="collapse navbar-collapse d-flex justify-content-end" id="bs-example-navbar-collapse-1">--%>
-
-<%--                                    <ul class="navbar-nav"></ul>--%>
-<%--                                    <select class="select2-dropdown mx-2" id="Notice_select">--%>
-<%--                                        <option value="1" selected>유저 이름</option>--%>
-<%--                                        <option value="2">유저 닉네임</option>--%>
-<%--                                    </select>--%>
-<%--                                    <input type="text" class="input-box mx-2" placeholder="검색" id="keyword" name="keyword"/>--%>
-<%--                                    <button class="btn btn-primary mx-2" type="button" id="searchBtn" onclick="SMSUsearch()">Search</button>--%>
-
-<%--                            </div>--%>
                             <table class="tables text-center" id="searchResultTable">
                                 <thead>
-                                <th scope="col"><input type='checkbox' name='userck' onclick='selectAll(this)'/></th>
                                 <th scope="col">유저 번호</th>
-                                <th scope="col">유저 닉네임</th>
-                                <th scope="col">유저 이름</th>
-                                <th scope="col">가입 날짜</th>
-                                <th scope="col">상태</th>
-                                <th scope="col">가입 방식</th>
+                                <th scope="col">사업체 이름</th>
+                                <th scope="col">대표자 이름</th>
+                                <th scope="col">연락처</th>
+                                <th scope="col">인증 상태</th>
+                                <th scope="col">신청 날짜</th>
                                 </thead>
                                 <tbody id="tableBody">
-                                <c:forEach varStatus="index" var="userlist" items="${user}">
-                                <tr style="cursor:hand">
-
-                                    <td><input type="checkbox" id="checkuserno${index.current}" name="userck" value="${userlist.user_no}" ></td>
-                                    <td>${userlist.user_no}</td>
-                                    <td>${userlist.user_nic}</td>
-                                    <td>${userlist.user_name}</td>
-                                    <td>${userlist.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</td>
+                                <c:forEach varStatus="index" var="bizreg" items="${bizReg}">
                                     <c:choose>
-                                        <c:when test="${userlist.user_Activation eq false}">
-                                            <td>정지</td>
+                                        <c:when test="${bizreg.certified eq false}">
+                                            <tr style="cursor:hand; background: #ffdef2;" onclick="location.href='/admin/buisnessman_detail/${bizreg.userNo}'">
+                                            <td>${bizreg.userNo}</td>
+                                            <td>${bizreg.bizName}</td>
+                                            <td>${bizreg.bizCeoName}</td>
+                                            <td>${bizreg.bizCall}</td>
+                                            <td>${bizreg.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</td>
+                                            <td>대기</td>
+                                            </tr>
                                         </c:when>
-                                        <c:when test="${userlist.user_Activation eq true}">
-                                            <td>활동</td>
+                                        <c:when test="${bizreg.certified eq true}">
+                                            <tr style="cursor:hand; background: #e2eeff;" onclick="location.href='/admin/buisnessman_detail/${bizreg.userNo}'">
+                                                <td>${bizreg.userNo}</td>
+                                                <td>${bizreg.bizName}</td>
+                                                <td>${bizreg.bizCeoName}</td>
+                                                <td>${bizreg.bizCall}</td>
+                                                <td>${bizreg.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</td>
+                                                <td>완료</td>
+                                            </tr>
                                         </c:when>
                                     </c:choose>
-                                    <td>${userlist.social_info}</td>
-                                </tr>
                                 </c:forEach>
                                 </tbody>
                             </table>
                         </div>
-                    <div class="row my-3">
-                        <div class="">
-                        <h5>메세지 내용</h5>
-                        <textarea placeholder="SMS는 45자를 넘을 수 없습니다." class="sendmsgtext" id="smscontent"></textarea>
-                        <button class="" onclick="putSMSsend()">SMS 전송</button>
-                        <button class="" onclick="putEmailsend()">이메일 전송</button>
-                        </div>
-                    </div>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="hot-post" role="tabpanel" aria-labelledby="hot-post-tab">

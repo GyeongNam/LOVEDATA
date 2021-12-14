@@ -103,18 +103,18 @@
 			</div>
 
 
-			<div class="main-2-rightBox">
-				<div class="icon-box">
-
+			<div class=" main-2-rightBox">
+				<div class="mx-1 icon-box">
 					<a href="/ServiceCenter/Notice/1" >
 						<img class="main-2btpic" src="/image/icon/home/notice.jpg" href="/ServiceCenter/Notice/1">
-<%--						공지사항--%>
+					</a>
+					<a href="/ServiceCenter/Policy?affiliate=1" >
+						<img class="main-2btpic" src="/image/icon/home/affiliate.png" href="/ServiceCenter/Notice/1">
 					</a>
 				</div>
-				<div class="icon-box">
+				<div class="mx-2 icon-box">
 					<a href="/ServiceCenter/Questions/1">
 						<img class="main-2btpic" src="/image/icon/home/qa.jpg" href="/ServiceCenter/Questions/1">
-<%--						문의사항--%>
 					</a>
 				</div>
 			</div>
@@ -146,6 +146,24 @@
 							<span class="cosname">${hot_loc.loc_name}</span>
 						</div>
 						</c:forEach>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="full3">
+		<div class="container2">
+			<div class="flex-page2">
+				<div class="cuchon">
+					<h2>사업자 장소</h2>
+					<div class="cuchon-img">
+						확인
+					</div>
+				</div>
+				<div class="jibcok">
+					<h2>이번달 최고의 장소</h2>
+					<div class="cuchon-img">
+						확인2
 					</div>
 				</div>
 			</div>

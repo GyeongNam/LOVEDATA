@@ -18,6 +18,9 @@ public interface BizRegRepository extends JpaRepository<BizReg, Long>,
     @Query(value = "SELECT * FROM bizreg br WHERE br.user_no = :user_no", nativeQuery = true)
     Optional<List<BizReg>> findAllByUserNo(@Param("user_no") Long userNo);
 
+    @Query(value = "SELECT * FROM bizreg br ORDER BY br.certified desc", nativeQuery = true)
+    Optional<List<BizReg>> findAllByUserAll();
+
     @Query(value = "SELECT * FROM bizreg br WHERE br.user_no = :user_no AND br.deleted = :deleted", nativeQuery = true)
     Optional<List<BizReg>> findAllByUserNoAndDeleted(@Param("user_no") Long userNo, @Param("deleted") Boolean deleted);
 
