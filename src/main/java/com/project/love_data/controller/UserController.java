@@ -1576,7 +1576,7 @@ public class UserController {
 		String string = user.getUser_nic()+" 님 신청하신 LOVEDATA 사업자 등록이 정상적으로 처리되었습니다.";
 		mailService.adminmailSend(user.getUser_email(),string);
 
-		return "admin/admin_buisnessman_detail";
+		return "redirect:/admin/buisnessman_detail/"+num;
 	}
 
 	//alert 창 설정 class
