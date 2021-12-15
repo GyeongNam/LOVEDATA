@@ -135,56 +135,7 @@
         </div>
 
     </div>
-    <div class="full3">
-        <div class="container2">
-            <div class="flex-page2">
-                <div class="cuchon">
-                    <h2>추천 코스</h2>
-                    <c:forEach items="${corhotList}" var="hot_cor">
-                        <div class="cuchon-img">
-                            <a href="/service/cor_detail?corNo=${hot_cor.cor_no}">
-                                <img name="" class="cos_img" src="${hot_cor.thumbnail}">
-                            </a>
-                            <span class="cosname">${hot_cor.cor_name}</span>
-                        </div>
-                    </c:forEach>
-                </div>
-                <div class="jibcok">
-                    <h2>인기 장소</h2>
-                    <div class="">
-                        <c:forEach items="${lochotList}" var="hot_loc">
-                            <div class="cuchon-img">
-                                <a href="/service/loc_detail?locNo=${hot_loc.loc_no}">
-                                    <img name="" class="cos_img" src="${hot_loc.thumbnail}" href="">
-                                </a>
-                                <span class="cosname">${hot_loc.loc_name}</span>
-                            </div>
-                        </c:forEach>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="full3">
-        <div class="container2">
-            <div class="flex-page2">
-                <div class="cuchon">
-                    <h2>사업자 장소</h2>
-                    <div class="cuchon-img">
-                        확인
-                    </div>
-                </div>
-                <div class="jibcok">
-                    <h2>이번달 최고의 장소</h2>
-                    <div class="cuchon-img">
-                        확인2
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-	</div>
 	<div class="full3">
 		<div class="container2">
 			<div class="flex-page2">
