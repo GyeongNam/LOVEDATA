@@ -246,4 +246,9 @@ public class BizRegService {
         Optional<List<BizReg>> item = repository.findAllByUserAll();
         return item.orElse(new ArrayList<>());
     }
+
+    public List<BizReg> findAllByCertifiedTrue(){
+        Optional<List<BizReg>> item = repository.findAllByCertified(true);
+        return item.orElse(new ArrayList<>());
+    }
 }

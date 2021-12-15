@@ -156,20 +156,31 @@
 			<div class="flex-page2">
 				<div class="cuchon">
 					<h2>사업자 장소</h2>
-					<div class="cuchon-img">
-						확인
-					</div>
+					<c:forEach items="${bizloc}" var="bizloc">
+						<div class="cuchon-img">
+							<a href="/service/loc_detail?locNo=${bizloc.loc_no}">
+								<img name="" class="cos_img" src="${bizloc.thumbnail}" href="">
+							</a>
+							<span class="cosname">${bizloc.loc_name}</span>
+						</div>
+					</c:forEach>
 				</div>
 				<div class="jibcok">
-					<h2>이번달 최고의 장소</h2>
-					<div class="cuchon-img">
-						확인2
+					<h2>이달의 장소</h2>
+					<div class="">
+<%--						<c:forEach items="${lochotList}" var="hot_loc">--%>
+<%--							<div class="cuchon-img">--%>
+<%--								<a href="/service/loc_detail?locNo=${hot_loc.loc_no}">--%>
+<%--									<img name="" class="cos_img" src="${hot_loc.thumbnail}" href="">--%>
+<%--								</a>--%>
+<%--								<span class="cosname">${hot_loc.loc_name}</span>--%>
+<%--							</div>--%>
+<%--						</c:forEach>--%>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-
 </div>
 
 </body>
