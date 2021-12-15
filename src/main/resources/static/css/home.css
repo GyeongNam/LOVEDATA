@@ -401,3 +401,35 @@ html{
 	from {opacity: .4}
 	to {opacity: 1}
 }
+
+.instart_content{
+	position: relative;
+}
+.instart_back{
+	position: absolute;
+	z-index: 1;
+	margin-top: 10%;
+	width: 50%;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -10%)
+}
+.instart_img{
+	position: absolute;
+	z-index: 2;
+	margin-top: 20%;
+	width: 40%;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -25%)
+}
+
+.instart_text{
+	position: absolute;
+	z-index: 2;
+	margin-top: 55%;
+	width: 40%;
+	top: 50%;
+	left: 50%;
+	transform: translate(-75%, -25%)
+}

@@ -10,6 +10,9 @@ import com.project.love_data.model.service.Location;
 import com.project.love_data.model.user.User;
 import com.project.love_data.security.model.UserRole;
 import lombok.extern.log4j.Log4j2;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -17,6 +20,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.*;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -37,7 +43,7 @@ public class HomeController {
     BizRegService bizRegService;
 
     @GetMapping("/" )
-    public String home(Model model){
+    public String home(Model model) throws JSONException, IOException {
         List<Location> tempLocationList = locService.hotLocationList(4, 7, 0);
         List<Course> tempCourseList = corService.hotCourseList(4, 7, 0);
         List<BizReg> bizRegs = bizRegService.findAllByCertifiedTrue();
@@ -67,9 +73,36 @@ public class HomeController {
             model.addAttribute("bizloc", locations.subList(0, 4));
         }
 
+        String url = "https://graph.facebook.com/v13.0/105161258693771/feed?fields=attachments,message&limit=1&access_token=EAAMwisXrG3oBAFkR32U98cCPk4wTndujD4jrUqZAxsI9L2I52H7WrJ8AQKYZC2n7874aKTqzNAIiMx5ZCSPLVRdFiLNAxUhH5u8uVjp8jYbMg4pHH1pmXEuFtoKYoGHZC62QhRs8sfhwYLQaMgrNom9nbJ725oLpRs9MBQHLsd08mpXK1mJV";
+        JSONObject json = readJsonFromUrl(url);
+
+        model.addAttribute("instart",json);
         model.addAttribute("lochotList", tempLocationList);
         model.addAttribute("corhotList", tempCourseList);
 
         return "home";
+    }
+    private static String jsonReadAll(Reader reader) throws IOException {
+        StringBuilder sb = new StringBuilder();
+
+        int cp;
+        while((cp = reader.read()) != -1){
+            sb.append((char) cp);
+        }
+
+        return sb.toString();
+    }
+
+    private static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
+        InputStream is = new URL(url).openStream();
+
+        try{
+            BufferedReader br = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+            String jsonText = jsonReadAll(br);
+            JSONObject json = new JSONObject(jsonText);
+            return json;
+        } finally {
+            is.close();
+        }
     }
 }
