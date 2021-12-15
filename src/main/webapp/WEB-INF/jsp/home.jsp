@@ -231,19 +231,28 @@
 				</div>
 				<div class="jibcok">
 					<h2>이달의 장소</h2>
-					<div class="">
-<%--						<c:forEach items="${lochotList}" var="hot_loc">--%>
-<%--							<div class="cuchon-img">--%>
-<%--								<a href="/service/loc_detail?locNo=${hot_loc.loc_no}">--%>
-<%--									<img name="" class="cos_img" src="${hot_loc.thumbnail}" href="">--%>
-<%--								</a>--%>
-<%--								<span class="cosname">${hot_loc.loc_name}</span>--%>
-<%--							</div>--%>
-<%--						</c:forEach>--%>
+					<div class="instart_content" >
+						<img class="instart_back" src="/image/icon/home/facebook.png">
+
+						<div class="slideshow-container3"></div>
+						<span class="instart_text"></span>
+
+						<div style="text-align:center">
+							<span class="dot3"></span>
+							<span class="dot3"></span>
+							<span class="dot3"></span>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+	</div>
+
+	<div
+			class="fb-like"
+			data-share="true"
+			data-width="450"
+			data-show-faces="true">
 	</div>
 </div>
 
@@ -254,4 +263,36 @@
 <script type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
 <script defer type="text/javascript" src="/resource/js/bootstrap.js"></script>
+
+<script>
+	var instar = JSON.stringify(${instart});
+
+	if(instar != null){
+
+		var instar2 = JSON.stringify(${instart.get("data").get(0)});
+
+		if(instar2.indexOf("message")>0){
+			var root = ${instart.get("data").get(0)};
+			var title = root.message;
+			$(".instart_text").text(title);
+		}
+
+		if(instar2.indexOf("attachments")>0){
+			var root = ${instart.get("data").get(0)};
+			var img_url = root.attachments.data[0].subattachments.data;
+			var img_size = root.attachments.data[0].subattachments.data.length;
+			for(i=0; i<img_size; i++){
+				var tag = "<div class='mySlides3 fade'>"+
+						"<img class='instart_img slide1' src='"+
+						img_url[i].media.image.src+
+						"'></div>";
+				$(".slideshow-container3").append(tag);
+			}
+
+		}
+	}
+
+</script>
+
+
 </html>
