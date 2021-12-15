@@ -124,16 +124,32 @@ public class BizRegService {
     public void save(BizReg entity) {
         repository.save(entity);
     }
-    
+
     public BizReg registration(Map<String, String> reqParam) {
         Optional<User> userItem = userRepository.findById(Long.valueOf(reqParam.get("userNo")));
+        BizReg bizRegEntity = findByUserNoAndDeleted(userItem.get().getUser_no(), false);
 
         if (!userItem.isPresent()) {
             return null;
         }
 
-        if (findByUserNoAndDeleted(userItem.get().getUser_no(), false) != null) {
-            return null;
+        if (bizRegEntity != null) {
+            bizRegEntity.setUserNo(Long.valueOf(reqParam.get("userNo")));
+            bizRegEntity.setBizCall(reqParam.get("bizCall"));
+            bizRegEntity.setBizCeoName(reqParam.get("bizCeoName"));
+            bizRegEntity.setBizName(reqParam.get("bizName"));
+
+            if (reqParam.containsKey("uuid")) {
+                bizRegEntity.setUuid(reqParam.get("uuid"));
+            }
+
+            if (reqParam.containsKey("url")) {
+                bizRegEntity.setUrl(reqParam.get("url"));
+            }
+
+            save(bizRegEntity);
+
+            return select(reqParam.get("uuid"));
         }
 
         BizReg entity = BizReg.builder()

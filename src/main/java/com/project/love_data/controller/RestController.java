@@ -46,6 +46,8 @@ public class RestController {
     UserDislikeRevService userDislikeRevService;
     @Autowired
     ReportManageService reportManageService;
+    @Autowired
+    BizRegService bizRegService;
     DefaultLocalDateTimeFormatter defaultDateTimeFormatter = new DefaultLocalDateTimeFormatter();
 
     @PostMapping("/authenticationCheck")

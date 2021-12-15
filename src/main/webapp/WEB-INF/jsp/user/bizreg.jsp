@@ -148,7 +148,7 @@
 									</div>
 									<div class="file-edit-icon">
 										<input type="file" name="file" id="file" class="upload-box upload-plus" accept="image/*" onchange="setmyimg(event);"/>
-										<button id="img-del" type="button" class="preview-de" onclick="picdel()">삭제</button>
+										<button id="img-del" type="button" class="preview-de" onclick="resetFileForm($(file))">이미지 삭제</button>
 									</div>
 								</div>
 							</div>
@@ -156,6 +156,7 @@
 					</tr>
 				</table>
 				<button type="submit">저장</button>
+				<button type="button" onclick="removeBizReg('${bizRegDTO.brNo}')">삭제</button>
 			</div>
 		</form>
 	</div>
@@ -163,10 +164,25 @@
 	</div>
 </body>
 <!--   부트스트랩 js 사용  -->
-<script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script defer type="text/javascript" src="/resource/js/bootstrap.js"></script>
-<script defer src="/js/mypage.js"></script>
-<script>
+<%--<script defer src="/js/mypage.js"></script>--%>
+<script defer>
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+
+    //휴대폰번호 나누기
+    $(document).ready(function () {
+        var no = $("#numnum").val();
+        var fnum = no.substring(0,3);
+        var snum = no.substring(3,7);
+        var lnum = no.substring(7,11);
+        console.log(fnum +"  " + snum+"  " + lnum);
+        $("#firnum").val(fnum);
+        $("#twonum").val(snum);
+        $("#lastnum").val(lnum);
+    });
+
 	function setmyimg(event) {
 		for (var image of event.target.files) {
 			var reader = new FileReader();
@@ -176,6 +192,27 @@
 			};
 			reader.readAsDataURL(image);
 		}
+	}
+
+    function removeBizReg(brNo) {
+        var form = document.createElement("form");
+        form.setAttribute("method", "Post");
+        form.setAttribute("action", "/biz_reg_delete");
+
+        var hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type", "hidden");
+        hiddenField.setAttribute("name", "brNo");
+        hiddenField.setAttribute("value", brNo);
+        form.appendChild(hiddenField);
+
+        hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type", "hidden");
+        hiddenField.setAttribute("name", "${_csrf.parameterName}");
+        hiddenField.setAttribute("value", "${_csrf.token}");
+        form.appendChild(hiddenField);
+
+        document.body.appendChild(form);
+        form.submit();
 	}
 </script>
 </html>

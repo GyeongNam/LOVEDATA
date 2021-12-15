@@ -1410,7 +1410,7 @@ public class UserController {
 			return "redirect:/login";
 		} else {
 			UserDTO userDTO = userService.DTOselect(principal.getName());
-			BizReg bizRegEntity = bizRegService.findByUserNo(userDTO.getUser_no());
+			BizReg bizRegEntity = bizRegService.findByUserNoAndDeleted(userDTO.getUser_no(), false);
 
 			model.addAttribute("UserDTO", userDTO);
 
@@ -1459,6 +1459,29 @@ public class UserController {
 			return "redirect:/biz_reg";
 		}
 	}
+
+	@PostMapping("/biz_reg_delete")
+	public String deleteBizReg(HttpServletRequest request, Model model) {
+		String strBrNo = request.getParameter("brNo");
+
+		if (strBrNo == null) {
+			return "redirect:/biz_reg";
+		}
+		Long brNo = Long.parseLong(strBrNo);
+
+		BizReg entity = bizRegService.select(brNo);
+
+		if (entity == null) {
+			return "redirect:/biz_reg";
+		}
+
+		if (!bizRegService.delete(brNo)) {
+			return "redirect:/biz_reg";
+		}
+
+		return "redirect:/biz_reg";
+	}
+
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/admin/buisnessman")
 	public String buisnessman(Model model){

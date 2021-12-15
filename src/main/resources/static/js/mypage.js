@@ -202,8 +202,6 @@ function nick_check(){
 
 //프로필 사진 삭제
 function picdel(){
-    console.log("요기와요js");
-
     $.ajax({
         url: "/mypropicdel",
         dataType: 'json',
@@ -223,6 +221,20 @@ function picdel(){
             console.log(datas);
         }
     });
+}
+
+// 인풋 이미지 삭제
+function resetFileForm(elFileForm){
+    var orgParent = elFileForm.parentNode;
+    var orgNext = elFileForm.nextSibling;
+
+    var tmp = document.createElement('form');
+    tmp.appendChild(elFileForm);
+
+    tmp.reset();
+
+    orgParent.insertBefore(elFileForm,orgNext);
+
 }
 
 function submypage(){
