@@ -73,7 +73,7 @@ public class HomeController {
             model.addAttribute("bizloc", locations.subList(0, 4));
         }
 
-//        String url = "https://graph.facebook.com/v13.0/105161258693771/feed?fields=attachments,message&limit=1&access_token=EAAMwisXrG3oBAFkR32U98cCPk4wTndujD4jrUqZAxsI9L2I52H7WrJ8AQKYZC2n7874aKTqzNAIiMx5ZCSPLVRdFiLNAxUhH5u8uVjp8jYbMg4pHH1pmXEuFtoKYoGHZC62QhRs8sfhwYLQaMgrNom9nbJ725oLpRs9MBQHLsd08mpXK1mJV";
+//        String url = "https://graph.facebook.com/v12.0/105161258693771/feed?fields=attachments,message&limit=1&access_token=";
 //        JSONObject json = readJsonFromUrl(url);
 //
 //        model.addAttribute("instart",json);
