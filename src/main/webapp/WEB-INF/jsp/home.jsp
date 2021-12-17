@@ -183,7 +183,7 @@
 				<div class="jibcok">
 					<h2>이달의 장소</h2>
 					<div class="instart_content" >
-						<img class="instart_back" src="/image/icon/home/facebook.png" onclick="location.href='https://www.facebook.com/21lovedata'">
+						<img class="instart_back" src="/image/icon/home/facebook.png" onclick="window.open('about:blank').location.href='https://www.facebook.com/21lovedata'">
 
 						<div class="slideshow-container3"></div>
 						<span class="instart_text"></span>

@@ -123,18 +123,21 @@
                 </tbody>
             </table>
         </div>
-        <div class="tab-content row" >
+        <div class="tab-content row justify-content-center" >
             <h2>사업자 등록증</h2>
             <div class="d-flex">
                 <button class="mx-2 btn-primary" onclick="location.href='/admin/buisnessman_file_download/${bizReg.userNo}'">등록증 다운로드</button>
-                <c:choose>
-                    <c:when test="${bizReg.certified eq false}">
-                        <button class="mx-2 btn-primary" onclick="location.href='/admin/buisnessman_start/${bizReg.userNo}'">등록하기</button>
-                    </c:when>
-                </c:choose>
             </div>
 
-            <img class="mx-2 my-2 d-flex justify-content-center" src="${bizReg.url}">
+            <img style="width: 100%;" class="mx-2 my-2 d-flex" src="${bizReg.url}">
+
+            <c:choose>
+                <c:when test="${bizReg.certified eq false}">
+                    <div class="d-flex">
+                        <button style="width: 100%;"  class="mx-2 my-2 btn-primary" onclick="location.href='/admin/buisnessman_start/${bizReg.userNo}'">승인</button>
+                    </div>
+                </c:when>
+            </c:choose>
 
         </div>
     </div>

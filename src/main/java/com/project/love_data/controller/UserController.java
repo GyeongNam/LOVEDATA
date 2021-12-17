@@ -1524,8 +1524,8 @@ public class UserController {
 	@GetMapping("/admin/buisnessman_detail/{num}")
 	public String buisnessman_page(Model model,@PathVariable("num") Long num){
 
-		BizReg bizReg = bizRegService.findByUserNo(num);
-		User user = userService.select(num);
+		BizReg bizReg = bizRegService.select(num);
+		User user = userService.select(bizReg.getUserNo());
 		model.addAttribute("user",user);
 		model.addAttribute("bizReg",bizReg);
 

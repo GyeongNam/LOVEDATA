@@ -78,30 +78,44 @@
                                 <th scope="col">사업체 이름</th>
                                 <th scope="col">대표자 이름</th>
                                 <th scope="col">연락처</th>
-                                <th scope="col">인증 상태</th>
                                 <th scope="col">신청 날짜</th>
+                                <th scope="col">인증 상태</th>
                                 </thead>
                                 <tbody id="tableBody">
                                 <c:forEach varStatus="index" var="bizreg" items="${bizReg}">
                                     <c:choose>
-                                        <c:when test="${bizreg.certified eq false}">
-                                            <tr style="cursor:hand; background: #ffdef2;" onclick="location.href='/admin/buisnessman_detail/${bizreg.userNo}'">
+                                        <c:when test="${bizreg.deleted eq true}">
+                                            <tr style="cursor:hand; background: #ffdef2;" onclick="location.href='/admin/buisnessman_detail/${bizreg.brNo}'">
                                             <td>${bizreg.userNo}</td>
                                             <td>${bizreg.bizName}</td>
                                             <td>${bizreg.bizCeoName}</td>
                                             <td>${bizreg.bizCall}</td>
                                             <td>${bizreg.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</td>
-                                            <td>대기</td>
+                                                <c:choose>
+                                                    <c:when test="${bizreg.certified eq true}">
+                                                        <td>완료</td>
+                                                    </c:when>
+                                                    <c:when test="${bizreg.certified eq false}">
+                                                        <td>대기</td>
+                                                    </c:when>
+                                                </c:choose>
                                             </tr>
                                         </c:when>
-                                        <c:when test="${bizreg.certified eq true}">
-                                            <tr style="cursor:hand; background: #e2eeff;" onclick="location.href='/admin/buisnessman_detail/${bizreg.userNo}'">
+                                        <c:when test="${bizreg.deleted eq false}">
+                                            <tr style="cursor:hand; background: #e2eeff;" onclick="location.href='/admin/buisnessman_detail/${bizreg.brNo}'">
                                                 <td>${bizreg.userNo}</td>
                                                 <td>${bizreg.bizName}</td>
                                                 <td>${bizreg.bizCeoName}</td>
                                                 <td>${bizreg.bizCall}</td>
                                                 <td>${bizreg.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</td>
-                                                <td>완료</td>
+                                                <c:choose>
+                                                    <c:when test="${bizreg.certified eq true}">
+                                                        <td>완료</td>
+                                                    </c:when>
+                                                    <c:when test="${bizreg.certified eq false}">
+                                                        <td>대기</td>
+                                                    </c:when>
+                                                </c:choose>
                                             </tr>
                                         </c:when>
                                     </c:choose>
