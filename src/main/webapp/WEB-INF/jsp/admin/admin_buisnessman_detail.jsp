@@ -126,7 +126,7 @@
         <div class="tab-content row justify-content-center" >
             <h2>사업자 등록증</h2>
             <div class="d-flex">
-                <button class="mx-2 btn-primary" onclick="location.href='/admin/buisnessman_file_download/${bizReg.userNo}'">등록증 다운로드</button>
+                <button class="mx-2 btn-primary" onclick="location.href='/admin/buisnessman_file_download/${bizReg.brNo}'">등록증 다운로드</button>
             </div>
 
             <img style="width: 100%;" class="mx-2 my-2 d-flex" src="${bizReg.url}">
@@ -134,7 +134,7 @@
             <c:choose>
                 <c:when test="${bizReg.certified eq false}">
                     <div class="d-flex">
-                        <button style="width: 100%;"  class="mx-2 my-2 btn-primary" onclick="location.href='/admin/buisnessman_start/${bizReg.userNo}'">승인</button>
+                        <button style="width: 100%;"  class="mx-2 my-2 btn-primary" onclick="location.href='/admin/buisnessman_start/${bizReg.brNo}'">승인</button>
                     </div>
                 </c:when>
             </c:choose>

@@ -1537,7 +1537,7 @@ public class UserController {
 	@RequestMapping(value = "/admin/buisnessman_file_download/{num}", method = RequestMethod.GET)
 	public void doDownloadFile(HttpServletRequest request, HttpServletResponse response, @PathVariable("num") Long num) throws IOException {
 
-		BizReg bizReg = bizRegService.findByUserNo(num);
+		BizReg bizReg = bizRegService.select(num);
 		String fileName = bizReg.getUuid();
 		if("Windows_NT".equals(System.getenv().get("OS"))) {
 			String r = request.getSession().getServletContext().getRealPath("/");
@@ -1592,11 +1592,11 @@ public class UserController {
 	@GetMapping("/admin/buisnessman_start/{num}")
 	public String buisnessman_start(Model model,@PathVariable("num") Long num){
 
-		BizReg bizReg = bizRegService.findByUserNo(num);
+		BizReg bizReg = bizRegService.select(num);
 		bizReg.setCertified(true);
 		bizRegService.save(bizReg);
 
-		User user = userService.select(num);
+		User user = userService.select(bizReg.getUserNo());
 		user.addUserRole(UserRole.BIZ);
 		userService.update(user);
 		model.addAttribute("user",user);
