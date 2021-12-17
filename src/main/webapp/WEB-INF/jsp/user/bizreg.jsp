@@ -154,6 +154,19 @@
 							</div>
 						</td>
 					</tr>
+					<tr>
+						<td>현재 상태</td>
+						<td id="sec_line">
+							<c:choose>
+								<c:when test="${bizRegDTO.certified eq true}">
+									<span>활성화</span>
+								</c:when>
+								<c:otherwise>
+									<span>비활성화</span>
+								</c:otherwise>
+							</c:choose>
+						</td>
+					</tr>
 				</table>
 				<button type="submit">저장</button>
 				<button type="button" onclick="removeBizReg('${bizRegDTO.brNo}')">삭제</button>

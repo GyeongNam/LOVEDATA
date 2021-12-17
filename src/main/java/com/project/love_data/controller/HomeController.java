@@ -7,10 +7,7 @@ import com.project.love_data.businessLogic.service.UserService;
 import com.project.love_data.model.service.BizReg;
 import com.project.love_data.model.service.Course;
 import com.project.love_data.model.service.Location;
-import com.project.love_data.model.user.User;
-import com.project.love_data.security.model.UserRole;
 import lombok.extern.log4j.Log4j2;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +16,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -46,7 +41,7 @@ public class HomeController {
     public String home(Model model) throws JSONException, IOException {
         List<Location> tempLocationList = locService.hotLocationList(4, 7, 0);
         List<Course> tempCourseList = corService.hotCourseList(4, 7, 0);
-        List<BizReg> bizRegs = bizRegService.findAllByCertifiedTrue();
+        List<BizReg> bizRegs = bizRegService.findAllLiveByCertifiedTrue();
         List<Location> locations = new ArrayList<>();
         for(int i =0; i<bizRegs.size(); i++){
             List<Location> locationList = locService.findLocByUserNo(bizRegs.get(i).getUserNo());

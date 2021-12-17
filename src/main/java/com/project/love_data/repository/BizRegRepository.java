@@ -24,8 +24,8 @@ public interface BizRegRepository extends JpaRepository<BizReg, Long>,
     @Query(value = "SELECT * FROM bizreg br WHERE br.user_no = :user_no AND br.deleted = :deleted", nativeQuery = true)
     Optional<List<BizReg>> findAllByUserNoAndDeleted(@Param("user_no") Long userNo, @Param("deleted") Boolean deleted);
 
-    @Query(value = "SELECT * FROM bizreg br WHERE br.certified = :certified", nativeQuery = true)
-    Optional<List<BizReg>> findAllByCertified(@Param("certified") Boolean certified);
+    @Query(value = "SELECT * FROM bizreg br WHERE br.certified = :certified AND br.deleted = false", nativeQuery = true)
+    Optional<List<BizReg>> findAllLiveByCertified(@Param("certified") Boolean certified);
 
     @Query(value = "SELECT * FROM bizreg br WHERE br.certified = :certified AND br.deleted = :deleted", nativeQuery = true)
     Optional<List<BizReg>> findAllByCertifiedAndDeleted(@Param("certified") Boolean certified, @Param("deleted") Boolean deleted);

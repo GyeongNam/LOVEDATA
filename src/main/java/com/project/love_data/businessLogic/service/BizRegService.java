@@ -5,7 +5,6 @@ import com.project.love_data.model.service.BizReg;
 import com.project.love_data.model.user.User;
 import com.project.love_data.repository.BizRegRepository;
 import com.project.love_data.repository.UserRepository;
-import com.project.love_data.security.model.UserRole;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -263,8 +262,8 @@ public class BizRegService {
         return item.orElse(new ArrayList<>());
     }
 
-    public List<BizReg> findAllByCertifiedTrue(){
-        Optional<List<BizReg>> item = repository.findAllByCertified(true);
+    public List<BizReg> findAllLiveByCertifiedTrue(){
+        Optional<List<BizReg>> item = repository.findAllLiveByCertified(true);
         return item.orElse(new ArrayList<>());
     }
 }

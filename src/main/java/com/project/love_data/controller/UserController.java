@@ -1429,11 +1429,16 @@ public class UserController {
 	@PostMapping(value = "/biz_reg/update")
 	public String mybizregUpdate(HttpServletRequest request, HttpServletResponse response,
 								 Principal principal, Model model, @RequestParam("file")List<MultipartFile> fileList) {
+		String returnURL = "/biz_reg";
+
 		if (principal == null) {
 			return "redirect:/login";
 		} else {
 			if (fileList == null) {
-				return "redirect:/biz_reg";
+				model.addAttribute("alertMsg", "사업자 정보를 변경하는 과정에서 에러가 발생했습니다.");
+				model.addAttribute("redirectURL", returnURL);
+
+				return "/alert/alert";
 			}
 
 			Map<String, String> reqParam = new HashMap<>();
@@ -1456,15 +1461,22 @@ public class UserController {
 
 			bizRegService.registration(reqParam);
 
-			return "redirect:/biz_reg";
+			model.addAttribute("alertMsg", "정상적으로 사업자 정보가 변경되었습니다.");
+			model.addAttribute("redirectURL", returnURL);
+
+			return "/alert/alert";
 		}
 	}
 
 	@PostMapping("/biz_reg_delete")
 	public String deleteBizReg(HttpServletRequest request, Model model) {
+		String returnURL = "/biz_reg";
 		String strBrNo = request.getParameter("brNo");
 
 		if (strBrNo == null) {
+			return "redirect:/biz_reg";
+		}
+		if (strBrNo.equals("")){
 			return "redirect:/biz_reg";
 		}
 		Long brNo = Long.parseLong(strBrNo);
@@ -1476,10 +1488,27 @@ public class UserController {
 		}
 
 		if (!bizRegService.delete(brNo)) {
-			return "redirect:/biz_reg";
+			log.warn(brNo + " 사업자 정보를 삭제하는 과정에서 에러 발생");
+
+			model.addAttribute("alertMsg", "사업자 정보를 삭제하는 과정에서 문제가 발생하였습니다.");
+			model.addAttribute("redirectURL", returnURL);
+
+			return "alert/alert";
 		}
 
-		return "redirect:/biz_reg";
+		User userEntity = userService.select(bizRegService.select(brNo).getUserNo());
+
+		Set<String> tempRoleSet = userEntity.getRoleSet();
+		if (tempRoleSet.contains(UserRole.BIZ.toString())) {
+			tempRoleSet.remove(UserRole.BIZ.toString());
+			userEntity.setRoleSet(tempRoleSet);
+			userService.update(userEntity);
+		}
+
+		model.addAttribute("alertMsg", "정상적으로 사업자 정보가 삭제되었습니다.");
+		model.addAttribute("redirectURL", returnURL);
+
+		return "alert/alert";
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
