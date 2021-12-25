@@ -1,4 +1,5 @@
 let sortOrder = "VIEW_DES";
+let activeDistrict = "전국";
 
 function changeSort(sortType) {
     console.log(sortType.value);
@@ -30,6 +31,14 @@ function changeSort(sortType) {
             navbarDropdownMenuLink.innerText = "조회순"
             sortOrder = "VIEW";
     }
+}
+
+function changeActiveDistrict(district) {
+    console.log(district.value);
+    let districtDropdownMenuLink = document.getElementById("districtDropdownMenuLink");
+    districtDropdownMenuLink.setAttribute("value", district.value);
+    districtDropdownMenuLink.innerHTML = district.value;
+    activeDistrict = district.value;
 }
 
 function onClickSearch_Course() {
@@ -133,7 +142,7 @@ function onClickSearch() {
     // console.log("tags : " + tagList);
 
     let input = [];
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 5; i++) {
         input[i] = document.createElement("input");
         $(input[i]).attr("type", "hidden");
 
@@ -175,6 +184,11 @@ function onClickSearch() {
                     $(input[3]).attr("value", "TAG");
                 }
             }
+        }
+
+        if (i == 4) {
+            $(input[4]).attr("name", "district")
+            $(input[4]).attr("value", activeDistrict);
         }
 
         form.appendChild(input[i]);

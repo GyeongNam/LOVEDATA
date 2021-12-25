@@ -1,0 +1,13 @@
+li:nth-child(6n) {
+    content: "\A";
+    white-space: pre;
+}
+
+li {
+    float: left;
+    margin-right: 50px;
+}
+
+li > a {
+    font-size: 20px;
+}

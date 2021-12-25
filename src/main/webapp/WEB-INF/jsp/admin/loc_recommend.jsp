@@ -91,6 +91,21 @@
 				<div class="collapse navbar-collapse" id="tag-navbar-collapse">
 					<ul class="navbar-nav">
 						<li class="nav-item dropdown">
+							<button class="nav-link dropdown-toggle" role="button" id="districtDropdownMenuLink"
+									data-toggle="dropdown">전국
+							</button>
+							<%--                            https://www.w3schools.com/jsref/event_onclick.asp--%>
+							<div class="dropdown-menu" aria-labelledby="districtDropdownMenuLink">
+								<c:forEach var="i" begin="0" end="${korDistrict.size()-1}">
+									<button type="button" class="dropdown-item" onclick="changeActiveDistrict(this)" value="${korDistrict.get(i).name()}">
+											${korDistrict.get(i).name()}
+									</button>
+								</c:forEach>
+							</div>
+						</li>
+					</ul>
+					<ul class="navbar-nav">
+						<li class="nav-item dropdown">
 							<button class="nav-link dropdown-toggle" role="button" id="tagDropdownMenuLink"
 									data-toggle="dropdown">해시태그
 							</button>

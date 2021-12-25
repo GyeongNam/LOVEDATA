@@ -9,7 +9,6 @@ import com.project.love_data.security.model.UserRole;
 import com.project.love_data.security.service.UserDetailsService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.endpoint.SecurityContext;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -368,9 +367,12 @@ public class LocationController {
             }
         }
 
+        List<KoreanDistrict> korDistricts = Arrays.asList(KoreanDistrict.values());
+
         model.addAttribute("result", resultDTO);
         model.addAttribute("tagList", tagList);
         model.addAttribute("isLikedList", isLikedList);
+        model.addAttribute("korDistrict", korDistricts);
 
 //        if(authentication != null) {
 //            AuthUserModel authUser = (AuthUserModel) authentication.getPrincipal();
@@ -457,8 +459,12 @@ public class LocationController {
         String tagString = request.getParameter("tags");
         String type = request.getParameter("searchType");
         String pageNumber = request.getParameter("page");
+        String district = request.getParameter("district");
         if (pageNumber == null) {
             pageNumber = "1";
+        }
+        if (district == null) {
+            district = KoreanDistrict.전국.name();
         }
         int pageNum = Integer.parseInt(pageNumber);
 
@@ -522,6 +528,7 @@ public class LocationController {
                 .tagList(tagListStr)
                 .sortCriterion(sortCriterion)
                 .sortingOrder(sortingOrder)
+                .districtType(KoreanDistrict.valueOf(district))
                 .page(pageNum)
                 .build();
 
@@ -540,12 +547,16 @@ public class LocationController {
         List<LocationTag> tags = Arrays.asList(LocationTag.values());
         List<String> activeTags = tagListStr;
 
+        List<KoreanDistrict> korDistricts = Arrays.asList(KoreanDistrict.values());
+
         model.addAttribute("result", resultDTO);
         model.addAttribute("tagList", tags);
         model.addAttribute("activeTags", activeTags);
         model.addAttribute("keyword", keyword);
         model.addAttribute("sortOrder", order);
         model.addAttribute("searchType", searchType);
+        model.addAttribute("korDistrict", korDistricts);
+        model.addAttribute("activeDistrict", district);
 
 //        log.info("active tags : " + activeTags);
 
@@ -650,5 +661,132 @@ public class LocationController {
         }
 
         return "redirect:/service/loc_recommend";
+    }
+
+    @GetMapping("/service/loc_district")
+    public String locDistrict(HttpServletRequest request, HttpServletResponse response,
+                              Model model, Authentication authentication) {
+        String keyword = request.getParameter("keyword");
+        String order = request.getParameter("sortOrder");
+        String tagString = request.getParameter("tags");
+        String type = request.getParameter("searchType");
+        String pageNumber = request.getParameter("page");
+        String district = request.getParameter("district");
+        if (pageNumber == null) {
+            pageNumber = "1";
+        }
+        if (type == null) {
+            type = SearchType.NONE.name();
+        }
+        if (order == null) {
+            order = "VIEW_DES";
+        }
+        if (district == null) {
+            district = KoreanDistrict.전국.name();
+        }
+        int pageNum = Integer.parseInt(pageNumber);
+
+        SortingOrder sortingOrder = null;
+        SortCriterion sortCriterion = null;
+        SearchType searchType = SearchType.valueOf(type);
+        List<String> tempList = new ArrayList<>();
+        List<String> tagListStr = new ArrayList<>();
+
+        if (tagString != null) {
+            if (tagString != "") {
+                tempList = Arrays.asList(tagString.split(","));
+                for (String s : tempList) {
+                    if ("".equals(s)) {
+                        continue;
+                    } else {
+                        tagListStr.add(s);
+                    }
+                }
+            }
+        }
+
+        // 일반 유저는 삭제된 장소 항목을 볼 수 없음
+        switch (searchType) {
+            case DISABLED:
+                searchType = SearchType.NONE;
+                break;
+            case DISABLED_TAG:
+                searchType = SearchType.TAG;
+                break;
+            case DISABLED_TITLE:
+                searchType = SearchType.TITLE;
+                break;
+            case DISABLED_TITLE_TAG:
+                searchType = SearchType.TITLE_TAG;
+                break;
+        }
+
+        switch (order) {
+            case "LIKE_DES":
+                // 좋아요 순
+                sortCriterion = SortCriterion.LIKE;
+                sortingOrder = SortingOrder.DES;
+                break;
+            case "DATE_DES":
+                // 최신 등록순
+                sortCriterion = SortCriterion.DATE;
+                sortingOrder = SortingOrder.DES;
+                break;
+            case "DATE_ASC":
+                // 오래된 등록순
+                sortCriterion = SortCriterion.DATE;
+                sortingOrder = SortingOrder.ASC;
+                break;
+            case "VIEW_DES":
+                // 조회순
+            default:
+                sortCriterion = SortCriterion.VIEW;
+                sortingOrder = SortingOrder.DES;
+                break;
+        }
+
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+                .size(MAX_LOC_LIST_SIZE)
+                .searchType(searchType)
+                .keyword(keyword)
+                .tagList(tagListStr)
+                .sortCriterion(sortCriterion)
+                .sortingOrder(sortingOrder)
+                .districtType(KoreanDistrict.valueOf(district))
+                .page(pageNum)
+                .build();
+
+        PageResultDTO<LocationDTO, com.project.love_data.model.service.Location> resultDTO = locService.getList(pageRequestDTO);
+
+        if (resultDTO.getTotalPage() < pageNum) {
+            if (resultDTO.getTotalPage() == 0) {
+                model.addAttribute("isEmptyResult", true);
+            } else {
+                model.addAttribute("isRequestPageNumberExceed", true);
+            }
+        } else {
+            model.addAttribute("isRequestPageNumberExceed", false);
+        }
+
+        List<LocationTag> tags = Arrays.asList(LocationTag.values());
+        List<String> activeTags = tagListStr;
+
+        List<KoreanDistrict> korDistricts = Arrays.asList(KoreanDistrict.values());
+
+        model.addAttribute("result", resultDTO);
+        model.addAttribute("tagList", tags);
+        model.addAttribute("activeTags", activeTags);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("sortOrder", order);
+        model.addAttribute("searchType", searchType);
+        model.addAttribute("korDistrict", korDistricts);
+        model.addAttribute("activeDistrict", district);
+
+//        if(authentication != null) {
+//            AuthUserModel authUser = (AuthUserModel) authentication.getPrincipal();
+////            log.info(authUser.getUser_no());
+//        }
+
+        return "/service/loc_district";
     }
 }

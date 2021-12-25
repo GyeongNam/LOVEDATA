@@ -114,9 +114,12 @@ public class AdminController {
             }
         }
 
+        List<KoreanDistrict> korDistricts = Arrays.asList(KoreanDistrict.values());
+
         model.addAttribute("result", resultDTO);
         model.addAttribute("tagList", tagList);
         model.addAttribute("isLikedList", isLikedList);
+        model.addAttribute("korDistrict", korDistricts);
 
 //        if(authentication != null) {
 //            AuthUserModel authUser = (AuthUserModel) authentication.getPrincipal();
@@ -133,8 +136,12 @@ public class AdminController {
         String tagString = request.getParameter("tags");
         String type = request.getParameter("searchType");
         String pageNumber = request.getParameter("page");
+        String district = request.getParameter("district");
         if (pageNumber == null) {
             pageNumber = "1";
+        }
+        if (district == null) {
+            district = KoreanDistrict.전국.name();
         }
         int pageNum = Integer.parseInt(pageNumber);
 
@@ -182,6 +189,7 @@ public class AdminController {
                 .tagList(tagList)
                 .sortCriterion(sortCriterion)
                 .sortingOrder(sortingOrder)
+                .districtType(KoreanDistrict.valueOf(district))
                 .page(pageNum)
                 .build();
 
@@ -196,12 +204,16 @@ public class AdminController {
         List<LocationTag> tags = Arrays.asList(LocationTag.values());
         List<String> activeTags = tagList;
 
+        List<KoreanDistrict> korDistricts = Arrays.asList(KoreanDistrict.values());
+
         model.addAttribute("result", resultDTO);
         model.addAttribute("tagList", tags);
         model.addAttribute("activeTags", activeTags);
         model.addAttribute("keyword", keyword);
         model.addAttribute("sortOrder", order);
         model.addAttribute("searchType", searchType);
+        model.addAttribute("korDistrict", korDistricts);
+        model.addAttribute("activeDistrict", district);
 
 //        log.info("active tags : " + activeTags);
 

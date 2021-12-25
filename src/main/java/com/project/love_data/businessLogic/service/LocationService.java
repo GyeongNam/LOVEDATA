@@ -338,6 +338,62 @@ public class LocationService {
                 break;
         }
 
+        switch (requestDTO.getDistrictType()) {
+            case 강원도:
+                conditionBuilder.and(qLocation.siDo.contains("강원도"));
+                break;
+            case 경기도:
+                conditionBuilder.and(qLocation.siDo.contains("경기도"));
+                break;
+            case 경상남도:
+                conditionBuilder.and(qLocation.siDo.contains("경상남도"));
+                break;
+            case 경상북도:
+                conditionBuilder.and(qLocation.siDo.contains("경상북도"));
+                break;
+            case 전라남도:
+                conditionBuilder.and(qLocation.siDo.contains("전라남도"));
+                break;
+            case 전라북도:
+                conditionBuilder.and(qLocation.siDo.contains("전라북도"));
+                break;
+            case 충청남도:
+                conditionBuilder.and(qLocation.siDo.contains("충청남도"));
+                break;
+            case 충청북도:
+                conditionBuilder.and(qLocation.siDo.contains("충청북도"));
+                break;
+            case 광주광역시:
+                conditionBuilder.and(qLocation.siDo.contains("광주광역시"));
+                break;
+            case 대구광역시:
+                conditionBuilder.and(qLocation.siDo.contains("대구광역시"));
+                break;
+            case 대전광역시:
+                conditionBuilder.and(qLocation.siDo.contains("대전광역시"));
+                break;
+            case 부산광역시:
+                conditionBuilder.and(qLocation.siDo.contains("부산광역시"));
+                break;
+            case 서울특별시:
+                conditionBuilder.and(qLocation.siDo.contains("서울특별시"));
+                break;
+            case 울산광역시:
+                conditionBuilder.and(qLocation.siDo.contains("울산광역시"));
+                break;
+            case 인천광역시:
+                conditionBuilder.and(qLocation.siDo.contains("인천광역시"));
+                break;
+            case 세종특별자치시:
+                conditionBuilder.and(qLocation.siDo.contains("세종특별자치시"));
+                break;
+            case 제주특별자치도:
+                conditionBuilder.and(qLocation.siDo.contains("제주특별자치도"));
+                break;
+            case 전국:
+            default:
+        }
+
         if (isContainDeletedLocation) {
             return conditionBuilder;
         } else {

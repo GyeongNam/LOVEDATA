@@ -43,7 +43,8 @@
 					</div>
 					<div id="loc_collapse" class="show" aria-labelledby="headingLoc" data-parent="#loc">
 						<div class="card-body center-pill">
-							<p><a href="/admin/loc_recommend" class="highlight-selected-text-menu">- 어드민 추천 장소</a></p>
+							<p><a href="/service/loc_recommend" class="highlight-not-selected-text-menu">- 추천 장소</a></p>
+							<p><a href="/service/loc_district" class="highlight-selected-text-menu">- 지역별 장소</a></p>
 							<p><a href="/service/loc_registration" class="highlight-not-selected-text-menu">- 장소
 								등록</a></p>
 							<p><a href="/mypage_myplace/1" class="highlight-not-selected-text-menu">- 장소
@@ -64,7 +65,7 @@
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="navbar-nav col-9">
 						<li class="nav-item dropdown">
-<%--							<c:set var="sortOrder" value="${sortOrder}"></c:set>--%>
+							<%--							<c:set var="sortOrder" value="${sortOrder}"></c:set>--%>
 							<c:choose>
 								<c:when test="${'VIEW_DES'.equals(sortOrder)}">
 									<button class="nav-link dropdown-toggle" role="button" id="navbarDropdownMenuLink"
@@ -91,10 +92,10 @@
 									</button>
 								</c:when>
 							</c:choose>
-<%--							<button class="nav-link dropdown-toggle" role="button" id="navbarDropdownMenuLink"--%>
-<%--									data-toggle="dropdown" value="mostViewed">--%>
-<%--								조회순--%>
-<%--							</button>--%>
+							<%--							<button class="nav-link dropdown-toggle" role="button" id="navbarDropdownMenuLink"--%>
+							<%--									data-toggle="dropdown" value="mostViewed">--%>
+							<%--								조회순--%>
+							<%--							</button>--%>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 								<button class="dropdown-item" value="mostViewed" onclick="changeSort(this)">조회순</button>
 								<button class="dropdown-item" value="mostRecent" onclick="changeSort(this)">최신 등록순
@@ -107,10 +108,10 @@
 						</li>
 					</ul>
 					<%--					@Todo 인풋 값이 ""일 경우 버튼 활성화 x--%>
-<%--					<form action="/admin/loc_recommend/search" method="get">--%>
-						<input type="text" placeholder="장소 검색" id="keyword" name="keyword" value="${keyword}"/>
-						<button class="btn btn-primary mx-2" type="button" id="searchBtn" onclick="onClickSearch()">Search</button>
-<%--					</form>--%>
+					<%--					<form action="/service/loc_recommend/search" method="get">--%>
+					<input type="text" placeholder="장소 검색" id="keyword" name="keyword" value="${keyword}"/>
+					<button class="btn btn-primary mx-2" type="button" id="searchBtn" onclick="onClickSearch()">Search</button>
+					<%--					</form>--%>
 				</div>
 			</nav>
 		</div>
@@ -119,13 +120,13 @@
 				<div class="collapse navbar-collapse" id="tag-navbar-collapse">
 					<ul class="navbar-nav">
 						<li class="nav-item dropdown">
-							<button class="nav-link dropdown-toggle" role="button" id="districtDropdownMenuLink"
+							<button class="nav-link dropdown-toggle" role="button" id="tagDropdownMenuLink"
 									data-toggle="dropdown">${activeDistrict}
 							</button>
 							<%--                            https://www.w3schools.com/jsref/event_onclick.asp--%>
-							<div class="dropdown-menu" aria-labelledby="districtDropdownMenuLink">
+							<div class="dropdown-menu" aria-labelledby="tagDropdownMenuLink">
 								<c:forEach var="i" begin="0" end="${korDistrict.size()-1}">
-									<button type="button" class="dropdown-item" onclick="changeActiveDistrict(this)" value="${korDistrict.get(i).name()}">
+									<button type="button" class="dropdown-item" onclick="" value="${korDistrict.get(i).name()}">
 											${korDistrict.get(i).name()}
 									</button>
 								</c:forEach>
@@ -141,7 +142,7 @@
 							<div class="dropdown-menu" aria-labelledby="tagDropdownMenuLink">
 								<c:forEach var="i" begin="0" end="${tagList.size()-1}">
 									<button type="button" class="dropdown-item" onclick="addTag(this)" value="${tagList.get(i).name()}">
-										${tagList.get(i).name()}
+											${tagList.get(i).name()}
 									</button>
 								</c:forEach>
 							</div>
@@ -149,12 +150,12 @@
 					</ul>
 					<div id="tag_list">
 						<%--						@Todo display:inline으로 변경할때마다 빈공간 생기는 문제 수정하기--%>
-							<c:set var="tagSet" value="${activeTags}"></c:set>
+						<c:set var="tagSet" value="${activeTags}"></c:set>
 						<c:forEach var="i" begin="0" end="${tagList.size()-1}">
-<%--							<div class="btn-group ms-4 my-0" role="group" style="display: none">--%>
-<%--								<button type="button" class="btn btn-primary" value="${tagList.get(i)}">${tagList.get(i)}</button>--%>
-<%--								<button type="button" class="btn btn-outline-danger btn" onclick="removeTag(this)">X</button>--%>
-<%--							</div>--%>
+							<%--							<div class="btn-group ms-4 my-0" role="group" style="display: none">--%>
+							<%--								<button type="button" class="btn btn-primary" value="${tagList.get(i)}">${tagList.get(i)}</button>--%>
+							<%--								<button type="button" class="btn btn-outline-danger btn" onclick="removeTag(this)">X</button>--%>
+							<%--							</div>--%>
 
 							<c:choose>
 								<c:when test="${tagSet.contains(tagList.get(i).name())}">
@@ -302,44 +303,92 @@
 
 		<div class="container d-flex" id="">
 			<div class="col" id="page_number">
-				<nav aria-label="Page navigation example">
-					<ul class="pagination justify-content-center">
-						<c:if test="${result.next eq true}">
-							<li class="page-item">
-								<a class="page-link"
-								   href="/amdin/loc_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&district=${activeDistrict}&page=${result.start - 1}"
-								   aria-label="Previous">
-									<span aria-hidden="true">&laquo;</span>
-								</a>
-							</li>
-						</c:if>
-						<c:forEach var="j" begin="${result.start}" end="${result.end}">
+				<c:choose>
+					<c:when test="${isAdminPage eq null}">
+						<nav aria-label="Page navigation example">
+							<ul class="pagination justify-content-center">
+								<c:if test="${result.next eq true}">
+									<li class="page-item">
+										<a class="page-link"
+										   href="/service/loc_district?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&page=${result.start - 1}"
+										   aria-label="Previous">
+											<span aria-hidden="true">&laquo;</span>
+										</a>
+									</li>
+								</c:if>
+								<c:forEach var="j" begin="${result.start}" end="${result.end}">
+								<c:choose>
+								<c:when test="${result.page eq j}">
+								<li class="page-item active">
+									<a class="page-link"
+									   href="/service/loc_district?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>
+									</c:when>
+									<c:otherwise>
+								<li class="page-item">
+									<a class="page-link"
+									   href="/service/loc_district?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&page=${result.pageList.get(j-1)}">
+											${result.pageList.get(j-1)}</a>
+									</c:otherwise>
+									</c:choose>
+									</c:forEach>
+								</li>
+								<c:if test="${result.next eq true}">
+									<li class="page-item">
+										<a class="page-link"
+										   href="/service/loc_district?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&page=${result.end + 1}">
+											aria-label="Previous">
+											<span aria-hidden="true">&raquo;</span>
+										</a>
+									</li>
+								</c:if>
+							</ul>
+						</nav>
+					</c:when>
+					<c:otherwise>
 						<c:choose>
-						<c:when test="${result.page eq j}">
-						<li class="page-item active">
-							<a class="page-link"
-							   href="/admin/loc_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&district=${activeDistrict}&page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>
+							<c:when test="${isAdminPage eq true}">
+								<nav aria-label="Page navigation example">
+									<ul class="pagination justify-content-center">
+										<c:if test="${result.next eq true}">
+											<li class="page-item">
+												<a class="page-link"
+												   href="/service/loc_district?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&page=${result.start - 1}"
+												   aria-label="Previous">
+													<span aria-hidden="true">&laquo;</span>
+												</a>
+											</li>
+										</c:if>
+										<c:forEach var="j" begin="${result.start}" end="${result.end}">
+										<c:choose>
+										<c:when test="${result.page eq j}">
+										<li class="page-item active">
+											<a class="page-link"
+											   href="/service/loc_district?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>
+											</c:when>
+											<c:otherwise>
+										<li class="page-item">
+											<a class="page-link"
+											   href="/service/loc_district?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&page=${result.pageList.get(j-1)}">
+													${result.pageList.get(j-1)}</a>
+											</c:otherwise>
+											</c:choose>
+											</c:forEach>
+										</li>
+										<c:if test="${result.next eq true}">
+											<li class="page-item">
+												<a class="page-link"
+												   href="/service/loc_district?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&page=${result.end + 1}">
+													aria-label="Previous">
+													<span aria-hidden="true">&raquo;</span>
+												</a>
+											</li>
+										</c:if>
+									</ul>
+								</nav>
 							</c:when>
-							<c:otherwise>
-						<li class="page-item">
-							<a class="page-link"
-							   href="/admin/loc_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&district=${activeDistrict}&page=${result.pageList.get(j-1)}">
-									${result.pageList.get(j-1)}</a>
-							</c:otherwise>
-							</c:choose>
-							</c:forEach>
-						</li>
-						<c:if test="${result.next eq true}">
-							<li class="page-item">
-								<a class="page-link"
-								   href="/admin/loc_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&district=${activeDistrict}&page=${result.end + 1}">
-									aria-label="Previous">
-									<span aria-hidden="true">&raquo;</span>
-								</a>
-							</li>
-						</c:if>
-					</ul>
-				</nav>
+						</c:choose>
+					</c:otherwise>
+				</c:choose>
 			</div>
 		</div>
 
@@ -378,14 +427,14 @@
 <script defer src="/js/loc_recommend.js"></script>
 <script src="/js/loc_common.js"></script>
 <script defer>
-	let tempList = [];
-	<c:forEach var="i" begin="0" end="${tagList.size()-1}">
-		<c:choose>
-			<c:when test="${tagSet.contains(tagList.get(i).name())}">
-				tempList.push('${tagList.get(i).name()}');
-			</c:when>
-		</c:choose>
-	</c:forEach>
+    let tempList = [];
+    <c:forEach var="i" begin="0" end="${tagList.size()-1}">
+    <c:choose>
+    <c:when test="${tagSet.contains(tagList.get(i).name())}">
+    tempList.push('${tagList.get(i).name()}');
+    </c:when>
+    </c:choose>
+    </c:forEach>
     console.log(tempList);
     setTagList(tempList);
 </script>

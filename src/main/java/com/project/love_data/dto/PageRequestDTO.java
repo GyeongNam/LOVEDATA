@@ -3,6 +3,7 @@ package com.project.love_data.dto;
 import com.project.love_data.businessLogic.service.SearchType;
 import com.project.love_data.businessLogic.service.SortCriterion;
 import com.project.love_data.businessLogic.service.SortingOrder;
+import com.project.love_data.model.service.KoreanDistrict;
 import com.project.love_data.model.service.LocationTag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,6 +33,8 @@ public class PageRequestDTO {
     private SortCriterion sortCriterion = SortCriterion.VIEW;
     @Builder.Default
     private SortingOrder sortingOrder = SortingOrder.DES;
+    @Builder.Default
+    private KoreanDistrict districtType = KoreanDistrict.전국;
 
 
     public PageRequestDTO() {

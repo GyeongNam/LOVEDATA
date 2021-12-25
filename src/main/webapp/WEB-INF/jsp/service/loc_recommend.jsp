@@ -43,6 +43,7 @@
 					<div id="loc_collapse" class="show" aria-labelledby="headingLoc" data-parent="#loc">
 						<div class="card-body center-pill">
 							<p><a href="/service/loc_recommend" class="highlight-selected-text-menu">- 추천 장소</a></p>
+							<p><a href="/service/loc_district" class="highlight-not-selected-text-menu">- 지역별 장소</a></p>
 							<p><a href="/service/loc_registration" class="highlight-not-selected-text-menu">- 장소
 								등록</a></p>
 							<p><a href="/mypage_myplace/1" class="highlight-not-selected-text-menu">- 장소
@@ -59,7 +60,7 @@
 				<button class="navbar-toggler" type="button" data-toggle="collapse"
 						data-target="#bs-example-navbar-collapse-1">
 				</button>
-				<a class="navbar-brand text-dark" href="/">추천장소</a>
+				<a class="navbar-brand text-dark">추천장소</a>
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="navbar-nav col-9">
 						<li class="nav-item dropdown">
@@ -87,8 +88,23 @@
 			</nav>
 		</div>
 		<div class="col" id="top_hashtag">
-			<nav class="navbar navbar-expand-sm navbar-light static-top">
+			<nav class="navbar navbar-expand-sm static-top">
 				<div class="collapse navbar-collapse" id="tag-navbar-collapse">
+					<ul class="navbar-nav">
+						<li class="nav-item dropdown">
+							<button class="nav-link dropdown-toggle" role="button" id="districtDropdownMenuLink"
+									data-toggle="dropdown">전국
+							</button>
+							<%--                            https://www.w3schools.com/jsref/event_onclick.asp--%>
+							<div class="dropdown-menu" aria-labelledby="districtDropdownMenuLink">
+								<c:forEach var="i" begin="0" end="${korDistrict.size()-1}">
+									<button type="button" class="dropdown-item" onclick="changeActiveDistrict(this)" value="${korDistrict.get(i).name()}">
+											${korDistrict.get(i).name()}
+									</button>
+								</c:forEach>
+							</div>
+						</li>
+					</ul>
 					<ul class="navbar-nav">
 						<li class="nav-item dropdown">
 							<button class="nav-link dropdown-toggle" role="button" id="tagDropdownMenuLink"

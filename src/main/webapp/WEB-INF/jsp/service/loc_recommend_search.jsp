@@ -44,6 +44,7 @@
 					<div id="loc_collapse" class="show" aria-labelledby="headingLoc" data-parent="#loc">
 						<div class="card-body center-pill">
 							<p><a href="/service/loc_recommend" class="highlight-selected-text-menu">- 추천 장소</a></p>
+							<p><a href="/service/loc_district" class="highlight-not-selected-text-menu">- 지역별 장소</a></p>
 							<p><a href="/service/loc_registration" class="highlight-not-selected-text-menu">- 장소
 								등록</a></p>
 							<p><a href="/mypage_myplace/1" class="highlight-not-selected-text-menu">- 장소
@@ -56,7 +57,7 @@
 	</div>
 	<div class="container-fluid" id="display_center" style="margin-right: 30px">
 		<div class="col" id="top_navbar">
-			<nav class="navbar navbar-expand-sm navbar-light bg-light static-top">
+			<nav class="navbar navbar-expand-sm static-top">
 				<button class="navbar-toggler" type="button" data-toggle="collapse"
 						data-target="#bs-example-navbar-collapse-1">
 				</button>
@@ -115,8 +116,23 @@
 			</nav>
 		</div>
 		<div class="col" id="top_hashtag">
-			<nav class="navbar navbar-expand-sm navbar-light bg-light static-top">
+			<nav class="navbar navbar-expand-sm static-top">
 				<div class="collapse navbar-collapse" id="tag-navbar-collapse">
+					<ul class="navbar-nav">
+						<li class="nav-item dropdown">
+							<button class="nav-link dropdown-toggle" role="button" id="districtDropdownMenuLink"
+									data-toggle="dropdown">${activeDistrict}
+							</button>
+							<%--                            https://www.w3schools.com/jsref/event_onclick.asp--%>
+							<div class="dropdown-menu" aria-labelledby="districtDropdownMenuLink">
+								<c:forEach var="i" begin="0" end="${korDistrict.size()-1}">
+									<button type="button" class="dropdown-item" onclick="changeActiveDistrict(this)" value="${korDistrict.get(i).name()}">
+											${korDistrict.get(i).name()}
+									</button>
+								</c:forEach>
+							</div>
+						</li>
+					</ul>
 					<ul class="navbar-nav">
 						<li class="nav-item dropdown">
 							<button class="nav-link dropdown-toggle" role="button" id="tagDropdownMenuLink"
@@ -294,7 +310,7 @@
 						<c:if test="${result.next eq true}">
 							<li class="page-item">
 								<a class="page-link"
-								   href="/service/loc_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&page=${result.start - 1}"
+								   href="/service/loc_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&district=${activeDistrict}&page=${result.start - 1}"
 								   aria-label="Previous">
 									<span aria-hidden="true">&laquo;</span>
 								</a>
@@ -305,12 +321,12 @@
 						<c:when test="${result.page eq j}">
 						<li class="page-item active">
 							<a class="page-link"
-							   href="/service/loc_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>
+							   href="/service/loc_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&district=${activeDistrict}&page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>
 							</c:when>
 							<c:otherwise>
 						<li class="page-item">
 							<a class="page-link"
-							   href="/service/loc_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&page=${result.pageList.get(j-1)}">
+							   href="/service/loc_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&district=${activeDistrict}&page=${result.pageList.get(j-1)}">
 									${result.pageList.get(j-1)}</a>
 							</c:otherwise>
 							</c:choose>
@@ -319,7 +335,7 @@
 						<c:if test="${result.next eq true}">
 							<li class="page-item">
 								<a class="page-link"
-								   href="/service/loc_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&page=${result.end + 1}">
+								   href="/service/loc_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&district=${activeDistrict}&page=${result.end + 1}">
 									aria-label="Previous">
 									<span aria-hidden="true">&raquo;</span>
 								</a>
@@ -336,7 +352,7 @@
 								<c:if test="${result.next eq true}">
 									<li class="page-item">
 										<a class="page-link"
-										   href="/amdin/service/loc_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&page=${result.start - 1}"
+										   href="/amdin/service/loc_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&district=${activeDistrict}&page=${result.start - 1}"
 										   aria-label="Previous">
 											<span aria-hidden="true">&laquo;</span>
 										</a>
@@ -347,12 +363,12 @@
 								<c:when test="${result.page eq j}">
 								<li class="page-item active">
 									<a class="page-link"
-									   href="/admin/service/loc_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>
+									   href="/admin/service/loc_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&district=${activeDistrict}&page=${result.pageList.get(j-1)}">${result.pageList.get(j-1)}</a>
 									</c:when>
 									<c:otherwise>
 								<li class="page-item">
 									<a class="page-link"
-									   href="/admin/service/loc_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&page=${result.pageList.get(j-1)}">
+									   href="/admin/service/loc_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&district=${activeDistrict}&page=${result.pageList.get(j-1)}">
 											${result.pageList.get(j-1)}</a>
 									</c:otherwise>
 									</c:choose>
@@ -361,7 +377,7 @@
 								<c:if test="${result.next eq true}">
 									<li class="page-item">
 										<a class="page-link"
-										   href="/admin/service/loc_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&page=${result.end + 1}">
+										   href="/admin/service/loc_recommend/search?keyword=${keyword}&sortOrder=${sortOrder}&tags=${tagStr}&searchType=${searchType}&district=${activeDistrict}&page=${result.end + 1}">
 											aria-label="Previous">
 											<span aria-hidden="true">&raquo;</span>
 										</a>
