@@ -4,7 +4,9 @@ import com.project.love_data.businessLogic.service.*;
 import com.project.love_data.dto.PageRequestDTO;
 import com.project.love_data.model.resource.ReviewImage;
 import com.project.love_data.model.service.Course;
+import com.project.love_data.model.service.Point;
 import com.project.love_data.model.service.Review;
+import com.project.love_data.repository.PointRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -37,6 +39,8 @@ public class ReviewController {
     FileUploadService fileUploadService;
     @Autowired
     ControllerScriptUtils scriptUtils;
+    @Autowired
+    PointRepository pointRepository;
 
     @PostMapping(value = "/service/rev_registration")
     public String regReview(HttpServletRequest request, Model model, @RequestParam("files") List<MultipartFile> fileList,
@@ -67,6 +71,21 @@ public class ReviewController {
 
         entity = revService.update(entity);
 
+        if (entity == null) {
+            log.info("Error Occurs during Comment entity creation");
+            log.info("Please check Input value");
+            return "redirect:/service/cor_detail?locNo=" + corNo;
+        }
+
+        Point point = Point.builder()
+                .user_no(userNo)
+                .point(Long.parseLong("100"))
+                .point_get_out("rev")
+                .get_no_use_no(entity.getRevNo())
+                .get_plus_mi(true)
+                .build();
+        pointRepository.save(point);
+
         if (!fileList.isEmpty()) {
             filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE, UploadFileCount.MULTIPLE,
                     REV_MIN_UPLOAD_COUNT, REV_MAX_UPLOAD_COUNT, PathType.REV, request);
@@ -82,12 +101,6 @@ public class ReviewController {
 
                 revImgService.update(revImg);
             }
-        }
-
-        if (entity == null) {
-            log.info("Error Occurs during Comment entity creation");
-            log.info("Please check Input value");
-            return "redirect:/service/cor_detail?locNo=" + corNo;
         }
 
         return "redirect:/service/cor_detail?corNo=" + corNo + "&page=1";
@@ -145,7 +158,6 @@ public class ReviewController {
                     REV_MIN_UPLOAD_COUNT, REV_MAX_UPLOAD_COUNT, PathType.REV, request);
             revImgService.updateOldImage(revNo, filePath);
         }
-
         return "redirect:/service/cor_detail?corNo=" + corNo + "&page=1";
     }
 

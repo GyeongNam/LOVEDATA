@@ -6,6 +6,7 @@ import com.project.love_data.model.resource.CourseImage;
 import com.project.love_data.model.resource.ReviewImage;
 import com.project.love_data.model.service.*;
 import com.project.love_data.model.user.User;
+import com.project.love_data.repository.PointRepository;
 import com.project.love_data.security.model.AuthUserModel;
 import com.project.love_data.security.model.UserRole;
 import lombok.extern.log4j.Log4j2;
@@ -52,6 +53,9 @@ public class CourseController {
     @Autowired
     UserDislikeRevService userDislikeRevService;
     List<String> tagList = new ArrayList<>();
+
+    @Autowired
+    PointRepository pointRepository;
 
     @RequestMapping("/service/cor_registration")
     public String cor_Reg(Model model) {
@@ -114,10 +118,12 @@ public class CourseController {
             reqParam.put("user_no", (request.getParameter("user_no_debug")));
         }
 
+
         if (tagList.isEmpty()) {
             log.warn("No Location Tag Found (Must add tag before submit location)");
             return "redirect:/service/cor_recommend";
         }
+
 
         for (int i = 1; i <= Integer.parseInt(reqParam.get("location_length")); i++) {
             reqParam.put("loc_no_" + i, request.getParameter("loc_no_" + i));
@@ -140,6 +146,15 @@ public class CourseController {
         CourseDTO dto = corService.entityToDto(entity);
 
         redirectAttributes.addFlashAttribute("dto", dto);
+
+        Point point = Point.builder()
+                .user_no(Long.parseLong(request.getParameter("user_no")))
+                .point(Long.parseLong("500"))
+                .point_get_out("cor")
+                .get_no_use_no(dto.getCor_no())
+                .get_plus_mi(true)
+                .build();
+        pointRepository.save(point);
 
         tagList = new ArrayList<>();
 

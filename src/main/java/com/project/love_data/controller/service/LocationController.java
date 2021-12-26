@@ -4,6 +4,7 @@ import com.project.love_data.businessLogic.service.*;
 import com.project.love_data.dto.*;
 import com.project.love_data.model.service.*;
 import com.project.love_data.model.user.User;
+import com.project.love_data.repository.PointRepository;
 import com.project.love_data.security.model.AuthUserModel;
 import com.project.love_data.security.model.UserRole;
 import com.project.love_data.security.service.UserDetailsService;
@@ -50,6 +51,8 @@ public class LocationController {
     UserDislikeCmtService userDislikeCmtService;
     @Autowired
     ControllerScriptUtils scriptUtils;
+    @Autowired
+    PointRepository pointRepository;
 
     List<String> tagList = new ArrayList<>();
 
@@ -142,6 +145,15 @@ public class LocationController {
         log.info(request.getSession().getAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY));
         log.info(SecurityContextHolder.getContext().getAuthentication());
 
+
+        Point point = Point.builder()
+                .user_no(Long.parseLong(request.getParameter("user_no")))
+                .point(Long.parseLong("500"))
+                .point_get_out("loc")
+                .get_no_use_no(dto.getLoc_no())
+                .get_plus_mi(true)
+                .build();
+        pointRepository.save(point);
         return "redirect:/service/loc_recommend";
     }
 

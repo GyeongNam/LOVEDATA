@@ -1,5 +1,6 @@
 package com.project.love_data.controller.service;
 
+import com.project.love_data.businessLogic.service.BizRegService;
 import com.project.love_data.businessLogic.service.CommentPageType;
 import com.project.love_data.businessLogic.service.CommentService;
 import com.project.love_data.businessLogic.service.LocationService;
@@ -9,6 +10,8 @@ import com.project.love_data.dto.PageRequestDTO;
 import com.project.love_data.dto.PageResultDTO;
 import com.project.love_data.model.service.Comment;
 import com.project.love_data.model.service.Location;
+import com.project.love_data.model.service.Point;
+import com.project.love_data.repository.PointRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +32,8 @@ public class CommentController {
     LocationService locService;
     @Autowired
     CommentService cmtService;
+    @Autowired
+    PointRepository pointRepository;
 
     @PostMapping("/service/com_registration")
     public String regComment(HttpServletRequest request, Model model,
@@ -46,6 +51,7 @@ public class CommentController {
        if (entity == null) {
            log.info("Error Occurs during Comment entity creation");
            log.info("Please check Input value");
+
            return "redirect:/service/loc_detail?locNo=" + locNo;
        }
 
@@ -63,6 +69,14 @@ public class CommentController {
         model.addAttribute("resComDTO", resultCommentDTO);
 
 //        return "redirect:/service/loc_recommend";
+        Point point = Point.builder()
+        .user_no(userNo)
+        .point(Long.parseLong("50"))
+        .point_get_out("com")
+        .get_no_use_no(dto.getCmtList().get(dto.getCmtList().size()-1).getCmtNo())
+        .get_plus_mi(true)
+        .build();
+        pointRepository.save(point);
         return "redirect:/service/loc_detail?locNo=" + locNo;
     }
 

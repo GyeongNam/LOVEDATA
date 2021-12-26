@@ -4,6 +4,7 @@ import com.project.love_data.dto.BizRegDTO;
 import com.project.love_data.model.service.BizReg;
 import com.project.love_data.model.user.User;
 import com.project.love_data.repository.BizRegRepository;
+import com.project.love_data.repository.PointRepository;
 import com.project.love_data.repository.UserRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ public class BizRegService {
     BizRegRepository repository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    PointRepository pointRepository;
 
     public BizReg dtoToEntity(BizRegDTO dto){
         BizReg entity = BizReg.builder()
