@@ -47,6 +47,7 @@
                         <div class="card-body center-pill">
                             <p><a href="/ServiceCenter/Notice/1" class="highlight-selected-text-menu">- 공지 사항</a></p>
                             <p><a href="/ServiceCenter/Questions/1" class="highlight-not-selected-text-menu">- 문의 사항</a></p>
+                            <p><a href="/ServiceCenter/Event/1" class="highlight-not-selected-text-menu">- 이벤트</a></p>
                             <p><a href="/ServiceCenter/Policy" class="highlight-not-selected-text-menu">- LOVEDATA 정책</a></p>
                             <p><a href="/ServiceCenter/Withdrawal" class="highlight-not-selected-text-menu">- 회원 탈퇴</a></p>
                         </div>

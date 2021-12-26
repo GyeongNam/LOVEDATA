@@ -5,14 +5,15 @@
 <html><jsp:useBean id="defaultDateTimeFormatter" class="com.project.love_data.util.DefaultLocalDateTimeFormatter"></jsp:useBean>
 <jsp:useBean id="simpleDateTimeFormatter" class="com.project.love_data.util.SimpleLocalDateTimeFormatter"></jsp:useBean>
 <head>
-    <frame-options disabled="true"/>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="_csrf" content="${_csrf.token}">
     <meta name="_csrf_header" content="${_csrf.headerName}">
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href=" https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href=" https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css"/>
+    <link rel="stylesheet" href=" https://cdn.datatables.net/rowgroup/1.1.4/css/rowGroup.bootstrap5.min.css"/>
     <link rel="stylesheet" href="/css/service/loc.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
@@ -20,8 +21,11 @@
         body {
             font-family: 'Jua', sans-serif;
         }
+        th, td {
+            vertical-align : middle;
+        }
     </style>
-    <title>Admin Buisnessman</title>
+    <title>Admin User</title>
 </head>
 <%@ include file="../layout/header.jsp" %>
 <body class="bg-light">
@@ -44,16 +48,16 @@
                         <div class="card-body center-pill">
                             <p><a href="/admin/dash" class="highlight-not-selected-text-menu">대시보드</a></p>
                             <p><a href="/admin/user/1" class="highlight-not-selected-text-menu">유저 관리</a></p>
-                            <p><a href="/admin/buisnessman" class="highlight-selected-text-menu">사업자 관리</a></p>
-                            <p><a href="/admin/event" class="highlight-not-selected-text-menu">이벤트 관리</a></p>
+                            <p><a href="/admin/buisnessman" class="highlight-not-selected-text-menu">사업자 관리</a></p>
+                            <p><a href="/admin/event" class="highlight-selected-text-menu">이벤트 관리</a></p>
                             <p><a href="/admin/SendMessage" class="highlight-not-selected-text-menu">메시지 발송</a></p>
                             <p><a type="button" class="accordion highlight-not-selected-text-menu" data-toggle="collapse" data-target="#service_collapse" aria-expanded="false">공지사항과 문의사항</a></p>
                             <div id="service_collapse" class="panel-collapse collapse">
                                 <p>
-                                    <a href="/admin/notice_add" class="highlight-not-selected-text-menu">- 공지사항 작성</a>
+                                    <a href="/admin/notice/1" class="highlight-not-selected-text-menu">- 공지사항</a>
                                 </p>
                                 <p>
-                                    <a href="/admin/qna/1" class="highlight-not-selected-text-menu">- 문의사항 답변</a>
+                                    <a href="/admin/qna/1" class="highlight-not-selected-text-menu">- 문의사항</a>
                                 </p>
                             </div>
                             <p><a href="/admin/upload_cache" class="highlight-not-selected-text-menu">upload 파일 캐시 삭제</a></p>
@@ -64,92 +68,68 @@
             </div>
         </ul>
     </div>
-    <div class="container-fluid" id="display_center" style="margin-right: 30px">
+    <div class="container-xl p-5 ms-3">
         <div class="tab-content mx-2" >
-            <h2>신청유저 정보</h2>
+            <h2>이벤트 정보</h2>
             <table class="table-bordered table text-center " >
                 <thead>
-                <th scope="col">번호</th>
-                <th scope="col">닉네임</th>
-                <th scope="col">유저 이름</th>
-                <th scope="col">가입 날짜</th>
-                <th scope="col">상태</th>
-                <th scope="col">가입 방식</th>
+                    <th scope="col">이벤트 번호</th>
+                    <th scope="col">제목</th>
+                    <th scope="col">관리자</th>
+                    <th scope="col">등록일</th>
+                    <th scope="col">시작일</th>
+                    <th scope="col">종료일</th>
+                    <th scope="col">추첨일</th>
+                    <th scope="col">상품 수</th>
                 </thead>
                 <tbody id="tableBody">
                 <tr>
-                    <td>${user.user_no}</td>
-                    <td>${user.user_nic}</td>
-                    <td>${user.user_name}</td>
-                    <td>${user.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</td>
-                    <c:choose>
-                        <c:when test="${user.user_Activation eq false}">
-                            <td>정지</td>
-                        </c:when>
-                        <c:when test="${user.user_Activation eq true}">
-                            <td>활동</td>
-                        </c:when>
-                    </c:choose>
-                    <td>${user.social_info}</td>
+                    <td>${eve.ev_no}</td>
+                    <td>${eve.ev_title}</td>
+                    <td>${eve.ev_manager}</td>
+                    <td>${eve.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</td>
+                    <td>${eve.ev_start}</td>
+                    <td>${eve.ev_stop}</td>
+                    <td>${eve.ev_end}</td>
+                    <td>${eve.ev_item}</td>
                 </tr>
                 </tbody>
             </table>
         </div>
-
         <div class="tab-content mx-2" >
-            <h2>사업자 신청 정보</h2>
+            <h2>이벤트 내용: ${eve.ev_title}</h2>
+            ${eve.ev_text}
+        </div>
+        <div class="tab-content mx-2" >
+            <h2>이벤트 당첨자</h2>
             <table class="table-bordered table text-center " >
                 <thead>
-                <th scope="col">사업체 이름</th>
-                <th scope="col">대표자 이름</th>
-                <th scope="col">연락처</th>
-                <th scope="col">신청 날짜</th>
-                <th scope="col">신청 현황</th>
+                    <th scope="col">당첨 번호(순위)</th>
+                    <th scope="col">유저 번호</th>
+                    <th scope="col">유저 아이디</th>
                 </thead>
-                <tbody >
+                <tbody id="tableBodys">
                 <tr>
-                    <td>${bizReg.bizName}</td>
-                    <td>${bizReg.bizCeoName}</td>
-                    <td>${bizReg.bizCall}</td>
-                    <td>${bizReg.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</td>
-                    <c:choose>
-                        <c:when test="${bizReg.certified eq false}">
-                            <td>대기</td>
-                        </c:when>
-                        <c:when test="${bizReg.certified eq true}">
-                            <td>완료</td>
-                        </c:when>
-                    </c:choose>
+                    <td>???</td>
+                    <td>???</td>
+                    <td>???</td>
                 </tr>
                 </tbody>
             </table>
-        </div>
-        <div class="tab-content row justify-content-center" >
-            <h2>사업자 등록증</h2>
-            <div class="d-flex">
-                <button class="mx-2 btn-primary" onclick="location.href='/admin/buisnessman_file_download/${bizReg.brNo}'">등록증 다운로드</button>
-            </div>
-
-            <img style="width: 100%;" class="mx-2 my-2 d-flex" src="${bizReg.url}">
-
-            <c:choose>
-                <c:when test="${bizReg.certified eq false}">
-                    <div class="d-flex">
-                        <button style="width: 100%;"  class="mx-2 my-2 btn-primary" onclick="location.href='/admin/buisnessman_start/${bizReg.brNo}'">승인</button>
-                    </div>
-                </c:when>
-            </c:choose>
-
         </div>
     </div>
 </div>
 </body>
-</html>
-<script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script defer type="text/javascript" src="/resource/js/bootstrap.js"></script>
-<script defer src="/js/ServiceCenter.js"></script>
+<!--  부트스트랩 js 사용 -->
+<script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
         crossorigin="anonymous"></script>
+
+<script defer src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script defer src="https://cdn.datatables.net/1.11.3/js/dataTables.jqueryui.min.js"></script>
+<script defer src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
+<script defer src="https://cdn.datatables.net/rowgroup/1.1.4/js/dataTables.rowGroup.min.js"></script>
+<script defer src="/js/datatable.js"></script>
 
 </html>

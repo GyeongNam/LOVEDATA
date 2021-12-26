@@ -47,9 +47,9 @@
                     </div>
                     <div id="loc_collapse" class="collapse show" aria-labelledby="headingLoc" data-parent="#loc">
                         <div class="card-body center-pill">
-                            <p><a href="/ServiceCenter/Notice/1" class="highlight-selected-text-menu ">- 공지 사항</a></p>
+                            <p><a href="/ServiceCenter/Notice/1" class="highlight-not-selected-text-menu ">- 공지 사항</a></p>
                             <p><a href="/ServiceCenter/Questions/1" class="highlight-not-selected-text-menu">- 문의 사항</a></p>
-                            <p><a href="/ServiceCenter/Event/1" class="highlight-not-selected-text-menu">- 이벤트</a></p>
+                            <p><a href="/ServiceCenter/Event/1" class="highlight-selected-text-menu">- 이벤트</a></p>
                             <p><a href="/ServiceCenter/Policy" class="highlight-not-selected-text-menu">- LOVEDATA 정책</a></p>
                             <p><a href="/ServiceCenter/Withdrawal" class="highlight-not-selected-text-menu">- 회원 탈퇴</a></p>
                         </div>
@@ -59,16 +59,25 @@
         </ul>
     </div>
     <div class="container-fluid" id="display_center" style="margin-right: 30px">
-        <form name="Form" action="/ServiceCenter/Notice_Post_Update/update"  method="post">
-            <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
-            <input name="num" type="hidden" value="${noti.noti_no}">
+        <form name="Form" action="/ServiceCenter/Event_Post_add/add"  method="post">
+            <input  name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
             <div class="d-flex container">
                 <span class="d-flex col-1 justify-content-center align-middle select-item border border-secondary" >제목</span>
-                <input class="d-flex container justify-content-center "  type="text" name="title" id="title" value="${noti.noti_title}"  placeholder="제목을 입력해주세요.">
-                <button class="d-flex col-1 container justify-content-center "  type="button"  onclick="upload();">글쓰기</button>
+                <input class="d-flex container justify-content-center "  type="text" name="title" id="title" placeholder="제목을 입력해주세요.">
+                <button class="d-flex col-1 container justify-content-center "  type="button"  onclick="ev_save();">글쓰기</button>
             </div>
             <div class="d-flex container">
-                <textarea name="notice_content" id="smartEditor" style="width: auto; max-height: 10%">${noti.noti_text}</textarea>
+                <span class="d-flex col-1 justify-content-center align-middle select-item border border-secondary" >시작일</span>
+                <input class="input_style container" type="date" id="start" name="start" aria-required="">
+                <span class="d-flex col-1 justify-content-center align-middle select-item border border-secondary" >마감일</span>
+                <input class="input_style container" type="date" id="stop" name="stop" required>
+                <span class="d-flex col-1 justify-content-center align-middle select-item border border-secondary" >추첨일</span>
+                <input class="input_style container" type="date" id="end" name="end" required>
+                <span class="d-flex col-1 justify-content-center align-middle select-item border border-secondary" >상품 수</span>
+                <input class="input_style container" type="number" id="item" name="item" required>
+            </div>
+            <div class="d-flex container">
+                <textarea name="notice_content" id="smartEditor" style="width: auto; max-height: 10%"></textarea>
                 <input type="hidden" name="form_name" id="form_name" value="">
             </div>
         </form>
@@ -81,4 +90,6 @@
         crossorigin="anonymous"></script>
 <script src="/js/qu_post_add.js"></script>
 <script src="/js/SmartEditor2.js"></script>
+
+
 </html>

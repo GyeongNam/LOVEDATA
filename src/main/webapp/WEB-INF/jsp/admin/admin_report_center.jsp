@@ -50,6 +50,7 @@
 								<p><a href="/admin/dash" class="highlight-not-selected-text-menu">대시보드</a></p>
 								<p><a href="/admin/user/1" class="highlight-not-selected-text-menu">유저 관리</a></p>
 								<p><a href="/admin/buisnessman" class="highlight-not-selected-text-menu">사업자 관리</a></p>
+								<p><a href="/admin/event" class="highlight-not-selected-text-menu">이벤트 관리</a></p>
 								<p><a href="/admin/SendMessage" class="highlight-not-selected-text-menu">메시지 발송</a></p>
 								<p><a type="button" class="highlight-not-selected-text-menu" data-toggle="collapse" data-target="#service_collapse" aria-expanded="false">공지사항과 문의사항</a></p>
 								<div id="service_collapse" class="panel-collapse collapse">

@@ -8,17 +8,14 @@
 
 <html>
 <head>
-    <frame-options disabled="true"/>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="_csrf" content="${_csrf.token}">
     <meta name="_csrf_header" content="${_csrf.headerName}">
-<%--    <script type="text/javascript" src="/smartditor2/js/HuskyEZCreator.js" charset="utf-8"></script>--%>
-    <script type="text/javascript" src="/se2/js/HuskyEZCreator.js" charset="utf-8"></script>
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/service/loc.css">
+    <link rel="stylesheet" href="/css/ServiceCenter.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
 
@@ -26,7 +23,7 @@
             font-family: 'Jua', sans-serif;
         }
     </style>
-    <title>Notice add</title>
+    <title>Home</title>
 </head>
 <%@ include file="../layout/header.jsp" %>
 <body>
@@ -47,9 +44,9 @@
                     </div>
                     <div id="loc_collapse" class="collapse show" aria-labelledby="headingLoc" data-parent="#loc">
                         <div class="card-body center-pill">
-                            <p><a href="/ServiceCenter/Notice/1" class="highlight-selected-text-menu ">- 공지 사항</a></p>
+                            <p><a href="/ServiceCenter/Notice/1" class="highlight-not-selected-text-menu ">- 공지 사항</a></p>
                             <p><a href="/ServiceCenter/Questions/1" class="highlight-not-selected-text-menu">- 문의 사항</a></p>
-                            <p><a href="/ServiceCenter/Event/1" class="highlight-not-selected-text-menu">- 이벤트</a></p>
+                            <p><a href="/ServiceCenter/Event/1" class="highlight-selected-text-menu">- 이벤트</a></p>
                             <p><a href="/ServiceCenter/Policy" class="highlight-not-selected-text-menu">- LOVEDATA 정책</a></p>
                             <p><a href="/ServiceCenter/Withdrawal" class="highlight-not-selected-text-menu">- 회원 탈퇴</a></p>
                         </div>
@@ -58,20 +55,44 @@
             </div>
         </ul>
     </div>
-    <div class="container-fluid" id="display_center" style="margin-right: 30px">
-        <form name="Form" action="/ServiceCenter/Notice_Post_Update/update"  method="post">
-            <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
-            <input name="num" type="hidden" value="${noti.noti_no}">
-            <div class="d-flex container">
-                <span class="d-flex col-1 justify-content-center align-middle select-item border border-secondary" >제목</span>
-                <input class="d-flex container justify-content-center "  type="text" name="title" id="title" value="${noti.noti_title}"  placeholder="제목을 입력해주세요.">
-                <button class="d-flex col-1 container justify-content-center "  type="button"  onclick="upload();">글쓰기</button>
-            </div>
-            <div class="d-flex container">
-                <textarea name="notice_content" id="smartEditor" style="width: auto; max-height: 10%">${noti.noti_text}</textarea>
-                <input type="hidden" name="form_name" id="form_name" value="">
-            </div>
-        </form>
+    <div class="container col-lg-6 ">
+        <h2 class="mx-2">${eve.ev_title}</h2>
+        <sec:authorize access="isAuthenticated()">
+            <sec:authorize access="hasAnyRole('ADMIN')">
+                <button class="mx-2" onclick="onclick=location.href='/ServiceCenter/Event_Update/'+${eve.ev_no}">수정하기</button>
+                <form method="post" action="/ServiceCenter/Event_Delete" id="nform">
+                    <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
+                    <input type="hidden" name="noti_no" value="${eve.ev_no}">
+                    <button class="mx-2" onclick="noti_de()">삭제하기</button>
+                </form>
+            </sec:authorize>
+        </sec:authorize>
+        <table class="table-bordered table text-center " >
+            <thead>
+            <th scope="col">시작일</th>
+            <th scope="col">종료일</th>
+            <th scope="col">추첨일</th>
+            <th scope="col">참여자</th>
+            </thead>
+            <tbody id="tableBody">
+            <tr>
+                <td>${eve.ev_start}</td>
+                <td>${eve.ev_stop}</td>
+                <td>${eve.ev_end}</td>
+                <td>???</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div>
+           <span>${eve.ev_text}</span>
+        </div>
+        <div class="border text-center" >
+            <span>나의 포인트 : </span>
+        </div>
+        <div class="d-flex">
+            <button style="width: 100%;"  class="my-2 btn-primary" onclick="location.href='#'">참여하기</button>
+        </div>
     </div>
 </div>
 </body>
@@ -79,6 +100,5 @@
 <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
         crossorigin="anonymous"></script>
-<script src="/js/qu_post_add.js"></script>
-<script src="/js/SmartEditor2.js"></script>
+<script defer src="/js/ServiceCenter.js"></script>
 </html>

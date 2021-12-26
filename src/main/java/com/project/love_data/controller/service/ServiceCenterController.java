@@ -3,9 +3,7 @@ package com.project.love_data.controller.service;
 import com.project.love_data.businessLogic.service.*;
 import com.project.love_data.model.resource.QuestionsImage;
 import com.project.love_data.model.user.User;
-import com.project.love_data.repository.NoticeIMGRepository;
-import com.project.love_data.repository.NoticeRepository;
-import com.project.love_data.repository.QuestionsImageRepository;
+import com.project.love_data.repository.*;
 import com.project.love_data.businessLogic.service.ControllerScriptUtils;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.io.FileUtils;
@@ -43,6 +41,8 @@ public class ServiceCenterController {
     NoticeIMGRepository noticeIMGRepository;
     @Autowired
     NoticeRepository noticeRepository;
+    @Autowired
+    EventRepository eventRepository;
     @Autowired
     ControllerScriptUtils scriptUtils;
 
@@ -1323,6 +1323,400 @@ public class ServiceCenterController {
         }catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+    // 이벤트
+
+    @GetMapping(value = "/ServiceCenter/Event/{page}")
+    public String Event(@PathVariable("page") String page, Model model, HttpServletResponse response) {
+        List<Event> events = serviceCenterService.ev_select_all();
+        List<Event> notice_page = null;
+        model.addAttribute("search", false);
+        long no_size = events.size();
+        long no_page = events.size()/15;
+        long no_page_na = events.size()%15;
+        long no_page_size = no_page/10;
+        long no_page_size_na = no_page%10;
+
+        Date today = new Date();
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+        model.addAttribute("no_time", format1.format(today));
+
+        if(no_page_size_na >= 1){
+            no_page_size = no_page_size+1;
+            model.addAttribute("no_page_size",no_page_size);
+        }
+        else {
+            model.addAttribute("no_page_size",no_page_size);
+        }
+
+        if(no_page_na >= 1){
+            no_page = no_page+1;
+            model.addAttribute("no_page",no_page);
+        }
+        else {
+            model.addAttribute("no_page",no_page);
+        }
+        model.addAttribute("no_size",events.size());
+
+        // 페이지네이션
+        long j=0;
+
+        if(events.size()<15){
+            model.addAttribute("eve",events);
+        }else {
+            for (int i = 0; i < no_size; i++) {
+                notice_page = events.subList(0,15);
+
+                if (i % 15 == 0) {
+                    j = j + 1;
+                    if (j == Long.parseLong(page)) {
+                        model.addAttribute("eve",notice_page);
+                        break;
+                    } else {
+                        events.subList(0,15).clear();
+
+                        if(events.size()<15){
+                            model.addAttribute("eve",events);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return "/user/Service_center_ev";
+    }
+
+    @GetMapping(value = "/ServiceCenter/Event/search/{menu}/{text}/{page}")
+    public String Esearch( @PathVariable("page") String page,
+                           @PathVariable("text") String text,
+                           @PathVariable("menu") String menu,
+                           Model model,
+                           Principal principal)  {
+        List<Event> events = serviceCenterService.ev_search_all(menu, text);
+        model.addAttribute("search", true);
+        model.addAttribute("text", text);
+        model.addAttribute("menu", menu);
+
+        List<Event> notice_page = null;
+        model.addAttribute("search", false);
+        long no_size = events.size();
+        long no_page = events.size()/15;
+        long no_page_na = events.size()%15;
+        long no_page_size = no_page/10;
+        long no_page_size_na = no_page%10;
+
+        Date today = new Date();
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+        model.addAttribute("no_time", format1.format(today));
+
+        if(no_page_size_na >= 1){
+            no_page_size = no_page_size+1;
+            model.addAttribute("no_page_size",no_page_size);
+        }
+        else {
+            model.addAttribute("no_page_size",no_page_size);
+        }
+
+        if(no_page_na >= 1){
+            no_page = no_page+1;
+            model.addAttribute("no_page",no_page);
+        }
+        else {
+            model.addAttribute("no_page",no_page);
+        }
+        model.addAttribute("no_size",events.size());
+
+        // 페이지네이션
+        long j=0;
+
+        if(events.size()<15){
+            model.addAttribute("eve",events);
+        }else {
+            for (int i = 0; i < no_size; i++) {
+                notice_page = events.subList(0,15);
+
+                if (i % 15 == 0) {
+                    j = j + 1;
+                    if (j == Long.parseLong(page)) {
+                        model.addAttribute("eve",notice_page);
+                        break;
+                    } else {
+                        events.subList(0,15).clear();
+
+                        if(events.size()<15){
+                            model.addAttribute("eve",events);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return "/user/Service_center_ev";
+    }
+
+    @GetMapping(value = "/ServiceCenter/Event_Post/{num}")
+    public String Event_no(@PathVariable("num") String num, Model model, HttpServletResponse response)  {
+        Event event = serviceCenterService.ev_select_no(num);
+        event.setEv_viewCount(event.getEv_viewCount()+1);
+        serviceCenterService.ev_update(event);
+        model.addAttribute("eve",event);
+        return "/service/ev_detail";
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping(value = "/ServiceCenter/Event_Delete")
+    public String Event_Delete(Principal principal,HttpServletRequest request) throws  IOException{
+        String noti_no= request.getParameter("noti_no");
+        Event event = serviceCenterService.ev_select_no(noti_no);
+        event.setEv_activation(false);
+        serviceCenterService.ev_update(event);
+
+        List<NoticeIMG> noticeIMGS = serviceCenterService.select_notiimg_num(noti_no);
+
+        for( int i = 0; i < noticeIMGS.size() ; i++ )
+        {
+            try {
+                noticeIMGS.get(i).setNoti_activation(false);
+                serviceCenterService.notiimg_update(noticeIMGS.get(i));
+                if("Windows_NT".equals(System.getenv().get("OS"))) {
+                    String r = request.getSession().getServletContext().getRealPath("/");
+                    int idx = r.indexOf("main");
+                    String imgpath = r.substring(0, idx) + "main/resources/static/image/notice/" + noticeIMGS.get(i).getNotiimg_name();
+
+                    File file = FileUtils.getFile(imgpath);
+                    File fileToMove = FileUtils.getFile(r.substring(0, idx) + "main/resources/static/image/upload/" + noticeIMGS.get(i).getNotiimg_name());
+                    FileUtils.moveFile(file, fileToMove);
+                }else {
+                    String imgpath = Linux_Image_Upload_Path+"event/" + noticeIMGS.get(i).getNotiimg_name();
+
+                    File file = FileUtils.getFile(imgpath);
+                    File fileToMove = FileUtils.getFile(Linux_Image_Upload_Path+"upload/" + noticeIMGS.get(i).getNotiimg_name());
+                    FileUtils.moveFile(file, fileToMove);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        return "redirect:/ServiceCenter/Event/1";
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping(value = "/ServiceCenter/Event_Post_add")
+    public String Post_add_ev(Principal principal, HttpServletResponse response) throws IOException {
+        if(principal == null){
+            scriptUtils.alertAndMovePage(response, "로그인 해주세요.", "/login");
+        }
+        return "/service/ev_Post_add";
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping(value = "/ServiceCenter/Event_Post_add/add")
+    public String Post_add_ev_add(HttpServletRequest request, Principal principal, HttpServletResponse response) throws IOException {
+        if(principal == null){
+            scriptUtils.alertAndMovePage(response, "로그인 해주세요.", "/login");
+        }else {
+            User user = userService.select(principal.getName());
+            Date today = new Date();
+            SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            String body = request.getParameter("form_name");
+            List<NoticeIMG> noticeIMG = serviceCenterService.select_notiimg(user.getUser_nic());
+            log.info("사진 갯수"+noticeIMG.size());
+            for( int i = 0; i < noticeIMG.size() ; i++ )
+            {
+                log.info("폴문안에 body는 : "+body);
+                log.info("사진명은 : "+noticeIMG.get(i).getNotiimg_name());
+                if(body.contains(noticeIMG.get(i).getNotiimg_name())){
+
+                    // 포함
+                    body = body.replace("/image/upload/"+noticeIMG.get(i).getNotiimg_name(),"/image/notice/"+noticeIMG.get(i).getNotiimg_name());
+
+                    try {
+
+                        String imgpath;
+                        if("Windows_NT".equals(System.getenv().get("OS"))){
+                            String r = request.getSession().getServletContext().getRealPath("/");
+                            int idx =  r.indexOf("main");
+                            imgpath =r.substring(0, idx)+"main/resources/static/image/upload/"+noticeIMG.get(i).getNotiimg_name();
+
+                            File file = FileUtils.getFile(imgpath);
+                            File fileToMove = FileUtils.getFile(r.substring(0, idx)+"main/resources/static/image/notice/"+noticeIMG.get(i).getNotiimg_name());
+                            FileUtils.moveFile(file, fileToMove);
+                        }else {
+                            imgpath = Linux_Image_Upload_Path+"upload/"+noticeIMG.get(i).getNotiimg_name();
+
+                            File file = FileUtils.getFile(imgpath);
+                            File fileToMove = FileUtils.getFile(Linux_Image_Upload_Path+"notice/"+noticeIMG.get(i).getNotiimg_name());
+                            FileUtils.moveFile(file, fileToMove);
+                        }
+
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    // 미포함
+                    noticeIMG.get(i).setNoti_activation(false);
+                }
+            }
+
+            Event event = Event.builder()
+                    .ev_activation(true)
+                    .ev_manager(user.getUser_nic())
+                    .ev_title(request.getParameter("title"))
+                    .ev_text(body)
+                    .ev_start(request.getParameter("start"))
+                    .ev_stop(request.getParameter("stop"))
+                    .ev_end(request.getParameter("end"))
+                    .ev_item(Long.parseLong(request.getParameter("item")))
+                    .ev_viewCount(0)
+                    .build();
+            eventRepository.save(event);
+
+            for( int i = 0; i < noticeIMG.size() ; i++ )
+            {
+                noticeIMG.get(i).setNotiimg_postno(event.getEv_no().toString());
+                serviceCenterService.notiimg_update(noticeIMG.get(i));
+            }
+        }
+
+        return "redirect:/ServiceCenter/Event/1";
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping(value = "/ServiceCenter/Event_Post_Update/update")
+    public String Post_update_ev_update(HttpServletRequest request, Principal principal, HttpServletResponse response) throws IOException {
+        if(principal == null){
+            scriptUtils.alertAndMovePage(response, "로그인 해주세요.", "/login");
+        }else {
+            User user = userService.select(principal.getName());
+            Date today = new Date();
+            SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            String body = request.getParameter("form_name");
+            List<NoticeIMG> noticeIMG_ol = serviceCenterService.select_notiimg_num(request.getParameter("num"));
+            for( int i = 0; i < noticeIMG_ol.size() ; i++ )
+            {
+                if(body.contains(noticeIMG_ol.get(i).getNotiimg_name())){}
+                else {
+                    // 없다면
+                    try {
+                        noticeIMG_ol.get(i).setNoti_activation(false);
+                        serviceCenterService.notiimg_update(noticeIMG_ol.get(i));
+
+                        if("Windows_NT".equals(System.getenv().get("OS"))) {
+                            String r = request.getSession().getServletContext().getRealPath("/");
+                            int idx = r.indexOf("main");
+                            String imgpath = r.substring(0, idx) + "main/resources/static/image/notice/" + noticeIMG_ol.get(i).getNotiimg_name();
+
+                            File file = FileUtils.getFile(imgpath);
+                            File fileToMove = FileUtils.getFile(r.substring(0, idx) + "main/resources/static/image/upload/" + noticeIMG_ol.get(i).getNotiimg_name());
+                            FileUtils.moveFile(file, fileToMove);
+                        }
+                        else {
+                            String imgpath = Linux_Image_Upload_Path+"notice/"+noticeIMG_ol.get(i).getNotiimg_name();
+                            File file = FileUtils.getFile(imgpath);
+                            File fileToMove = FileUtils.getFile(Linux_Image_Upload_Path+"upload/" + noticeIMG_ol.get(i).getNotiimg_name());
+                            FileUtils.moveFile(file, fileToMove);
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            List<NoticeIMG> noticeIMG = serviceCenterService.select_notiimg(user.getUser_nic());
+            log.info("사진 갯수"+noticeIMG.size());
+            for( int i = 0; i < noticeIMG.size() ; i++ )
+            {
+                log.info("폴문안에 body는 : "+body);
+                log.info("사진명은 : "+noticeIMG.get(i).getNotiimg_name());
+                if(body.contains(noticeIMG.get(i).getNotiimg_name())){
+
+                    // 포함
+                    body = body.replace("/image/upload/"+noticeIMG.get(i).getNotiimg_name(),"/image/notice/"+noticeIMG.get(i).getNotiimg_name());
+
+                    try {
+                        if("Windows_NT".equals(System.getenv().get("OS"))) {
+                            String r = request.getSession().getServletContext().getRealPath("/");
+                            int idx = r.indexOf("main");
+                            String imgpath = r.substring(0, idx) + "main/resources/static/image/upload/" + noticeIMG.get(i).getNotiimg_name();
+
+                            File file = FileUtils.getFile(imgpath);
+                            File fileToMove = FileUtils.getFile(r.substring(0, idx) + "main/resources/static/image/notice/" + noticeIMG.get(i).getNotiimg_name());
+                            FileUtils.moveFile(file, fileToMove);
+                        }else {
+                            String imgpath = Linux_Image_Upload_Path+"upload/"+noticeIMG.get(i).getNotiimg_name();
+
+                            File file = FileUtils.getFile(imgpath);
+                            File fileToMove = FileUtils.getFile(Linux_Image_Upload_Path+"notice/" + noticeIMG.get(i).getNotiimg_name());
+                            FileUtils.moveFile(file, fileToMove);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    // 미포함
+                    noticeIMG.get(i).setNoti_activation(false);
+                }
+            }
+
+            Event event = serviceCenterService.ev_select_no(request.getParameter("num"));
+            event.setEv_title(request.getParameter("title"));
+            event.setEv_text(body);
+            event.setEv_start(request.getParameter("start"));
+            event.setEv_stop(request.getParameter("stop"));
+            event.setEv_end(request.getParameter("end"));
+            event.setEv_item(Long.parseLong(request.getParameter("item")));
+            eventRepository.save(event);
+            for( int i = 0; i < noticeIMG.size() ; i++ )
+            {
+                noticeIMG.get(i).setNotiimg_postno(event.getEv_no().toString());
+                serviceCenterService.notiimg_update(noticeIMG.get(i));
+            }
+        }
+
+        return "redirect:/ServiceCenter/Event/1";
+    }
+
+    @GetMapping(value = "/ServiceCenter/Event_Update/{num}")
+    public String Event_Update(@PathVariable("num") String num, Model model, Principal principal, HttpServletResponse response) throws IOException {
+        if(principal == null){
+            scriptUtils.alertAndMovePage(response, "로그인 해주세요.", "/login");
+        }else {
+            Event event = serviceCenterService.ev_select_no(num);
+            model.addAttribute("eve",event);
+            return "/service/ev_Post_update";
+        }
+        return "redirect:/ServiceCenter/Event_Post/"+num;
+    }
+
+    // 이벤트 관리자
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/admin/event")
+    public String buisnessman(Model model){
+
+        List<Event> events = serviceCenterService.ev_all();
+        model.addAttribute("eve",events);
+
+        return "admin/admin_event";
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/admin/event_detail/{num}")
+    public String buisnessman_page(Model model,@PathVariable("num") Long num){
+
+        Event event = serviceCenterService.ev_select_no(num.toString());
+        model.addAttribute("eve",event);
+
+        return "admin/admin_event_detail";
     }
 }
 

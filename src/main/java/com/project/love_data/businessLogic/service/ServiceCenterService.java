@@ -1,9 +1,7 @@
 package com.project.love_data.businessLogic.service;
 
 import com.project.love_data.model.service.*;
-import com.project.love_data.repository.NoticeIMGRepository;
-import com.project.love_data.repository.NoticeRepository;
-import com.project.love_data.repository.QuestionsRepository;
+import com.project.love_data.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +21,8 @@ public class ServiceCenterService {
     NoticeRepository noticeRepository;
     @Autowired
     NoticeIMGRepository noticeIMGRepository;
+    @Autowired
+    EventRepository eventRepository;
 
     public void not_update(Notice notice){
         noticeRepository.save(notice);
@@ -44,6 +44,10 @@ public class ServiceCenterService {
 
     public void notiimg_update(NoticeIMG noticeIMG){
         noticeIMGRepository.save(noticeIMG);
+    }
+
+    public void ev_update(Event event){
+        eventRepository.save(event);
     }
 
     public List<Notice> not_select_all(){
@@ -121,5 +125,37 @@ public class ServiceCenterService {
     public List<Questions> qu_findAllByUser_no(String user_no){
         Optional<List<Questions>> item = questionsRepository.qu_findAllByUser_no(user_no);
         return item.orElse(new ArrayList<>());
+    }
+
+    // 이벤트
+    public List<Event> ev_search_all(String no, String text){
+        Optional<List<Event>> events;
+        if(no.equals("1")){
+            events = eventRepository.ev_search_all("%"+text+"%");
+            return events.orElse(new ArrayList<>());
+        }
+        else if(no.equals("2")){
+            events = eventRepository.ev_search_title("%"+text+"%");
+            return events.orElse(new ArrayList<>());
+        }
+        else {
+            events = eventRepository.ev_search_text("%"+text+"%");
+            return events.orElse(new ArrayList<>());
+        }
+    }
+
+    public List<Event> ev_select_all(){
+        Optional<List<Event>> events = eventRepository.ev_find_All();
+        return events.orElse(new ArrayList<>());
+    }
+
+    public List<Event> ev_all(){
+        Optional<List<Event>> events = eventRepository.ev_All();
+        return events.orElse(new ArrayList<>());
+    }
+
+    public Event ev_select_no(String no){
+        Event event = eventRepository.ev_find_no(no);
+        return event;
     }
 }
