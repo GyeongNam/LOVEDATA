@@ -34,38 +34,6 @@
                         <span></span>
                     </div>
                     <div class="slideshow-container">
-                        <%--						<div class="mySlides fade">--%>
-                        <%--							<div class="Slides-content">--%>
-                        <%--								<div id="img-content">--%>
-                        <%--									<img class="banner-img" src="/image/icon/home/mainbn1.jpg">--%>
-                        <%--								</div>--%>
-                        <%--							</div>--%>
-                        <%--						</div>--%>
-
-                        <%--						<div class="mySlides fade">--%>
-                        <%--							<div class="Slides-content">--%>
-                        <%--								<div id="img-content">--%>
-                        <%--									<img class="banner-img" src="/image/icon/home/lovedatamain2.png">--%>
-                        <%--								</div>--%>
-                        <%--							</div>--%>
-                        <%--						</div>--%>
-
-                        <%--						<div class="mySlides fade">--%>
-                        <%--							<div class="Slides-content">--%>
-                        <%--								<div id="img-content">--%>
-                        <%--									<img class="banner-img" src="/image/icon/home/main4.png">--%>
-                        <%--								</div>--%>
-                        <%--							</div>--%>
-                        <%--						</div>--%>
-                        <%--						<div>--%>
-                        <%--							<a class="prev" id="#nextclick" onclick="plusSlides(-1)"><img src="/image/icon/home/slide_btn_prev.png"></a>--%>
-                        <%--							<a class="next" id="#nextclick" onclick="plusSlides(1)"><img src="/image/icon/home/slide_btn_next.png"></a>--%>
-                        <%--						</div>--%>
-                        <%--						<div class="slider-dot" style="list-style: none">--%>
-                        <%--							<span class="dot" onclick="currentSlide(1)"></span>--%>
-                        <%--							<span class="dot" onclick="currentSlide(2)"></span>--%>
-                        <%--							<span class="dot" onclick="currentSlide(3)"></span>--%>
-                        <%--						</div>--%>
                         <div class="mySlideDiv fade active">
                             <img class="banner-img" src="/image/icon/home/mainbn1.jpg">
                         </div>
@@ -129,6 +97,9 @@
                 <div class="mx-2 icon-box">
                     <a href="/ServiceCenter/Questions/1">
                         <img class="main-2btpic" src="/image/icon/home/qa.jpg" href="/ServiceCenter/Questions/1">
+                    </a>
+                    <a href="">
+                        <img class="main-2btpic" src="/image/icon/home/party.png" href="">
                     </a>
                 </div>
             </div>
