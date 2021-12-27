@@ -686,9 +686,6 @@ public class LocationController {
     @ResponseBody
     public List<List<String>> locDistrictLocSearch(HttpServletRequest request, HttpServletResponse response,
                                                    @RequestParam String distName){
-
-        log.info(distName);
-
         List<LocationDTO> locList = new ArrayList<>();
         List<List<String>> result = new ArrayList<>();
 

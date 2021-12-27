@@ -127,6 +127,7 @@
 										<img src="/image/icon/comment.png" class="loc_icon" alt="댓글">
 											<%--									Todo 댓글 항목 Location Entity에 추가하기--%>
 										<span class="align-middle" id="loc_${i}_comment">99</span>
+										<img src="/image/icon/like/love_black.png" class="loc_icon" alt="찜하기">
 										<span class="align-middle" id="loc_${i}_like" name="loc_${i}_like">123</span>
 											<%--									<span class="d-none">${result.dtoList.get(i).loc_no}</span>--%>
 											<%--									<span class="d-none">${result.dtoList.get(i).loc_uuid}</span>--%>
@@ -165,9 +166,9 @@
 <script defer>
 	let isCardRowVisible = false;
 
-	// function onClickMap(district) {
-    //     console.log(district);
-	// }
+	function onClickMap(district) {
+        console.log(district);
+	}
 
     function onClickDistrict(dist) {
         resetTextColor()
@@ -200,8 +201,6 @@
                 xhr.setRequestHeader(header, token);
             },
             success: function (response) {
-                console.log(response);
-
                 resetCardVisiblity();
 
                 if (response.length == 0) {
@@ -219,8 +218,6 @@
 
                     setVisibleLocCardList(true);
 				}
-
-                console.log('성공');
             },
             error: function (e) {
                 console.log("통신 문제 발생!")
