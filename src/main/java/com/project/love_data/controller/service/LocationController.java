@@ -663,130 +663,47 @@ public class LocationController {
         return "redirect:/service/loc_recommend";
     }
 
-    @GetMapping("/service/loc_district")
+    @GetMapping("/service/loc_district_map")
     public String locDistrict(HttpServletRequest request, HttpServletResponse response,
                               Model model, Authentication authentication) {
-        String keyword = request.getParameter("keyword");
-        String order = request.getParameter("sortOrder");
-        String tagString = request.getParameter("tags");
-        String type = request.getParameter("searchType");
-        String pageNumber = request.getParameter("page");
-        String district = request.getParameter("district");
-        if (pageNumber == null) {
-            pageNumber = "1";
-        }
-        if (type == null) {
-            type = SearchType.NONE.name();
-        }
-        if (order == null) {
-            order = "VIEW_DES";
-        }
-        if (district == null) {
-            district = KoreanDistrict.전국.name();
-        }
-        int pageNum = Integer.parseInt(pageNumber);
 
-        SortingOrder sortingOrder = null;
-        SortCriterion sortCriterion = null;
-        SearchType searchType = SearchType.valueOf(type);
-        List<String> tempList = new ArrayList<>();
-        List<String> tagListStr = new ArrayList<>();
+        return "/service/loc_district_map";
+    }
 
-        if (tagString != null) {
-            if (tagString != "") {
-                tempList = Arrays.asList(tagString.split(","));
-                for (String s : tempList) {
-                    if ("".equals(s)) {
-                        continue;
-                    } else {
-                        tagListStr.add(s);
-                    }
-                }
-            }
-        }
+    @PostMapping("/service/loc_district_map/search_loc")
+    @ResponseBody
+    public List<List<String>> locDistrictLocSearch(HttpServletRequest request, HttpServletResponse response,
+                                                   @RequestParam String distName){
 
-        // 일반 유저는 삭제된 장소 항목을 볼 수 없음
-        switch (searchType) {
-            case DISABLED:
-                searchType = SearchType.NONE;
-                break;
-            case DISABLED_TAG:
-                searchType = SearchType.TAG;
-                break;
-            case DISABLED_TITLE:
-                searchType = SearchType.TITLE;
-                break;
-            case DISABLED_TITLE_TAG:
-                searchType = SearchType.TITLE_TAG;
-                break;
-        }
+        log.info(distName);
 
-        switch (order) {
-            case "LIKE_DES":
-                // 좋아요 순
-                sortCriterion = SortCriterion.LIKE;
-                sortingOrder = SortingOrder.DES;
-                break;
-            case "DATE_DES":
-                // 최신 등록순
-                sortCriterion = SortCriterion.DATE;
-                sortingOrder = SortingOrder.DES;
-                break;
-            case "DATE_ASC":
-                // 오래된 등록순
-                sortCriterion = SortCriterion.DATE;
-                sortingOrder = SortingOrder.ASC;
-                break;
-            case "VIEW_DES":
-                // 조회순
-            default:
-                sortCriterion = SortCriterion.VIEW;
-                sortingOrder = SortingOrder.DES;
-                break;
-        }
+        List<LocationDTO> locList = new ArrayList<>();
+        List<List<String>> result = new ArrayList<>();
 
         PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
-                .size(MAX_LOC_LIST_SIZE)
-                .searchType(searchType)
-                .keyword(keyword)
-                .tagList(tagListStr)
-                .sortCriterion(sortCriterion)
-                .sortingOrder(sortingOrder)
-                .districtType(KoreanDistrict.valueOf(district))
-                .page(pageNum)
+                .size(3)
+                .searchType(SearchType.NONE)
+                .sortCriterion(SortCriterion.VIEW)
+                .sortingOrder(SortingOrder.DES)
+                .districtType(KoreanDistrict.valueOf(distName))
+                .page(1)
                 .build();
 
-        PageResultDTO<LocationDTO, com.project.love_data.model.service.Location> resultDTO = locService.getList(pageRequestDTO);
+        PageResultDTO<LocationDTO, Location> pageResultDTO = locService.getList(pageRequestDTO);
 
-        if (resultDTO.getTotalPage() < pageNum) {
-            if (resultDTO.getTotalPage() == 0) {
-                model.addAttribute("isEmptyResult", true);
-            } else {
-                model.addAttribute("isRequestPageNumberExceed", true);
-            }
-        } else {
-            model.addAttribute("isRequestPageNumberExceed", false);
+        locList = pageResultDTO.getDtoList();
+
+        for (int i = 0; i < locList.size(); i++) {
+            List<String> locInfoHolder = new ArrayList<>();
+            locInfoHolder.add(String.valueOf(locList.get(i).getLoc_no()));
+            locInfoHolder.add(locList.get(i).getLoc_name());
+            locInfoHolder.add(locList.get(i).getThumbnail());
+            locInfoHolder.add(String.valueOf(locList.get(i).getViewCount()));
+            locInfoHolder.add(String.valueOf(locList.get(i).getCmtList().size()));
+            locInfoHolder.add(String.valueOf(locList.get(i).getLikeCount()));
+            result.add(locInfoHolder);
         }
 
-        List<LocationTag> tags = Arrays.asList(LocationTag.values());
-        List<String> activeTags = tagListStr;
-
-        List<KoreanDistrict> korDistricts = Arrays.asList(KoreanDistrict.values());
-
-        model.addAttribute("result", resultDTO);
-        model.addAttribute("tagList", tags);
-        model.addAttribute("activeTags", activeTags);
-        model.addAttribute("keyword", keyword);
-        model.addAttribute("sortOrder", order);
-        model.addAttribute("searchType", searchType);
-        model.addAttribute("korDistrict", korDistricts);
-        model.addAttribute("activeDistrict", district);
-
-//        if(authentication != null) {
-//            AuthUserModel authUser = (AuthUserModel) authentication.getPrincipal();
-////            log.info(authUser.getUser_no());
-//        }
-
-        return "/service/loc_district";
+        return result;
     }
 }
