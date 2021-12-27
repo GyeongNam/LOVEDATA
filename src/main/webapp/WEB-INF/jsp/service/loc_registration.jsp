@@ -47,7 +47,7 @@
 						<div class="card-body center-pill">
 							<p><a href="/service/loc_recommend" class="highlight-not-selected-text-menu">- 추천 장소</a>
 							</p>
-							<p><a href="/service/loc_district" class="highlight-not-selected-text-menu">- 지역별 장소</a></p>
+							<p><a href="/service/loc_district_map" class="highlight-not-selected-text-menu">- 지역별 장소</a></p>
 							<p><a href="/service/loc_registration" class="highlight-selected-text-menu">- 장소 등록</a>
 							</p>
 							<p><a href="/mypage_myplace/1" class="highlight-not-selected-text-menu">- 장소 편집</a></p>
