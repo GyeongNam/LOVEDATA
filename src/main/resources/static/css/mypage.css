@@ -72,9 +72,9 @@ th, td{
     margin-left: 5px;
 }
 
-.active:after {
-    content: "\2212";
-}
+/*.active:after {*/
+/*    content: "\2212";*/
+/*}*/
 
 .panel {
     padding: 0 16px;

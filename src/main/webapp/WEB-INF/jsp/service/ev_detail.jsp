@@ -72,27 +72,57 @@
             <th scope="col">시작일</th>
             <th scope="col">종료일</th>
             <th scope="col">추첨일</th>
-            <th scope="col">참여자</th>
+            <th scope="col">전체 참여 횟수</th>
+            <th scope="col">나의 참여 횟수</th>
             </thead>
             <tbody id="tableBody">
             <tr>
                 <td>${eve.ev_start}</td>
                 <td>${eve.ev_stop}</td>
                 <td>${eve.ev_end}</td>
-                <td>???</td>
+                <td>${all_attend}</td>
+                <td>${my_attend}</td>
             </tr>
             </tbody>
         </table>
-
         <div>
-           <span>${eve.ev_text}</span>
+            <span>${eve.ev_text}</span>
         </div>
+        <sec:authorize access="isAnonymous()">
+            <div class="border text-center" >
+                <span>나의 포인트 : ${point} </span>
+            </div>
+
+            <div class="d-flex">
+                <button style="width: 100%;"  class="my-2 btn-primary" onclick="alert('로그인을 해주세요')">참여하기</button>
+            </div>
+        </sec:authorize>
+        <sec:authorize access="isAuthenticated()">
         <div class="border text-center" >
-            <span>나의 포인트 : </span>
+            <span>나의 포인트 : ${point} </span>
         </div>
-        <div class="d-flex">
-            <button style="width: 100%;"  class="my-2 btn-primary" onclick="location.href='#'">참여하기</button>
-        </div>
+        <c:choose>
+            <c:when test="${eve.ev_activation eq false}">
+                <div class="d-flex">
+                    <button style="width: 100%;"  class="my-2 btn-primary" onclick="alert('종료된 이벤트입니다.')">참여하기</button>
+                </div>
+            </c:when>
+            <c:when test="${eve.ev_activation eq true}">
+                <c:choose>
+                    <c:when test="${point < 100}">
+                        <div class="d-flex">
+                            <button style="width: 100%;"  class="my-2 btn-primary" onclick="alert('포인트가 부족합니다 \n한번에 100포인트가 필요합니다.')">참여하기</button>
+                        </div>
+                    </c:when>
+                    <c:when test="${point >= 100}">
+                        <div class="d-flex">
+                            <button style="width: 100%;"  class="my-2 btn-primary" onclick="alert('참여하였습니다.'); location.href='/ServiceCenter/Event_attend/${eve.ev_no}';">참여하기</button>
+                        </div>
+                    </c:when>
+                </c:choose>
+            </c:when>
+        </c:choose>
+        </sec:authorize>
     </div>
 </div>
 </body>

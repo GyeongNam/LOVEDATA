@@ -24,7 +24,7 @@
             font-family: 'Jua', sans-serif;
         }
     </style>
-    <title>Admin Buisnessman</title>
+    <title>Admin Event</title>
 </head>
 <%@ include file="../layout/header.jsp" %>
 <body class="bg-light">
@@ -71,7 +71,15 @@
         <div class="row justify-content-md-start">
             <div class="tab-content" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="recent-post" role="tabpanel" aria-labelledby="recent-post-tab">
-                    <h3>이벤트 관리</h3>
+                    <div class="d-flex">
+                        <div class="d-flex justify-content-start flex-fill">
+                            <h3>이벤트 관리</h3>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-end">
+                            <button class="btn-primary" onclick="alert('추첨일이 지난 이벤트를 추첨합니다.'); location.href='/admin/event_win/';">추첨하기</button>
+                        </div>
+                    </div>
+
                     <div class="row my-3">
                             <table class="tables text-center" id="searchResultTable">
                                 <thead>

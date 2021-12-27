@@ -25,7 +25,7 @@
             vertical-align : middle;
         }
     </style>
-    <title>Admin User</title>
+    <title>Admin Event</title>
 </head>
 <%@ include file="../layout/header.jsp" %>
 <body class="bg-light">
@@ -109,11 +109,13 @@
                     <th scope="col">유저 아이디</th>
                 </thead>
                 <tbody id="tableBodys">
-                <tr>
-                    <td>???</td>
-                    <td>???</td>
-                    <td>???</td>
-                </tr>
+                    <c:forEach varStatus="index" var="wins" items="${win}">
+                        <tr onclick="location.href='/admin_user_detail/${wins.user_no}'">
+                            <td>${wins.ranking}</td>
+                            <td>${wins.user_no}</td>
+                            <td>${win_user.get(index.count-1).user_email}</td>
+                        </tr>
+                    </c:forEach>
                 </tbody>
             </table>
         </div>
