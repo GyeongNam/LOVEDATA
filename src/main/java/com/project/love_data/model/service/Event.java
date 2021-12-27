@@ -50,4 +50,8 @@ public class Event extends TimeEntity {
     @Column(name = "ev_activation", nullable = false)
     @Builder.Default
     private boolean ev_activation = true;
+
+    @Column(name = "ev_item_activation", nullable = false)
+    @Builder.Default
+    private boolean ev_item_activation = false;
 }

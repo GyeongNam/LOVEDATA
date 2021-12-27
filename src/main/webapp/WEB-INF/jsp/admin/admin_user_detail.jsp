@@ -260,6 +260,69 @@
         </div>
 
         <div class="tab-content">
+            <h2>포인트 : ${point}</h2>
+            <table class="table-bordered table text-center tables" >
+                <thead>
+                <th scope="col">포인트 번호</th>
+                <th scope="col">포인트</th>
+                <th scope="col">획득처</th>
+                <th scope="col">사용처</th>
+                <th scope="col">획득처 및 사용처 번호</th>
+                </thead>
+                <tbody>
+                <c:forEach var="pointL" varStatus="index" items="${pointlist}">
+                    <c:choose>
+                        <c:when test="${pointL.get_plus_mi eq true}">
+                            <tr>
+                                <td>${pointL.point_no}</td>
+                                <td>${pointL.point}</td>
+                                <td>${pointL.point_get_out}</td>
+                                <td></td>
+                                <td>${pointL.get_no_use_no}</td>
+                            </tr>
+                        </c:when>
+                        <c:when test="${pointL.get_plus_mi eq false}">
+                            <tr style="cursor:hand; background: #ffdef2;">
+                                <td>${pointL.point_no}</td>
+                                <td>${pointL.point}</td>
+                                <td></td>
+                                <td>${pointL.point_get_out}</td>
+                                <td>${pointL.get_no_use_no}</td>
+                            </tr>
+                        </c:when>
+                    </c:choose>
+                </c:forEach>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="tab-content">
+            <h2>이벤트 참여 내역</h2>
+            <table class="table-bordered table text-center tables" >
+                <thead>
+                <th scope="col">이벤트 번호</th>
+                <th scope="col">이벤트 이름</th>
+                <th scope="col">시작일</th>
+                <th scope="col">종료일</th>
+                <th scope="col">추첨일</th>
+                <th scope="col">나의 참여횟수</th>
+                </thead>
+                <tbody>
+                <c:forEach var="even" varStatus="index" items="${eve}">
+                    <tr onclick="location.href='/ServiceCenter/Event_Post/${even.ev_no}';">
+                        <td>${even.ev_no}</td>
+                        <td>${even.ev_title}</td>
+                        <td>${even.ev_start}</td>
+                        <td>${even.ev_stop}</td>
+                        <td>${even.ev_end}</td>
+                        <td>${eveattend.get(index.count-1)}</td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="tab-content">
             <h2>정지기록</h2>
             <table class="table-bordered table text-center tables" >
                 <thead>

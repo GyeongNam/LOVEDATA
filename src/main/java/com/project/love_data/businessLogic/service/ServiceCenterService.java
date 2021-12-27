@@ -23,6 +23,10 @@ public class ServiceCenterService {
     NoticeIMGRepository noticeIMGRepository;
     @Autowired
     EventRepository eventRepository;
+    @Autowired
+    EventAttendRepository eventAttendRepository;
+    @Autowired
+    EventWinRepository eventWinRepository;
 
     public void not_update(Notice notice){
         noticeRepository.save(notice);
@@ -48,6 +52,10 @@ public class ServiceCenterService {
 
     public void ev_update(Event event){
         eventRepository.save(event);
+    }
+
+    public void ev_winupdate(EventWin eventWIn){
+        eventWinRepository.save(eventWIn);
     }
 
     public List<Notice> not_select_all(){
@@ -149,6 +157,11 @@ public class ServiceCenterService {
         return events.orElse(new ArrayList<>());
     }
 
+    public List<Event> ev_find_item(){
+        Optional<List<Event>> events = eventRepository.ev_find_item();
+        return events.orElse(new ArrayList<>());
+    }
+
     public List<Event> ev_all(){
         Optional<List<Event>> events = eventRepository.ev_All();
         return events.orElse(new ArrayList<>());
@@ -158,4 +171,25 @@ public class ServiceCenterService {
         Event event = eventRepository.ev_find_no(no);
         return event;
     }
+
+    public List<EventAttend> evattd_find_UserEvNo(String user_no, String ev_no){
+        Optional<List<EventAttend>> events = eventAttendRepository.evattd_find_UserEvNo(user_no,ev_no);
+        return events.orElse(new ArrayList<>());
+    }
+
+    public List<EventAttend> evattd_find_EvNo(String ev_no){
+        Optional<List<EventAttend>> events = eventAttendRepository.evattd_find_EvNo(ev_no);
+        return events.orElse(new ArrayList<>());
+    }
+
+    public List<EventAttend> evattd_find_UserNo(String user_no){
+        Optional<List<EventAttend>> events = eventAttendRepository.evattd_find_UserNo(user_no);
+        return events.orElse(new ArrayList<>());
+    }
+
+    public List<EventWin> evwin_find_EvNo(String ev_no){
+        Optional<List<EventWin>> events = eventWinRepository.evwin_find_EvNo(ev_no);
+        return events.orElse(new ArrayList<>());
+    }
+
 }

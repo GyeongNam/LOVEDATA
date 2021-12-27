@@ -43,6 +43,12 @@
 				<p>
 					<a href="/mypage" >내 정보</a>
 				</p>
+				<p>
+					<a href="/mypage_point" >내 포인트</a>
+				</p>
+				<p>
+					<a href="/mypage_event" >이벤트 참여</a>
+				</p>
 			</div>
 			<div>
 				<button class="accordion">나의댓글/리뷰</button>

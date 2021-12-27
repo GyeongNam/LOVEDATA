@@ -12,7 +12,10 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     @Query(value = "select * from event where  ev_activation=true order by ev_no desc", nativeQuery = true)
     Optional<List<Event>> ev_find_All();
 
-    @Query(value = "select * from event", nativeQuery = true)
+    @Query(value = "select * from event where  ev_item_activation=false order by ev_no desc", nativeQuery = true)
+    Optional<List<Event>> ev_find_item();
+
+    @Query(value = "select * from event order by ev_no desc", nativeQuery = true)
     Optional<List<Event>> ev_All();
 
     @Query(value = "select * from event where ev_no = :no", nativeQuery = true)

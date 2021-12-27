@@ -79,7 +79,7 @@
         <table>
             <thead>
             <tr>
-                <th>번호</th><th>제목</th><th>작성자</th><th>작성일</th><th>조회수</th>
+                <th>번호</th><th>제목</th><th>작성자</th><th>작성일</th><th>진행상태</th><th>조회수</th>
             </tr>
             </thead>
             <tbody>
@@ -89,6 +89,14 @@
                     <td onclick=location.href='/ServiceCenter/Event_Post/${even.ev_no}';>${even.ev_title}</td>
                     <td>${even.ev_manager}</td>
                     <td>${even.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</td>
+                    <c:choose>
+                        <c:when test="${even.ev_activation eq false}">
+                            <td>종료</td>
+                        </c:when>
+                        <c:when test="${even.ev_activation eq true}">
+                            <td>진행 중</td>
+                        </c:when>
+                    </c:choose>
                     <td>${even.ev_viewCount}</td>
                 </tr>
             </c:forEach>

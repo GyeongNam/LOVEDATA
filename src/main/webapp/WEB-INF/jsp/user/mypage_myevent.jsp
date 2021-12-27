@@ -9,8 +9,16 @@
 <%@ page session="false" %>
 <jsp:useBean id="defaultDateTimeFormatter" class="com.project.love_data.util.DefaultLocalDateTimeFormatter"></jsp:useBean>
 <jsp:useBean id="simpleDateTimeFormatter" class="com.project.love_data.util.SimpleLocalDateTimeFormatter"></jsp:useBean>
+
 <html>
 <head>
+	<meta name="_csrf" content="${_csrf.token}">
+	<meta name="_csrf_header" content="${_csrf.headerName}">
+    <link href="/css/mypage.css" rel="stylesheet">
+<%--	<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">--%>
+<%--	<link rel="stylesheet" href=" https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css">--%>
+	<link rel="stylesheet" href=" https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css"/>
+	<link rel="stylesheet" href=" https://cdn.datatables.net/rowgroup/1.1.4/css/rowGroup.bootstrap5.min.css"/>
 	<style>
 		@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
 
@@ -18,7 +26,6 @@
 			font-family: 'Jua', sans-serif;
 		}
 	</style>
-    <link href="/css/mypage.css" rel="stylesheet">
     <title>Home</title>
 </head>
 <%@ include file="../layout/header.jsp"%>
@@ -98,61 +105,48 @@
 		</div>
 	</div>
 	<div id="jb-content">
-		<div id="LikeList" class="tabcontent">
-			<h3>내가 찜한 코스</h3>
-			<table>
+		<div id="MyCorse" class="tabcontent">
+			<h3>참여 이벤트: </h3>
+			<table class="table-bordered table text-center tables" >
 				<thead>
-				<tr>
-					<th>등록 날짜</th>
-					<th>제목</th>
-					<th>조회수</th>
-				</tr>
+				<th scope="col">이벤트 번호</th>
+				<th scope="col">이벤트 이름</th>
+				<th scope="col">시작일</th>
+				<th scope="col">종료일</th>
+				<th scope="col">추첨일</th>
+				<th scope="col">나의 참여횟수</th>
 				</thead>
 				<tbody>
-				<c:forEach var="mCorlike" items="${my_Corlike}" >
-				<c:choose>
-				<c:when test="${mCorlike._deleted eq false}">
-				<tbody>
-				<tr>
-					<td><span>${mCorlike.regDate.format(simpleDateTimeFormatter.dateTimeFormatter)}</span></td>
-					<td><a href="/service/cor_detail?corNo=${mCorlike.cor_no}">${mCorlike.cor_name}</a></td>
-					<td>${mCorlike.viewCount}</td>
-				</tr>
-				</c:when>
-				</c:choose>
+				<c:forEach var="even" varStatus="index" items="${eve}">
+					<tr onclick="location.href='/ServiceCenter/Event_Post/${even.ev_no}';">
+						<td>${even.ev_no}</td>
+						<td>${even.ev_title}</td>
+						<td>${even.ev_start}</td>
+						<td>${even.ev_stop}</td>
+						<td>${even.ev_end}</td>
+						<td>${eveattend.get(index.count-1)}</td>
+					</tr>
 				</c:forEach>
 				</tbody>
 			</table>
-			<div class="col" id="pu_navbar">
-				<div class="container d-flex" id="">
-					<div class="col" id="page_number">
-						<nav aria-label="Page navigation example">
-							<input id="qu_pages" value="${qu_page_size}" type="hidden">
-							<input id="qu_pagess" value="${qu_page}" type="hidden">
-							<div class="pagination justify-content-center" , id="pagination justify-content-center">
-								<span onclick="subpage()"> < </span>
-								<c:forEach var="qu_pages" begin="1" end="${qu_page}" step="1">
-									<div class="page-item" id="${qu_pages}">
-										<li class="page-item ${qu_pages}">
-											<a href="/mypage_myCorlike/${qu_pages}">${qu_pages}</a>
-										</li>
-									</div>
-								</c:forEach>
-								<span onclick="plupage()"> > </span>
-							</div>
-						</nav>
-					</div>
-				</div>
-			</div>
+
 		</div>
 	</div>
 </div>
 </sec:authorize>
 <%--</form>--%>
 </body>
+
 <!--   부트스트랩 js 사용  -->
 <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script defer type="text/javascript" src="/resource/js/bootstrap.js"></script>
 <script defer src="/js/ServiceCenter.js"></script>
 <script defer src="/js/mypage.js"></script>
+
+
+<script defer src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script defer src="https://cdn.datatables.net/1.11.3/js/dataTables.jqueryui.min.js"></script>
+<script defer src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
+<script defer src="https://cdn.datatables.net/rowgroup/1.1.4/js/dataTables.rowGroup.min.js"></script>
+<script defer src="/js/datatable.js"></script>
 </html>
