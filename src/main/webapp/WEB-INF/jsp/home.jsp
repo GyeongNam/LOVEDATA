@@ -98,8 +98,8 @@
                     <a href="/ServiceCenter/Questions/1">
                         <img class="main-2btpic" src="/image/icon/home/qa.jpg" href="/ServiceCenter/Questions/1">
                     </a>
-                    <a href="">
-                        <img class="main-2btpic" src="/image/icon/home/party.png" href="">
+                    <a href="/ServiceCenter/Event/1">
+                        <img class="main-2btpic" src="/image/icon/home/party.png" href="/ServiceCenter/Event/1">
                     </a>
                 </div>
             </div>

@@ -1,8 +1,9 @@
 package com.project.love_data.businessLogic.service;
 
+import com.project.love_data.model.service.Event;
 import com.project.love_data.model.service.UserSuspension;
 import com.project.love_data.model.user.User;
-import lombok.Data;
+import com.project.love_data.repository.EventWinRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -13,9 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Log4j2
 @Component
@@ -24,6 +23,10 @@ public class Scheculer implements ApplicationRunner {
 
     @Autowired
     UserService userService;
+    @Autowired
+    ServiceCenterService serviceCenterService;
+    @Autowired
+    EventWinRepository eventWinRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -36,9 +39,7 @@ public class Scheculer implements ApplicationRunner {
     public void user_release() throws ParseException {
         Date date = new Date();
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-
-//        log.info("스케줄러 작동 :"+ format1.format(date));
-
+//        log.info("스케줄러 작동 :"+ format1);
         List<UserSuspension> userSuspension = userService.findAllByprogress("1");
         for(int i = 0; i<userSuspension.size(); i++){
             Date endDay = format1.parse(userSuspension.get(i).getEnd_day());
@@ -67,6 +68,18 @@ public class Scheculer implements ApplicationRunner {
                     user.setUser_Activation(true);
                     userService.update(user);
                 }
+            }
+        }
+
+        // 이벤트 관리
+        List<Event> events = serviceCenterService.ev_select_all();
+
+        for(int i = 0; i<events.size(); i++){
+            Date stopDay = format1.parse(events.get(i).getEv_stop());
+            if(date.after(stopDay)){
+                // 이벤트 비활성화
+                events.get(i).setEv_activation(false);
+                serviceCenterService.ev_update(events.get(i));
             }
         }
     }

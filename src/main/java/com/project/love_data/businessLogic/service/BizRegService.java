@@ -2,6 +2,7 @@ package com.project.love_data.businessLogic.service;
 
 import com.project.love_data.dto.BizRegDTO;
 import com.project.love_data.model.service.BizReg;
+import com.project.love_data.model.service.Point;
 import com.project.love_data.model.user.User;
 import com.project.love_data.repository.BizRegRepository;
 import com.project.love_data.repository.PointRepository;
@@ -267,6 +268,20 @@ public class BizRegService {
 
     public List<BizReg> findAllLiveByCertifiedTrue(){
         Optional<List<BizReg>> item = repository.findAllLiveByCertified(true);
+        return item.orElse(new ArrayList<>());
+    }
+
+    public Long findplupoint(String user_no){
+        Long item = pointRepository.findplupoint(user_no);
+        return item;
+    }
+    public Long findmapoint(String user_no){
+        Long item = pointRepository.findmapoint(user_no);
+        return item;
+    }
+
+    public List<Point> points_find_user_no(String user_no){
+        Optional<List<Point>> item = pointRepository.points_find_user_no(user_no);
         return item.orElse(new ArrayList<>());
     }
 }

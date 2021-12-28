@@ -356,6 +356,57 @@ public class UserController {
 			return "user/mypage";
 		}
 	}
+
+	@GetMapping(value = "/mypage_point")
+	public String mypage_point(Principal principal, Model model) {
+		if (principal == null) {
+			return "redirect:/login";
+		} else {
+			User user = userService.select(principal.getName());
+			List<Point> points = bizRegService.points_find_user_no(user.getUser_no().toString());
+			Long Ppoint = bizRegService.findplupoint(user.getUser_no().toString());
+			Long Mpoint = bizRegService.findmapoint(user.getUser_no().toString());
+			if(Ppoint!=null){
+				if(Mpoint!=null){
+					if(Ppoint>Mpoint){
+						model.addAttribute("point",Ppoint-Mpoint);
+					}else {
+						model.addAttribute("point",0);
+					}
+				}else {
+					model.addAttribute("point",Ppoint);
+				}
+			}else {
+				model.addAttribute("point",0);
+			}
+			model.addAttribute("pointlist",points);
+
+			return "user/mypage_mypoint";
+		}
+	}
+		// 여기
+	@GetMapping(value = "/mypage_event")
+	public String mypage_event(Principal principal, Model model) {
+		if (principal == null) {
+			return "redirect:/login";
+		} else {
+			User user = userService.select(principal.getName());
+			List<EventAttend> eventAttends = serviceCenterService.evattd_find_UserNo(user.getUser_no().toString());
+			List<Integer> eventAttends_size = new ArrayList<>();
+			List<Event> eventList = new ArrayList<>();
+			for(int i = 0; i<eventAttends.size(); i++){
+				Event event = serviceCenterService.ev_select_no(eventAttends.get(i).getEv_no().toString());
+				List<EventAttend> eventAttends_sizeev = serviceCenterService.evattd_find_UserEvNo(eventAttends.get(i).getUser_no().toString(),eventAttends.get(i).getEv_no().toString());
+				eventAttends_size.add(eventAttends_sizeev.size());
+				eventList.add(event);
+			}
+			model.addAttribute("eve" ,eventList);
+			model.addAttribute("eveattend" ,eventAttends_size);
+
+			return "user/mypage_myevent";
+		}
+	}
+
 	//CHOI
 	@GetMapping(value = "/mypage_mycomment/{page}")
 	public String mycomment(@PathVariable("page") String page, Authentication authentication, Model model) {
@@ -1305,6 +1356,34 @@ public class UserController {
 		List<Review> reviewList = reviewService.findAllByUser_no(num);
 		List<Comment> commentList = cmtService.findAllByUserNo(num);
 		List<UserSuspension> userSuspensionList = userService.su_findAllByUser_no(num);
+
+		List<Point> points = bizRegService.points_find_user_no(num.toString());
+		Long Ppoint = bizRegService.findplupoint(num.toString());
+		Long Mpoint = bizRegService.findmapoint(num.toString());
+		if(Ppoint!=null){
+			if(Mpoint!=null){
+				if(Ppoint>Mpoint){
+					model.addAttribute("point",Ppoint-Mpoint);
+				}else {
+					model.addAttribute("point",0);
+				}
+			}else {
+				model.addAttribute("point",Ppoint);
+			}
+		}else {
+			model.addAttribute("point",0);
+		}
+
+		List<EventAttend> eventAttends = serviceCenterService.evattd_find_UserNo(num.toString());
+		List<Integer> eventAttends_size = new ArrayList<>();
+		List<Event> eventList = new ArrayList<>();
+		for(int i = 0; i<eventAttends.size(); i++){
+			Event event = serviceCenterService.ev_select_no(eventAttends.get(i).getEv_no().toString());
+			List<EventAttend> eventAttends_sizeev = serviceCenterService.evattd_find_UserEvNo(eventAttends.get(i).getUser_no().toString(),eventAttends.get(i).getEv_no().toString());
+			eventAttends_size.add(eventAttends_sizeev.size());
+			eventList.add(event);
+		}
+
 		List<Course> rev_cor_name = new ArrayList<>();
 		for(int i = 0; i<reviewList.size(); i++){
 			Course course = corService.selectCor(reviewList.get(i).getCorNo());
@@ -1312,8 +1391,6 @@ public class UserController {
 		}
 
 		List<Integer> RevPageNum = new ArrayList<>();
-		List<Integer> ComPageNum = new ArrayList<>();
-
 		for (int i = 0; i < reviewList.size(); i++) {
 			Integer temp = reviewService.getReviewCurrentPageNum(reviewList.get(i).getRevNo());
 			if (temp == null) {
@@ -1322,6 +1399,7 @@ public class UserController {
 			RevPageNum.add(temp);
 		}
 
+		List<Integer> ComPageNum = new ArrayList<>();
 		for (int i = 0; i < commentList.size(); i++) {
 			Integer temp = cmtService.getCommentCurrentPageNum(commentList.get(i).getCmtNo());
 			if (temp == null) {
@@ -1329,6 +1407,7 @@ public class UserController {
 			}
 			ComPageNum.add(temp);
 		}
+
 
 		model.addAttribute("user" ,user);
 		model.addAttribute("loc" ,locationList);
@@ -1339,6 +1418,10 @@ public class UserController {
 		model.addAttribute("com" ,commentList);
 		model.addAttribute("ComPageNum" ,ComPageNum);
 		model.addAttribute("us" ,userSuspensionList);
+		model.addAttribute("eve" ,eventList);
+		model.addAttribute("eveattend" ,eventAttends_size);
+		model.addAttribute("pointlist" ,points);
+
 
 		return "admin/admin_user_detail";
 	}

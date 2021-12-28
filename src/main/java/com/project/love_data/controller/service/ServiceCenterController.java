@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.security.Principal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -43,6 +44,14 @@ public class ServiceCenterController {
     NoticeRepository noticeRepository;
     @Autowired
     EventRepository eventRepository;
+    @Autowired
+    EventAttendRepository eventAttendRepository;
+    @Autowired
+    EventWinRepository eventWinRepository ;
+    @Autowired
+    BizRegService bizRegService;
+    @Autowired
+    PointRepository pointRepository;
     @Autowired
     ControllerScriptUtils scriptUtils;
 
@@ -1329,7 +1338,7 @@ public class ServiceCenterController {
 
     @GetMapping(value = "/ServiceCenter/Event/{page}")
     public String Event(@PathVariable("page") String page, Model model, HttpServletResponse response) {
-        List<Event> events = serviceCenterService.ev_select_all();
+        List<Event> events = serviceCenterService.ev_all();
         List<Event> notice_page = null;
         model.addAttribute("search", false);
         long no_size = events.size();
@@ -1458,10 +1467,32 @@ public class ServiceCenterController {
     }
 
     @GetMapping(value = "/ServiceCenter/Event_Post/{num}")
-    public String Event_no(@PathVariable("num") String num, Model model, HttpServletResponse response)  {
+    public String Event_no(@PathVariable("num") String num, Model model, HttpServletResponse response, Principal principal)  {
         Event event = serviceCenterService.ev_select_no(num);
         event.setEv_viewCount(event.getEv_viewCount()+1);
         serviceCenterService.ev_update(event);
+        List<EventAttend> eventAttendList = serviceCenterService.evattd_find_EvNo(event.getEv_no().toString());
+        model.addAttribute("all_attend",eventAttendList.size());
+        if(principal != null){
+            User user = userService.select(principal.getName());
+            Long Ppoint = bizRegService.findplupoint(user.getUser_no().toString());
+            Long Mpoint = bizRegService.findmapoint(user.getUser_no().toString());
+            List<EventAttend> eventAttends = serviceCenterService.evattd_find_UserEvNo(user.getUser_no().toString(),event.getEv_no().toString());
+            model.addAttribute("my_attend",eventAttends.size());
+            if(Ppoint!=null){
+                if(Mpoint!=null){
+                    if(Ppoint>Mpoint){
+                        model.addAttribute("point",Ppoint-Mpoint);
+                    }else {
+                        model.addAttribute("point",0);
+                    }
+                }else {
+                    model.addAttribute("point",Ppoint);
+                }
+            }else {
+                model.addAttribute("point",0);
+            }
+        }
         model.addAttribute("eve",event);
         return "/service/ev_detail";
     }
@@ -1698,6 +1729,30 @@ public class ServiceCenterController {
         return "redirect:/ServiceCenter/Event_Post/"+num;
     }
 
+    @GetMapping(value = "/ServiceCenter/Event_attend/{num}")
+    public String Event_attend(@PathVariable("num") String num, Model model, Principal principal, HttpServletResponse response){
+        // num 이벤트 번호
+        User user = userService.select(principal.getName());
+
+        Point point = Point.builder()
+                .user_no(user.getUser_no())
+                .point(Long.parseLong("100"))
+                .point_get_out("eve")
+                .get_no_use_no(Long.parseLong(num))
+                .get_plus_mi(false)
+                .build();
+        pointRepository.save(point);
+
+        EventAttend eventAttend = EventAttend.builder()
+                .ev_no(Long.parseLong(num))
+                .point_no(point.getPoint_no())
+                .user_no(user.getUser_no())
+                .build();
+        eventAttendRepository.save(eventAttend);
+
+        return "redirect:/ServiceCenter/Event_Post/"+num;
+    }
+
     // 이벤트 관리자
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/admin/event")
@@ -1716,7 +1771,57 @@ public class ServiceCenterController {
         Event event = serviceCenterService.ev_select_no(num.toString());
         model.addAttribute("eve",event);
 
+        List<EventWin> eventWin = serviceCenterService.evwin_find_EvNo(num.toString());
+        model.addAttribute("win",eventWin);
+
+        List<User> users = new ArrayList<>();
+        for(int i = 0; i<eventWin.size(); i++){
+            User user = userService.select(eventWin.get(i).getUser_no());
+            users.add(user);
+        }
+        model.addAttribute("win_user",users);
+
         return "admin/admin_event_detail";
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/admin/event_win")
+    public String event_win(Model model) throws ParseException {
+
+        Date date = new Date();
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+        List<Event> events = serviceCenterService.ev_find_item();
+        for(int i = 0; i<events.size(); i++){
+            Date endDay = format1.parse(events.get(i).getEv_end());
+            if(date.after(endDay)) {
+                // 추첨
+                events.get(i).setEv_item_activation(true);
+                List<EventAttend> eventAttend = serviceCenterService.evattd_find_EvNo(events.get(i).getEv_no().toString());
+                Collections.shuffle(eventAttend);
+                if (events.get(i).getEv_item() < eventAttend.size()) {
+                    for (int j = 0; j < events.get(i).getEv_item(); j++) {
+                        EventWin eventWIn = EventWin.builder()
+                                .user_no(eventAttend.get(j).getUser_no())
+                                .ev_no(eventAttend.get(j).getEv_no())
+                                .ranking(new Long(j+1))
+                                .build();
+                        eventWinRepository.save(eventWIn);
+                    }
+                } else {
+                    for (int j = 0; j < eventAttend.size(); j++) {
+                        EventWin eventWIn = EventWin.builder()
+                                .user_no(eventAttend.get(j).getUser_no())
+                                .ev_no(eventAttend.get(j).getEv_no())
+                                .ranking(new Long(j+1))
+                                .build();
+                        eventWinRepository.save(eventWIn);
+                    }
+                }
+                eventRepository.save(events.get(i));
+            }
+        }
+
+        return "redirect:/admin/event";
     }
 }
 
