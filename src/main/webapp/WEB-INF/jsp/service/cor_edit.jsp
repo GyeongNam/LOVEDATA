@@ -63,7 +63,7 @@
 			<%--			<span><sec:authentication property="principal.authorities"></sec:authentication></span>--%>
 			<c:set var="dto" value="${dto}"/>
 			<c:set var="user_no"><sec:authentication property="principal.user_no"/></c:set>
-			<sec:authorize access="hasAnyRole('USER')">
+			<sec:authorize access="hasAnyRole('USER') && !hasRole('ADMIN')">
 				<c:choose>
 					<c:when test="${user_no ne dto.user_no}">
 						<span>등록하지 않은 코스 입니다.</span>

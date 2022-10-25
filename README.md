@@ -6,11 +6,11 @@
 
 ## 개발 인원
 
-- [dorumamu](https://github.com/dorumamu/)
-- [mon0mon](https://github.com/mon0mon/)
-- [GyeongNam](https://github.com/GyeongNam/)
+- [dorumam(최진웅)](https://github.com/dorumamu/)
+- [mon0mon(이민기)](https://github.com/mon0mon/)
+- [GyeongNam(조경남)](https://github.com/GyeongNam/)
 
-## 개발 환경
+## 개발 환웅
 - 운영채제:   Linux (CentOS 7)<br>
 - WAS:        Tomcat 9.0<br>
 - framework:  Spring boot 2.44<br>
@@ -20,545 +20,228 @@
 
 ![image](https://user-images.githubusercontent.com/63902992/143848772-c58e3f6e-cc04-4de9-ac54-977920ffc9b4.png)
 
-## dorumamu
+## mon0mon(이민기)
 
-## mon0mon
+JPA\
+QurDSL\
+GSON\
 
-## GyeongNam
+1. 로그인
 
-해당 목록은 '경남' 이 만든 것만 설명되어있습니다.
+    1. 사이트 내 회원가입한 유저 로그인
+        - Spring Security를 활용하여 ID, PW로 로그인
 
-참고 사이트:<br>
-[FullCalendar](https://fullcalendar.io/)
+    2. SNS 회원가입(카카오, 네이버)을 한 유저 로그인
 
-[DataTables](https://datatables.net/)
+        - 카카오 로그인 페이지로 이동
+        
+        [OAuthController](com.project.love_data.controller.OAuthController)
+        ```java
+        @GetMapping(value = "/login_kakao")
+        public String kakaoLogin(
+                HttpServletRequest request,
+                HttpSessionCsrfTokenRepository csrfTokenRepository
+        ) {
+            // acessCodeRequest는 카카오 로그인 페이지로 이동하는 
+            decodedURL = acessCodeRequest.excute(request, csrfTokenRepository);
 
-[SmartEditor2](http://naver.github.io/smarteditor2/user_guide/)
+            return "redirect:" + decodedURL;
+        }
+        ```
 
+        - 토큰 정보 확인
+        
+        [OAuthController](https://github.com/mon0mon/LOVEDATA/blob/main/src/main/java/com/project/love_data/controller/OAuthController.java)
 
+        ```java
+        @RequestMapping(value = "/login_kakao/process")
+        public String kakaoLogin_Process(
+                HttpServletRequest request,
+                HttpServletResponse response,
+                RedirectAttributes redirectAttributes,
+                HttpSession session,
+                Model model
+        ) throws IOException {}
+        ```
 
-   1. 일반 회원가입
-  
-      - form을 이용해 post 형식으로 UserController에서 user에 저장
-  
-      ```java
-      @RequestMapping(value = "/signup_add", method = RequestMethod.POST)
-      public String signup(
-            @RequestParam(value = "str_email01") String email1,
-            @RequestParam(value = "str_email02") String email2,
-            @RequestParam(value = "userPwd") String pwd,
-            @RequestParam(value = "nickname") String nickname,
-            @RequestParam(value = "userName") String userName,
-            @RequestParam(value = "str_phone01") String phone01,
-            @RequestParam(value = "str_phone02") String phone02,
-            @RequestParam(value = "str_phone03") String phone03,
-            @RequestParam(value = "birthday") String birthday,
-            @RequestParam(value = "gender") boolean gender,
-            @RequestParam(value = "recv_email") boolean recv_email,
-            @RequestParam(value = "social") boolean social,
-            @RequestParam(value = "social_info") String social_info,
-            @RequestParam(value = "profile_pic") String profile_pic,
-            HttpServletRequest request
-      ) {
+        전달 받은 코드를 바탕으로 토큰을 요청
+        이후에 해당 토큰으로 유저 정보를 가져옴
+        ```java
+        token = tokenRequest.excute(request);
 
-         String tempStr = request.getParameter("social_id");
-         int social_id = 0;
-         if (tempStr == null || !tempStr.equals("")) {
-            Integer.parseInt(tempStr);
-         }
-         User user = User.builder()
-               .user_email(email1 + "@" + email2)
-               .user_pw(passwordEncoder.encode(pwd))
-               .user_nic(nickname)
-               .user_name(userName)
-               .user_phone(phone01 + phone02 + phone03)
-               .user_birth(birthday)
-               .user_sex(gender)
-               .user_email_re(recv_email)
-               .user_social(social)
-               .social_info(social_info.equals("") ? "웹페이지" : social_info)
-               .social_id(social_id)
-               .build();
-         user.addUserRole(UserRole.USER);
-         log.info("profile_pic : " + profile_pic.length());
-         if (profile_pic != null) {
-            user.setProfile_pic(profile_pic);
-         }
-         if(profile_pic.length()==0){
-            user.setProfile_pic("/image/icon/user/user.png");
-         }
+        kakaoUserInfo = infoKakao.excute(request, token);
+        ```
 
-         userRepository.save(user);
+        유저의 이메일과 ID를 이용해서 로그인 시도
+        ```java
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+            kakaoUserInfo.getEmail(), kakaoUserInfo.getId() + "!@#$");
+        ```
 
-         return "redirect:/";
-      }
-      ```
-  
-   2. 캘린더
-      
-      jsp에서 캘린더를 연결한다.
-      
-      ```html
-      <link rel="stylesheet" href="/fullcalendar/bootstrap.min.css">
-      <link rel="stylesheet" href='/fullcalendar/select.min.css' />
-      <link rel="stylesheet" href='/fullcalendar/bootstrap-datetimepicker.min.css' />
-      <link rel="stylesheet" href="/fullcalendar/fullcalendar.min.css" />
-      <link rel="stylesheet" href="/fullcalendar/main.css">
-         ...
-      <div id="calendar"></div>
-         ...
-      <script src="/fullcalendar/jquery.min.js"></script>
-      <script src="/fullcalendar/bootstrap.min.js"></script>
-      <script src="/fullcalendar/moment.min.js"></script>
-      <script src="/fullcalendar/select.min.js"></script>
-      <script src="/fullcalendar/bootstrap-datetimepicker.min.js"></script>
-      <script src="/fullcalendar/fullcalendar.min.js"></script>
-      <script src="/fullcalendar/ko.js"></script>
-      <script src="/fullcalendar/main.js"></script>
-      ```
-      fullcalendar/main.js에서 이벤트 등록한다. 서버와 통신은 비동기식인 ajax를 이용한다.
-      ```js
-      // 일정받아오기
-      events: function (start, end, timezone, callback) {
-         var token = $("meta[name='_csrf']").attr("content");
-         var header = $("meta[name='_csrf_header']").attr("content");
-         $(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
+        등록된 정보가 없다면 회원가입 페이지로 이동
+        ```java
+        redirectAttributes.addFlashAttribute("social_info", "kakao");
+            redirectAttributes.addFlashAttribute("social_id", kakaoUserInfo.getId());
 
-          $.ajax({
-            type: "post",
-            url: "/user/cal_all",
-            data: {
-            },
-            success: function (response) {
-                console.log(response);
-                var arr = response;
-                var events = [];
-                $.each(arr, function(index, item){
-                    events.push({
-                        _id: item.cal_no,
-                        title: item.title,
-                        start: item.start,
-                        end: item.end,
-                        text: item.text,
-                        username: item.user_mail, // 로그인 정보
-                        road: item.road,
-                        road2: item.road2,
-                        color: item.color,
-                        allDay: item.all_day
-                    });
-                });
-                callback(events);
-            }
-          });
-        },
-      ```
-      일정 등록
-      ```js
-      var newEvent = function (start, end, eventType) {
+            return "redirect:/signup";
+        ```
 
-          $("#contextMenu").hide();
+2. 장소
 
-          modalTitle.html('일정 추가');
+    1. 추천 장소
 
-          editTitle.val('');
-          editStart.val(start);
-          editEnd.val(end);
-          editDesc.val('');
-          editadr.val('');
-          editadr2.val('');
+    ![추천장소]()
 
-          addBtnContainer.show();
-          modifyBtnContainer.hide();
-          eventModal.modal('show');
+    - 등록된 장소들 가운데 사람들이 가장 많이 보고 추천한 순으로 정렬
 
-          var eventId = 1 + Math.floor(Math.random() * 1000);
+    - 이름과 위치, 태그를 통한 검색
 
-          //새로운 일정 저장버튼 클릭
-          $('#save-event').unbind();
-          $('#save-event').on('click', function () {
+    [LocationService](https://github.com/mon0mon/LOVEDATA/blob/main/src/main/java/com/project/love_data/businessLogic/service/LocationService.java)
 
-              var eventData = {
-                  title: editTitle.val(),
-                  start: editStart.val(),
-                  end: editEnd.val(),
-                  text: editDesc.val(),
-                  road: editadr.val(),
-                  road2: editadr2.val(),
-                  color: editColor.val(),
-                  allDay: editAllDay.val()
-              };
+    ```java
+    public PageResultDTO<LocationDTO, Location> getList(PageRequestDTO requestDTO) {
+        boolean flagASC = false;
 
-              if (eventData.start > eventData.end) {
-                  alert('끝나는 날짜가 앞설 수 없습니다.');
-                  return false;
-              }
+        Pageable pageable택
+        // 오름차순, 내림차순 선택
+        switch (requestDTO.getSortingOrder()) {
+            case ASC:
+                flagASC = true;
+                break;
+            default:
+                flagASC = false;
+                break;
+        }
 
-              if (eventData.title === '') {
-                  alert('일정명은 필수입니다.');
-                  return false;
-              }
+        // 정렬 기준으로 정렬 (중복 X)
+        switch (requestDTO.getSortCriterion()) {
+            case DATE:
+                // 생략
+            case LIKE:
+                // 생략
+            case VIEW:
+            default:
+                if (flagASC) {
+                    pageable = requestDTO.getPageable(Sort.by("viewCount").ascending());
+                } else {
+                    pageable = requestDTO.getPageable(Sort.by("viewCount").descending());
+                }
+                break;
+        }
 
-              var realEndDay;
+        BooleanBuilder booleanBuilder = getSearch(requestDTO);
+        Page<Location> result = repository.findAll(booleanBuilder, pageable);
 
-              if (editAllDay.is(':checked')) {
-                  eventData.start = moment(eventData.start).format('YYYY-MM-DD');
-                  eventData.end = moment(eventData.end).add(1, 'days').format('YYYY-MM-DD');
-                  realEndDay = moment(eventData.end).format('YYYY-MM-DD');
-                  eventData.allDay = true;
-                  console.log(eventData);
-              }
+        Function<Location, LocationDTO> fn = (entity -> entityToDto(entity));
 
-             
-              calendar.fullCalendar('renderEvent', eventData, true);
+        return new PageResultDTO<>(result, fn);
+    }
+    ```
 
+    2. 장소 등록
 
-              eventModal.find('input, textarea').val('');
-              editAllDay.prop('checked', false);
-              eventModal.modal('hide');
+    ![장소등록]()
 
-              var token = $("meta[name='_csrf']").attr("content");
-              var header = $("meta[name='_csrf_header']").attr("content");
-              $(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
+    - 로그인 후 장소 등록 가능
 
-              //새로운 일정 저장
-              $.ajax({
-                  url: "/user/cal_add",
-                  dataType: 'json',
-                  contentType: "application/json; charset=UTF-8",
-                  data: JSON.stringify(eventData),
-                  type: "POST",
-                  success: function (response) {
-                      location.reload();
-                  }
-              });
-          });
-      };
-      ```
-      일정 삭제
-      ```js
-      $('#deleteEvent').on('click', function () {
+    [LocationController](https://github.com/mon0mon/LOVEDATA/blob/main/src/main/java/com/project/love_data/controller/service/LocationController.java)
+    
+    등록페이지에서 들어온 정보를 바탕으로 장소 등록 진행
+    ```java
+    @PostMapping("/service/loc_registration/regData")
+    public String locRegistrationData(@RequestParam("files") List<MultipartFile> fileList,
+            HttpServletRequest request,
+            RedirectAttributes redirectAttributes) {
 
-          $('#deleteEvent').unbind();
-          // $("#calendar").fullCalendar('removeEvents', $(this).data('id'));
-          calendar.fullCalendar('removeEvents', $(this).data('id'));
-          eventModal.modal('hide');
-          var eventdata = {
-              _id: $(this).data('id')
-          };
-          var token = $("meta[name='_csrf']").attr("content");
-          var header = $("meta[name='_csrf_header']").attr("content");
-          $(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
-          //삭제시
-          $.ajax({
-              url: "/user/cal_delete",
-              dataType: 'json',
-              contentType: "application/json; charset=UTF-8",
-              data: JSON.stringify(eventdata),
-              type: "POST",
-              success: function (response) {
-                  alert('삭제되었습니다.');
-                  console.log(response);
-              }
-          });
+        // 장소 이미지를 저장하고, 해당 경로를 가져옴
+        filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE, UploadFileCount.MULTIPLE
+                MIN_UPLOAD_COUNT, MAX_UPLOAD_COUNT, PathType.LOC, request);
 
-      });
-      ```
-      
-   3. 고객센터
-      -공지사항
-      
-         페이지네이션을 직접 해보았다.
-         페이지 하나당 15개 항목을 보여준다.
-         ```java
-         // 페이지네이션
-           long j=0;
+        // 장소 객체를 생성 후 DB에 저장
+        Location entity = locService.register(reqParam, tagList, filePath);
 
-           if(notice.size()<15){
-               model.addAttribute("noti",notice);
-           }else {
-               for (int i = 0; i < no_size; i++) {
-                   notice_page = notice.subList(0,15);
+        // 장소 등록을 완료한 후 추천 장소 페이지로 이동
+        return "redirect:/service/loc_recommend";
+    }
+    ```
 
-                   if (i % 15 == 0) {
-                       j = j + 1;
-                       if (j == Long.parseLong(page)) {
-                           model.addAttribute("noti",notice_page);
-                           break;
-                       } else {
-                           notice.subList(0,15).clear();
+    3. 장소 편집
 
-                           if(notice.size()<15){
-                               model.addAttribute("noti",notice);
-                               break;
-                           }
-                       }
-                   }
-               }
-           }
-         ```
-         공지사항 저장 시 기획에서 스마트 에디터 사용을 원해 네이버 스마트에디터2를 사용했다. jsp에 스마트 에디터를 연결한다.
-         ```html 
-         <script type="text/javascript" src="/se2/js/HuskyEZCreator.js" charset="utf-8"></script>
-               ...
-            <textarea name="notice_content" id="smartEditor" style="width: auto; max-height: 10%"></textarea>
-               ...
-         <script src="/js/SmartEditor2.js"></script>
-         ```
-         SmartEditor2.js에서 스마티 에디터를 설정하고
-         ```js
-         var oEditors = [];
-         nhn.husky.EZCreator.createInIFrame({
-             oAppRef : oEditors,
-             elPlaceHolder : "smartEditor",
-             sSkinURI : "/se2/SmartEditor2Skin.html",
-             fCreator : "createSEditor2",
-             htParams : {
-                 // 툴바 사용 여부 (true:사용/ false:사용하지 않음)
-                 bUseToolbar : true,
+    ![장소 수정]()
 
-                 // 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
-                 bUseVerticalResizer : false,
+    - 본인이 등록한 장소이거나 관리자일 경우 수정가능
 
-                 // 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
-                 bUseModeChanger : false
-             }
-         });
-         ```
-         저장 함수를 만들어준다.
-         ```js
-         function save(){
-             oEditors.getById["smartEditor"].exec("UPDATE_CONTENTS_FIELD", []);
-             //스마트 에디터 값을 텍스트컨텐츠로 전달
-             var content = document.getElementById("smartEditor").value;
-             $("#form_name").val(content);
-             var title = $("#title").val();
-             if (title.replace(/\s|　/gi, "").length == 0) {
-                 alert("제목을 입력해주세요.");
-                 $("#title").focus();
-             }else {
-                 $("Form").submit();
-             }
+    [LocationController](https://github.com/mon0mon/LOVEDATA/blob/main/src/main/java/com/project/love_data/controller/service/LocationController.java)
 
-             return;
-         }
-         ```
-      -문의사항
-      
-         문의 사항도 form을 이용한 데이터 처리를 하였지만 관리자일 경우 답변이 필요하기 때문에 spring security와 jstl를 이용해서 관리자가 접근할 수 있게 했다.
-         ```html
-         <sec:authorize access="isAuthenticated()">
-            <sec:authorize access="hasAnyRole('ADMIN')">
-                관리자일 경우
-            </sec:authorize>
-            <sec:authorize access="!hasRole('ADMIN')">
-                관리자가 아닐경우
-            </sec:authorize>
-         </sec:authorize>
-         ```
-      -정책
-      
-         해당 페이지는 js로 만든 탭 기능을 이용해 총직, 개인정보처리방침 등을 보여준다.
-         
-      -회원탈퇴
-      
-         비밀번호를 한번 확인하고 회원 탈퇴할 수 있게 하였다. 회원탈퇴일 경우 모든 회원의 데이터를 비활성화 시키고 사진파일은 임시휴지통으로 보낸다.
-         ```java
-         @PostMapping(value = "/lovedata_delete")
-         public String lovedata_delete(HttpServletRequest request){
-            String user_no = request.getParameter("user_no");
-            User user = userService.select(Long.parseLong(user_no));
-            List<Comment> comment = cmtService.findAllByUserNo(Long.parseLong(user_no));
-            List<Review> reviews = reviewService.findAllByUser_no(Long.parseLong(user_no));
-            List<ReviewImage> reviewImages = reviewImageService.getImage_UserNo(Long.parseLong(user_no));
-            List<Questions> questions = serviceCenterService.qu_findAllByUser_no(user_no);
-            List<QuestionsImage> questionsImages = questionsImageService.user_no_imgselect(user_no);
+    ```java
+        @PostMapping("/service/loc_edit/regData")
+        public String locEditData(@RequestParam("files") List<MultipartFile> fileList,
+                HttpServletRequest request,
+                RedirectAttributes redirectAttributes) {
+        // 장소 수정 정보에 입력된 장소가 맞는지 확인하는 과정
+        if (loc_no_Test == null || loc_uuid_Test == null || !loc_uuid_Test.equals(loc_no_Test)) {
+            return "redirect:/service/loc_recommend";
+        }
 
-            List<Calender> calenders = calenderService.Cal_select(user.getUser_email());
-            user.set_deleted(true);
-            user.setUser_Activation(false);
-            userService.update(user);
-            for(int i = 0; i<comment.size(); i++){
-               comment.get(i).set_deleted(true);
-               cmtService.update(comment.get(i));
-            }
-            for(int i = 0; i<reviews.size(); i++){
-               reviews.get(i).set_deleted(true);
-               reviewService.update(reviews.get(i));
-            }
-            for(int i = 0; i<reviewImages.size(); i++){
-               reviewImages.get(i).set_deleted(true);
-               reviewImageService.update(reviewImages.get(i));
+        // 수정된 이미지 파일을 업로드
+        // 기존과 동일하다면 넘어감
+        filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE, UploadFileCount.MULTIPLE,
+                MIN_UPLOAD_COUNT, MAX_UPLOAD_COUNT, PathType.LOC, request);
 
-               try {
-                  // 기존 이미지 review -> upload
-                  String imgpath;
-                  if ("Windows_NT".equals(System.getenv().get("OS"))) {
-                     String r = request.getSession().getServletContext().getRealPath("/");
-                     int idx = r.indexOf("main");
-                     imgpath = r.substring(0, idx) + "main/resources/static" + reviewImages.get(i).getImg_url();
+        LocationDTO dto = locService.entityToDto(locService.edit(reqParam, tagList, filePath));
 
-                     File file = FileUtils.getFile(imgpath);
-                     File fileToMove = FileUtils.getFile(r.substring(0, idx) + "main/resources/static/image/upload/REV^" + reviewImages.get(i).getImg_uuid());
-                     FileUtils.moveFile(file, fileToMove);
-                  } else {
-                     imgpath = Linux_Image_Upload_Path + "review/" + reviewImages.get(i).getImg_uuid();
+        return "redirect:/service/loc_recommend";
+    }
+    ```
 
-                     File file = FileUtils.getFile(imgpath);
-                     File fileToMove = FileUtils.getFile(Linux_Image_Upload_Path + "upload/REV^" + reviewImages.get(i).getImg_uuid());
-                     FileUtils.moveFile(file, fileToMove);
-                  }
+    4. 지역별 장소
 
-               } catch(IOException e){
-                  e.printStackTrace();
-               }
-            }
-            for(int i = 0; i<questions.size(); i++){
-               questions.get(i).setQu_activation(false);
-               serviceCenterService.qu_update(questions.get(i));
-            }
-            for(int i = 0; i<questionsImages.size(); i++){
-               questionsImages.get(i).setQu_img_Activation(false);
-               questionsImageService.update(questionsImages.get(i));
+    ![지역별 장소]()
 
-               try {
-                  // 기존 이미지 qna -> upload
-                  String imgpath;
-                  if ("Windows_NT".equals(System.getenv().get("OS"))) {
-                     String r = request.getSession().getServletContext().getRealPath("/");
-                     int idx = r.indexOf("main");
-                     imgpath = r.substring(0, idx) + "main/resources/static/image/qna/" + questionsImages.get(i).getQu_img_url();
+    - 등록된 장소 중에 지역별 장소만을 골라서 보는 메뉴
 
-                     File file = FileUtils.getFile(imgpath);
-                     File fileToMove = FileUtils.getFile(r.substring(0, idx) + "main/resources/static/image/upload/QNA^" + questionsImages.get(i).getQu_img_url());
-                     FileUtils.moveFile(file, fileToMove);
-                  } else {
-                     imgpath = Linux_Image_Upload_Path + "qna/" + questionsImages.get(i).getQu_img_url();
+    
 
-                     File file = FileUtils.getFile(imgpath);
-                     File fileToMove = FileUtils.getFile(Linux_Image_Upload_Path + "upload/QNA^" + questionsImages.get(i).getQu_img_url());
-                     FileUtils.moveFile(file, fileToMove);
-                  }
+3. 코스
 
-               } catch(IOException e){
-                  e.printStackTrace();
-               }
-            }
-            for(int i = 0; i<calenders.size(); i++){
-               calenders.get(i).setCal_Activation(false);
-               calenderService.update(calenders.get(i));
-            }
-            return "redirect:/logout";
-         }
-         ```
-   4. 관리자 -유저관리 
-      
-      유저의 모든 장소, 코스, 댓글, 리뷰, 정지상황등을 보여주며 유저를 정지시킬 수 있다.
-      
-      한 페이지 내에 테이블이 많아야하며 모두 페이지네이션이 되어야 했다. 
-      
-      해당문제를 해결하기 위해 데이터테이블을 이용했다.
-      ```html
-      <link rel="stylesheet" href=" https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css">
-      <link rel="stylesheet" href=" https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css"/>
-      <link rel="stylesheet" href=" https://cdn.datatables.net/rowgroup/1.1.4/css/rowGroup.bootstrap5.min.css"/>
-        <table class="table-bordered table text-center tables" >
-      <script defer src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-      <script defer src="https://cdn.datatables.net/1.11.3/js/dataTables.jqueryui.min.js"></script>
-      <script defer src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
-      <script defer src="https://cdn.datatables.net/rowgroup/1.1.4/js/dataTables.rowGroup.min.js"></script>
-      <script defer src="/js/datatable.js"></script>
-      ```
-      datatable.js에서 한국어로 변경해줬다.
-      ```js
-      $(document).ready(function() {
-          $('.tables').DataTable( {
-              language: {
-                  "decimal":        "",
-                  "emptyTable":     "데이터가 없습니다.",
-                  "info":           "총 _TOTAL_중   _START_에서 _END_까지 표시",
-                  "infoEmpty":      "0 개 항목 중 0 ~ 0 개 표시",
-                  "infoFiltered":   "(_MAX_ 총 항목에서 필터링 됨)",
-                  "infoPostFix":    "",
-                  "thousands":      ",",
-                  "lengthMenu":     "_MENU_",
-                  "loadingRecords": "로드 중 ...",
-                  "processing":     "처리 중 ...",
-                  "search":         "검색:",
-                  "zeroRecords":    "일치하는 레코드가 없습니다.",
-                  "paginate": {
-                      "first":      "처음",
-                      "last":       "마지막",
-                      "next":       "다음",
-                      "previous":   "이전"
-                  },
-                  "aria": {
-                      "sortAscending":  ": 오름차순으로 정렬",
-                      "sortDescending": ": 내림차순으로 정렬"
-                  }
-              },
-          } );
-      } );
-      ```
-      
-      정지기능또한 정지테이블에 추가시키며, 정지해제일이 다가왔을경우
-      
-      ```java
-      @Component
-      @EnableScheduling
-      public class Scheculer implements ApplicationRunner {
+    1. 추천 코스
 
-          @Autowired
-          UserService userService;
+    ![추천 코스]()
 
-          @Override
-          public void run(ApplicationArguments args) throws Exception {
-              user_release();
-          }
+    - 추천 장소와 동일한 기능
 
-            //  초(0-59)   분(0-59)　　시간(0-23)　　일(1-31)　　월(1-12)　　요일(0-7)
-          @Scheduled(cron = "* * 0 * * *", zone = "Asia/Seoul")
-          public void user_release() throws ParseException {
-              Date date = new Date();
-              SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+    2. 코스 등록
 
+    ![코스 등록]()
 
-              List<UserSuspension> userSuspension = userService.findAllByprogress("1");
-              for(int i = 0; i<userSuspension.size(); i++){
-                  Date endDay = format1.parse(userSuspension.get(i).getEnd_day());
-                  if(date.after(endDay)){
-                      // 시간이 지났을 때
-                      List<UserSuspension> end_userSuspension = userService.findStopByUser_no(userSuspension.get(i).getUser_no(),"1");
-                      List<UserSuspension> re_userSuspension = userService.findStopByUser_no(userSuspension.get(i).getUser_no(),"2");
+    - 등록된 장소를 기반으로 코스를 등록
 
-                      if(re_userSuspension.size() > 0){
-                          end_userSuspension.get(0).setProgress("0");
-                          userService.su_update(end_userSuspension.get(0));
+    - 최소 2개 이상의 장소를 포함하고, 로그인 해야 등록 가능
 
-                          java.util.Calendar cal_end = Calendar.getInstance();
-                          cal_end.setTime(date);
-                          cal_end.add(Calendar.DATE,Integer.parseInt(re_userSuspension.get(0).getStop_day()));
+    ```java
+        @PostMapping("/service/cor_registration/regData")
+        public String corRegistrationData(@RequestParam("files") List<MultipartFile> fileList,
+            HttpServletRequest request,
+            RedirectAttributes redirectAttributes) {
 
-                          re_userSuspension.get(0).setProgress("1");
-                          re_userSuspension.get(0).setStart_day(format1.format(date));
-                          re_userSuspension.get(0).setEnd_day(format1.format(cal_end.getTime()));
-                          userService.su_update(re_userSuspension.get(0));
-                      }else {
-                          end_userSuspension.get(0).setProgress("0");
-                          userService.su_update(end_userSuspension.get(0));
+        // 코스에 포함된 장소의 id를 모두 가져옴
+        for (int i = 1; i <= Integer.parseInt(reqParam.get("location_length")); i++) {
+            reqParam.put("loc_no_" + i, request.getParameter("loc_no_" + i));
+            reqParam.put("loc_id_" + i, request.getParameter("loc_id_" + i));
+        }
 
-                          User user = userService.select(end_userSuspension.get(0).getUser_no());
-                          user.setUser_Activation(true);
-                          userService.update(user);
-                      }
-                  }
-              }
-          }
-      }
-      ```
-      스케줄러를 통해 자동으로 유저를 해제해준다.
-      
-      다만, 해제해줘야 할 유저의 정지기록이 더 있을경우 갱신시켜준다.
-      
-   5. 관리자 -공지사항 문의사항
-      
-      고객센터의 공지사항과 문의사항 기능과 거의 동일하다.
+        // 코스와 관련된 이미지 등록
+        filePath = fileUploadService.execute(fileList, UploadFileType.IMAGE, UploadFileCount.MULTIPLE,
+                MIN_UPLOAD_COUNT, MAX_UPLOAD_COUNT, PathType.COR, request);
+
+        Course entity = corService.register(reqParam, tagList, filePath);
+
+        return "redirect:/service/cor_recommend";
+    }
+    ```
+
+    3. 코스 편집
+
+    - 장소 편집과 동일한 기능
+
+    

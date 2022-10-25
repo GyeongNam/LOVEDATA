@@ -68,10 +68,10 @@ public class HomeController {
             model.addAttribute("bizloc", locations.subList(0, 4));
         }
 
-//        String url = "https://graph.facebook.com/v12.0/105161258693771/feed?fields=attachments,message&limit=1&access_token=";
-//        JSONObject json = readJsonFromUrl(url);
-//
-//        model.addAttribute("instart",json);
+        String url = "https://graph.facebook.com/v12.0/105161258693771/feed?fields=attachments,message&limit=1&access_token=EAAMwisXrG3oBAMFjTpcJFP2u4ekAltQbqxaKWwXDdEiBdbEq4MjfMZAZBHspxfnxQEqs9ibfW6Am9o2hyjdvhGorMYAXD0JmhBfgTZAaGWpruBVdub5NaQ0re3RF54iwolHHTRZAaYKM3wTHCMtNwPqvBxY631z2UNSQWZAaUhAZDZD";
+        JSONObject json = readJsonFromUrl(url);
+
+        model.addAttribute("instart",json);
         model.addAttribute("lochotList", tempLocationList);
         model.addAttribute("corhotList", tempCourseList);
 

@@ -3,16 +3,16 @@
   <component name="WebServers">
     <option name="servers">
       <webServer id="e1685be6-f369-4029-9d42-98a7faa652da" name="Test">
-        <fileTransfer accessType="SFTP" host="210.114.22.227" port="22" sshConfigId="365b3f52-492f-4601-b284-58537a567ba8" sshConfig="Test">
+        <fileTransfer accessType="SFTP" sshConfigId="365b3f52-492f-4601-b284-58537a567ba8" sshConfig="Test">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>
         </fileTransfer>
       </webServer>
-      <webServer id="9e633ed9-00b3-4570-b7af-37e68a1e4a7b" name="PI_Tomcat">
-        <fileTransfer accessType="SFTP" host="mon0mon.iptime.org" port="11122" sshConfigId="e41b4474-56d3-4e7a-913a-d4784d5a6ee5" sshConfig="tomcat@mon0mon.iptime.org:11122 password">
+      <webServer id="9e633ed9-00b3-4570-b7af-37e68a1e4a7b" name="PI_pi">
+        <fileTransfer accessType="SFTP" host="mon0mon.iptime.org" port="11122" sshConfigId="e41b4474-56d3-4e7a-913a-d4784d5a6ee5" sshConfig="pi@mon0mon.iptime.org:11122 password">
           <advancedOptions>
-            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>
         </fileTransfer>
       </webServer>

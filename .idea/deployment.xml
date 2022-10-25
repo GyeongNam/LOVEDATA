@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="PI_Tomcat" remoteFilesAllowedToDisappearOnAutoupload="false">
+  <component name="PublishConfigData" autoUpload="Always" remoteFilesAllowedToDisappearOnAutoupload="false">
     <serverData>
-      <paths name="PI_Tomcat">
+      <paths name="PI_pi">
         <serverdata>
           <mappings>
-            <mapping deploy="/opt/apache-tomcat-9.0.46/webapps" local="$PROJECT_DIR$/build/libs" web="mon0mon.iptime.org" />
-            <mapping local="" />
+            <mapping deploy="/home/pi/docker/web/personal/lovedata" local="$PROJECT_DIR$/build/libs" web="/" />
           </mappings>
         </serverdata>
       </paths>
@@ -18,5 +17,6 @@
         </serverdata>
       </paths>
     </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
   </component>
 </project>
